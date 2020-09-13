@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),  
 ]#+ static(STATIC_URL, document_root=STATIC_ROOT)
 if SERVER_ON_HEROKU:
+    from django.conf.urls.static import static
     urlpatterns=urlpatterns+static(STATIC_URL, document_root=STATIC_ROOT)
     # urlpatterns=urlpatterns+static(MEDIA_URL, document_root=MEDIA_ROOT)
 
