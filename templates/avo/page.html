@@ -5,9 +5,11 @@
 {% block head %}
 
 
-{% for meta_data in page.meta_datas.all %}
-<meta {{meta_data.key}}="{{meta_data.value}}" content="{{meta_data.content}}">
-{% endfor %}
+
+<meta name="description" content="{% for meta_data in page.meta_datas.all %}{{meta_data.content}} , {% endfor %}" />
+
+
+
 
 {% endblock %}
 

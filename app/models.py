@@ -255,7 +255,7 @@ class Link(Icon):
         verbose_name_plural = _("لینک ها")
 
     def __str__(self):
-        return self.title
+        return self.title+('*' if self.for_home else '')
 
     def get_absolute_url(self):
         return self.url
@@ -430,14 +430,14 @@ class Notification(models.Model):
 class MetaData(models.Model):    
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     key=models.CharField(_("key name"), max_length=50,default='name')
-    value=models.CharField(_("key value"), max_length=50)
+    value=models.CharField(_("key value"), max_length=50,default='description')
     content=models.CharField(_("content"), max_length=2000)
     class Meta:
         verbose_name = _("MetaData")
         verbose_name_plural = _("متا دیتا - کلمات کلیدی سئو")
 
     def __str__(self):
-        return f'{self.key} : {self.value}'
+        return f'{self.key} : {self.value}'+('*' if self.for_home else '')
 
     def get_absolute_url(self):
         return reverse("MetaData_detail", kwargs={"pk": self.pk})

@@ -7,9 +7,12 @@
 	<title> {{app.pretitle.value}} " {{app.title.value}} "</title>
 	<meta charset="utf-8">
 	<!-- MetaData -->
-	{% for meta_data in app.meta_data_items %}
-	<meta {{meta_data.key}}="{{meta_data.value}}" content="{{meta_data.content}}">
-	{% endfor %}
+
+
+	<meta name="description" content="{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+
+
+	<meta name="robots" content="{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
 
 	<meta name="theme-color" content="{{theme_color}}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
