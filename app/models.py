@@ -586,7 +586,8 @@ class Like(models.Model):
         return PersianCalendar().from_gregorian(self.date_added)
 
     def __str__(self):
-        return f'{self.profile.name()} @ {self.persian_date_added()}'
+        name='' if self.profile is None else self.profile.name()
+        return f'{name} @ {self.persian_date_added()}'
 
 
 class OurWork(Page):
