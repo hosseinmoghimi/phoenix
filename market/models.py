@@ -312,7 +312,6 @@ class Product(models.Model):
     origin_price=models.IntegerField(_("قیمت بدون تخفیف"),default=0)
     short_description=models.CharField(_("شرح کوتاه"), max_length=500,blank=True,null=True)
     description=models.CharField(_("شرح کامل"), max_length=5000,default='',blank=True,null=True)
-    tag=models.CharField(_("برچسب"), max_length=50,blank=True,null=True)
     adder=models.ForeignKey("app.Profile",on_delete=models.SET_NULL,null=True,blank=True)
     time_added=models.DateTimeField(_("تاریخ ایجاد"), auto_now=False, auto_now_add=True)
     time_updated=models.DateTimeField(_("تاریخ اصلاح"), auto_now=True, auto_now_add=False)
@@ -320,6 +319,7 @@ class Product(models.Model):
     unit_names=models.ManyToManyField("ProductUnit", verbose_name=_("واحد های قابل فروش"))
     related=models.ManyToManyField("Product", verbose_name=_("related"),blank=True)
     comments=models.ManyToManyField("app.Comment", verbose_name=_("نظرات کاربرات"),blank=True)
+    tags=models.ManyToManyField("app.Tag", verbose_name=_("برچسب ها"),blank=True)
     def share_mail(self):
         obj={
             'title':self.name+' در فروشگاه '+ParameterRepo().title(),

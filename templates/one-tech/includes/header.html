@@ -13,8 +13,10 @@
 			<div class="row">
 				<div class="col d-flex flex-row">
 					<div class="top_bar_contact_item">
-						<div class="top_bar_icon"><img src="{% static 'one-tech/images/phone.png' %}" alt=""></div>
-						{{app.mobile.value}}
+						<div class="top_bar_icon">
+							
+							<img src="{% static 'one-tech/images/phone.png' %}" alt=""></div>
+							<a href="tel://{{app.mobile.value}}">	{{app.mobile.value}}</a>
 					</div>
 					<div class="top_bar_contact_item">
 						<div class="top_bar_icon"><img src="{% static 'one-tech/images/mail.png' %}" alt=""></div><a
