@@ -32,32 +32,26 @@
                     </div>
 
                     <!-- Main Nav Menu -->
-                    
-                        <ul class="ml-auto standard_dropdown main_nav_dropdown leo-rtl">
-                            <li class=" mx-3"><a href="{% url 'market:home' %}" class="leo-farsi">فروشگاه<i
-                                        class="fas fa-chevron-down"></i></a></li>
-                            <li class=" mx-3"><a href="{% url 'app:home' %}" class="leo-farsi">{{app.title.value}}</a>
-                            </li>
-                            {% if active_customer %}
 
-                            <li class=" mx-3"><a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات
-                                    من</a>
-                            </li>
-                            {% endif %}
-                            <li class="hassubs mx-2 leo-ltr">
-                                <a href="#" class="leo-farsi">جشنواره ها<i class="fas fa-chevron-down"></i></a>
-                                <ul>
-                                    <li>
-                                        <a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
+                    <ul class="ml-auto standard_dropdown main_nav_dropdown leo-rtl">
+                        <li class=" mx-3"><a href="{% url 'market:home' %}" class="leo-farsi">فروشگاه<i
+                                    class="fas fa-chevron-down"></i></a></li>
+                        <li class=" mx-3"><a href="{% url 'app:home' %}" class="leo-farsi">{{app.title.value}}</a>
+                        </li>
+                        {% if active_customer %}
 
-                                    </li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                 
+                        <li class=" mx-3"><a href="{{active_customer.get_cart_url}}" class="leo-farsi">سبد خرید
+                                من</a>
+                        </li>
+
+                        <li class=" mx-3"><a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات
+                                من</a>
+                        </li>
+
+                        {% endif %}
+
+                    </ul>
+
                 </div>
 
                 <!-- Menu Trigger -->
