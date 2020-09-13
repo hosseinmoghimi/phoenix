@@ -35,7 +35,7 @@ STATIC_ROOT = '/home2/imenyarc/public_html/phoenix/staticfiles/'
 
 MEDIA_URL =  SITE_URL+'media/'
 MEDIA_ROOT = '/home2/imenyarc/public_html/phoenix/media/'
-STATICFILES_DIRS=['/home2/imenyarc/phoneix/static/']
+STATICFILES_DIRS=['/home2/imenyarc/phoenix/static/']
 PUSHER_IS_ENABLE=False
 REMOTE_MEDIA=False
 COMING_SOON=False
