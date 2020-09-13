@@ -4,7 +4,7 @@ import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-DEBUG =True
+DEBUG =False
 
 
 ALLOWED_HOSTS = ['www.khafonline.com','khafonline.com']
