@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row leo-rtl">
 
-            <div class="col-lg-3 footer_col">
+            <div class="col-lg-4 offset-lg-1 footer_col">
                 <div class="footer_column footer_contact">
                     <div class="logo_container">
                         <div class="logo text-center"><a href="{% url 'app:home' %}">
@@ -38,50 +38,50 @@
                 </div>
             </div>
 
-            <div class="col-lg-2 offset-lg-2">
+            <div class="col-lg-3 offset-lg-1">
                 <div class="footer_column">
-                    <div class="footer_title">Find it Fast</div>
+                    <div  class="text-right leo-farsi footer_title">سریعتر بیابید</div>
                     <ul class="footer_list">
-                        <li><a href="#">Computers & Laptops</a></li>
-                        <li><a href="#">Cameras & Photos</a></li>
-                        <li><a href="#">Hardware</a></li>
-                        <li><a href="#">Smartphones & Tablets</a></li>
-                        <li><a href="#">TV & Audio</a></li>
+                        <li class="text-right"><a class="leo-farsi" href="{% url 'app:home' %}">{{app.title.value}}</a></li>
+                        <li class="text-right"><a class="leo-farsi" href="{% url 'market:home' %}">فروشگاه</a></li>
+                       {% if active_customer %}
+                       
+                       <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_cart_url}}">سبد خرید</a></li>
+                       <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_orders_url}}">سفارشات من</a></li>
+                       <li class="text-right"><a class="leo-farsi" href="{% url 'market:my_list' %}">لیست من</a></li>
+                       
+
+                       {% endif %}
+                       <li class="text-right"><a class="leo-farsi" href="{% url 'app:about' %}">درباره ما</a></li>
+                       <li class="text-right"><a class="leo-farsi" href="{% url 'app:contact' %}">تماس با ما</a></li>
+                   
+                     
                     </ul>
-                    <div class="footer_subtitle">Gadgets</div>
+                  
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="footer_column">
+                    <div  class="text-right leo-farsi footer_title">تبادل لینک</div>
+                 
                     <ul class="footer_list">
-                        <li><a href="#">Car Electronics</a></li>
+                        {% for link in links %}
+                           <li class="text-right" ><a class="leo-farsi"  href="{{link.url}}">{{link.title}}</a></li>
+                       
+                        {% endfor %}
+                        {% if perms.app.add_link %}
+                       
+                        <li class="text-right"><a class="leo-farsi" href="{{ADMIN_URL}}app/link/add/">افزودن لینک</a></li>
+                       
+ 
+                        {% endif %}
+                        
                     </ul>
                 </div>
             </div>
 
-            <div class="col-lg-2">
-                <div class="footer_column">
-                    <ul class="footer_list footer_list_2">
-                        <li><a href="#">Video Games & Consoles</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Cameras & Photos</a></li>
-                        <li><a href="#">Hardware</a></li>
-                        <li><a href="#">Computers & Laptops</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-lg-2">
-                <div class="footer_column">
-                    <div class="footer_title">Customer Care</div>
-                    <ul class="footer_list">
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Order Tracking</a></li>
-                        <li><a href="#">Wish List</a></li>
-                        <li><a href="#">Customer Services</a></li>
-                        <li><a href="#">Returns / Exchange</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Product Support</a></li>
-                    </ul>
-                </div>
-            </div>
-
+            
         </div>
     </div>
 </footer>
