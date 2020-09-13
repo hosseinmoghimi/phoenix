@@ -7,7 +7,7 @@ from app.repo import ProfileRepo
 from django.views import View
 from app.repo import MainPicRepo,RegionRepo
 from app.enums import MainPicEnum
-TEMPLATE_ROOT='authapp/'
+TEMPLATE_ROOT='authentication/'
 # Create your views here.
 class AuthView(View):
     def check_available_username(self,request):
@@ -38,10 +38,10 @@ class AuthView(View):
             
             return render(request,TEMPLATE_ROOT+'login.html',context=context)
         else:            
-            return redirect(reverse('app:login'))
+            return redirect(reverse('authentication:login'))
     def logout(self,request):
         ProfileRepo().logout(request)
-        return redirect(reverse('login'))
+        return redirect(reverse('authentication:login'))
     def auth(self,request,back_url=None):
         if back_url is None:
             back_url=reverse('app:home')
@@ -62,7 +62,7 @@ class AuthView(View):
                     context['reset_password_form']=ResetPasswordForm()
                     return render(request,TEMPLATE_ROOT+'login.html',context)
         else:      
-            return redirect(reverse('app:login'))
+            return redirect(reverse('authentication:login'))
                 
     def login(self,request,back_url='/'):
             context={
@@ -101,7 +101,7 @@ class AuthView(View):
             context['regions']=RegionRepo(user=request.user).list()  
             return render(request,TEMPLATE_ROOT+'login.html',context=context)
         else:            
-            return redirect(reverse('app:login'))
+            return redirect(reverse('authentication:login'))
 
 
 
