@@ -1,0 +1,23 @@
+<div class="media">
+    <div  style="float:right;">
+        <img :src="comment.profile_image" class="rounded-circle ml-3" width="48px" alt="Image placeholder">
+    </div>
+    <div class="media-body">
+        <h5 class="text-right" v-text="comment.profile_name"></h5>
+        <div class="meta text-right" v-html="comment.persian_date_added_tag"></div>
+        <p v-text="comment.text" class="text-right"></p>
+        <p><a href="" class="d-none btn btn-primary">پاسخ</a>
+          {% if profile %}                                    
+          <a v-if="comment.profile_id=={{profile.id}} && !confirm_delete_comment"  @click="ShowConfirmDeleteComment"
+ style="cursor: pointer;" class="btn btn-danger text-light">حذف</a>
+    
+          <a v-if="confirm_delete_comment" @click="CancelDeleteComment"
+         style="cursor: pointer;" class="btn btn-secondary text-dark">بی خیال</a>
+          <a v-if="confirm_delete_comment" @click="ConfirmDeleteComment(comment.id)"
+         style="cursor: pointer;" class="btn btn-danger text-light">حذف کن</a>
+    
+          {% endif %}
+        </p>
+    
+    </div>
+</div>

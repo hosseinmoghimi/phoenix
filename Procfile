@@ -1,1 +1,1 @@
-web: gunicorn hamescctv.wsgi
+web: gunicorn phoenix.wsgi

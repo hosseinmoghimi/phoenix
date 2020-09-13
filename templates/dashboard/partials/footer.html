@@ -1,0 +1,40 @@
+<footer class="footer">
+    <div class="container-fluid">
+       
+        <nav class="mx-auto">
+            <ul>
+                <li>
+                    <a href="{% url 'app:home' %}">
+                        {{app.title.value}}
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'app:about' %}">
+                        درباره ما
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'app:contact' %}">
+                        ارتباط با ما
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="{% url 'app:terms' %}">
+                        قوانین و مقررات
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright text-center">
+            &copy;
+            <script>
+                document.write(new Date().getFullYear())
+            </script>, توسعه و طراحی
+            توسط
+            <a href="{% url 'app:our_team' %}" target="_blank">
+                {{app.our_team_title.value}}
+            </a>
+        </div>
+    </div>
+</footer>

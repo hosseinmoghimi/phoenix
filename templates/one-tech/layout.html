@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title> {{app.pretitle.value}} " {{app.title.value}} "</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="OneTech shop project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/styles/bootstrap4/bootstrap.min.css' %}">
+	<link href="{% static 'one-tech/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css' %}" rel="stylesheet"
+		type="text/css">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'one-tech/leo/css/leo.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'leo/css/font-awesome.min.css' %}">
+
+
+
+
+	<!--     Fonts and icons     -->
+	<link rel="stylesheet" type="text/css" href="{% static 'dashboard/icons/css.css' %}" />
+	<link rel="stylesheet" href="{% static 'dashboard/icons/font-awesome.min.css' %} ">
+
+
+	<link rel="stylesheet" href="{% static 'dashboard/fonts/fontawesome-webfont.woff2' %} ">
+	<!-- Markazi Text font include just for persian demo purpose, don't include it in your project -->
+	<style>
+		.header_search_button2 {
+			/* position: absolute; */
+			top: 0;
+			left: 0;
+			width: 50px;
+			height: 100%;
+			background: #0e8ce4;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			border-top-left-radius: 5px;
+			border-bottom-left-radius: 5px;
+		}
+	</style>
+	{% block header %}
+
+	{% endblock %}
+</head>
+
+<body>
+
+	<div class="super_container">
+{% include 'one-tech/includes/header.html' %}
+
+		{% block contents %}
+
+		{% endblock  %}
+
+	
+		{% include "one-tech/includes/brands.html" %}
+		{% include "one-tech/includes/newsletter.html" %}
+		{% include "one-tech/includes/footer.html" %}
+	</div>
+
+	<script src="{% static 'one-tech/js/jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'one-tech/styles/bootstrap4/popper.js' %}"></script>
+	<script src="{% static 'one-tech/styles/bootstrap4/bootstrap.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/greensock/TweenMax.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/greensock/TimelineMax.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/scrollmagic/ScrollMagic.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/greensock/animation.gsap.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/greensock/ScrollToPlugin.min.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+	<script src="{% static 'one-tech/plugins/easing/easing.js' %}"></script>
+	<!--  Notifications Plugin    -->
+	<script src="{% static 'dashboard/js/plugins/bootstrap-notify.js' %}"></script>
+	<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+
+	<!-- <script src="{% static 'vendor/js/material-dashboard.js' %}"></script> -->
+
+	{% block scripts %}
+
+	{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<div>
+    <div class="vcard bio" style="float:right;">
+        <img :src="comment.profile_image" alt="Image placeholder">
+    </div>
+    <div class="comment-body">
+        <h3 v-text="comment.profile_name"></h3>
+        <div class="meta" v-html="comment.persian_date_added_tag"></div>
+        <p v-text="comment.text"></p>
+        <p><a href="" class="d-none reply">پاسخ</a>
+          {% if profile %}                                    
+          <a v-if="comment.profile_id=={{profile.id}} && !confirm_delete_comment"  @click="ShowConfirmDeleteComment"
+ style="cursor: pointer;" class="reply">حذف</a>
+    
+          <a v-if="confirm_delete_comment" @click="CancelDeleteComment"
+         style="cursor: pointer;" class="reply">بی خیال</a>
+          <a v-if="confirm_delete_comment" @click="ConfirmDeleteComment(comment.id)"
+         style="cursor: pointer;" class="reply">حذف کن</a>
+    
+          {% endif %}
+        </p>
+    
+    </div>
+</div>

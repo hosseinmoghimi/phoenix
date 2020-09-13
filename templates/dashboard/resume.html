@@ -1,0 +1,99 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+<div class="row">
+    {% for resume_category in resume_categories %}
+    <div class="col-lg-12 col-md-12">
+        
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">content_copy</i></div>
+              <p class="card-category">&nbsp;</p>
+              <h3 class="card-title">{{resume_category.title}}
+      
+              </h3>
+            </div>
+      
+            <div class="card-body mt-5" >
+               
+
+
+                {% for resume in resume_category.resumes.all %}
+                <div class="ml-5">
+                    <p class="text-right" style="direction: rtl !important;">
+                        
+                        {{ forloop.counter }}
+                        -
+                        {{resume.title}}
+                        
+                        <span class="text-secondary mx-5">
+                            <small>{{resume.date | to_persian_date}}</small></span></p>
+
+
+
+                            {% for link in resume.links.all %}
+                            <div class="ml-4">
+                                <a class="d-block text-{{link.color}} mb-2" href="{{link.url}}">
+                                    <i class="material-icons">{{link.icon}}</i>
+                                    {{link.title}}</a>
+                            </div>
+                            {% endfor %}
+
+                            {% for document in resume.documents.all %}
+                            <div class="ml-4">
+                                <a class="d-block text-{{document.color}} mb-2" href="{{document.get_download_url}}">
+                                    <i class="material-icons">{{document.icon}}</i>
+                                    {{document.title}}</a>
+                            </div>
+                            {% endfor %}
+
+
+
+                </div>
+                {% endfor %}
+
+
+
+
+
+
+            </div>
+
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">access_time</i> ۴ دقیقه پیش
+              </div>
+            </div>
+          </div>
+
+
+
+        
+     
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+    $("#dashboard-terms-link").addClass("active");
+
+
+
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

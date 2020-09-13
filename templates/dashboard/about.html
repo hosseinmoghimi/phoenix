@@ -1,0 +1,38 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+<div class="row">
+
+  <div class="col-lg-12 col-md-12">
+    <div class="card card-profile">
+      <div class=" card-avatar">
+        <a href="#pablo">
+          <img class="img" src="{{app.logo}}" />
+        </a>
+      </div>
+      <div class="card-body">
+        <h6 class="card-category text-gray text-center">{{app.subtitle.value}}</h6>
+        <h4 class="card-title mb-4 text-center">{{app.title.value}}</h4>
+        <p class="card-description mb-4">
+       {{about_us.value |safe}}
+        </p>
+        <a href="{{about_us.get_edit_url}}" class="btn btn-primary btn-round">ویرایش</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+  $("#dashboard-about-link").addClass('active')
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

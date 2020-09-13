@@ -1,0 +1,819 @@
+{% extends "one-tech/layout.html" %}
+{% load static %}
+
+{% block header %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'one-tech/styles/product_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one-tech/styles/product_responsive.css' %}">
+
+<style>
+	.rating_r>i {
+		float: right;
+	}
+
+	.alert {
+		direction: rtl;
+	}
+
+	.item_discount {
+		display: inline-block;
+		background: #df3b3b;
+		margin-right: 5px;
+	}
+
+	.shop-card {
+		box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+	}
+</style>
+
+{% endblock %}
+{% block contents %}
+
+<!-- Home -->
+
+<div class="home">
+	<div class="home_background parallax-window" data-parallax="scroll"
+		data-image-src="{% static 'one-tech/images/shop_background.jpg' %}"></div>
+	<div class="home_overlay"></div>
+	<div class="home_content d-flex flex-column align-items-center justify-content-center">
+
+
+		{{product.category.get_breadcrumb | safe}}
+		<h2 class="home_title">
+			{{product.name}}</h2>
+
+
+
+	</div>
+</div>
+
+
+<!-- Single Product -->
+
+<div class="single_product" id="product-app">
+	{% csrf_token %}
+	<div class="container">
+		<div class="row leo-rtl">
+			<div class="col-lg-7">
+				<div class="row">
+					<!-- Images -->
+					<div class="col-lg-3 order-lg-1 order-2">
+						<ul class="image_list leo-ltr">
+							<li data-image="{{product.get_image}}"><img
+									src="{{product.get_image}}" alt=""></li>
+							<li data-image="{{product.get_image2}}"><img
+									src="{{product.get_image2}}" alt=""></li>
+							<li data-image="{{product.get_image3}}"><img
+									src="{{product.get_image3}}" alt=""></li>
+						</ul>
+					</div>
+
+					<!-- Selected Image -->
+					<div class="col-lg-8 order-lg-2 order-1">
+						<div class="image_selected"><img src="{{product.get_image}}" alt=""></div>
+					</div>
+
+
+				</div>
+			</div>
+
+
+			<div class="col-lg-5">
+				<div class="product_description">
+					<!-- <div class="product_category leo-farsi text-right leo-rtl ">{{product.category.name}}</div> -->
+					<div class="product_name leo-farsi text-right leo-rtl ">{{product.name}}</div>
+
+					{% if product.model_name %}
+					<div>
+						<p class="mt-1">
+
+
+							{{product.model_name}}
+
+
+						</p>
+					</div>
+					{% endif %}
+
+					{% if perms.market.can_change_product %}
+					<div>
+						<p><a href="{{product.get_edit_url}}" class="btn btn-info">ویرایش</a></p>
+					</div>
+					{% endif %}
+					{% if product.brand %}
+					<div>
+						<p>
+							<a title="{{product.brand.name}}" href="{{product.brand.get_absolute_url}}">
+								<img src="{{product.brand.image}}" height="36px" alt=""></a></p>
+					</div>
+					{% endif %}
+
+					<div class="rating_r rating_r_{{product.rate}} product_rating text-right leo-rtl">
+						<i></i><i></i><i></i><i></i><i></i>
+					
+			
+
+							<span title="این کالا در لیست شما موجود است" v-show="is_liked" @click="toggle_like" 
+							class="mx-2 fa fa-heart text-danger"
+								style="font-size:2.5em;cursor: pointer;"> </span>
+
+							<span title="این کالا را به لیست من اضافه کن" v-show="!is_liked" @click="toggle_like" 
+							class="mx-2 fa fa-heart text-light"
+								style="font-size:2.5em;cursor: pointer;"> </span>
+
+					
+					</div>
+					{% if product.discount %}
+					<p> {{product.discount}} درصد تخفیف</p>
+					{% endif %}
+					<div class="product_text">
+						<p>{{product.short_desc}}</p>
+					</div>
+					<div class="order_info d-flex flex-row">
+						<form action="#" class="text-right">
+							<div class="clearfix" style="z-index: 1000;">
+								<div class="row leo-rtl">
+									<div class="col-6 text-right">
+										<!-- Product Quantity -->
+										<div class="product_quantity">
+											<span class="leo-farsi">تعداد </span>
+											<input id="quantity_input" type="text" v-model="quantity_needed">
+											<div class="quantity_buttons">
+												<div id="quantity_inc_button" class="quantity_inc quantity_control"><i
+														class="fas fa-chevron-up"></i></div>
+												<div id="quantity_dec_button" class="quantity_dec quantity_control"><i
+														class="fas fa-chevron-down"></i></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-6 text-right">
+										<div class="">
+											<!-- Product Color -->
+											<ul class="product_color mt-0">
+												<li>
+													<span class="leo-farsi">مدل </span>
+													<div class="color_mark_container">
+														<div id="selected_color" class="color_mark"></div>
+													</div>
+													<div class="color_dropdown_button"><i
+															class="fas fa-chevron-down"></i>
+													</div>
+
+													<ul class="color_list">
+														<li>
+															<div class="color_mark" style="background: #999999;"></div>
+														</li>
+														<li>
+															<div class="color_mark" style="background: #b19c83;"></div>
+														</li>
+														<li>
+															<div class="color_mark" style="background: #000000;"></div>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<template v-if="shops.length==0">
+
+								<div class="product_price  leo-farsi text-right text-right">
+
+									<span class="leo-farsi text-right badge text-light badge-warning">
+										<small> ناموجود</small>
+									</span>
+
+
+
+
+								</div>
+							</template>
+							<template v-for="shop in shops">
+								<div class="card mx-2 my-2 px-2 py-2 shop-card">
+									<div class="product_price mt-0 leo-farsi text-right text-right">
+
+										<div>
+
+											<span class="leo-farsi text-right">
+												<small> <small>
+														<small class="text-secondary"> {% verbatim %}
+															هر {{shop.unit_name}}
+
+
+
+															{% endverbatim %}
+														</small>
+
+													</small></small>
+
+											</span>
+
+										</div>
+
+										<span class="leo-farsi text-right">
+
+											{% verbatim %}
+											{{to_price_shop(shop.price)}}
+											{% endverbatim %}
+										</span>
+
+
+
+									</div>
+									<div>
+										<span class="leo-farsi text-right">
+
+											<i class="material-icons text-secondary">store</i>
+											<a :href="shop.supplier.get_absolute_url" class="mr-2 text-info">
+												{% verbatim %}
+
+												{{shop.supplier.name}}
+												{% endverbatim %}
+											</a>
+
+
+										</span>
+
+									</div>
+									<div class="button_container mt-2 leo-farsi text-right">
+										<button @click="add_to_basket(shop.id)" type="button"
+											class="button cart_button">افزودن به
+											سبد خرید</button>
+										<div class="product_fav mx-2"><i class="fas fa-heart"></i></div>
+
+									</div>
+								</div>
+							</template>
+
+							{% if active_supplier %}
+							<div class="card mx-2 my-2 px-2 py-2 shop-card">
+								<div class="product_price mt-0 leo-farsi text-right text-right">
+
+									<div>
+										<span class="leo-farsi text-right">
+											<small> <small></small>
+
+												ابتدا واحد فروش خود را انتخاب کنید
+											</small></small>
+											<template v-for="unit_name in unit_names">
+												<span class="mx-2 my-2 btn btn-secondary"
+													@click="selectUnitName(unit_name.name)">
+
+
+
+													{% verbatim %}
+
+													{{unit_name.name}}
+													{% endverbatim %}
+												</span>
+											</template>
+											<small> <small>
+													<small class="d-block text-secondary">
+														قیمت هر
+
+														{% verbatim %}
+
+														{{selected_unit_name}}
+														{% endverbatim %}
+
+														در
+														<a href="{{active_supplier.get_absolute_url}}"
+															class="mr-2 text-info">{{active_supplier.name}}</a>
+
+
+
+													</small>
+
+												</small></small>
+
+										</span>
+									</div>
+
+									<span class="leo-farsi text-right">
+
+
+										<input type="text" id="my_price" v-model="my_price" class=""
+											placeholder="قیمت شما ؟  تومان">
+
+									</span>
+
+
+
+								</div>
+								<div class="button_container mt-2 leo-farsi text-right">
+									<button @click="addShop(selected_unit_name)" type="button"
+										class="button cart_button">افزودن به
+										فروشگاه</button>
+									<div class="product_fav mx-2"><i class="fas fa-heart"></i></div>
+
+								</div>
+							</div>
+							{% endif %}
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+
+
+
+			<!-- Description -->
+			<div class="col-lg-12">
+				{% if product.description %}
+				<div class="col-12 order-lg-4  order-4 ">
+					<div class="card bg-light mt-5">
+						<h3 class="mx-5 my-4 leo-rtl text-right">توضیحات</h3>
+						<p class="mx-3 leo-rtl text-right"> {{product.description|safe}}</p>
+					</div>
+				</div>
+				{% endif %}
+
+
+				<!-- Comments -->
+				<div class="col-lg-12" id="comment-app">
+					<div class="card mt-5" style="width:100%; padding:1em;background-color:#f3f9ff">
+						<h4 class="mb-3 pr-5  mt-4 text-right leo-rtl" v-text="comments.length + ' نظر' "></h4>
+
+						<comment-component v-for="comment in comments" :comment="comment">
+						</comment-component>
+
+						{% if profile %}
+
+						<div class="comment-form-wrap">
+							<form action="#" class="pl-5 pr-5 pb-5 pt-2">
+
+								<div class="form-group text-right">
+									<label for="message" class="text-right">نظر خود را وارد کنید</label>
+									<textarea name="" v-model="text" id="message" cols="30" rows="3"
+										class="form-control"></textarea>
+								</div>
+								<div class="form-group">
+									<input v-if="text" @click="AddComment" style="cursor: pointer;" value="ارسال نظر"
+										class="btn py-3 px-4 btn-primary">
+								</div>
+
+							</form>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Recently Viewed -->
+
+<div class="viewed">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="viewed_title_container">
+					<h3 class="viewed_title text-right">محصولات مرتبط</h3>
+					<div class="viewed_nav_container" style="left: 5px!important; right:none;">
+						<div class="viewed_nav viewed_prev"><i class="fas fa-chevron-left"></i></div>
+						<div class="viewed_nav viewed_next"><i class="fas fa-chevron-right"></i></div>
+					</div>
+				</div>
+
+				<div class="viewed_slider_container">
+
+					<!-- Recently Viewed Slider -->
+
+					<div class="owl-carousel owl-theme viewed_slider">
+
+						{% for product_related in product_relateds %}
+						<!-- Recently Viewed Item -->
+						<div class="owl-item">
+							<div
+								class="viewed_item {% if product_related.is_new %}is_new{% endif %}{% if product_related.discount %}discount{% endif %} d-flex flex-column align-items-center justify-content-center text-center">
+								<div class="viewed_image">
+									<a href="{{product_related.get_absolute_url}}">
+
+										<img src="{{product_related.get_image}}" alt="">
+
+									</a>
+								</div>
+								<div class="viewed_content text-center">
+									<div class="viewed_price">$225<span>$300</span></div>
+									<div class="viewed_name"><a href="{{product_related.get_absolute_url}}"
+											class=" leo-farsi">{{product_related.name}}</a></div>
+								</div>
+								<ul class="item_marks">
+									{% if product_related.is_new %}
+									<li class="item_mark item_new leo-farsi">جدید</li>
+									{% endif %}
+									{% if product_related.discount %}
+									<li class="item_mark item_discount">{{product_related.discount}}%</li>
+									{% endif %}
+								</ul>
+							</div>
+						</div>
+
+
+						{% endfor %}
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+{% endblock contents %}
+{% block scripts %}
+
+<script src="{% static 'one-tech/js/product_custom.js' %}"></script>
+
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+<script src="{% static 'leo/js/utility.js' %}"></script>
+
+
+
+
+{% if is_liked %}
+<script>
+	var is_liked = true
+</script>
+{% else %}
+<script>
+	var is_liked = false
+</script>
+{% endif %}
+
+
+{% if active_supplier %}
+
+<script>
+	var current_supplier_id = JSON.parse(`{{ active_supplier.id }}`)
+</script>
+{% else %}
+<script>
+	var current_supplier_id = -1
+</script>
+{% endif %}
+
+{% if profile %}
+
+<script>
+	var current_profile_id = JSON.parse(`{{ profile.id }}`)
+</script>
+
+
+
+{% else %}
+<script>
+	var current_profile_id = -1
+</script>{% endif %}
+
+
+
+
+{% if active_customer %}
+<script>
+	var customer_id = JSON.parse(`{{ active_customer.id }}`)
+</script>
+{% else %}
+<script>
+	var customer_id = -1
+</script>
+{% endif %}
+
+
+<script>
+
+
+
+	// must be initialized for comment components
+	let comments = JSON.parse(`{{comments_s|escapejs}}`)
+	let my_like = JSON.parse("{% if my_like %}true{% else %}false{% endif %}")
+	let likes_count = JSON.parse("{{page.likes.all|length}}")
+	let object_id = JSON.parse("{{product.id}}")
+	let add_comment_url = "{% url 'market:add_comment' %}"
+	let delete_comment_url = "{% url 'app:delete_comment' %}"
+	let profile_id = JSON.parse("{% if profile %}{{profile.id}}{% else %}0{% endif %}")
+	let comment_template = `{% include 'one-tech/includes/comment.html' %}` 
+</script>
+
+
+<script>
+	var product_comments = JSON.parse(`{{ product_comments_s| safe}}`)
+
+	var csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+
+	var CURRENCY = '{{ CURRENCY }}'
+	var product = JSON.parse(`{{ product_s| safe }}`)
+
+	var product_id = JSON.parse(`{{ product.id }}`)
+	var shops = JSON.parse(`{{ shops_s | safe}}`)
+	var unit_names = JSON.parse(`{{ unit_names_s | safe}}`)
+</script>
+
+
+<script src="{% static 'leo/js/comment-component.js' %}"></script>
+
+
+<script>
+
+	delete_comment = function (comment_id) {
+		product_app.delete_comment(comment_id)
+	}
+	$("#dashboard-shop-link").addClass("active");
+
+	let product_app_data = {
+		my_price: '',
+		is_liked: is_liked,
+		shops: shops,
+		selected_unit_name: unit_names[0].name,
+		quantity_needed: 1,
+		unit_names: unit_names,
+		product_comments: product_comments,
+		current_profile_id: current_profile_id,
+		my_comment: '',
+		text: '',
+		comments: comments,
+	}
+	let shop_component = Vue.component('shop-component', {
+		data: function () {
+			return {
+				this_shop: this.shop,
+				waiting: false
+			}
+		},
+		watch: {
+			set_waiting: function (newVal) {
+				this.waiting = newVal
+			}
+		},
+		methods: {
+
+			to_price: to_price,
+			addToCart: function () {
+				if (customer_id > 0) post_add_to_cart(this.this_shop.id)
+			},
+		},
+		props: ['shop'],
+		// template: "#shop-template",
+		template: `
+  {% include 'market/partials/shop.html' %}
+
+  `
+		,
+	})
+
+	let product_app = new Vue(
+		{
+			el: "#product-app",
+			data: product_app_data,
+			methods: {
+				delete_comment: function (comment_id) {
+					this.comments = this.comments.filter(function (value, index, arr) { return value.id != comment_id; })
+				},
+
+
+				AddComment: function () {
+					if (product_app.text === "")
+						console.log('comment text must be filled')
+					else {
+						let url = add_comment_url
+						let posting = $.post(url, {
+							object_id: object_id,
+							text: product_app.text,
+							object_type: "Product",
+							csrfmiddlewaretoken: csrfmiddlewaretoken
+						})
+						posting.done(function (data) {
+							this.confirm_delete_comment = false
+							if (data.my_comment) {
+								product_app.comments.push(data.my_comment)
+								product_app.text = ""
+							}
+						})
+					}
+				},
+
+				
+				selectUnitName: function (unit_name) {
+					this.selected_unit_name = unit_name
+					console.log(unit_name)
+				},
+				add_to_basket: function (shop_id) {
+					post_add_to_cart(shop_id)
+				},
+				to_price_shop: function (price) {
+					return to_price(price, CURRENCY)
+				},
+				toggle_like: function () {
+					url = "{% url 'market:add_like' %}"
+					var posting = $.post(url, { product_id: product_id, csrfmiddlewaretoken: csrfmiddlewaretoken });
+
+					posting.done(function (data) {
+						console.log(data)
+						product_app.is_liked = data.is_liked
+					})
+				},
+				to_price: to_price,
+				addShop: function (unit_name) {
+					post_add_shop(unit_name)
+				},
+				add_product_comment: function () {
+					post_add_comment()
+				},
+				deleteComment: function (comment_id) {
+
+					this.product_comments = this.product_comments.filter(function (value, index, arr) { return value.id != comment_id; })
+				}
+			}
+		}
+	)
+
+
+
+	$(document).ready(function () {
+		// Javascript method's body can be found in assets/js/demos.js
+
+
+		$('.owl-carousel').owlCarousel({
+			rtl: true,
+			loop: true,
+			margin: 10,
+			autoplay: true,
+			autoplayTimeout: 4000,
+			autoplayHoverPause: true,
+			responsive: {
+				0: {
+					items: 1
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 4
+				}
+			}
+		})
+
+
+
+
+	});
+
+	$(function () {
+		$('[data-toggle="popover"]').popover()
+	})
+
+
+
+	function post_add_to_cart(shop_id) {
+		url = '{% url "market:api_add_to_cart" %}'
+		// Send the data using post
+		// var getting = $.get(url);
+		var quantity = $("#quantity_input").val()
+		console.log(quantity)
+		console.log(customer_id)
+		console.log(shop_id)
+		console.log(csrfmiddlewaretoken)
+		var posting = $.post(url,
+			{
+				customer_id: customer_id,
+				quantity: quantity,
+				shop_id: shop_id,
+				csrfmiddlewaretoken: csrfmiddlewaretoken
+			}
+		);
+
+		// Put the results in a div
+		posting.done(function (data) {
+			// word_app.word = (data.word);
+			// word_app.definitions = (data.definitions);
+			console.log(data)
+			if (data.result === '1')
+
+
+				showNotification('bottom', 'center', 'face', 'success',
+					`
+				<p class="mx-4">	با موفقیت به
+				<a class="my-0 px-1  " 
+				href="{% url "market:cart" customer_id=0 %}">
+				<strong>سبد خرید</strong></a> شما افزوده شد
+
+					</p>
+			
+
+				
+				`)
+
+
+
+			else if (data.result === '2')
+				console.log(data)
+			else {
+				showNotification('top', 'center', 'error', 'danger', data.error_message + data.profile_name === '' ? '' : ' فعال : ' + data.profile_name)
+
+			}
+			// console.log(word_app.definitions); 
+
+		})
+	}
+
+	function post_add_comment(shop_id) {
+		url = '{% url "market:api_add_product_comment" %}'
+		// Send the data using post
+		// var getting = $.get(url);
+		var comment = $("#my-comment").val()
+		var posting = $.post(url, { comment: comment, product_id: product_id, csrfmiddlewaretoken: csrfmiddlewaretoken });
+
+		// Put the results in a div
+		posting.done(function (data) {
+			// word_app.word = (data.word);
+			// word_app.definitions = (data.definitions);
+
+			if (data) {
+				product_app.my_comment = ''
+				product_app.product_comments = data.product_comments//product_app.product_comments.reverse().push(data).reverse()
+				//showNotification('bottom', 'center', 'face', 'success', comment)
+				// console.log(word_app.word);
+				// console.log(word_app.definitions); 
+			}
+		})
+	}
+	function post_del_comment(comment_id) {
+		url = '{% url "market:api_del_product_comment" %}'
+		// Send the data using post
+		// var getting = $.get(url);
+		// console.log(comment_id)
+		var posting = $.post(url, { comment_id: comment_id, csrfmiddlewaretoken: csrfmiddlewaretoken });
+
+		// Put the results in a div
+		posting.done(function (data) {
+			// word_app.word = (data.word);
+			// word_app.definitions = (data.definitions);
+			// console.log(data)
+			if (data.result === '1') {
+				product_app.deleteComment(comment_id)
+			}
+		})
+	}
+	function post_add_shop(unit_name) {
+		available = 100
+		price = $("#my_price").val()
+		url = '{% url "market:api_add_shop" %}'
+		// Send the data using post
+		// var getting = $.get(url);
+		var quantity = product_app.quantity
+		var posting = $.post(url, {
+			price: price,
+			supplier_id: current_supplier_id,
+			product_id: product_id,
+			unit_name: unit_name,
+			csrfmiddlewaretoken: csrfmiddlewaretoken
+		});
+
+		// Put the results in a div
+		posting.done(function (data) {
+			// word_app.word = (data.word);
+			// word_app.definitions = (data.definitions);
+			product_app.shops = data.shops
+			if (price == 0)
+				showNotification('bottom', 'center', 'face', 'warning',
+					`
+				<p class="mx-4">
+					با موفقیت از فروشگاه حذف شد
+
+					</p>
+			
+					`
+				)
+			else
+				showNotification('bottom', 'center', 'face', 'primary',
+
+					`
+				<p class="mx-4">
+					
+					با موفقیت به فروشگاه اضافه شد
+
+					</p>
+			
+					`
+
+				)
+			// console.log(word_app.word);
+			// console.log(word_app.definitions); 
+
+		})
+	}
+
+</script>
+
+
+{% endblock %}

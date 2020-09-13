@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'app:home' %}">
+            <img src="{{app.logo.image}}" alt="" class="rounded-circle1" height="36px">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+            aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> منو
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto leo-rtl">
+                <li class="nav-item"  id="home-link"><a href="{% url 'app:home' %}" class="nav-link">خانه</a></li>
+                {% if perms.app.change_blog %}
+                <!-- <li class="nav-item" id="admin-link"><a href="{{ADMIN_URL}}" class="nav-link text-info">
+                    <span class="text-info">
+                    مدیریت</span></a></li>
+                 -->
+                {% endif %}
+                <!-- <li class="nav-item" id="market-link"><a href="{{SITE_URL}}market" class="nav-link">فروشگاه</a></li> -->
+                <li class="nav-item" id="our-works-link"><a href="{% url 'app:our_works' %}" class="nav-link">پروژه ها</a></li>
+                <li class="nav-item" id="blogs-link"><a href="{% url 'app:blogs' %}" class="nav-link">مقالات</a></li>
+                <li class="nav-item" id="about-us-link"><a href="{% url 'app:about' %}" class="nav-link">درباره ما</a></li>
+                <li class="nav-item" id="contact-us-link"><a href="{% url 'app:contact' %}" class="nav-link">ارتباط با ما</a></li>
+           {% if profile %}
+                <li class="nav-item" id="contact-us-link"><a href="{{profile.get_absolute_url}}" class="nav-link">
+                {{profile.name}}
+                </a></li>
+                <li class="nav-item" id="contact-us-link"><a href="{% url 'authentication:logout' %}" class="nav-link">
+                    خروج
+                     </a></li>
+                {% else %}
+                <li class="nav-item" id="contact-us-link"><a href="{% url 'authentication:login' %}" class="nav-link">
+                   ورود
+                    </a></li>
+                {% endif %}
+               
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- END nav -->

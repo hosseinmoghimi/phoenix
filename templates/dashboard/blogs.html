@@ -1,0 +1,280 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+<div class="row">
+    {% if perms.app.add_blog %}
+  <div class="col-12">
+  <a href="{{ADMIN_URL}}dashboard/blog/add/" class="btn btn-block btn-primary btn-round">
+      <i class="material-icons">date_range</i>
+      افزودن به اخبار سایت</a></div>
+  {% endif %}
+
+    {% if add_blog_form %}
+    <div class="col-lg-12 " id="add-blog-app">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">content_copy</i>
+                </div>
+                <p class="card-category">خبر جدید</p>
+                <h3 class="card-title"><small> new </small> BLOG
+
+                </h3>
+            </div>
+            <div class="card-body">
+          
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">ترتیب</label>
+                                <input v-model="priority" name="priority" type="number" min="1" max="20" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">پیش عنوان</label>
+                                <input v-model="pretitle" name="pretitle" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                         <div class="col-md-12">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">عنوان</label>
+                                <input v-model="title" name="title" type="text" class="form-control">
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-12">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">متن کوتاه</label>
+                                <input v-model="short_desc" name="short_desc" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">متن کامل</label>
+                                <input v-model="description" name="description" type="text" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">آیکون</label>
+                                <select name="icon" id="icon" v-model="icon" class="form-control">
+                                    <!-- <option selected value="notifications">
+                                        <div class="text-center my-3"> <i class="material-icons">notifications</i></div>
+                                    </option> -->
+                                    <template v-for="icon1 in icons">
+                                        <option :value="icon1">
+                                            <div class="text-center my-3">
+                                                <i class="material-icons">{% verbatim %}{{icon1}}{% endverbatim %}</i>
+                                            </div>
+                                        </option>
+                                    </template>
+
+                                </select>
+
+                                <div class="text-center my-3">
+                                    <i :class="'material-icons text-'+color">
+                                        {% verbatim %}
+                                        {{icon}}
+                                        {% endverbatim %}
+                                    </i></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group bmd-form-group is-filled">
+                                <label class="bmd-label-floating">رنگ</label>
+                                <div class="row">
+                                    <a @click="set_color('info')" :class="get_class('info')">
+                                        <div v-html="is_color('info')"></div>
+                                    </a>
+                                    <a @click="color='success'" :class="get_class('success')"><span
+                                            v-html="is_color('success')"></span>
+                                    </a>
+                                    <a @click="color='warning'" :class="get_class('warning')"><span
+                                            v-html="is_color('warning')"></span></a>
+
+                                    <a @click="color='danger'" :class="get_class('danger')"><span
+                                            v-html="is_color('danger')"></span></a>
+                                    <a @click="color='primary'" :class="get_class('primary')"><span
+                                            v-html="is_color('primary')"></span></a>
+                                    <a @click="color='dark'" :class="get_class('dark')"><span
+                                            v-html="is_color('dark')"></span></a>
+
+                                    <a @click="color='secondary'" :class="get_class('secondary')"><span
+                                            v-html="is_color('secondary')"></span></a>
+                                    <a @click="color='rose'" :class="get_class('rose')"><span
+                                            v-html="is_color('rose')"></span> </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button v-if="title && short_desc && description" :class="'btn btn-'+color" @click="add_blog"
+                        type="button">
+                        <i class="material-icons text-light">{% verbatim %}{{icon}}{% endverbatim %}</i>
+                        تایید</button>
+
+               
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">warning</i>
+                    <a href="#pablo">فضای بیشتری داشته باشید...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% for blog in blogs %}
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-{{blog.color}} card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">{{blog.icon}}</i>
+                </div>
+                <h6 class="card-title text-secondary mt-3">{{blog.pretitle}}</h6>
+                <h3 class="card-title text-primary ">{{blog.title}}</h3>
+                <p  class="text-secondary "><small>{{blog.persian_date_added}}</small></p>
+            </div>
+            <div class="card-body">
+
+
+               
+                <p class="card-description mb-4 ">
+                    {{blog.short_desc |safe}}
+                </p>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                  
+
+                    <a href="{{blog.get_absolute_url}}" class="btn btn-primary btn-round">
+                        <i class="material-icons">date_range</i>
+                        ادامه مطلب</a>
+
+
+                    {% if perms.app.change_blog %}
+                    <a href="{{blog.get_edit_url}}" class="btn btn-primary btn-round">
+                        <i class="material-icons">date_range</i>
+                        ویرایش</a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $("#dashboard-blogs-link").addClass('active')
+</script>
+
+<script>
+    let csrfmiddlewaretoken = ''
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+
+
+    });
+    let icons = JSON.parse('{{ icons_s | escapejs }}');
+
+    let add_blog_app = new Vue({
+        el: "#add-blog-app",
+        data: {
+            icons: icons,
+            title: '',
+            pretitle: '',
+            short_desc: '',
+            description: '',
+            color: 'info',
+            priority:1,
+            icon: 'rss_feed',
+        },
+        methods: {
+            is_color: function (color1) {
+                if (color1 === this.color) {
+                    return '<i class="text-light material-icons">done</i>'
+                }
+                else return '&nbsp;'
+            },
+            set_color: function (color1) {
+                this.color = color1
+                this.get_class(color1)
+            },
+            get_class: function (color1) {
+                let css = 'col-3 btn btn-' + color1
+                let border = ''
+                if (this.color === color1) {
+                    border = ' border border-dark'
+
+                }
+                return css + border
+            },
+            add_blog: function () {
+                post_add_blog()
+            },
+          
+        },
+
+    })
+    function post_add_blog() {
+        let url = '{% url "app:add_blog" %}'
+        console.log('add_blog_app.pretitle:'+add_blog_app.pretitle)
+        console.log('add_blog_app.title:'+add_blog_app.title)
+        console.log('add_blog_app.short_desc:'+add_blog_app.short_desc)
+        console.log('add_blog_app.description:'+add_blog_app.description)
+        console.log('add_blog_app.color:'+add_blog_app.color)
+        console.log('add_blog_app.icon:'+add_blog_app.icon)
+        console.log('add_blog_app.csrfmiddlewaretoken:'+csrfmiddlewaretoken)
+        var posting = $.post(url, {
+            pretitle: add_blog_app.pretitle,
+            title: add_blog_app.title,
+            short_desc: add_blog_app.short_desc,
+            description: add_blog_app.description,
+            color: add_blog_app.color,
+            icon: add_blog_app.icon,
+            priority: add_blog_app.priority,
+            csrfmiddlewaretoken: csrfmiddlewaretoken
+
+
+
+        })
+        posting.done(function (data) {
+            console.log(data)
+            if (data.result === 'SUCCEED')
+                showNotification('bottom', 'center', add_blog_app.icon, 'success', ' خبر جدید ، با موفقیت افزوده شد')
+
+
+        })
+
+    }
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_request_status_color %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+
+{% if add_product_request_form %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="fa fa-twitter"></i>
+                </div>
+                <p class="card-category">Followers</p>
+                <h3 class="card-title">+245</h3>
+            </div>
+            <div class="card-body">
+                <p>
+                    <a href="{{ADMIN_URL}}automation/productrequest/add/">اضافه کردن درخواست</a>
+                </p>
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">link</i>
+                    <a href="{{ADMIN_URL}}automation/productrequest/add/">اضافه کردن درخواست</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+<div class="row">
+    {% for product_request in product_requests %}
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+                <p class="card-category">لیست</p>
+                <h3 class="card-title">درخواست شماره {{product_request.pk}}
+                    <small>
+                        <span
+                            class="badge badge-{{product_request.status|to_request_status_color}}">{{product_request.status}}</span>
+                    </small>
+                </h3>
+
+            </div>
+            <div class="card-body">
+
+
+                <a class="btn btn-info" href="{{product_request.work_unit.get_absolute_url}}">
+                    <small>واحد درخواست کننده :</small>
+                    <br>
+                    {{product_request.work_unit.title}}</a>
+
+                <a class="btn btn-primary"
+                    href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
+                <span class="text-warning">{{product_request.quantity}} {{product_request.product_unit.name}}</span>
+                <p class="mt-3 mb-0">
+                    امضا ها :
+                </p>
+                <div>
+
+                    {% if product_request.signatures.all %}
+
+                    <div> {% for signature in product_request.signatures.all %}
+
+
+
+
+                        <div class="d-block text-{{signature.status|to_request_status_color}}">
+                            <i class="material-icons">done</i>
+                            {{signature.signature.profile.name}}
+
+
+                            <span
+                                class="badge badge-{{signature.status|to_request_status_color}}">{{signature.status}}</span>
+                            <small> <span class="text-secondary">
+                                    {{signature.signature.date_added| to_persian_date | safe}}
+                                </span></small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons text-danger">link</i>
+                    <a href="{{product_request.get_edit_url}}">ویرایش کردن درخواست</a>
+                    &nbsp;&nbsp;
+                    <i class="material-icons text-danger">link</i>
+                    <a href="{{product_request.get_absolute_url}}">جزییات درخواست</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+    {% endblock %}
+    {% block scripts %}
+
+    <script>
+        $("#automation-link").addClass("active");
+
+
+
+
+
+    </script>
+    {% endblock %}
+    {% block styles %}
+
+    {% endblock %}

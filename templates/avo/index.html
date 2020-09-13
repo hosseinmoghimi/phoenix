@@ -1,0 +1,621 @@
+{% extends "avo/layout.html" %}
+{% load static %}
+{% load to_persian_date %}
+
+{% block head %}
+
+{% endblock %}
+{% block contents %}
+<!-- home-slider  -->
+<section class="hero-wrap degree-right js-fullheight">
+	<div class="home-slider js-fullheight owl-carousel">
+		{% if perms.auth.change_user %}
+ <div class="slider-item js-fullheight"
+			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
+			<div class="overlay"></div>
+			<div class="container">
+
+				<div class="row no-gutters slider-text js-fullheight align-items-center" style="height: 3220px;">
+					<div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+
+						<div class="absolute">
+							<h4 class="number" data-number="67">0</h4>
+							<p>محصول و سرویس</p>
+						</div>
+
+
+						<div class="text">
+
+
+							<h1 class="mb-4 leo-rtl text-right">برای ویرایش محتوای سایت</h1>
+
+
+
+							<p class=" leo-rtl text-right">با ورود به بخش مدیریت محتوای سایت را ویرایش کنید.</p>
+
+
+
+							<p class=""><a href="{{ADMIN_URL}}"
+									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">مدیریت</a>
+							</p>
+
+
+							<p class="mb-0"><a href="{{ADMIN_URL}}app/homeslider/add/"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">افزودن اسلایدر</a>
+							</p>
+
+						</div>
+					</div>
+
+					<a href="https://vimeo.com/259411563"
+						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
+						<span class="fa fa-play"></span>
+					</a>
+
+
+				</div>
+			</div>
+		</div> 
+		{% endif %}
+
+		{% if not user.is_authenticated %}
+
+<!-- 		
+		<div class="slider-item js-fullheight"
+			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
+			<div class="overlay"></div>
+			<div class="container">
+
+				<div class="row no-gutters slider-text js-fullheight align-items-center" style="height: 3220px;">
+					<div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+
+						<div class="absolute">
+							<h4 class="number" data-number="67">0</h4>
+							<p>محصول و سرویس</p>
+						</div>
+
+
+						<div class="text">
+
+
+							<h1 class="mb-4 leo-rtl text-right">برای استفاده بهتر از خدمات و محتوای سایت</h1>
+
+
+
+							<p class=" leo-rtl text-right">با استفاده از حساب کاربری خود وارد سایت شوید</p>
+
+
+
+							<p class=""><a href="{% url 'authentication:login' %}"
+									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">ورود</a>
+							</p>
+
+
+
+							</p>
+
+						</div>
+					</div>
+
+					<a href="https://vimeo.com/259411563"
+						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
+						<span class="fa fa-play"></span>
+					</a>
+
+
+				</div>
+			</div>
+		</div>
+		 -->
+
+		{% endif %}
+
+
+		{% for home_slider in home_sliders %}
+		<div class="slider-item js-fullheight" style="background-image:url({{home_slider.image}});">
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="row no-gutters slider-text js-fullheight align-items-center">
+					<div class="col-md-12 ftco-animate">
+						{% if home_slider.tag_text %}
+						<div class="absolute" style="margin-top: 200px;position:inherit;">
+							<h4 class="number" data-number="{{home_slider.tag_number}}">0</h4>
+							<p class="text-left">{{home_slider.tag_text}}</p>
+						</div>
+						{% endif %}
+
+						<div class="text" style="float:right;width:90%">
+
+							{% if home_slider.pretitle %}
+							<h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.pretitle}}</h4>
+							{% endif %}
+
+
+							{% if home_slider.title %}
+							<h1 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.title}}</h1>
+							{% endif %}
+
+
+							{% if home_slider.posttitle %}
+							<h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.posttitle}}</h4>
+							{% endif %}
+
+							<p class="">
+								{% if home_slider.action_text %}
+
+								<a href="{{home_slider.action_url}}"
+									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">{{home_slider.action_text}}</a>
+
+								{% endif %}
+								{% if perms.app.change_homeslider %}
+
+								<a href="{{home_slider.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش اسلایدر</a>
+
+								{% endif %}
+
+
+							</p>
+						</div>
+					</div>
+					{% if home_slider.video_link %}
+					<a href="{{home_slider.video_link}}"
+						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
+						<span class="fa fa-play"></span>
+					</a>
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+
+
+	</div>
+</section>
+<!-- about us -->
+<section class="ftco-section">
+	<div class="container">
+		<div class="row justify-content-center no-gutters">
+			<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+				<h2 class="mb-2">درباره ما</h2>
+			</div>
+		</div>
+
+		<div class="row wrap-about my-5 leo-rtl">
+			<div class="col-md-8">
+				<div class="row leo-rtl">
+					<div class="col-md-6 order-md-last ftco-animate d-flex">
+						<div class="img w-100">
+							<img src="{{about_pic.image}}" width="100%" alt="">
+							{% if perms.app.change_parameter %}
+							<p class="text-centerleo-rtl text-right">
+								<a href="{{about_pic.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
+								</a>
+							</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-md-6 ftco-animate">
+						<div class="text text-md-right">
+							<h3 class="leo-rtl text-right">{{about_us_title.value}}</h3>
+							{% if perms.app.change_parameter %}
+							<p class="text-centerleo-rtl text-right">
+								<a href="{{about_us_title.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+								</a>
+							</p>
+							{% endif %}
+							<p class="leo-rtl text-right">
+
+								{{about_us_short.value|safe}}
+								{% if perms.app.change_parameter %}
+							<p class="text-centerleo-rtl text-right">
+								<a href="{{about_us_short.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+								</a>
+							</p>
+							{% endif %}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 ftco-animate">
+				<div class="text">
+					<p>
+						{{app.slogan.value|safe}}
+						{% if perms.app.change_parameter %}
+					<p class="text-centerleo-rtl text-right">
+						<a href="{{app.slogan.get_edit_url}}"
+							class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+						</a>
+					</p>
+					{% endif %}
+					</p>
+					<p><a href="{% url 'app:about' %}" class="btn btn-primary">درباره ما بیشتر بدانید</a></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+<!-- our services -->
+<section class="ftco-section ftco-portfolio bg-light">
+	<div class="container">
+		<div class="row justify-content-center no-gutters">
+			<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+				<h2 class="mb-2">سرویس ها و خدمات ما</h2>
+				{% if perms.app.add_ourservice %}
+
+				<p class="text-center">
+					<a href="{{ADMIN_URL}}app/ourservice/add/">
+						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+				</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row  leo-rtl">
+			{% for our_service in our_services  %}
+
+			<div class="col-md-4">
+				{% if our_service.get_tag %}
+				<div class="text-center ftco-animate mb-2">
+
+					{{our_service.get_tag|safe}}
+
+
+
+				</div>
+
+				{% endif %}
+
+				<div class="services-2 d-flex ftco-animate">
+					<span>0{{forloop.counter}}</span>
+					<div class="text mx-2">					
+						<a class="mb-0" href="{{our_service.get_absolute_url}}">
+							<h4 class="leo-rtl text-right">{{our_service.title}}</h4>
+
+						</a>
+						{% if our_service.short_desc %}
+						<p class="leo-rtl text-right">
+							<small>
+								{{our_service.short_desc}}</small></p>
+
+						{% endif %}
+						{% if perms.app.change_ourservice %}
+						<p class="text-centerleo-rtl text-right">
+							<a href="{{our_service.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+								خدمات</a>
+						</p>
+						{% endif %}
+
+					</div>
+				</div>
+			</div>{% endfor %}
+
+		</div>
+	</div>
+	<div class="degree-left"></div>
+</section>
+
+<!-- banner -->
+<section class="ftco-section testimony-section my-0">
+	<div class="container">
+		<div class="row justify-content-center no-gutters">
+			<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+				<h2 class="mb-2">همکاران ما</h2>
+				{% if perms.app.add_banner %}
+
+				<p class="text-center">
+					<a href="{{ADMIN_URL}}app/banner/add/">
+						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+				</p>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="row">
+			{% for banner in banners %}
+			<div class="col-md-12 mb-5 mt-5">
+				<div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl"
+					style="background-image: url({{banner.image}});">
+					<div class="col-md-6 ftco-animate text-right">
+
+
+						{% if banner.pretitle %}
+						<span class="text-right leo-rtl leo-farsi">{{banner.pretitle}}</span>
+						{% endif %}
+						{% if banner.title %}
+						<h2>{{banner.title}}</h2>
+						{% endif %}
+
+						{% if banner.posttitle %}
+						<p>{{banner.posttitle}}</p>
+						{% endif %}
+
+						{% if banner.action_url %}
+						<p><a href="{{banner.action_url}}" class="btn btn-primary">
+								<span class="text-right leo-rtl text-light">{{banner.action_text}}</span>
+							</a></p>
+						{% endif %}
+
+
+
+
+
+						{% if perms.app.edit_banner %}
+
+
+						<p><a href="{{banner.get_edit_url}}" class="btn btn-info">
+								<span class="text-right leo-rtl text-light">ویرایش بنر</span>
+							</a></p>
+
+
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+
+	</div>
+	<div class="degree-left"></div>
+</section>
+<!-- our works -->
+<section class="ftco-section ftco-portfolio bg-light">
+	<a id="our_works"></a>
+	<div class="row justify-content-center no-gutters">
+		<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+			<h2 class="mb-2">پروژه ها</h2>
+			{% if perms.app.add_ourwork %}
+
+			<p class="text-center">
+				<a href="{{ADMIN_URL}}app/ourwork/add/">
+					<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+			</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row no-gutters">
+			{% for our_work in our_works %}
+			{% if forloop.counter0|divisibleby:2 %}
+			<div class="col-md-12 portfolio-wrap">
+				<div class="row no-gutters align-items-center">
+					<div class="col-md-5 img" style="background-image: url({{our_work.thumbnail}});">
+
+					</div>
+					<div class="col-md-7">
+						<div class="text pt-5 pl-0 pl-lg-5 pl-md-4 ftco-animate">
+							<div class="px-4 px-lg-4">
+								<div class="desc">
+									<div class="top  text-right">
+										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+										<h2 class="mb-2 text-right"><a class="text-right"
+												href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
+										</h2>
+									</div>
+									<div class="absolute">
+										<p>{{our_work.short_description}}</p>
+										{% if our_work.profile %}
+										<div class="icon d-flex align-items-center mb-4">
+											<div class="img" style="background-image: url({{our_work.profile.image}});">
+											</div>
+											<div class="position pl-3">
+												<h4 class="mb-0">{{our_work.profile.name}}</h4>
+												<span>{{our_work.date_added | to_persian_date | safe  }}</span>
+											</div>
+										</div>
+										{% endif %}
+										<p style="text-align: left !important;"><a href="{{our_work.get_absolute_url}}"
+												class="custom-btn">ادامه
+												مطلب</a>
+											{% if perms.app.edit_ourwork %}
+
+											<a href="{{our_work.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
+
+											{% endif %}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% else %}
+			<div class="col-md-12 portfolio-wrap">
+				<div class="row no-gutters align-items-center">
+					<div class="col-md-5 order-md-last img" style="background-image: url({{our_work.thumbnail}});">
+
+					</div>
+					<div class="col-md-7">
+						<div class="text pt-5 pr-md-5 ftco-animate">
+							<div class="px-4 px-lg-4">
+								<div class="desc text-md-right">
+									<div class="top">
+										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+										<h2 class="mb-2"><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
+										</h2>
+									</div>
+									<div class="absolute">
+										<p>{{our_work.short_description}}</p>
+										<div class="d-flex w-100">
+											{% if our_work.profile %}
+											<div class="icon d-flex align-items-center ml-md-auto mb-4">
+												<div class="img"
+													style="background-image: url('{{our_work.profile.image}}');">
+												</div>
+												<div class="position pl-3 text-left">
+													<h4 class="mb-0">{{our_work.profile.name}}</h4>
+													<span>{{our_work.date_added | to_persian_date | safe  }}</span>
+												</div>
+											</div>
+											{% endif %}
+										</div>
+										<p style="text-align:right !important;">
+											<a href="{{our_work.get_absolute_url}}" class="custom-btn">ادامه
+												مطلب</a>
+											{% if perms.app.edit_ourwork %}
+
+											<a href="{{our_work.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
+
+											{% endif %}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% endif %}
+
+			{% endfor %}
+
+
+
+		</div>
+	</div>
+	<div class="degree-left"></div>
+</section>
+<!-- testimonials -->
+<section class="ftco-section testimony-section">
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-md-8 text-center heading-section ftco-animate">
+				<h2 class="mb-3">آنچه درباره ما گفته شده است.</h2>
+				{% if perms.app.add_testimonial %}
+
+				<p class="text-center">
+					<a href="{{ADMIN_URL}}app/testimonial/add/">
+						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+				</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row ftco-animate mb-4">
+			<div class="col-md-12">
+				<div class="carousel-testimony owl-carousel">
+					{% for testimonial in testimonials %}
+					<div class="item">
+						<div class="testimony-wrap py-4">
+							<div class="text">
+								<span class="fa fa-quote-left"></span>
+								<p class="mb-4">{{testimonial.title}}</p>
+								<div class="d-flex align-items-center">
+									<div class="user-img" style="background-image: url({{testimonial.profile.image}})">
+									</div>
+									<div class="pl-3">
+										<p class="name">{{testimonial.profile.name}}</p>
+										<span class="position leo-farsi">{{testimonial.footer}}</span>
+										{% if perms.app.change_testimonial %}
+										<p>
+											<a class="btn btn-info" href="{{testimonial.get_edit_url}}">ویرایش نقل
+												قول</a>
+										</p>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</section>
+<!-- blogs -->
+<section class="ftco-section bg-light">
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-md-7 heading-section text-center ftco-animate">
+				<h2>مقاله ها</h2>
+				{% if perms.app.add_blog %}
+
+				<p class="text-center">
+					<a href="{{ADMIN_URL}}app/blog/add/">
+						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+				</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row d-flex leo-rtl">
+
+			{% for blog in blogs %}
+			<div class="col-md-3 d-flex ftco-animate">
+				<div class="blog-entry justify-content-end">
+					<div class="text">
+						<a href="{{blog.get_absolute_url}}" class="block-20 img"
+							style="background-image: url('{{blog.thumbnail}}');">
+						</a>
+						<h3 class="heading mb-3 leo-rtl text-right">
+							<a href="{{blog.get_absolute_url}}" class="leo-rtl text-right">
+								<span class="leo-font-farsi">{{blog.title}}</span>
+
+							</a></h3>
+
+						<div class="meta mb-3  text-right">
+							<div class="d-block">
+
+								<a href="#" class="meta-chat text-info">{{blog.likes.all | length}} <span
+										class="fa fa-thumbs-up  text-info"></span></a>
+								&nbsp;
+								<a href="#" class="meta-chat text-danger">{{blog.comments.all | length}} <span
+										class="fa fa-comment text-danger"></span></a>
+							</div>
+							<div class="leo-rtl text-right">
+								{{ blog.to_persian_date_tag | safe }}</div>
+
+							{% if blog.profile %}
+							<div class="leo-rtl text-right">
+								<a href="{{blog.profile.get_absolute_url}}"><span
+										class="leo-font-farsi leo-rtl text-right">{{blog.profile.name}}</span></a></div>
+
+							{% endif %}
+
+						</div>
+						<p>
+							<small>
+								{{blog.short_desc}}
+							</small>
+						</p>
+						<p style="text-align:right !important;">
+							<a href="{{blog.get_absolute_url}}" class="btn btn-dark custom-btn">
+								<span class="fa fa-info-circle ml-2"></span>
+								ادامه
+								مطلب</a>
+							{% if perms.app.edit_blog %}
+
+							<a href="{{blog.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
+
+							{% endif %}
+						</p>
+
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+	<div class="degree-left-footer"></div>
+</section>
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+	$("#home-link").addClass('active')
+</script>
+{% endblock %}

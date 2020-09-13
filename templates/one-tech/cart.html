@@ -1,0 +1,176 @@
+{% extends "one-tech/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'one-tech/styles/cart_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one-tech/styles/cart_responsive.css' %}">
+
+{% endblock  %}
+
+
+
+{% block contents %}
+
+<!-- Cart -->
+
+<div class="cart_section">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1">
+				<div class="cart_container">
+					<div class="cart_title leo-farsi text-right">سبد خرید</div>
+
+					{% if cart.orders %}
+					<div class="cart_items">
+						<ul class="cart_list">
+							{% for cart_line in cart.lines %}
+							<li class="cart_item clearfix leo-rtl text-right">
+								<div class="media">
+									<div>
+										<div class="cart_item_image"><img src="{{cart_line.shop.product.get_image}}"
+												alt="">
+										</div>
+									</div>
+									<div class="media-body">
+										<div class="cart_item_title">
+											<a class=" leo-farsi" href="{{cart_line.shop.product.get_absolute_url}}">
+												{{cart_line.shop.product.name}}
+											</a>
+
+											<a class=" mx-2 leo-farsi text-secondary"
+												href="{{cart_line.shop.supplier.get_absolute_url}}">
+												{{cart_line.shop.supplier.name}}
+											</a>
+										</div>
+										<div class="cart_item_text  leo-farsi">
+
+											{{cart_line.quantity}} {{cart_line.shop.unit_name}}
+
+
+											<span class="mx-3 text-secondary" style="width: fit-content;">
+												{{cart_line.shop.price | to_price}}
+
+											</span>
+
+
+											{{cart_line.total | to_price}}
+
+
+										</div>
+									</div>
+									{% if remove_from_cart_form %}
+
+									<div class="media-footer">
+
+										<span v-if='!accept_delete' style="cursor: pointer;" @click="toggle_accept_delete"
+										 type="submit" class="text-danger">
+											<i class="material-icons">delete</i>
+										</span>
+
+										<form action="{% url 'market:remove_from_cart' %}" method="POST">
+											{% csrf_token %}
+											<input type="hidden" name="shop_id" value="{{cart_line.shop.id}}">
+											<button  style="cursor: pointer;" type="submit" v-if='accept_delete' class="btn btn-link btn-danger">
+												<i class="material-icons">delete</i>
+											</button>
+											<span   style="cursor: pointer;" @click="toggle_accept_delete" v-if='accept_delete'
+										 type="submit" class="text-dark">
+											<i class="material-icons">clear</i>
+										</span>
+										</form>
+									</div>
+
+									{% endif %}
+
+								</div>
+							</li>{% endfor %}
+							
+						</ul>
+					</div>
+
+					<!-- Order Total -->
+					<div class="order_total">
+						<div class="order_total_content text-md-right leo-rtl text-right leo-farsi">
+
+
+							<div class="order_total_title">جمع اقلام : </div>
+							<div class="order_total_amount">
+
+								{{cart.total | to_price}}
+							</div>
+
+						</div>
+					</div>
+
+					<div class="cart_buttons">
+
+						{% for order in cart.orders %}
+						<form action="{% url 'market:submit_cart' %}" method="post" class="my-2">
+							{% csrf_token %}
+							<input type="hidden" name="customer_id" value="{{cart.customer.id}}">
+							<input type="hidden" name="address" value="address address">
+							<input type="hidden" name="description" value=" ">
+							<input type="hidden" name="supplier_id" value="{{order.supplier.id }}">
+							<button type="submit" class="button cart_button_checkout">
+								تایید پیش فاکتور {{order.supplier.name}}
+							</button>
+						</form>
+
+
+						{% endfor %}
+						<!-- <button type="button" class="button cart_button_clear">تایید سبذ خرید</button>
+						<button type="button" class="button cart_button_checkout">Add to Cart</button> -->
+					</div>
+					{% else %}
+					<!-- Order Total -->
+					<div class="order_total">
+						<div class="order_total_content text-md-right leo-rtl text-right leo-farsi">
+
+
+							<div class="order_total_title"></div>
+							<div class="order_total_amount">
+								سبد خرید شما خالی می باشد
+							</div>
+
+						</div>
+					</div>
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock  %}
+
+
+
+{% block scripts %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+<script>
+	let cart_app = new Vue(
+		{
+			el: ".cart_section",
+			data: {
+				accept_delete: false,
+			},
+			methods: {
+				toggle_accept_delete() {
+					if (this.accept_delete) {
+						this.accept_delete = false
+						return this.accept_delete
+					}
+					if (!this.accept_delete) {
+						this.accept_delete = true
+						return this.accept_delete
+					}
+
+				},
+			}
+		}
+	)
+	
+</script>
+{% endblock  %}

@@ -1,0 +1,142 @@
+@font-face {
+    font-family: "HMFONT";
+    src: url("../fonts/ISM.woff2") format("woff2");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../fonts/ISB.woff2") format("woff2");
+    font-style: normal;
+    font-weight: bold;
+}
+.nav-link,
+.leo-farsi ,
+.leo-font-farsi,
+option,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+input,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+button,
+textarea,
+label,
+select {
+    font-family: "HMFONT" !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    
+}
+h1,h2,h3,h4,h5,h6{
+    direction: rtl !important;
+}
+p{
+    direction: rtl !important;
+    text-align: right;
+}
+.leo-rtl {
+    direction: rtl;
+}
+
+.leo-ltr {
+    direction: ltr;
+}
+
+.leo-center {
+    /* text-align: center; */
+}
+
+.m-a {
+    /* margin: auto; */
+}
+
+.leo-right {
+    /* text-align: right; */
+}
+
+.leo-left {
+    /* text-align: left; */
+}
+
+.nav-link {
+    /* text-align: right;
+    margin-left: 30px; */
+}
+
+.owl-carousel .owl-stage,
+.owl-carousel.owl-drag .owl-item {
+    /* -ms-touch-action: auto;
+    touch-action: auto; */
+}
+
+.row {
+    /* direction: rtl; */
+}
+
+.modal-header .close {
+    /* margin: -1rem auto -1rem -1rem !important; */
+}
+
+
+.form-group {
+    /* text-align: right; */
+}
+
+.modal-header {
+    direction: rtl;
+}
+
+.form-control {
+    /* padding-left: 10px !important;
+    padding-right: 10px !important; */
+}
+.breadcrumb {
+    background-color: #fff !important;
+    margin: 0;
+    color: #82ae46;
+    direction: rtl;
+}
+
+.breadcrumb-item>a{
+    font-family: "HMFONT" !important;
+}
+.breadcrumb-item>a,
+.breadcrumb-item::before {
+    padding-right: 0.5em !important;
+    padding-left: 0 !important;
+}
+[aria-label='breadcrumb'] {
+    /* width: fit-content; */
+}
+
+.modal-title {
+    /* color: white; */
+}
+
+nav{
+    /* direction: rtl !important; */
+}
+.nav-item{
+    text-align: right;
+}
+.nav-link{
+
+}

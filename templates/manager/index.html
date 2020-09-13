@@ -1,0 +1,210 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_contract_status_color %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">settings</i>
+            </div>
+            <p class="card-category">لیست</p>
+            <h3 class="card-title">پروژه ها
+            
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="mt-3">
+    {% for project in projects %}
+    
+    
+    <a class="d-block mb-2 text-{{project.color}}" href="{{project.get_absolute_url}}">
+      <i class="material-icons">{{project.icon}}</i>
+      {{project.title}}</a>
+     
+    {% endfor %}</p>
+          </div>
+            <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-danger">link</i>
+              <a href="{{ADMIN_URL}}manager/project/add/">اضافه کردن پروژه</a>
+            </div>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">home</i>
+            </div>
+            <p class="card-category">لیست</p>
+            <h3 class="card-title">قرارداد ها
+            
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="mt-3">
+    {% for contract in contracts %}
+    <p>
+        {{contract.project.emplyer.name}}
+    </p>
+    <div class="mb-3">قرارداد : 
+    <a class=" mb-2 text-{{contract.color}}" href="{{contract.get_absolute_url}}">
+        <i class="material-icons">{{contract.icon}}</i>
+        {{contract.title}}</a> </div>
+       <div>
+        <small>  مبلغ : </small> {{contract.amount| to_price}}
+</div>  
+        <div>
+            <small>  وضعیت : </small> <span class="badge badge-{{contract.status|to_contract_status_color}}">{{contract.status}}</span>
+    </div>      
+       
+
+        <div><small>پروژه : </small> 
+        <a class="mb-2 text-{{contract.project.color}}" href="{{contract.project.get_absolute_url}}">
+           <small> <i class="material-icons">{{contract.project.icon}}</i>
+            {{contract.project.title}}</small></a> </div>
+    <hr>
+    {% endfor %}</p>
+          </div>
+            <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons text-danger">link</i>
+              <a href="{{ADMIN_URL}}manager/contract/add/">اضافه کردن قرارداد</a>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+  let initDashboardPageCharts= function() {
+
+if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
+  /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+
+  dataDailySalesChart = {
+    labels: ['شنبه', '1','2', '3', '4', '5', 'جمعه'],
+    series: [
+      [12, 60, 87, 17, 23, 18, 38]
+    ]
+  };
+
+  optionsDailySalesChart = {
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 1
+    }),
+    low: 0,
+    high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    chartPadding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    },
+  }
+
+  var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+  md.startAnimationForLineChart(dailySalesChart);
+
+
+
+  /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
+
+  dataCompletedTasksChart = {
+    labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
+    series: [
+      [230, 750, 100, 300, 280, 240, 200, 190]
+    ]
+  };
+
+  optionsCompletedTasksChart = {
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 0
+    }),
+    low: 0,
+    high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    chartPadding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    }
+  }
+
+  var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
+
+  // start animation for the Completed Tasks Chart - Line Chart
+  md.startAnimationForLineChart(completedTasksChart);
+
+
+  /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+  var dataWebsiteViewsChart = {
+    labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+    series: [
+      [542, 443, 320, 780, 553, 453, 326, 434, 568, 400, 300, 200]
+
+    ]
+  };
+  var optionsWebsiteViewsChart = {
+    axisX: {
+      showGrid: true,
+    },
+    low: 0,
+    high: 1000,
+    chartPadding: {
+      top: 0,
+      right: 5,
+      bottom: 0,
+      left: 0
+    }
+  };
+  var responsiveOptions = [
+    ['screen and (max-width: 640px)', {
+      seriesBarDistance: 5,
+      axisX: {
+        labelInterpolationFnc: function(value) {
+          return value[0];
+        }
+      }
+    }]
+  ];
+  var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+
+  //start animation for the Emails Subscription Chart
+  md.startAnimationForBarChart(websiteViewsChart);
+}
+}
+
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    initDashboardPageCharts();
+
+  });
+</script>
+<script>
+  $("#project-manager-link").addClass("active");
+
+
+
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

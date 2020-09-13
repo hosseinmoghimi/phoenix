@@ -1,0 +1,63 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+<div class="row">
+    {% if perms.app.add_faq %}
+    <div class="col-12">
+    <a href="{{ADMIN_URL}}dashboard/faq/add/" class="btn btn-block btn-primary btn-round">
+        <i class="material-icons">date_range</i>
+        افزودن به پرسش های متداول</a></div>
+    {% endif %}
+
+    {% for faq in faqs %}
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-{{faq.color}} card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">{{faq.icon}}</i>
+                </div>
+                <h6 class="card-category text-gray"> پرسش شماره {{ forloop.counter }}</h6>
+                <h3 class="card-title text-primary">{{faq.question}}</h3>
+            </div>
+            <div class="card-body">
+
+              
+                <p class="card-description mb-4 ">
+                    {{faq.answer |safe}}
+                </p>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.app.change_faq %}
+                    <a href="{{faq.get_edit_url}}" class="btn btn-primary btn-round">
+                        <i class="material-icons">date_range</i>
+                        ویرایش</a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $("#dashboard-faq-link").addClass('active')
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

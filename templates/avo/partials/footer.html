@@ -1,0 +1,118 @@
+<footer class="ftco-footer ftco-section pb-2">
+    <div class="container">
+        <div class="row mb-1 leo-rtl">
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2 leo-rtl text-right">{{app.title.value}}</h2>
+                    <p class=" leo-rtl text-right">{{app.slogan.value}}</p>
+                    {% if perms.app.change_parameter %}
+                    <p> <a class="btn btn-info text-light leo-farsi" href="{{app.slogan.get_edit_url}}">ویرایش</a>
+                    </p> {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-4">
+                    <h2 class="ftco-heading-2 text-right">درباره ما</h2>
+
+
+                    <ul class="list-unstyled" style="padding-inline-start: 0px !important;">
+                        <li class="text-right"><a href="{% url 'app:about' %}#banners" class="leo-farsi"><span
+                                    class="leo-rtl fa fa-chevron-left ml-2"></span>همکاران ما</a></li>
+                        <li class="text-right"><a href="{% url 'app:about' %}#our_team" class="leo-farsi"><span
+                                    class="leo-rtl fa fa-chevron-left ml-2"></span>تیم متخصص ما</a></li>
+
+                                    
+                        <li class="text-right"><a href="{% url 'app:about' %}#our_services" class="leo-farsi"><span
+                                    class="leo-rtl fa fa-chevron-left ml-2"></span>خدمات ما</a></li>
+                        <li class="text-right"><a href="{% url 'app:home' %}#our_works" class="leo-farsi"><span
+                                    class="leo-rtl fa fa-chevron-left ml-2"></span>پروژه های ما</a></li>
+                        <li class="text-right"><a href="{% url 'app:about' %}#testimonial" class="leo-farsi"><span
+                                    class="leo-rtl fa fa-chevron-left ml-2"></span>گفته هایی درباره ی ما</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2" style="text-align: right !important;">تبادل لینک</h2>
+                    <ul class="list-unstyled" style="padding-inline-start: 0px !important;">
+                        {% for link in links %}
+                        <li class="text-right"><a class="leo-rtl" href="{{link.url}}"><span
+                                    class="fa fa-chevron-left ml-2"></span><span
+                                    class="leo-farsi">{{link.title}}</span></a></li>
+
+                        {% endfor %}
+                        {% if perms.app.add_link %}
+
+                        <li class="text-right"><a class="leo-rtl" href="{{ADMIN_URL}}dashboard/link/add/"><span
+                                    class="fa fa-chevron-left ml-2"></span><span class="leo-farsi">
+                                    افزودن لینک جدید
+                                </span></a></li>
+
+
+
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2 leo-rtl text-right">ارتباط با ما</h2>
+                    <div class="block-23 mb-3">
+                        <ul>
+                            <li class=""><span class="icon fa fa-map text-center "></span>
+
+                                <span class="text leo-rtl text-right leo-farsi mr-2">
+                                    {{app.address.value}}
+                                </span></li>
+                            <li class=""><a href="#"><span class="icon fa fa-phone text-center "></span><span
+                                        class="text mr-2">
+                                        {{app.tel.value}}
+                                    </span></a></li>
+                            <li class=""><a href="#"><span class="icon fa fa-envelope  text-center"></span><span
+                                        class="text mr-2"> {{app.email.value}}</span></a></li>
+
+                            <li class=""><a href="{% url 'app:contact' %}"><span
+                                        class="icon fa fa-envelope  text-center"></span><span
+                                        class="text mr-2 leo-farsi">ارتباط با ما</span></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="ftco-footer-social list-unstyled mt-1 leo-rtl">
+                    {% for social_link in social_links %}
+                    <li class="ftco-animate">
+                        <a href="{{social_link.url}}" title="{{social_link.title}}">
+                            {{social_link.get_tag_icon | safe}}
+
+                        </a></li>
+
+                    {% endfor %}
+                    {% if perms.app.add_sociallink %}
+                    <li class="ftco-animate">
+                        <a href="{{ADMIN_URL}}dashboard/sociallink/add/">
+
+                            <span class="fa fa-plus text-info"></span>
+
+                        </a></li>
+                    {% endif %}
+
+                </ul>
+                <p class="text-center">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    کپی رایت &copy;
+                        <script>document.write(new Date().getFullYear());</script> کلیه حقوق مادی و معنوی محفوظ می باشد | 
+                        طراحی و توسعه  <i class="fa fa-heart" aria-hidden="true"></i><a
+                            href="https://khafonline.com/phoenix/" class="mx-2" target="_blank">فونیکس</a> & <a
+                            href="https://Colorlib.com" class="mx-2" target="_blank">Colorlib</a> 
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>

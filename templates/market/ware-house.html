@@ -1,0 +1,243 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+<div class="row">
+ <div class="col-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title ">{{ware_house.name}}</h4>
+      <p class="card-category">
+
+      </p>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <p>
+          انبار : 
+          <a href="{{ware_house.get_absolute_url}}">{{ware_house.name}}</a>
+          <small>
+             مسئول : 
+        <a href="{{ware_house.profile.get_absolute_url}}">{{ware_house.profile.name}}</a>
+      
+      </small>    </p>
+        <p>
+          فروشگاه : 
+          <a href="{{ware_house.supplier.get_absolute_url}}">{{ware_house.supplier.name}}</a>
+      <small>   مسئول :  
+        <a href="{{ware_house.supplier.profile.get_absolute_url}}">{{ware_house.supplier.profile.name}}</a>
+    </small> 
+        </p>
+        
+      </div>
+    </div>
+  </div>
+
+ </div>
+  <div class="col-12">
+
+
+
+    {% if ware_house.products_in_stock %}
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title ">لیست کالا های موجود در   {{ware_house.name}}</h4>
+        <p class="card-category">
+
+        </p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                کالا یا خدمات
+              </th>
+
+              <th>
+                تعداد
+              </th>
+
+              <th>
+                واحد
+              </th>
+              <th>
+                تاریخ ثبت
+              </th>
+
+              <th>
+
+              </th>
+
+
+            </thead>
+            <tbody>
+              {% for product_in_stock in ware_house.products_in_stock %}
+              <tr>
+                <td>
+                  <a class="text-primary"
+                    href="{{product_in_stock.product.get_absolute_url}}">{{product_in_stock.product.name}}</a>
+
+                </td>
+
+                <td>
+                  <span class="text-danger">
+                    {{product_in_stock.quantity}}
+
+                  </span>
+                </td>
+
+                <td>
+                  <span class="badge badge-info">
+                    {{product_in_stock.unit_name.name}}</span>
+                </td>
+
+                <td>
+                  <span>
+                    {{product_in_stock.date_added  | to_persian_date | safe}}</span>
+                </td>
+
+
+
+                <td>
+                  {% if remove_shop_form %}
+                  <form action="{% url 'market:remove_shop' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="shop_id" value="{{shop.id}}">
+                    <button type="submit" class="btn btn-danger">
+                      <i class="material-icons">clear</i>
+                    </button>
+                  </form>
+                  {% endif %}
+
+
+
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <div class="row">
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-8">
+        <div id="app_profile" class="card card-profile">
+          <div class="card-avatar">
+            <a href="javascript:;">
+              <img src="{% static 'logo.svg' %}" class="img">
+            </a></div>
+          <div class="card-body">
+            <h6 class="card-category text-gray text-center"></h6>
+            <h4 class="card-title text-center"> کالایی در انبار {{ware_house.name}} موجود نمی باشد.</h4>
+
+
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="col-md-2">
+
+      </div>
+    </div>
+
+    {% endif %}
+
+
+  </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}
+{% block scripts %}
+
+<!-- from View  -->
+<script>
+  var transaction_list_amount = {{ transaction_list_amount| safe}}
+  var transaction_list_labels = {{ transaction_list_labels| safe}}
+  var high_amount = {{ high_amount }}
+  var low_amount = {{ low_amount }}
+</script>
+
+
+
+<script>
+  let initDashboardPageCharts = function () {
+
+    if ($('#websiteViewsChart1').length != 0) {
+
+
+      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+      var dataWebsiteViewsChart = {
+        labels: transaction_list_labels,
+        series: [
+          transaction_list_amount
+
+        ]
+      };
+      var optionsWebsiteViewsChart = {
+        axisX: {
+          showGrid: true,
+        },
+        low: low_amount,
+        high: high_amount,
+        chartPadding: {
+          top: 0,
+          right: 5,
+          bottom: 0,
+          left: 0
+        }
+      };
+      var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc: function (value) {
+              return value[0];
+            }
+          }
+        }]
+      ];
+      var websiteViewsChart = Chartist.Bar('#websiteViewsChart1', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+
+      //start animation for the Emails Subscription Chart
+      md.startAnimationForBarChart(websiteViewsChart);
+    }
+  }
+
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    initDashboardPageCharts();
+
+  });
+</script>
+
+<script>
+  $("#dashboard-profile-link").addClass("active");
+</script>
+{% endblock %}
+{% block styles %}
+{% endblock %}

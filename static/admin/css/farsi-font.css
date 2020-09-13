@@ -1,0 +1,31 @@
+
+
+.nav-link,
+.leo-farsi ,
+.leo-font-farsi,
+option,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+input,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+button,
+label,
+select ,
+a,
+div,
+textarea{
+    font-family: "HMFONT" !important;
+}
+#content>h1{
+    text-align: left;
+}

@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
+</head>
+
+<body>
+
+
+
+    <!-- about -->
+    <div class="about">
+        <a class="bg_links social portfolio" href="{% url 'app:home' %}" target="_blank">
+            <span class="icon"></span>
+        </a>
+        <a class="bg_links social dribbble" href="{% url 'app:home' %}" target="_blank">
+            <span class="icon"></span>
+        </a>
+        <a class="bg_links social linkedin" href="{% url 'app:home' %}" target="_blank">
+            <span class="icon"></span>
+        </a>
+        <a class="bg_links logo"></a>
+        <link rel="stylesheet" href="{% static '404.css' %}">
+        <!-- <link rel="stylesheet" href="{% static 'admin/css/farsi-font.css' %}"> -->
+     
+    </div>
+    <!-- end about -->
+
+    <nav>
+        <div class="menu">
+            <p class="website_name">{{app.title.value}}</p>
+            <div class="menu_links">
+                <a href="{% url 'app:home' %}" class="link">about</a>
+                <a href="{% url 'app:home' %}" class="link">projects</a>
+                <a href="{% url 'app:home' %}" class="link">contacts</a>
+            </div>
+            <div class="menu_icon">
+                <span class="icon"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wrapper">
+
+        <div class="container">
+
+            <div id="scene" class="scene" data-hover-only="false">
+
+
+                <div class="circle" data-depth="1.2"></div>
+
+                <div class="one" data-depth="0.9">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="two" data-depth="0.60">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="three" data-depth="0.40">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <p class="p404" data-depth="0.50">404</p>
+                <p class="p404" data-depth="0.10">404</p>
+
+            </div>
+
+            <div class="text">
+                <article>
+                    <p>متاسفانه<br>صفحه مورد نظر شما پیدا نشد.</p>
+                    <button>i dare!</button>
+                </article>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Parallax Code
+        var scene = document.getElementById('scene');
+        var parallax = new Parallax(scene);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+{% if our_teams %}
+  <div class="row">
+    {% for our_team in our_teams %}
+    <div class="col-lg-4 col-md-4">
+    <div class="card card-profile" id="app_profile">
+      <div class="card-avatar">
+       
+          <img class="img" src="{{our_team.image}}" />
+
+
+        
+      </div>
+      <div class="card-body">
+        <h6 class="card-category text-gray text-center">{{our_team.job}}</h6>
+        <h4 class="card-title text-center text-primary">{{our_team.name}}</h4>
+       <p class=" text-center">{{our_team_title}}</p>
+        {% if our_team.description %}
+
+        <p class="card-description  text-center">
+          {{our_team.description}}
+        </p>
+      <a href=" {{our_team.get_resume_url}}">رزومه</a>
+        {% endif %} 
+    
+
+      
+
+      </div>
+    </div></div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+    $("#dashboard-terms-link").addClass("active");
+
+
+
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

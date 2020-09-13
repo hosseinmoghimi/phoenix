@@ -1,0 +1,149 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">contact_support</i>
+                </div>
+                <h6 class="card-title text-secondary mt-3">راه های تماس </h6>
+                <h3 class="card-title text-primary ">ارتباط با ما</h3>
+
+            </div>
+            <div class="card-body">
+                <p>{{contact_us}}</p>
+
+                <p class="text-secondary">تلفن :  <span class="text-primary">{{tel}}</span></p>
+                <p class="text-secondary">موبایل :  <span class="text-primary">{{mobile}}</span></p>
+                <p class="text-secondary">فکس :  <span class="text-primary">{{fax}}</span></p>
+                <p class="text-secondary">ایمیل :  <span class="text-primary">{{email}}</span></p>
+                <p class="text-secondary">آدرس :  <span class="text-primary">{{address}}</span></p>
+
+
+                 
+                  
+
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {% if contact_form %}
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">contact_support</i>
+                </div>
+                <h6 class="card-title text-secondary mt-3">فرم</h6>
+                <h3 class="card-title text-primary ">ارسال پیام به ما</h3>
+
+            </div>
+            <div class="card-body">
+
+
+
+                <form action="{% url 'app:contact' %}" method="POST">
+
+                    {% csrf_token %}
+
+
+                 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">نام</label>
+                                <input name="fname" type="text" required class="form-control"
+                                    >
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">نام خانوادگی</label>
+                                <input name="lname" type="text" required class="form-control"
+                                    >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">ایمیل</label>
+                                <input name="email" type="email" required class="form-control"
+                                  >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      
+                       
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">عنوان</label>
+                                <input name="subject" required type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>متن پیام</label>
+                                <div class="form-group">
+                                    <input name="message" class="form-control" type="text" value="{{selected_profile.bio}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary pull-right">تایید و ارسال پیام</button>
+                    <div class="clearfix"></div>
+                </form>
+
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% else %}
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $("#dashboard-blogs-link").addClass('active')
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

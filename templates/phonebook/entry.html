@@ -1,0 +1,48 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+<div class="card card-stats">
+    <div class="card-header card-header-success card-header-icon">
+      <div class="card-icon">
+        <i class="material-icons">contact_phone</i>
+      </div>
+      <h3 class="card-title">{{entry}}</h3>
+    </div>
+    <div class="card-body">
+        <p>
+            نام : <span class="text-primary">{{entry.first_name}}</span><br>
+            نام خانوادگی : <span class="text-primary">{{entry.last_name}}</span><br>
+        </p>
+
+      <p>
+      {% for detail in entry.details.all %}
+                {{detail.entry_name}} : <span  class="text-primary">{{detail.entry_value}}</span><br>
+                {% endfor %}</p>
+    </div>
+    <div class="card-footer">
+      <div class="stats">
+        <a href="{{entry.get_absolute_url}}">
+          <i class="material-icons">date_range</i>
+          جزییات</a>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $("#phonebook-link").addClass('active')
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

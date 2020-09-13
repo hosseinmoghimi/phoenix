@@ -1,0 +1,67 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+<div class="row">
+    {% if blog %}
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-{{blog.color}} card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">{{blog.icon}}</i>
+                </div>
+                <h6 class="card-title text-secondary mt-3">{{blog.pretitle}}</h6>
+                <h3 class="card-title text-primary ">{{blog.title}}</h3>
+                <p  class="text-secondary "><small>{{blog.persian_date_added}}</small></p>
+            </div>
+            <div class="card-body">
+
+
+               
+                <p class="card-description mb-4 ">
+                    {{blog.description |safe}}
+                </p>
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                  
+
+                    <a href="{{blog.get_absolute_url}}" class="btn btn-primary btn-round">
+                        <i class="material-icons">date_range</i>
+                        ادامه مطلب</a>
+
+
+                    {% if perms.app.change_blog %}
+                    <a href="{{blog.get_edit_url}}" class="btn btn-primary btn-round">
+                        <i class="material-icons">date_range</i>
+                        ویرایش</a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% else %}
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+    $("#dashboard-blogs-link").addClass('active')
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}
