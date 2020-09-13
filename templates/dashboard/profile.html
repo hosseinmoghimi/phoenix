@@ -63,44 +63,7 @@
     </div>
 
     {% endif %}
-    {% if edit_profile_form %}
-    <div class="card">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title ">سطوح دسترسی</h4>
-        <p class="card-category"> در سامانه</p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th>
-                name
-              </th>
-              <th>
-                code name
-              </th>
-            </thead>
-            <tbody>
-              {% for permission in my_permissions %}
-
-
-              <tr>
-                <td>
-                  {{permission.name}}
-                </td>
-                
-                
-                <td class="text-primary">
-                  {{permission.codename}}
-                </td>
-              </tr> {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    {% endif %}
+  
 
 
   </div>
@@ -274,6 +237,46 @@
       </div>
     </div>
     {% endif %}
+
+    {% if edit_profile_form %}
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title ">سطوح دسترسی</h4>
+        <p class="card-category"> در سامانه</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                name
+              </th>
+              <th>
+                code name
+              </th>
+            </thead>
+            <tbody>
+              {% for permission in my_permissions %}
+
+
+              <tr>
+                <td>
+                  {{permission.name}}
+                </td>
+                
+                
+                <td class="text-primary">
+                  {{permission.codename}}
+                </td>
+              </tr> {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    
   </div>
 
 </div>

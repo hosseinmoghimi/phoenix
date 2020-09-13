@@ -19,6 +19,7 @@ if PUSHER_IS_ENABLE:
 
 
 TEMPLATE_ROOT='avo/'
+TEMPLATE_ROOT_DASHBOARD='dashboard/'
 
 
 def getContext(request):
@@ -377,8 +378,7 @@ class ProfileView(View):
         user=request.user
         context=getContext(request=request)
         if not user.is_authenticated:
-            return AuthView().login(request=request,back_url=reverse('app:profile',kwargs={'profile_id':profile_id}))
-    
+            return redirect(reverse("authentication:login"))
         active_profile=ProfileRepo(user=user).me
     
         selected_profile=ProfileRepo(user=user).get(profile_id=profile_id)
@@ -397,7 +397,7 @@ class ProfileView(View):
             context['transactions']=transactions
             context['rest']=transaction_repo.rest(profile_id=profile_id)
         
-        return render(request,TEMPLATE_ROOT+'profile.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'profile.html',context)
 
 
 class TransactionView(View):
