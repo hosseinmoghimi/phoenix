@@ -3,8 +3,42 @@
         <div class="row mb-1 leo-rtl">
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
-                    <h2 class="ftco-heading-2 leo-rtl text-right">{{app.title.value}}</h2>
+                    <div class="w100 text-center">
+                        <a href="{% url 'app:home' %}"><img src="{{app.logo.image}}" height="64px" alt=""></a>
+                        {% if perms.app.change_mainpic %}
+                        <p class="text-center"> <a class="btn btn-info text-light leo-farsi"
+                                href="{{app.logo.get_edit_url}}">ویرایش</a>
+                        </p> {% endif %}
+                    </div>
+
+                    {% if app.pretitle.value %}
+                    <a href="{% url 'app:home' %}">
+
+
+                        <h5 class="ftco-heading-2 leo-rtl text-secondary text-center">{{app.pretitle.value}}</h5>
+
+                    </a>
+                    {% if perms.app.change_parameter %}
+                    <p> <a class="btn btn-info text-light leo-farsi" href="{{app.pretitle.get_edit_url}}">ویرایش</a>
+                    </p> {% endif %}
+
+                    {% endif %}
+
+
+
+                    <a href="{% url 'app:home' %}">
+
+                        <h2 class="ftco-heading-2 leo-rtl text-center">{{app.title.value}}</h2>
+                    </a>
+                    {% if perms.app.change_parameter %}
+                    <p> <a class="btn btn-info text-light leo-farsi" href="{{app.title.get_edit_url}}">ویرایش</a>
+                    </p> {% endif %}
+
+
+
+
                     <p class=" leo-rtl text-right">{{app.slogan.value}}</p>
+
                     {% if perms.app.change_parameter %}
                     <p> <a class="btn btn-info text-light leo-farsi" href="{{app.slogan.get_edit_url}}">ویرایش</a>
                     </p> {% endif %}
@@ -22,7 +56,7 @@
                         <li class="text-right"><a href="{% url 'app:about' %}#our_team" class="leo-farsi"><span
                                     class="leo-rtl fa fa-chevron-left ml-2"></span>تیم متخصص ما</a></li>
 
-                                    
+
                         <li class="text-right"><a href="{% url 'app:about' %}#our_services" class="leo-farsi"><span
                                     class="leo-rtl fa fa-chevron-left ml-2"></span>خدمات ما</a></li>
                         <li class="text-right"><a href="{% url 'app:home' %}#our_works" class="leo-farsi"><span
@@ -106,10 +140,10 @@
                 <p class="text-center">
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     کپی رایت &copy;
-                        <script>document.write(new Date().getFullYear());</script> کلیه حقوق مادی و معنوی محفوظ می باشد | 
-                        طراحی و توسعه  <i class="fa fa-heart" aria-hidden="true"></i><a
-                            href="https://khafonline.com/phoenix/" class="mx-2" target="_blank">فونیکس</a> & <a
-                            href="https://Colorlib.com" class="mx-2" target="_blank">Colorlib</a> 
+                    <script>document.write(new Date().getFullYear());</script> کلیه حقوق مادی و معنوی محفوظ می باشد |
+                    طراحی و توسعه <i class="fa fa-heart" aria-hidden="true"></i><a
+                        href="https://khafonline.com/phoenix/" class="mx-2" target="_blank">فونیکس</a> & <a
+                        href="https://Colorlib.com" class="mx-2" target="_blank">Colorlib</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>
