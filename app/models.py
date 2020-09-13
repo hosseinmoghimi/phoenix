@@ -275,7 +275,6 @@ class Link(Icon):
 
 class HomeSlider(Jumbotron):
     image_banner=models.ImageField(_("تصویر اسلایدر  1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     archive=models.BooleanField(_("بایگانی شود؟"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
     
