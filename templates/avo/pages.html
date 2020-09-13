@@ -1,0 +1,127 @@
+{% extends "avo/layout.html" %}
+{% load static %}
+{% load to_persian_date %}
+
+{% block head %}
+
+{% endblock %}
+{% if perms.app.change_blog %}
+
+{% endif %}
+{% block contents %}
+
+
+<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{pages_header_image.image}}');"
+  data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end">
+      <div class="col-md-9 ftco-animate pb-5 mb-5">
+        <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'app:home' %}"><i class="fa fa-chevron-left"></i>
+              بازگشت به خانه </a></span> </p>
+             
+              {% if pages_pre_title %}
+              <h3 class="mb-3 bread leo-rtl text-right">{{pages_pre_title}}</h3>
+                
+              {% endif %}
+              {% if pages_title %}
+          <h1 class="mb-3 bread leo-rtl text-right">{{pages_title}}</h1>
+            
+          {% endif %}
+              {% if pages_post_title %}
+          <h3 class="mb-3 bread leo-rtl text-right">{{pages_post_title}}</h3>
+            
+          {% endif %}
+	
+		{% if perms.app.change_mainpic %}
+		<p class="text-centerleo-rtl text-right">
+			<a href="{{pages_header_image.get_edit_url}}"
+				class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
+			</a>
+		</p>
+		{% endif %}
+
+	
+	</div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section">
+  <div class="container">
+
+    <div class="row leo-rtl d-flex">
+      {% for blog in blogs %}
+			<div class="col-md-3 d-flex ftco-animate">
+				<div class="blog-entry justify-content-end">
+					<div class="text">
+						<a href="{{blog.get_absolute_url}}" class="block-20 img"
+							style="background-image: url('{{blog.thumbnail}}');">
+						</a>
+						<h3 class="heading mb-3 leo-rtl text-right">
+							<a href="{{blog.get_absolute_url}}" class=" leo-rtl text-right">
+								<span class="leo-font-farsi">{{blog.title}}</span>
+
+							</a></h3>
+
+						<div class="meta mb-3  text-right">
+							<div class="leo-rtl text-right">
+								{{ blog.to_persian_date_tag | safe }}</div>
+							<div class="leo-rtl text-right">
+								<a href="{{blog.profile.get_absolute_url}}"><span
+										class="leo-font-farsi leo-rtl text-right">{{blog.profile.name}}</span></a></div>
+							<div>
+								<a href="#" class="meta-chat text-info">{{blog.likes.all | length}} <span
+										class="fa fa-thumbs-up  text-info"></span></a>
+										&nbsp;
+								<a href="#" class="meta-chat text-danger">{{blog.comments.all | length}} <span
+										class="fa fa-comment text-danger"></span></a></div>
+						</div>
+						<p>
+							<small>
+								{{blog.short_desc}}
+							</small>
+						</p>
+						<p style="text-align:right !important;">
+							<a href="{{blog.get_absolute_url}}" class="btn btn-dark custom-btn">
+								<span class="fa fa-info-circle ml-2"></span>
+								ادامه
+								مطلب</a>
+							{% if perms.app.edit_blog %}
+
+							<a href="{{blog.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
+
+							{% endif %}
+						</p>
+
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+    </div>
+    <div class="row mt-5 pb-5">
+      <div class="col text-center">
+        <div class="block-27">
+          <ul>
+            <li><a href="#">&lt;</a></li>
+            <li class="active"><span>1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&gt;</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+	$("#blogs-link").addClass('active')
+  </script>
+{% endblock %}

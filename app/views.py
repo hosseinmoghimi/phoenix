@@ -9,7 +9,7 @@ from app.serializers import NotificationSerializer,BlogSerializer,CommentSeriali
 from django.shortcuts import render,redirect,reverse
 from django.views import View
 from django.http import Http404,JsonResponse
-from app.settings import PUSHER_IS_ENABLE
+from app.settings import PUSHER_IS_ENABLE,STATIC_URL
 import json
 
 if PUSHER_IS_ENABLE:
@@ -160,8 +160,11 @@ class BlogView(View):
             context['add_blog_form']=AddBlogForm()
             icons=list(IconsEnum)
             context['icons_s']=json.dumps(icons)
+        context['pages_pre_title']=f'برچسب '
+        tag=TagRepo(user=user).get(tag_id=tag_id)        
+        context['pages_title']=tag.title
         context['blogs']=TagRepo(user=request.user).pages(tag_id=tag_id)
-        return render(request,TEMPLATE_ROOT+'blogs.html',context)
+        return render(request,TEMPLATE_ROOT+'pages.html',context)
 
 class OurWorkView(View):
     def add_blog(self,request,*args, **kwargs):
@@ -288,8 +291,13 @@ class BasicView(View):
         if request.method=='POST':
             search_form=SearchForm(request.POST)
             if search_form.is_valid():
-                search_for=search_form.cleaned_data['search_for']                     
-                return redirect(settings.SITE_URL)
+                search_for=search_form.cleaned_data['search_for']          
+                context=getContext(request=request)
+                context['pages_pre_title']=f'جست و جو برای '
+                context['pages_title']=search_for
+                context['pages_header_image']=MainPicRepo().get(name=MainPicEnum.SEARCH)
+                context['blogs']=PageRepo(user=request.user).search(search_for=search_for)           
+                return render(request,TEMPLATE_ROOT+'pages.html',context)
 
     def home(self,request):
         user=request.user

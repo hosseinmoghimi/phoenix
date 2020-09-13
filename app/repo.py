@@ -161,7 +161,11 @@ class TagRepo:
         return self.objects.order_by('priority')[:8]
     def pages(self,tag_id):
         return Tag.objects.get(pk=tag_id).page_set.all()
-
+    def get(self,tag_id):
+        try:
+            return self.objects.get(pk=tag_id)
+        except:
+            return None
 class ParameterRepo:
     
     def __init__(self,user=None):
@@ -248,6 +252,9 @@ class PageRepo:
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
 
+    def search(self,search_for):
+        pages=self.objects.filter(title__contains=search_for)
+        return pages
 
 class NotificationRepo:
 

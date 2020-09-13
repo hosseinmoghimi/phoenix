@@ -133,7 +133,8 @@ class ParametersEnum(TextChoices):
 
 class MainPicEnum(TextChoices):    
     CAROUSEL='سایت',_('سایت')    
-    FAQ='سوالات',_('سوالات')    
+    FAQ='سوالات',_('سوالات')     
+    SEARCH='جستجو',_('جستجو')    
     VIDEO='ویدیو',_('ویدیو')
     ABOUT='درباره ما',_('درباره ما')
     CONTACT_HEADER='سربرگ ارتباط با ما',_('سربرگ ارتباط با ما')
