@@ -25,7 +25,7 @@ class Jumbotron(models.Model):
     title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
     posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
     short_description=models.TextField(_("شرح کوتاه"),blank=True,null=True)
-    description=models.TextField(_("شرح کامل"))
+    description=models.TextField(_("شرح کامل"),blank=True,null=True)
     action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
     action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
     video_text=models.CharField(_("متن ویدیو"), max_length=100,blank=True,null=True)
