@@ -33,7 +33,7 @@
             
           {% endif %}
 	
-		{% if perms.app.change_mainpic %}
+		{% if perms.app.change_mainpic and pages_header_image.get_edit_url %}
 		<p class="text-centerleo-rtl text-right">
 			<a href="{{pages_header_image.get_edit_url}}"
 				class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر

@@ -168,9 +168,15 @@ class Signature(models.Model):
 
 class Tag(models.Model):
     priority=models.IntegerField(_("ترتیب"),default=100)
+    image_header=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Tag/', height_field=None, width_field=None, max_length=None)
     title=models.CharField(_("عنوان"), max_length=50)
     icon=models.ForeignKey("Icon", verbose_name=_("آیکون"),null=True,blank=True, on_delete=models.SET_NULL)
     
+    def image(self):
+        if self.image_header is None:
+            return None
+        return MEDIA_URL+str(self.image_header)
+
     def to_link_tag(self):
         return """
         <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
@@ -189,6 +195,8 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('app:tag',kwargs={'tag_id':self.pk})
+    def get_edit_url(self):
+        return f'{ADMIN_URL}app/tag/{self.pk}/change/'
 
 
 

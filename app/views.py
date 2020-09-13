@@ -9,7 +9,7 @@ from app.serializers import NotificationSerializer,BlogSerializer,CommentSeriali
 from django.shortcuts import render,redirect,reverse
 from django.views import View
 from django.http import Http404,JsonResponse
-from app.settings import PUSHER_IS_ENABLE,STATIC_URL
+from app.settings import PUSHER_IS_ENABLE,STATIC_URL,MEDIA_URL
 import json
 
 if PUSHER_IS_ENABLE:
@@ -163,6 +163,12 @@ class BlogView(View):
         context['pages_pre_title']=f'برچسب '
         tag=TagRepo(user=user).get(tag_id=tag_id)        
         context['pages_title']=tag.title
+        if tag.image_header :
+            context['pages_header_image']=tag
+        else:
+            context['pages_header_image']=main_pic_repo.get(name=MainPicEnum.TAG_HEADER)
+
+        
         context['blogs']=TagRepo(user=request.user).pages(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'pages.html',context)
 
@@ -235,7 +241,7 @@ class BasicView(View):
         else:
             context['notification']=NotificationRepo(user=user).get(notification_id=notification_id)
         context['notifications_s']=json.dumps(NotificationSerializer(NotificationRepo(user=request.user).list_unseen(),many=True).data)
-        return render(request,TEMPLATE_ROOT+'notifications.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'notifications.html',context)
     def about(self,request,*args, **kwargs):  
         user=request.user     
         main_pic_repo=MainPicRepo(user=request.user)
@@ -257,7 +263,7 @@ class BasicView(View):
     def terms(self,request):        
         context=getContext(request=request)
         context['terms']=ParameterRepo(user=request.user).get(ParametersEnum.TERMS)
-        return render(request,TEMPLATE_ROOT+'terms.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'terms.html',context)
     def faq(self,request):
         if request.method=='POST':
             add_faq_form=AddFaqForm(request.POST)
@@ -278,15 +284,15 @@ class BasicView(View):
             if user.has_perm(APP_NAME+'.add_faq'):
                 context['add_faq_form']=AddFaqForm()
             context['faqs']=FAQRepo(user=request.user).list()
-            return render(request,TEMPLATE_ROOT+'faq.html',context)
+            return render(request,TEMPLATE_ROOT_DASHBOARD+'faq.html',context)
     def our_team(self,request):        
         context=getContext(request=request)
         context['our_teams']=OurTeamRepo(user=request.user).list()
-        return render(request,TEMPLATE_ROOT+'our_team.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'our_team.html',context)
     def resume(self,request,our_team_id):        
         context=getContext(request=request)
         context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
-        return render(request,TEMPLATE_ROOT+'resume.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'resume.html',context)
     def search(self,request):
         if request.method=='POST':
             search_form=SearchForm(request.POST)
@@ -418,7 +424,7 @@ class TransactionView(View):
         context['transactions']=transactions
         context['transaction_title']=profile.name
         context['rest_all']=transaction_repo.rest(profile_id=profile_id)
-        return render(request,TEMPLATE_ROOT+'transactions.html',context)
+        return render(request,TEMPLATE_ROOT_DASHBOARD+'transactions.html',context)
 
 
 class ManagerView(View):
@@ -437,5 +443,5 @@ class ManagerView(View):
         if user.has_perm('dashboard.add_notification'):
             add_notification_form=AddNotificationForm()
             context['add_notification_form']=add_notification_form
-            return render(request,TEMPLATE_ROOT+'manager.html',context)
+            return render(request,TEMPLATE_ROOT_DASHBOARD+'manager.html',context)
         return BasicView().home(request)

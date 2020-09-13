@@ -20,9 +20,15 @@
         <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'app:home' %}"><i class="fa fa-chevron-left"></i>
               بازگشت به خانه </a></span> </p>
 
-        <h1 class="mb-3 bread leo-rtl text-right">ارتباط با ما</h1>
+        <h1 class="mb-3 bread leo-rtl text-right">{{contact_us.value}}</h1>
+        {% if perms.app.change_parameter %}
+        <p class="leo-rtl text-right">
+          <a href="{{contact_us.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
+          </a>
+        </p>
+        {% endif %}
         {% if perms.app.change_mainpic %}
-        <p class="text-centerleo-rtl text-right">
+        <p class="leo-rtl text-right">
           <a href="{{contact_header_image.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
           </a>
         </p>
@@ -37,19 +43,13 @@
   <div class="container">
     <div class="row justify-content-center mb-5 pb-3">
       <div class="col-md-8 heading-section text-center ftco-animate">
-        <span class="subheading leo-farsi">ارتباط با ما</span>
-        <h2 class="mb-4">مشاوره رایگان از طریق راه های ارتباطی زیر</h2>
-        <p class="text-center ">
-          {{contact_us.value}}
-          {% if perms.app.change_parameter %}
-        <p class="text-centerleo-rtl text-center">
-          <a href="{{contact_us.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
-          </a>
-        </p>
-        {% endif %}
+        <span class="subheading leo-farsi"></span>
+        <h2 class="mb-4">ارتباط با ما</h2>
+     
+          
+         
 
 
-        </p>
       </div>
     </div>
 
