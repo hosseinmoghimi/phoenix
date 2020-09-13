@@ -556,7 +556,8 @@ class Comment(models.Model):
         return PersianCalendar().from_gregorian(self.date_added)
 
     def __str__(self):
-        return f'{self.profile.name()} @ {self.text}'
+        name='' if self.profile is None else self.profile.name()
+        return f'{name} @ {self.text}'
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/blog/{self.pk}/change/'
