@@ -26,17 +26,17 @@ DATABASES = {
 
 TIME_ZONE = 'Asia/Tehran'
 
-SITE_URL='/hames/'
+SITE_URL='/phoneix/'
 
 
 ADMIN_URL=SITE_URL+'admin/'
 STATIC_URL = SITE_URL+'static/'
 
-STATIC_ROOT = '/home2/imenyarc/public_html/hames/staticfiles/'
+STATIC_ROOT = '/home2/imenyarc/public_html/phoneix/staticfiles/'
 
 MEDIA_URL =  SITE_URL+'media/'
-MEDIA_ROOT = '/home2/imenyarc/public_html/hames/media/'
-STATICFILES_DIRS=['/home2/imenyarc/hames/static/']
+MEDIA_ROOT = '/home2/imenyarc/public_html/phoneix/media/'
+STATICFILES_DIRS=['/home2/imenyarc/phoneix/static/']
 PUSHER_IS_ENABLE=False
 REMOTE_MEDIA=False
 COMING_SOON=False
