@@ -74,8 +74,29 @@
                 <h6 class="mb-3 leo-rtl text-right">{{page.posttitle}}</h6>
 
                 {% endif %}
+                {% if page.profile %}
 
-                <div>
+                <div class="about-author d-flex p-4 mb-3">
+                    <div class="bio ml-5">
+                        <a href="{{page.profile.get_absolute_url}}">
+                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px"
+                                class="img-fluid mb-4 rounded-circle">
+                        </a>
+                    </div>
+                    <div class="desc">
+                        <a href="{{page.profile.get_absolute_url}}">
+                            <h5>{{page.profile.name}}</h5>
+                        </a>
+                        {% if page.profile.bio %}
+                        <p>{{page.profile.bio}}</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <div class="px-5">
                     <p id="like-app" v-cloak>
                         <span v-text="likes_count"></span>
                         <transition name="fade">
@@ -97,11 +118,11 @@
                 </div>
                 <p>{{page.description | safe }}</p>
 
-{% if location %}
-<div style="width:fit-content;margin:auto">
-    {% include "avo/partials/map.html" %}
-  </div>
-{% endif %}
+                {% if location %}
+                <div style="width:fit-content;margin:auto">
+                    {% include "avo/partials/map.html" %}
+                </div>
+                {% endif %}
                 {% if page.links.all %}
 
                 <div class="testimony-wrap pb-2 mb-4">
@@ -147,7 +168,7 @@
                         <h5 class="mb-4 text-right">دانلود ها</h5>
 
                         {% for document in page.documents.all %}
-                        <p>
+                        <p class="mb-3">
                             <a href="{{document.get_download_url}}">
                                 {{document.get_tag_icon | safe}}&nbsp;&nbsp;
                                 {{document.title}}
@@ -162,6 +183,10 @@
                             </a>
 
                             {% endif %}
+                            <br>
+                            <span class="px-5">
+                                {{document.profile.name}}
+                            </span>
                         </p>
                         {% endfor %}
 
@@ -189,27 +214,7 @@
 
                     </div>
                 </div>
-                {% if page.profile %}
-
-                <div class="about-author d-flex p-4">
-                    <div class="bio ml-5">
-                        <a href="{{page.profile.get_absolute_url}}">
-                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px"
-                                class="img-fluid mb-4 rounded-circle">
-                        </a>
-                    </div>
-                    <div class="desc">
-                        <a href="{{page.profile.get_absolute_url}}">
-                            <h3>{{page.profile.name}}</h3>
-                        </a>
-                        {% if page.profile.bio %}
-                        <p>{{page.profile.bio}}</p>
-                        {% endif %}
-
-                    </div>
-                </div>
-
-                {% endif %}
+              
 
                 <div class="pt-5 mt-5 mb-3 pr-4" id="comment-app" style="background-color: #f3f3f3;">
                     <h4 class="mb-5 text-right leo-rtl" v-text="comments.length + ' نظر' "></h4>
@@ -243,6 +248,13 @@
 
                         </form>
                     </div>
+                    {% else %}
+                    <p class="mb-3 px-5 py-5">
+                        <a href="{% url 'authentication:login' %}"
+                        class="btn py-3 px-4 btn-primary">
+                    ورود</a>
+                    </p>
+
                     {% endif %}
                 </div>
 
