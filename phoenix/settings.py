@@ -5,8 +5,8 @@ import sys
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-SERVER_ON_PARS=True
-SERVER_ON_HEROKU=False
+SERVER_ON_PARS=False
+SERVER_ON_HEROKU=True
 SERVER_ON_LOCAL=False
 
 

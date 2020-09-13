@@ -7,9 +7,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY="cz5^v3qa%kxwwlidp&&l)vy3@z78j#^u7mm+c4b)+@yjs42k6x"
 
-DEBUG =False
+DEBUG =True
 
-ALLOWED_HOSTS = ['protected-basin-66877.herokuapp.com']
+ALLOWED_HOSTS = ['herokuapp.com']
 
 MYSQL=False
 
