@@ -4,7 +4,7 @@ from app.enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
-from app.repo import LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
+from .repo import LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
 from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer
 from app.repo import ProfileTransactionRepo,ProfileRepo
 from django.shortcuts import render,redirect,reverse
@@ -69,6 +69,7 @@ def getContext(request):
     context['SITE_URL']=settings.SITE_URL
     context['MEDIA_URL']=settings.MEDIA_URL
     context['ADMIN_URL']=settings.ADMIN_URL
+    context['APP_NAME']=APP_NAME
     context['DEBUG']=settings.DEBUG
     
     # context['current_profile']=ProfileRepo.get_by_user()
@@ -171,7 +172,7 @@ class BlogView(View):
             context['pages_header_image']=main_pic_repo.get(name=MainPicEnum.TAG_HEADER)
 
         
-        context['blogs']=TagRepo(user=request.user).pages(tag_id=tag_id)
+        context['pages']=TagRepo(user=request.user).pages(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'pages.html',context)
 
 class OurWorkView(View):

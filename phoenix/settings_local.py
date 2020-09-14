@@ -22,7 +22,7 @@ ALLOWED_HOSTS = ['192.168.100.198','192.168.1.21']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db_local98.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db_local124.sqlite3'),
     }
 }
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

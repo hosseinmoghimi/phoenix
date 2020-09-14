@@ -1,0 +1,21 @@
+  <!-- single-news -->
+  <div class="single-news mb-30">
+    <div class="news-img">
+        <img src="{{blog.grid_image}}" alt="">
+        <div class="news-date text-center">
+            <span>24</span>
+            <p>Now</p>
+        </div>
+    </div>
+    <div class="news-caption">
+        <ul class="david-info">
+         {% for tag in blog.tags.all %}
+             <li> | &nbsp; &nbsp;  
+                 <a href="{{tag.get_absolute_url}}">{{tag.title}}</a>
+             </li>
+         {% endfor %} 
+        </ul>
+        <h2><a href="{{blog.get_absolute_url}}">{{blog.title}}</a></h2>
+        <a href="{{blog.get_absolute_url}}" class="d-btn">Read more »</a>
+    </div>
+</div>

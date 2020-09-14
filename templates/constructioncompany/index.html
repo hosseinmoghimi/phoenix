@@ -60,6 +60,9 @@
                     <div class="section-tittle mb-55">
                         <div class="front-text">
                             <h2 class="">Our Services</h2>
+                            {% if perms.engapp.add_ourservice %}
+                            <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourservice/add/">Add Service</a></p>
+                          {% endif %}
                         </div>
                         <span class="back-text">Services</span>
                     </div>
@@ -152,6 +155,9 @@
                         <div class="section-tittle section-tittle3">
                             <div class="front-text">
                                 <h2 class="">Our Projects</h2>
+                                {% if perms.engapp.add_ourwork %}
+                                <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourwork/add/">Add Project</a></p>
+                              {% endif %}
                             </div>
                             <span class="back-text">Gellary</span>
                         </div>
@@ -713,6 +719,9 @@
                     <div class="section-tittle section-tittle6 mb-50">
                         <div class="front-text">
                             <h2 class="">Testimonial</h2>
+                            {% if perms.engapp.add_testimonial %}
+                            <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/testimonial/add/">Add Testimonial</a></p>
+                          {% endif %}
                         </div>
                         <span class="back-text">Feedback</span>
                     </div>
@@ -778,52 +787,24 @@
                     <div class="section-tittle section-tittle7 mb-50">
                         <div class="front-text">
                             <h2 class="">latest news</h2>
+                            {% if perms.engapp.add_blog %}
+                              <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/blog/add/">Add Blog</a></p>
+                            {% endif %}
                         </div>
                         <span class="back-text">Our Blog</span>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-6">
+                {% for blog in blogs %}
+                      <div class="col-xl-6 col-lg-6 col-md-6">
                     <!-- single-news -->
-                    <div class="single-news mb-30">
-                        <div class="news-img">
-                            <img src="{% static 'engapp/img/david/david_1.png' %}" alt="">
-                            <div class="news-date text-center">
-                                <span>24</span>
-                                <p>Now</p>
-                            </div>
-                        </div>
-                        <div class="news-caption">
-                            <ul class="david-info">
-                                <li> | &nbsp; &nbsp;  Porperties</li>
-                            </ul>
-                            <h2><a href="single-blog.html">Footprints in Time is perfect
-                                House in Kurashiki</a></h2>
-                            <a href="single-blog.html" class="d-btn">Read more »</a>
-                        </div>
-                    </div>
+                 
+                    {% include "constructioncompany/includes/blog_grid.html" %}
                 </div>
-                <div class="col-xl-6 col-lg-6 col-md-6">
-                    <!-- single-news -->
-                    <div class="single-news mb-30">
-                        <div class="news-img">
-                            <img src="{% static 'engapp/img/david/david_2.png' %}" alt="">
-                            <div class="news-date text-center">
-                                <span>24</span>
-                                <p>Now</p>
-                            </div>
-                        </div>
-                        <div class="news-caption">
-                            <ul class="david-info">
-                                <li> | &nbsp; &nbsp;  Porperties</li>
-                            </ul>
-                            <h2><a href="single-blog.html">Footprints in Time is perfect
-                                House in Kurashiki</a></h2>
-                            <a href="single-blog.html" class="d-btn">Read more » </a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+            
+              
            </div>
         </div>
     </div>
