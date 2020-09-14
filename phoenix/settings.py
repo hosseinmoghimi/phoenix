@@ -57,6 +57,7 @@ if not SERVER_ON_HEROKU:
 
 INSTALLED_APPS = [
     'app',
+    'engapp',
     'market',
     'authentication',    
     'django_cleanup',

@@ -11,6 +11,7 @@ from .settings import SERVER_ON_HEROKU
 urlpatterns = [
     path('', include('app.urls')),
     path('', include('authentication.urls')),
+    path('en/', include('engapp.urls')),
     path('market/', include('market.urls')),
     path('admin/', admin.site.urls),
 
