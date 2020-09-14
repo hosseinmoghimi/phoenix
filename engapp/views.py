@@ -52,7 +52,7 @@ def getContext(request):
     parameter_repo=ParameterRepo(user=user)
     context['theme_color']=parameter_repo.get(ParametersEnum.THEME_COLOR).value
     context['PUSHER_IS_ENABLE']=PUSHER_IS_ENABLE
-    context['app']={
+    context['engapp']={
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
         'logo':MainPicRepo().get(name=MainPicEnum.LOGO),
         'pretitle':parameter_repo.get(ParametersEnum.PRE_TILTE),

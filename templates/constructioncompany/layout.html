@@ -46,17 +46,22 @@
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left">
                                     <ul>     
-                                        <li>+(123) 1234-567-8901</li>
-                                        <li>info@domain.com</li>
-                                        <li>Mon - Sat 8:00 - 17:30, Sunday - CLOSED</li>
+                                        <li>{{engapp.tel.value}}</li>
+                                        <li>{{engapp.email.value}}</li>
+                                        <li>{{engapp.address.value}}</li>
+                                        {% if perms.engapp %}
+                                          <li><a href="{{ADMIN_URL}}{{APP_NAME}}/">Admin Panel</a></li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
                                     <ul class="header-social">    
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                       <li> <a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                        {% for social_link in social_links %}
+                                          
+                                        <li><a href="{{social_link.url}}">{{social_link.get_tag_icon|safe}}</a></li>
+                                        {% endfor %}
+                                       
+                                        
                                     </ul>
                                 </div>
                             </div>
