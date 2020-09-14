@@ -10,12 +10,32 @@
 <!-- slider Area Start-->
 <div class="slider-area ">
     <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
-        data-background="assets/img/hero/about.jpg">
+        data-background="{{pages_header_image.image}}">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap pt-100">
-                        <h2> Blog</h2>
+                        {% if pages_pre_title %}
+                        <h3 class="mb-3 bread ">{{pages_pre_title}}</h3>
+                          
+                        {% endif %}
+                        {% if pages_title %}
+                    <h2 class="mb-3 ">{{pages_title}}</h2>
+                      
+                    {% endif %}
+                        {% if pages_post_title %}
+                    <h3 class="mb-3 bread ">{{pages_post_title}}</h3>
+                      
+                    {% endif %}
+              
+                  {% if perms.app.change_mainpic and pages_header_image.get_edit_url %}
+                  <p class="">
+                      <a href="{{pages_header_image.get_edit_url}}"
+                          class="btn btn-info py-md-3 py-2 px-2 px-md-4">Edit Image
+                      </a>
+                  </p>
+                  {% endif %}
+
                         <nav aria-label="breadcrumb ">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>

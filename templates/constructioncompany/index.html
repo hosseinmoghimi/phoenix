@@ -69,48 +69,24 @@
                 </div>
             </div>
             <div class="row">
+              {% for our_service in our_services %}
+                
                 <div class="col-xl-4 col-lg-4 col-md-6">
                     <div class="single-service-cap mb-30">
                         <div class="service-img">
-                            <img src="{% static 'engapp/img/service/servicess1.png' %}" alt="">
+                            <img src="{{our_service.thumbnail}}" alt="">
                         </div>
                         <div class="service-cap">
-                            <h4><a href="services_details.html">Engineering techniques & implementation</a></h4>
-                            <a href="services_details.html" class="more-btn">Read More <i class="ti-plus"></i></a>
+                            <h4><a href="{{our_service.get_absolute_url}}">{{our_service.title}}</a></h4>
+                            <a href="{{our_service.get_absolute_url}}" class="more-btn">Read More <i class="ti-plus"></i></a>
                         </div>
                         <div class="service-icon">
-                            <img src="{% static 'engapp/img/icon/services_icon1.png' %}" alt="">
+                            <img src="{{our_service.get_icon_tag|safe}}" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-service-cap mb-30">
-                        <div class="service-img">
-                            <img src="{% static 'engapp/img/service/servicess2.png' %}" alt="">
-                        </div>
-                        <div class="service-cap">
-                            <h4><a href="services_details.html">Engineering techniques & implementation</a></h4>
-                            <a href="services_details.html" class="more-btn">Read More <i class="ti-plus"></i></a>
-                        </div>
-                        <div class="service-icon">
-                            <img src="{% static 'engapp/img/icon/services_icon1.png' %}" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="single-service-cap mb-30">
-                        <div class="service-img">
-                            <img src="{% static 'engapp/img/service/servicess3.png' %}" alt="">
-                        </div>
-                        <div class="service-cap">
-                            <h4><a href="services_details.htmlaa">Engineering techniques &  implementation</a></h4>
-                            <a href="services_details.html" class="more-btn">Read More <i class="ti-plus"></i></a>
-                        </div>
-                        <div class="service-icon">
-                            <img src="{% static 'engapp/img/icon/services_icon1.png' %}" alt="">
-                        </div>
-                    </div>
-                </div>
+               
+              {% endfor %}
             </div>
         </div>
     </div>
@@ -183,401 +159,34 @@
                 <div class="col-12">
                     <!-- Nav Card -->
                     <div class="tab-content active" id="nav-tabContent">
-                        <!-- card ONE -->
+                       
+                      
+                        
                         <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">           
                             <div class="project-caption">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-6">
+                                    {% for our_work in our_works %}
+                                       <div class="col-lg-4 col-md-6">
                                         <div class="single-project mb-30">
                                             <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project1.png' %}" alt="">
+                                                <img src="{{our_work.grid_image}}" alt="">
                                             </div>
                                             <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                                <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
+                                                <a href="{{our_work.get_absolute_url}}" class="plus-btn"><i class="ti-plus"></i></a>
+                                                <h4><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a></h4>
+                                                <p>{{our_work.short_description}}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project2.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project3.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project4.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project5.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project6.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
+                                   {% endfor %}
+                                   
+                                  
                                 </div>
                             </div>
                         </div>
-                        <!-- Card TWO -->
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <div class="project-caption">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project5.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project6.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project1.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project2.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project3.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project4.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card THREE -->
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                            <div class="project-caption">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project3.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project4.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project1.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project2.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project5.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project6.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- card FUR -->
-                        <div class="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
-                            <div class="project-caption">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project1.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project2.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project3.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project4.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project5.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project6.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- card FIVE -->
-                        <div class="tab-pane fade" id="nav-techno" role="tabpanel" aria-labelledby="nav-technology">
-                            <div class="project-caption">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project1.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project2.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project3.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project4.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project5.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="single-project mb-30">
-                                            <div class="project-img">
-                                                <img src="{% static 'engapp/img/gallery/project6.png' %}" alt="">
-                                            </div>
-                                            <div class="project-cap">
-                                                <a href="project_details.html" class="plus-btn"><i class="ti-plus"></i></a>
-                                               <h4><a href="project_details.html">Floride Chemicals</a></h4>
-                                                <h4><a href="project_details.html">Factory</a></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    
+                     
                     </div>
                 <!-- End Nav Card -->
                 </div>

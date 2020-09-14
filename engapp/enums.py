@@ -142,6 +142,7 @@ class MainPicEnum(TextChoices):
     BLOG_HEADER='سربرگ مقاله',_('سربرگ مقاله')
     OUR_WORK_HEADER='سربرگ پروژه',_('سربرگ پروژه')
     PAGE_HEADER_DEFAULT='سربرگ پیش فرض برای صفحات',_('سربرگ پیش فرض برای صفحات')
+    TAG_HEADER='سربرگ برچسب',_('سربرگ برچسب')
     ABOUT_HEADER='سربرگ درباره ما',_('سربرگ درباره ما')
 class TransactionTypeEnum(TextChoices):
     CASH='CASH',_('CASH')

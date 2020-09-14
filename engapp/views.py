@@ -163,7 +163,7 @@ class BlogView(View):
             context['add_blog_form']=AddBlogForm()
             icons=list(IconsEnum)
             context['icons_s']=json.dumps(icons)
-        context['pages_pre_title']=f'برچسب '
+        context['pages_pre_title']=f'Tag '
         tag=TagRepo(user=user).get(tag_id=tag_id)        
         context['pages_title']=tag.title
         if tag.image_header :

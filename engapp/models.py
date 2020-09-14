@@ -190,7 +190,7 @@ class Page(Jumbotron):
                 return str(MainPic.objects.get(name=MainPicEnum.PAGE_HEADER_DEFAULT).image())
             except :
                 return None
-    def grid_image(self):
+    def {{our_work.get_absolute_url}}(self):
         
         try:
             return MEDIA_URL+str(self.grid_image_origin)
