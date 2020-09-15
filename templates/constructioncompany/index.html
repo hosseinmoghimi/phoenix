@@ -21,22 +21,24 @@
                             <div class="stock-text" data-animation="fadeInUp" data-delay=".8s">
                                 <h2>{{home_slider.posttitle}}</h2>
                                 <h2>{{home_slider.posttitle}}</h2>
+
                             </div>
                             <div class="hero-text2 mt-110" data-animation="fadeInUp" data-delay=".9s">
-                                {% if home_slider.action_link %}
-                                <span><a href="{{home_slider.action_link}}">
+                                {% if home_slider.action_text %}
+                                <span class="d-block"> <a href="{{home_slider.action_url}}">
                                         {{home_slider.action_text}}
 
                                     </a></span>
                                 {% endif %}
 
-                                {% if perms.engapp.change_homeslider %}
-                            <a class="" href="{{home_slider.get_edit_url}}">
-                                        Edit
 
-                                    </a>
-                                {% endif %}
                             </div>
+                            {% if perms.engapp.change_homeslider %}
+                            <span class="d-block">   <a class=" d-inline" href="{{home_slider.get_edit_url}}">
+                                    Edit
+
+                                </a></span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -113,11 +115,14 @@
         <div class="right-content">
             <!-- img -->
             <div class="right-img">
-                <img src="{% static 'engapp/img/gallery/safe_in.png' %}" alt="">
+                <img src="{{about_pic.image}}" alt="">
             </div>
             <div class="support-img-cap text-center">
                 <span>1994</span>
                 <p>Since</p>
+                {% if perms.engapp.change_mainpic %}
+                <p><a class="btn btn-info" href="{{about_pic.get_edit_url}}">Edit</a></p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -212,7 +217,7 @@
                         <!-- Section Tittle -->
                         <div class="section-tittle section-tittle4">
                             <div class="front-text">
-                                <h2 class="">Lats talk with us</h2>
+                                <h2 class="">Let`s talk with us</h2>
                             </div>
                             <span class="back-text">Lat`s chat</span>
                         </div>

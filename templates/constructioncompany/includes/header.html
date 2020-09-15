@@ -1,0 +1,88 @@
+{% load static %}
+<header>
+    <!-- Header Start -->
+   <div class="header-area header-transparent">
+        <div class="main-header ">
+            <div class="header-top d-none d-lg-block">
+               <div class="container-fluid">
+                   <div class="col-xl-12">
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="header-info-left">
+                                <ul>     
+                                    <li><a href="tel://{{engapp.tel.value}}">{{engapp.tel.value}}</a></li>
+                                    <li><a href="mailto:{{engapp.email.value}}">{{engapp.email.value}}</a></li>
+                                    <li><a href="#">{{engapp.address.value}}</a></li>
+                                    {% if perms.engapp %}
+                                      <li><a href="{{ADMIN_URL}}{{APP_NAME}}/">Admin Panel</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div class="header-info-right">
+                                <ul class="header-social">    
+                                    {% for social_link in social_links %}
+                                      
+                                    <li><a href="{{social_link.url}}">{{social_link.get_tag_icon|safe}}</a></li>
+                                    {% endfor %}
+                                   
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+               </div>
+            </div>
+           <div class="header-bottom  header-sticky">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2 col-md-1">
+                            <div class="logo">
+                                <!-- logo-1 -->
+                                <a href="{% url 'engapp:home' %}" class="big-logo"><img src="{{engapp.logo.image}}" alt=""><span class="d-inline" style="font-size: 2em;">{{engapp.title.value}}</span></a>
+                                <!-- logo-2 -->
+                                <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{% static 'engapp/img/logo/loder-logo.png' %}" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8">
+                            <!-- Main-menu -->
+                            <div class="main-menu f-right d-none d-lg-block">
+                                <nav> 
+                                    <ul id="navigation">                                                                                                                   
+                                        <li><a href="{% url 'engapp:home' %}">Home</a></li>
+                                        <li><a href="https://colorlib.com/preview/theme/constructioncompany/">About</a></li>
+                                        <li><a href="{% url 'app:home' %}">Persian</a></li>
+                                        <li><a href="services.html">Services</a></li>
+                                        <li><a href="blog.html">Blog</a>
+                                            <ul class="submenu">
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="single-blog.html">Blog Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Pages</a>
+                                            <ul class="submenu">
+                                                <li><a href="elements.html">Element</a></li>
+                                                <li><a href="project_details.html">Projects Details</a></li>
+                                                <li><a href="services_details.html">Services Details</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>             
+                        <div class="col-xl-2 col-lg-2 col-md-3">
+                            <div class="header-right-btn f-right d-none d-lg-block">
+                                <a href="#" class="btn">Contact Now</a>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+   </div>
+    <!-- Header End -->
+</header>
