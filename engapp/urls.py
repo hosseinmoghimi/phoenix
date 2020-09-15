@@ -5,7 +5,7 @@ from . import views
 app_name="engapp"
 urlpatterns = [
     path('',views.BasicView().home,name='home'),
-    path('api/',include('app.api')),
+    path('api/',include('engapp.api')),
     path('profile/<int:profile_id>/',views.ProfileView().profile,name='profile'),
     path('transactions/<int:profile_id>/',views.TransactionView().transactions,name='transactions'),    
     path('about/',views.BasicView().about,name='about'),

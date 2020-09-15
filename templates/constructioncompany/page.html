@@ -131,8 +131,8 @@
                   </div>
                </div>
             </div>
-            <div id="comment-app">
-            <div class="comments-area">
+
+            <div class="comments-area" id="comment-app">
                <h4 v-text="comments.length+' Comments'"></h4>
 
                <div class="comment-list">
@@ -165,14 +165,14 @@
 
 
 
-            <div class="comment-form">
+            <div class="comment-form" id="comment-form">
                <h4>Leave a Reply</h4>
                <form class="form-contact comment_form" action="#" id="commentForm">
                   <div class="row">
                      <div class="col-12">
                         <div class="form-group">
-                           <textarea class="form-control w-100" name="comment" v-model="my-comment" id="comment"
-                              cols="30" rows="9" placeholder="Write Comment"></textarea>
+                           <textarea class="form-control w-100" name="comment" id="my-comment" v-model="my_comment" id="comment" cols="30"
+                              rows="9" placeholder="Write Comment"></textarea>
                         </div>
                      </div>
                      <div class="col-sm-6">
@@ -193,11 +193,12 @@
                      {% csrf_token %}
                   </div>
                   <div class="form-group">
-                     <button type="button" @click="AddComment" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
+                     <button type="button" @click="AddComment" class="button button-contactForm btn_1 boxed-btn">Send
+                        Message</button>
                   </div>
                </form>
             </div>
-         </div>
+
 
          </div>
          <div class="col-lg-4">
@@ -338,8 +339,8 @@
    let page_id = JSON.parse("{{page.id}}")
    let likes_count = JSON.parse("{{page.likes.all|length}}")
    let object_id = JSON.parse("{{page.id}}")
-   let add_comment_url = "{% url 'app:add_comment' %}"
-   let delete_comment_url = "{% url 'app:delete_comment' %}"
+   let add_comment_url = "{% url 'engapp:add_comment' %}"
+   let delete_comment_url = "{% url 'engapp:delete_comment' %}"
    let comment_template = `{% include 'avo/partials/comment.html' %}`
    let profile_id = JSON.parse("{% if profile %}{{profile.id}}{% else %}0{% endif %}")
 </script>
@@ -400,27 +401,43 @@
                this.comments = this.comments.filter(function (value, index, arr) { return value.id != comment_id; })
 
             },
+
+         },
+      }
+   )
+
+
+   var comment_form = new Vue(
+      {
+         el: "#comment-form",
+         data: {
+            my_comment: '',
+            profile_id: profile_id,
+         },
+         methods: {
             AddComment: function () {
-               if (comment_app.text === "")
+
+     
+               if (comment_form.text === "")
                   console.log('comment text must be filled')
                else {
                   let url = add_comment_url
                   let posting = $.post(url, {
                      object_id: object_id,
-                     text: comment_app.my_comment,
+                     text: comment_form.my_comment,
                      object_type: "Page",
                      csrfmiddlewaretoken: csrfmiddlewaretoken
                   })
                   posting.done(function (data) {
-                     this.confirm_delete_comment = false
+                     comment_app.confirm_delete_comment = false
                      if (data.my_comment) {
                         comment_app.comments.push(data.my_comment)
-                        comment_app.text = ""
+                        comment_form.my_comment=""
                      }
                   })
                }
             },
-         },
+         }
       }
    )
 </script>
