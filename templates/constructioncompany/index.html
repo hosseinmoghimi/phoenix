@@ -290,6 +290,9 @@
                 <div class="section-tittle section-tittle5 mb-50">
                     <div class="front-text">
                         <h2 class="">Our team</h2>
+                        {% if perms.engapp.add_ourteam %}
+                        <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourteam/add/">Add Our Team Member</a></p>
+                        {% endif %}
                     </div>
                     <span class="back-text">exparts</span>
                 </div>
