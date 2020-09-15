@@ -1,4 +1,5 @@
 {% extends "constructioncompany/layout.html" %}
+{% load static %}
 {% block contents %}
 
 <!-- slider Area Start-->
@@ -51,24 +52,28 @@
 
                </div>
             </div>
-            
+
             {% for partial_page in page.partials.all %}
             {% include "constructioncompany/includes/partial-page.html" %}
             {% endfor %}
+            {% if page.profile %}
 
             <div class="blog-author">
                <div class="media align-items-center">
-                  <img src="assets/img/blog/author.png" alt="">
+                  <img src="{{page.profile.image}}" alt="">
                   <div class="media-body">
-                     <a href="#">
-                        <h4>Harvard milan</h4>
+                     <a href="{{page.profile.get_absolute_url}}">
+                        <h4>{{page.profile.name}}</h4>
                      </a>
-                     <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                        our dominion twon Second divided from</p>
+                     {% if  page.profile.bio %}
+                       
+                     <p>{{page.profile.bio}}</p>
+                     {% endif %}
                   </div>
                </div>
-            </div> 
-            
+            </div>
+
+            {% endif %}
             <div class="navigation-top">
                <div class="d-sm-flex justify-content-between text-center">
                   <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
@@ -89,7 +94,7 @@
                         class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                         <div class="thumb">
                            <a href="#">
-                              <img class="img-fluid" src="assets/img/post/preview.png" alt="">
+                              <img class="img-fluid" src="{% static 'engapp/img/loader-logo.png' %}" alt="ssss">
                            </a>
                         </div>
                         <div class="arrow">
@@ -119,7 +124,7 @@
                         </div>
                         <div class="thumb">
                            <a href="#">
-                              <img class="img-fluid" src="/static/engapp/img/post/next.png" alt="">
+                              <img class="img-fluid" src="{% static 'engapp/img/loader-logo.png' %}" alt="">
                            </a>
                         </div>
                      </div>
@@ -127,24 +132,23 @@
                </div>
             </div>
             <div class="comments-area">
-               <h4>05 Comments</h4>
+               <h4 v-text="comments.length+' Comments'"></h4>
+           
                <div class="comment-list">
                   <div class="single-comment justify-content-between d-flex">
                      <div class="user justify-content-between d-flex">
                         <div class="thumb">
-                           <img src="assets/img/comment/comment_1.png" alt="">
+                           <img :src="comment.profile.image" alt="">
                         </div>
                         <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                           <p class="comment" v-text="comment.text">
                            </p>
                            <div class="d-flex justify-content-between">
                               <div class="d-flex align-items-center">
                                  <h5>
-                                    <a href="#">Emilly Blunt</a>
+                                    <a href="#" v-text="comment.profile.name"></a>
                                  </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
+                                 <p class="date" v-html="comment.date_added"></p>
                               </div>
                               <div class="reply-btn">
                                  <a href="#" class="btn-reply text-uppercase">reply</a>
@@ -154,58 +158,8 @@
                      </div>
                   </div>
                </div>
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           <img src="assets/img/comment/comment_2.png" alt="">
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                 </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
-                              </div>
-                              <div class="reply-btn">
-                                 <a href="#" class="btn-reply text-uppercase">reply</a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           <img src="assets/img/comment/comment_3.png" alt="">
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                 </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
-                              </div>
-                              <div class="reply-btn">
-                                 <a href="#" class="btn-reply text-uppercase">reply</a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+           
+               
             </div>
 
 
@@ -337,34 +291,10 @@
                   <ul class="instagram_row flex-wrap">
                      <li>
                         <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_5.png" alt="">
+                           <img class="img-fluid" src="{% static 'engapp/img/loader-logo.png' %}" alt="next post">
                         </a>
                      </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_6.png" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_7.png" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_8.png" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_9.png" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="assets/img/post/post_10.png" alt="">
-                        </a>
-                     </li>
+                
                   </ul>
                </aside>
                <aside class="single_sidebar_widget newsletter_widget">

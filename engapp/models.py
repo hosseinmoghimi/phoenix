@@ -688,7 +688,11 @@ class GalleryAlbum(Banner):
 
 
 class GalleryPhoto(Banner):
-    
+    thumbnail_origin=models.ImageField(_("تصویر کوچک "), upload_to=IMAGE_FOLDER+'Gallery/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    def thumbnail(self):
+        if self.thumbnail_origin:
+            return MEDIA_URL+str(self.thumbnail_origin)
+        return self.image()
     
     class Meta:
         verbose_name = _("GalleryPhoto")
@@ -746,6 +750,7 @@ class SocialLink(models.Model):
 
 
 class OurTeam(models.Model):
+    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     name=models.CharField(_("نام"), max_length=100)
     job=models.CharField(_("سمت"), max_length=100)
     description=models.CharField(_("توضیحات"), max_length=500)

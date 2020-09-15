@@ -38,9 +38,9 @@
                         <div class="col-xl-2 col-lg-2 col-md-1">
                             <div class="logo">
                                 <!-- logo-1 -->
-                                <a href="{% url 'engapp:home' %}" class="big-logo"><img src="{{engapp.logo.image}}" alt=""><span class="d-inline" style="font-size: 2em;">{{engapp.title.value}}</span></a>
+                                <a href="{% url 'engapp:home' %}" class="big-logo"><img src="{{engapp.logo.image}}" class="mx-3" height="48px" alt=""><span class="d-inline" style="font-size: 2em;">{{engapp.title.value}}</span></a>
                                 <!-- logo-2 -->
-                                <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{% static 'engapp/img/logo/loder-logo.png' %}" alt=""></a>
+                                <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{% static 'engapp/img/loader-logo.png' %}" alt=""></a>
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-8">
@@ -66,6 +66,9 @@
                                             </ul>
                                         </li>
                                         <li><a href="contact.html">Contact</a></li>
+                                        {% if profile %}
+                                        <li><a href="{{profile.get_absolute_url}}">{{profile.name}}</a></li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>

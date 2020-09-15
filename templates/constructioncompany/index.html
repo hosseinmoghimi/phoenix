@@ -208,7 +208,7 @@
 </section>
 <!-- Project Area End -->
 <!-- contact with us Start -->
-<section class="contact-with-area" data-background="{% static 'engapp/img/gallery/section-bg2.jpg' %}">
+<section class="contact-with-area" data-background="{% static 'engapp/img/section-bg2.jpg' %}">
     <div class="container">
         <div class="row">
             <div class="col-xl-8 col-lg-9 offset-xl-1 offset-lg-1">
@@ -235,7 +235,7 @@
 <!-- CountDown Area Start -->
 <div class="count-area">
     <div class="container">
-        <div class="count-wrapper count-bg" data-background="{% static 'engapp/img/gallery/section-bg3.jpg' %}">
+        <div class="count-wrapper count-bg" data-background="{% static 'engapp/img/section-bg3.jpg' %}">
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="count-clients">
@@ -296,40 +296,24 @@
             </div>
         </div>
         <div class="row">
-            <!-- single Tem -->
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
+            <!-- single Team -->
+          {% for our_team in our_teams %}
+             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                 <div class="single-team mb-30">
                     <div class="team-img">
-                        <img src="{% static 'engapp/img/team/team1.png' %}" alt="">
+                        <img src="{{our_team.image}}" alt="">
                     </div>
                     <div class="team-caption">
-                        <span>UX Designer</span>
-                        <h3>Ethan Welch</h3>
+                        <span>{{our_team.job}}</span>
+                        <h3>{{our_team.name}}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                <div class="single-team mb-30">
-                    <div class="team-img">
-                        <img src="{% static 'engapp/img/team/team2.png' %}" alt="">
-                    </div>
-                    <div class="team-caption">
-                        <span>UX Designer</span>
-                        <h3>Ethan Welch</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                <div class="single-team mb-30">
-                    <div class="team-img">
-                        <img src="{% static 'engapp/img/team/team3.png' %}" alt="">
-                    </div>
-                    <div class="team-caption">
-                        <span>UX Designer</span>
-                        <h3>Ethan Welch</h3>
-                    </div>
-                </div>
-            </div>
+    
+          {% endfor %}
+          
+           
+            
         </div>
     </div>
 </div>

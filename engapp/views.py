@@ -4,9 +4,9 @@ from .enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
-from .repo import LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
+from .repo import ProfileRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
 from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer
-from app.repo import ProfileTransactionRepo,ProfileRepo
+from app.repo import ProfileTransactionRepo
 from django.shortcuts import render,redirect,reverse
 from django.views import View
 from django.http import Http404,JsonResponse
@@ -317,6 +317,7 @@ class BasicView(View):
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)
         
+        context['our_teams']=OurTeamRepo(user=request.user).list_for_home()
         context['blogs']=BlogRepo(user=request.user).list_for_home()
         context['our_works']=OurWorkRepo(user=request.user).list_for_home()
         context['testimonials']=TestimonialRepo(user=request.user).list_for_home()
@@ -364,7 +365,7 @@ class ProfileView(View):
             image=request.FILES['image']
             profile_id=upload_profile_image_form.cleaned_data['profile_id']
             ProfileRepo(user=request.user).change_profile_image(profile_id=profile_id,image=image)                    
-            return redirect(reverse('app:profile',kwargs={'profile_id':profile_id}))
+            return redirect(reverse('engapp:profile',kwargs={'profile_id':profile_id}))
     def edit_profile(self,request):
         if not request.method=='POST':
             return redirect('app:home')
@@ -380,7 +381,7 @@ class ProfileView(View):
             bio=edit_profile_form.cleaned_data['bio']
             # print(new_profile['bio'])
             profile=ProfileRepo(user=request.user).edit_profile(profile_id=profile_id,first_name=first_name,last_name=last_name,mobile=mobile,region_id=region_id,address=address,bio=bio) 
-        return redirect(reverse('app:profile',kwargs={'profile_id':profile.pk}))
+        return redirect(reverse('engapp:profile',kwargs={'profile_id':profile.pk}))
     def change_profile(self,request):
         if not request.method=='POST':
             return redirect('app:home')
@@ -388,7 +389,7 @@ class ProfileView(View):
         if change_profile_form.is_valid():
             actived=change_profile_form.cleaned_data['actived']
             profile=ProfileRepo(user=request.user).change_profile(user=request.user,actived=actived) 
-        return redirect(reverse('app:home'))
+        return redirect(reverse('engapp:home'))
         
 
     def profile(self,request,profile_id=0):
@@ -414,7 +415,7 @@ class ProfileView(View):
             context['transactions']=transactions
             context['rest']=transaction_repo.rest(profile_id=profile_id)
         
-        return render(request,TEMPLATE_ROOT_DASHBOARD+'profile.html',context)
+        return render(request,TEMPLATE_ROOT+'profile.html',context)
 
 
 class TransactionView(View):
