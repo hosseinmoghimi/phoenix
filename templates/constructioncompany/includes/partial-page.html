@@ -1,0 +1,46 @@
+{% load static %}
+<div> 
+{% if partial_page.image %}
+  <img src="{{partial_page.image}}" alt="">
+{% endif %}
+
+{% if partial_page.pretitle %}
+  <h5>{{partial_page.pretitle}}</h5>
+{% endif %}
+
+
+
+{% if partial_page.title %}
+  <h3>{{partial_page.title}}</h3>
+{% endif %}
+
+
+{% if partial_page.posttitle %}
+  <h5>{{partial_page.posttitle}}</h5>
+{% endif %}
+
+
+
+{% if partial_page.description %}
+  <p>{{partial_page.description|safe}}</p>
+{% endif %}
+
+
+
+</div>
+
+{% for gallery in partial_page.galleries.all %}
+ <div>
+     {% if gallery.title %}
+     <h3>{{gallery.title}}</h3>
+     {% endif %}
+
+     {% for photo in gallery.photos.all %}
+       <div>
+           <img src="{{photo.image}}" alt="">
+       </div>
+     {% endfor %}
+ </div> 
+{% endfor %}
+
+

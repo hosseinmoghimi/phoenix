@@ -148,9 +148,7 @@ class Jumbotron(models.Model):
 
 class Page(Jumbotron):
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    archive=models.BooleanField(_("بایگانی شود؟"),default=False)
-    
-    
+    archive=models.BooleanField(_("بایگانی شود؟"),default=False)  
     
     header_image_origin=models.ImageField(_("تصویر سربرگ  345*970 "),blank=True,null=True, upload_to=IMAGE_FOLDER+'Page/Banner/', height_field=None, width_field=None, max_length=None)
     image_origin=models.ImageField(_("تصویر بزرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/', height_field=None, width_field=None, max_length=None)
@@ -163,13 +161,12 @@ class Page(Jumbotron):
     comments=models.ManyToManyField("Comment", verbose_name=_("نظرات"),blank=True)
     likes=models.ManyToManyField("Like", verbose_name=_("لایک ها"),blank=True)
     relateds=models.ManyToManyField("Page", verbose_name=_("صفحات مرتبط") ,blank=True)
-    parts=models.ManyToManyField("PartialPage", verbose_name=_("صفحات جزئی"),blank=True)
+    partials=models.ManyToManyField("PartialPage", verbose_name=_("صفحات جزئی"),blank=True)
     title_secondary=models.CharField(_("عنوان دوم"), max_length=200,null=True,blank=True)
     description_secondary=models.CharField(_("توضیح دوم"), max_length=2000,null=True,blank=True)
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
-    
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("Pages")
@@ -221,6 +218,7 @@ class PartialPage(models.Model):
     date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
+    # galleries=models.ManyToManyField("GalleryAlbum", verbose_name=_("گالری ها"),blank=True)
   
     class Meta:
         verbose_name = _("PartialPage")
