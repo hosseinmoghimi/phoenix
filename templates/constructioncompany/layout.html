@@ -46,9 +46,9 @@
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left">
                                     <ul>     
-                                        <li>{{engapp.tel.value}}</li>
-                                        <li>{{engapp.email.value}}</li>
-                                        <li>{{engapp.address.value}}</li>
+                                        <li><a href="tel://{{engapp.tel.value}}">{{engapp.tel.value}}</a></li>
+                                        <li><a href="mailto:{{engapp.email.value}}">{{engapp.email.value}}</a></li>
+                                        <li><a href="#">{{engapp.address.value}}</a></li>
                                         {% if perms.engapp %}
                                           <li><a href="{{ADMIN_URL}}{{APP_NAME}}/">Admin Panel</a></li>
                                         {% endif %}
@@ -75,9 +75,9 @@
                             <div class="col-xl-2 col-lg-2 col-md-1">
                                 <div class="logo">
                                     <!-- logo-1 -->
-                                    <a href="index.html" class="big-logo"><img src="{% static 'engapp/img/logo/logo.png' %}" alt=""></a>
+                                    <a href="{% url 'engapp:home' %}" class="big-logo"><img src="{% static 'engapp/img/logo/logo.png' %}" alt=""></a>
                                     <!-- logo-2 -->
-                                    <a href="index.html" class="small-logo"><img src="{% static 'engapp/img/logo/loder-logo.png' %}" alt=""></a>
+                                    <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{% static 'engapp/img/logo/loder-logo.png' %}" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-8 col-lg-8 col-md-8">

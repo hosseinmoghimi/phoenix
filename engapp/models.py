@@ -31,7 +31,7 @@ class Region(models.Model):
 
     class Meta:
         verbose_name = _("Region")
-        verbose_name_plural = _("منطقه ها")
+        verbose_name_plural = _("Regions")
 
     def __str__(self):
         return self.name
@@ -109,7 +109,7 @@ class Profile(models.Model):
 
     class Meta:
         verbose_name = _("Profile")
-        verbose_name_plural = _("پروفایل ها")
+        verbose_name_plural = _("Profiles")
 
     def __str__(self):
         return f'{self.name()} : {self.user.username if self.user else None}'
@@ -135,7 +135,7 @@ class Jumbotron(models.Model):
     
     class Meta:
         verbose_name = _("Jumbotron")
-        verbose_name_plural = _("جامبوترون ها")
+        verbose_name_plural = _("Jumbotrons")
         
     def __str__(self):
         return self.title
@@ -172,7 +172,7 @@ class Page(Jumbotron):
     
     class Meta:
         verbose_name = _("Page")
-        verbose_name_plural = _("صفحات")
+        verbose_name_plural = _("Pages")
     def persian_date_added(self):
         return PersianCalendar().from_gregorian(self.date_added)
     def to_persian_date_tag(self):
@@ -224,7 +224,7 @@ class PartialPage(models.Model):
   
     class Meta:
         verbose_name = _("PartialPage")
-        verbose_name_plural = _("صفحات جزئی")
+        verbose_name_plural = _("PartialPages")
     def persian_date_added(self):
         return PersianCalendar().from_gregorian(self.date_added)
     def to_persian_date_tag(self):
@@ -264,7 +264,7 @@ class Tag(models.Model):
           
     class Meta:
         verbose_name = _("Tag")
-        verbose_name_plural = _("برچسب ها")
+        verbose_name_plural = _("Tags")
 
     def __str__(self):
         return self.title
@@ -304,7 +304,7 @@ class Icon(models.Model):
       
     class Meta:
         verbose_name = _("Icon")
-        verbose_name_plural = _("آیکون ها")
+        verbose_name_plural = _("Icons")
 
     def __str__(self):
         return self.title
@@ -336,7 +336,7 @@ class Link(Icon):
     
     class Meta:
         verbose_name = _("Link")
-        verbose_name_plural = _("لینک ها")
+        verbose_name_plural = _("Links")
 
     def __str__(self):
         return self.title+('*' if self.for_home else '')
@@ -360,7 +360,7 @@ class HomeSlider(Jumbotron):
     
     class Meta:
         verbose_name = _("HomeSlider")
-        verbose_name_plural = _("اسلایدر های صفحه اصلی")
+        verbose_name_plural = _("HomeSliders")
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
@@ -378,7 +378,7 @@ class Blog(Page):
     
     class Meta:
         verbose_name = _("Blog")
-        verbose_name_plural = _("مقالات")
+        verbose_name_plural = _("Blogs")
    
     def __str__(self):
         return self.title
@@ -397,7 +397,7 @@ class Document(Icon):
     
     class Meta:
         verbose_name = _("Document")
-        verbose_name_plural = _("اسناد")
+        verbose_name_plural = _("Documents")
     def get_download_url(self):
         return reverse('engapp:download',kwargs={'document_id':self.pk})
     def download(self):        
@@ -430,7 +430,7 @@ class Like(models.Model):
     
     class Meta:
         verbose_name = _("Like")
-        verbose_name_plural = _("لایک های کاربران")
+        verbose_name_plural = _("Likes")
     def persian_date_added(self):
         return PersianCalendar().from_gregorian(self.date_added)
 
@@ -444,7 +444,7 @@ class OurWork(Page):
     
     class Meta:
         verbose_name = _("OurWork")
-        verbose_name_plural = _("پروژه ها")
+        verbose_name_plural = _("OurWorks")
     
     def __str__(self):
         return self.title
@@ -465,7 +465,7 @@ class MetaData(models.Model):
     content=models.CharField(_("content"), max_length=2000)
     class Meta:
         verbose_name = _("MetaData")
-        verbose_name_plural = _("متا دیتا - کلمات کلیدی سئو")
+        verbose_name_plural = _("MetaDatas")
 
     def __str__(self):
         return f'{self.key} : {self.value}'+('*' if self.for_home else '')
@@ -480,7 +480,7 @@ class MainPic(models.Model):
 
     class Meta:
         verbose_name = _("MainPic")
-        verbose_name_plural = _("تصویر های اصلی سایت")
+        verbose_name_plural = _("MainPics")
     def image(self):
         if self.image_origin is not None:
             return f'{MEDIA_URL}{str(self.image_origin)}'
@@ -504,7 +504,7 @@ class ContactMessage(models.Model):
     date_added=models.DateTimeField(_("افزوده شده در"), auto_now=False, auto_now_add=True)
     class Meta:
         verbose_name = _("ContactMessage")
-        verbose_name_plural = _("پیام های ارتباط با ما")
+        verbose_name_plural = _("ContactMessages")
 
     def __str__(self):
         return self.email+"   @  "+PersianCalendar().from_gregorian(self.date_added)
@@ -520,7 +520,7 @@ class Parameter(models.Model):
 
     class Meta:
         verbose_name = _("Parameter")
-        verbose_name_plural = _("پارامتر ها")
+        verbose_name_plural = _("Parameters")
 
     def __str__(self):
         return f'{self.name} : {self.value}'
@@ -539,7 +539,7 @@ class FAQ(models.Model):
     
     class Meta:
         verbose_name = _("FAQ")
-        verbose_name_plural = _("پرسش های متداول")
+        verbose_name_plural = _("FAQs")
 
     def __str__(self):
         return self.question
@@ -559,7 +559,7 @@ class Comment(models.Model):
     
     class Meta:
         verbose_name = _("Comment")
-        verbose_name_plural = _("نظرات کاربران")
+        verbose_name_plural = _("Comments")
     def persian_date_added(self):
         return PersianCalendar().from_gregorian(self.date_added)
 
@@ -595,7 +595,7 @@ class Testimonial(models.Model):
     
     class Meta:
         verbose_name = _("Testimonial")
-        verbose_name_plural = _("گفته های مشتریان")
+        verbose_name_plural = _("Testimonials")
 
     def __str__(self):
         return self.title
@@ -629,7 +629,7 @@ class OurService(Page):
     
     class Meta:
         verbose_name = _("OurService")
-        verbose_name_plural = _("خدمات و سرویس ها")
+        verbose_name_plural = _("OurServices")
 
     def __str__(self):
         return self.title
@@ -655,7 +655,7 @@ class Banner(Jumbotron):
     
     class Meta:
         verbose_name = _("Banner")
-        verbose_name_plural = _("بنر های  جشنواره ای")
+        verbose_name_plural = _("Banners")
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
@@ -674,7 +674,7 @@ class GalleryAlbum(Banner):
     
     class Meta:
         verbose_name = _("GalleryAlbum")
-        verbose_name_plural = _("آلبوم های تصاویر")
+        verbose_name_plural = _("GalleryAlbums")
 
     def __str__(self):
         return self.title
@@ -694,7 +694,7 @@ class GalleryPhoto(Banner):
     
     class Meta:
         verbose_name = _("GalleryPhoto")
-        verbose_name_plural = _("تصاویر")
+        verbose_name_plural = _("GalleryPhotos")
 
     def __str__(self):
         return self.title
@@ -738,7 +738,7 @@ class SocialLink(models.Model):
    
     class Meta:
         verbose_name = _("SocialLink")
-        verbose_name_plural = _("شبکه اجتماعی")
+        verbose_name_plural = _("SocialLinks")
 
     def __str__(self):
         return self.title
@@ -773,7 +773,7 @@ class OurTeam(models.Model):
         return self.name
     class Meta:
         verbose_name = 'OurTeam'
-        verbose_name_plural = 'تیم ما'
+        verbose_name_plural = 'OurTeam'
 
 
 
@@ -786,7 +786,7 @@ class ResumeCategory(models.Model):
 
     class Meta:
         verbose_name = _("ResumeCategory")
-        verbose_name_plural = _("دسته بندی رزومه")
+        verbose_name_plural = _("ResumeCategorys")
 
     def __str__(self):
         return f'{self.our_team.name} -> {self.title}'
@@ -828,7 +828,7 @@ class Notification(models.Model):
 
     class Meta:
         verbose_name = _("Notification")
-        verbose_name_plural = _("اعلان ها")
+        verbose_name_plural = _("Notifications")
 
     def __str__(self):
         return self.title
@@ -851,7 +851,7 @@ class Resume(models.Model):
 
     class Meta:
         verbose_name = _("Resume")
-        verbose_name_plural = _("رزومه")
+        verbose_name_plural = _("Resumes")
 
     def __str__(self):
         return self.title

@@ -1,6 +1,6 @@
 from app import settings
 from .apps import APP_NAME
-from app.enums import IconsEnum, ParametersEnum,MainPicEnum
+from .enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
