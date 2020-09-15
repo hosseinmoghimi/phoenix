@@ -21,6 +21,11 @@
             <link rel="stylesheet" href="{% static 'engapp/css/slick.css' %}">
             <link rel="stylesheet" href="{% static 'engapp/css/nice-select.css' %}">
             <link rel="stylesheet" href="{% static 'engapp/css/style.css' %}">
+            
+{% block head %}
+  
+{% endblock  %}
+
    </head>
 
    <body>
@@ -87,5 +92,8 @@
         <script src="{% static 'engapp/js/plugins.js' %}"></script>
         <script src="{% static 'engapp/js/main.js' %}"></script>
         
+{% block scripts %}
+  
+{% endblock  %}
     </body>
 </html>

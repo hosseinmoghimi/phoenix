@@ -5,7 +5,7 @@ from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
 from .repo import ProfileRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
-from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer
+from .serializers import NotificationSerializer,BlogSerializer,CommentSerializer
 from app.repo import ProfileTransactionRepo
 from django.shortcuts import render,redirect,reverse
 from django.views import View

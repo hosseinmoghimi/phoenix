@@ -9,7 +9,7 @@
                         <div class="single-footer-caption mb-30">
                             <!-- logo -->
                             <div class="footer-logo">
-                                <a href="{% url 'engapp:home' %}"><img src="{{engapp.logo.image}}"
+                                <a href="{% url 'engapp:home' %}"><img height="48px" src="{{engapp.logo.image}}"
                                         alt=""></a>
                                         {% if perms.engapp.change_mainpic %}
                                         <p><a class="btn btn-info" href="{{engapp.logo.get_edit_url}}">Edit</a></p>
