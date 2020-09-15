@@ -5,8 +5,8 @@ import sys
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-SERVER_ON_PARS=False
-SERVER_ON_HEROKU=True
+SERVER_ON_PARS=True
+SERVER_ON_HEROKU=False
 SERVER_ON_LOCAL=False
 
 
@@ -22,7 +22,7 @@ elif SERVER_ON_PARS:
     SERVER_ON_LOCAL=False  
     SERVER_ON_HEROKU=False
     SERVER_ON_PARS=True
-    from . import settings_hames as server_settings
+    from . import settings_khafonli as server_settings
 
 
 elif SERVER_ON_HEROKU:
