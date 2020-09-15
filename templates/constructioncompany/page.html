@@ -1,5 +1,12 @@
 {% extends "constructioncompany/layout.html" %}
 {% load static %}
+{% block head %}
+  
+
+<meta name="description" content="{% for meta_data in page.meta_datas.all %}{{meta_data.content}} , {% endfor %}" />
+
+
+{% endblock %}
 {% block contents %}
 
 <!-- slider Area Start-->
