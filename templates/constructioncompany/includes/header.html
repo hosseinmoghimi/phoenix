@@ -40,7 +40,7 @@
                                 <!-- logo-1 -->
                                 <a href="{% url 'engapp:home' %}" class="big-logo"><img src="{{engapp.logo.image}}" class="mx-3" height="48px" alt=""><span class="d-inline" style="font-size: 2em;">{{engapp.title.value}}</span></a>
                                 <!-- logo-2 -->
-                                <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{% static 'engapp/img/loader-logo.png' %}" alt=""></a>
+                                <a href="{% url 'engapp:home' %}" class="small-logo"><img src="{{engapp.logo.image}}" alt=""></a>
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-8">
