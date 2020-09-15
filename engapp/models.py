@@ -218,7 +218,7 @@ class PartialPage(models.Model):
     date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
-    # galleries=models.ManyToManyField("GalleryAlbum", verbose_name=_("گالری ها"),blank=True)
+    galleries=models.ManyToManyField("GalleryAlbum", verbose_name=_("گالری ها"),blank=True)
   
     class Meta:
         verbose_name = _("PartialPage")
