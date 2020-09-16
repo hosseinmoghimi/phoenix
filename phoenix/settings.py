@@ -57,6 +57,7 @@ if not SERVER_ON_HEROKU:
 
 INSTALLED_APPS = [
     'app',
+    'automation',
     'engapp',
     'market',
     'authentication',    

@@ -4,7 +4,6 @@ from .models import *
 
 admin.site.register(ProductInStock)
 admin.site.register(WareHouse)
-admin.site.register(WareHouseKeeper)
 admin.site.register(Brand)
 admin.site.register(Cashier)
 admin.site.register(ProductComment)

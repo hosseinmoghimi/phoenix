@@ -76,44 +76,27 @@
                 <h6 class="mb-3 leo-rtl text-right">{{page.posttitle}}</h6>
 
                 {% endif %}
-                {% if page.profile %}
 
-                <div class="about-author d-flex p-4 mb-3">
-                    <div class="bio ml-5">
-                        <a href="{{page.profile.get_absolute_url}}">
-                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px"
-                                class="img-fluid mb-4 rounded-circle">
-                        </a>
-                    </div>
-                    <div class="desc">
-                        <a href="{{page.profile.get_absolute_url}}">
-                            <h5>{{page.profile.name}}</h5>
-                        </a>
-                        {% if page.profile.bio %}
-                        <p>{{page.profile.bio}}</p>
-                        {% endif %}
-
-                    </div>
-                </div>
-
-                {% endif %}
 
                 <div class="px-5">
                     <p id="like-app" v-cloak>
                         <span v-text="likes_count"></span>
-                        <transition name="fade">
-                            <button class="btn btn-link " @click="toggle_like()" v-show="my_like">
-                                <span style="font-size: 2em;" class="text-primary fa fa-thumbs-up"></span>
-                            </button>
 
-                        </transition>
-                        <transition name="fade">
-                            <button class="btn btn-link" @click="toggle_like()" v-show="!my_like">
-                                <span style="font-size: 2em;" class="text-secondary fa fa-thumbs-up"></span>
-                            </button>
+                        <button class="btn btn-link " @click="toggle_like()" v-show="my_like">
+                            <i style="font-size: 2em;" class="text-primary material-icons">thumb_up</i>
+                        </button>
 
-                        </transition>
 
+                        <button class="btn btn-link" @click="toggle_like()" v-show="!my_like">
+                            <i style="font-size: 2em;" class="text-secondary material-icons">thumb_up</i>
+                        </button>
+
+
+
+                        <span v-text="comments_count" class="mr-4"></span>
+                        <a class="btn btn-link" href="#comments">
+                            <i style="font-size: 2em;" class="text-secondary material-icons">comment</i>
+                        </a>
 
                     </p>
 
@@ -216,9 +199,30 @@
 
                     </div>
                 </div>
-              
 
-                <div class="pt-5 mt-5 mb-3 pr-4" id="comment-app" style="background-color: #f3f3f3;">
+                {% if page.profile %}
+
+                <div class="about-author d-flex p-4 mb-3">
+                    <div class="bio ml-5">
+                        <a href="{{page.profile.get_absolute_url}}">
+                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px"
+                                class="img-fluid mb-4 rounded-circle">
+                        </a>
+                    </div>
+                    <div class="desc">
+                        <a href="{{page.profile.get_absolute_url}}">
+                            <h5>{{page.profile.name}}</h5>
+                        </a>
+                        {% if page.profile.bio %}
+                        <p>{{page.profile.bio}}</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                {% endif %}
+                <a id="comments"></a>
+                <div  class="pt-5 mt-5 mb-3 pr-4" id="comment-app" style="background-color: #f3f3f3;">
                     <h4 class="mb-5 text-right leo-rtl" v-text="comments.length + ' نظر' "></h4>
                     <ul class="comment-list">
 
@@ -252,9 +256,8 @@
                     </div>
                     {% else %}
                     <p class="mb-3 px-5 py-5">
-                        <a href="{% url 'authentication:login' %}"
-                        class="btn py-3 px-4 btn-primary">
-                    ورود</a>
+                        <a href="{% url 'authentication:login' %}" class="btn py-3 px-4 btn-primary">
+                            ورود</a>
                     </p>
 
                     {% endif %}
@@ -379,6 +382,7 @@
             my_like: my_like,
             page_id: page_id,
             likes_count: likes_count,
+            comments_count: comments.length,
 
         },
         methods: {

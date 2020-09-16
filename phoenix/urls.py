@@ -10,11 +10,12 @@ from .settings import SERVER_ON_HEROKU
 
 urlpatterns = [
     path('fa/', include('app.urls')),
-    path('', include('authentication.urls')),
-    path('', include('engapp.urls')),
     path('en/', include('engapp.urls')),
+    path('automation/', include('automation.urls')),
     path('market/', include('market.urls')),
     path('admin/', admin.site.urls),
+    path('', include('authentication.urls')),
+    path('', include('app.urls')),
 
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}), 
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),  

@@ -347,7 +347,7 @@ class Link(Icon):
 
 
 class HomeSlider(Jumbotron):
-    image_banner=models.ImageField(_("Image 1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
+    image_origin=models.ImageField(_("Image 1333*2000 "), upload_to=IMAGE_FOLDER+'HomeSlider/', height_field=None, width_field=None, max_length=None)
     archive=models.BooleanField(_("بایگانی شود؟"),default=False)
     priority=models.IntegerField(_("Priority"),default=100)
     
@@ -359,7 +359,7 @@ class HomeSlider(Jumbotron):
         verbose_name = _("HomeSlider")
         verbose_name_plural = _("HomeSliders")
     def image(self):
-        return MEDIA_URL+str(self.image_banner)
+        return MEDIA_URL+str(self.image_origin)
     def __str__(self):
         return str(self.title)
 
@@ -645,7 +645,7 @@ class OurService(Page):
 
 
 class GalleryAlbum(Jumbotron):
-    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Album/', height_field=None, width_field=None, max_length=None)
+    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Album/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     for_home=models.BooleanField(_("Show on homepage"),default=False)
     archive=models.BooleanField(_("Archive?"),default=False)
     priority=models.IntegerField(_("Priority"),default=100)

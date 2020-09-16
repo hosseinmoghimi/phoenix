@@ -30,9 +30,6 @@ class ProductUnit(models.Model):
     def __str__(self):
         return self.name
 
-
-
-
 class Shop(models.Model):
     
     supplier=models.ForeignKey("Supplier", verbose_name=_("فروشگاه"), on_delete=models.CASCADE)
@@ -264,17 +261,6 @@ class Manager(Employee):
     def get_edit_url(self):
         return ADMIN_URL+APP_NAME+'/manager/'+str(self.pk)+'/change/'
 
-class WareHouseKeeper(Employee):
-    ware_house=models.ForeignKey("WareHouse", verbose_name=_("انبار"), on_delete=models.SET_NULL,null=True,blank=True)
-    
-    class Meta:
-        verbose_name = _("WareHouseKeeper")
-        verbose_name_plural = _("انباردار ها")
-
-    def get_absolute_url(self):
-        return reverse('market:accountant',kwargs={'accountant_id':self.pk})
-    def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/warehouseheeper/'+str(self.pk)+'/change/'
 
 class ProductInStock(models.Model):
     adder=models.ForeignKey("Employee", verbose_name=_("ثبت کننده"), on_delete=models.PROTECT)
@@ -426,8 +412,8 @@ class ProductComment(models.Model):
 
 class WareHouse(models.Model):
     name=models.CharField(_("نام انبار"), max_length=50)
-    supplier=models.ForeignKey("Supplier", verbose_name=_("فروشگاه"), on_delete=models.PROTECT)
     address=models.CharField(_("آدرس"), max_length=100)
+    agents=models.ManyToManyField("Employee", verbose_name=_("employees"))
     def products_in_stock(self):
         return ProductInStock.objects.filter(ware_house=self)
     class Meta:
@@ -455,7 +441,8 @@ class Supplier(models.Model):
     video_link=models.CharField(_("لینک ویدیو"),blank=True, max_length=1000)
     ship_fee=models.IntegerField(_('هزینه ارسال بسته'),default=DEFAULT_SHIPPING_FEE)
     address=models.CharField(_("آدرس"), max_length=100 , null=True,blank=True)
-    tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)
+    tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)    
+    warehouses=models.ManyToManyField("market.WareHouse", verbose_name=_("warehouses"),blank=True)
     def ware_houses(self):
         return WareHouse.objects.filter(supplier=self)
     def employees(self):
