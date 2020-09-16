@@ -4,21 +4,21 @@ from enum import Enum
 
 
 class DegreeLevelEnum(TextChoices):
-    DIPLOM = 'دیپلم', _('دیپلم')
-    KARDANI = 'کاردانی', _('کاردانی')
-    KARSHENASI = 'کارشناسی', _('کارشناسی')
-    KARSHENASI_ARSHAD = 'کارشناسی ارشد', _('کارشناسی ارشد')
-    PHD = 'دکتری', _('دکتری')
+    DIPLOM = 'DIPLOM', _('DIPLOM')
+    KARDANI = 'KARDANI', _('KARDANI')
+    KARSHENASI = 'KARSHENASI', _('KARSHENASI')
+    KARSHENASI_ARSHAD = 'KARSHENASI_ARSHAD', _('KARSHENASI_ARSHAD')
+    PHD = 'PHD', _('PHD')
 
 
 class ResumeCategoryEnum(TextChoices):
-    EXPERIENCE = 'تجربه ها', _('تجربه ها')
-    EDUCATION = 'آموزش ها', _('آموزش ها')
-    SKILLS = 'مهارت ها', _('مهارت ها')
-    INTERESTS = 'علاقه ها', _('علاقه ها')
-    CERTIFICATIONS = 'گواهینامه ها', _('گواهینامه ها')
-    AWARDS = 'جایزه ها', _('جایزه ها')
-    WORKS_DONE = 'کار های انجام شده', _('کار های انجام شده')
+    EXPERIENCE = 'EXPERIENCE', _('EXPERIENCE')
+    EDUCATION = 'EDUCATION', _('EDUCATION')
+    SKILLS = 'SKILLS', _('SKILLS')
+    INTERESTS = 'INTERESTS', _('INTERESTS')
+    CERTIFICATIONS = 'CERTIFICATIONS', _('CERTIFICATIONS')
+    AWARDS = 'AWARDS', _('AWARDS')
+    WORKS_DONE = 'WORKS DONE', _('WORKS DONE')
 
 
 
@@ -37,16 +37,10 @@ class ColorEnum(TextChoices):
 
 
 class RegionEnum(TextChoices):
-    KHAF = 'خواف', _('خواف')
-    NASHTIFAN = 'نشتیفان', _('نشتیفان')
-    SANGAN = 'سنگان', _('سنگان')
-    GHASEMABAD='قاسم آباد' , _('قاسم آباد')
-    TAYBAD='تایباد' , _('تایباد')
-    TORBAT_JAM='تربت جام' , _('تربت جام')
-    FARIMAN='فریمان' , _('فریمان')
-    MASHAD='مشهد' , _('مشهد')
-    TEHRAN='تهران' , _('تهران')
-    TORBAT_HEYDARIYEH='تربت حیدریه' , _('تربت حیدریه')
+    IRAN = 'IRAN', _('IRAN')
+    EUROPE = 'EUROPE', _('EUROPE')
+    AMERICA = 'AMERICA', _('AMERICA')
+    ASIA = 'ASIA', _('ASIA')
 
 class AddressTitleEnum(TextChoices):
     HOME = 'HOME', _('HOME')
@@ -103,8 +97,8 @@ class IconFlatEnum(TextChoices):
     WEB_PROGRAMMING='flaticon-web-programming'
     
 class ProfileStatusEnum(TextChoices):
-    ENABLED='فعال',_('فعال')
-    DISABLED='غیر فعال',_('غیر فعال')
+    ENABLED='ENABLED',_('ENABLED')
+    DISABLED='DISABLED',_('DISABLED')
 
 class ParametersEnum(TextChoices):
     ABOUT_US_SHORT='ABOUT_US_SHORT',_('ABOUT_US_SHORT')

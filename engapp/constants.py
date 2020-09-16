@@ -5,7 +5,7 @@ FAILED='FAILED'
 FORCE_RESIZE_IMAGE=True
 
 
-CURRENCY=' تومان'
+CURRENCY=' $'
 
 
 

@@ -25,8 +25,8 @@ IMAGE_FOLDER=APP_NAME+'/images/'
 
 
 class Region(models.Model):
-    name=models.CharField(_("name"), max_length=50,choices=RegionEnum.choices,default=RegionEnum.KHAF)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+    name=models.CharField(_("name"), max_length=50,choices=RegionEnum.choices,default=RegionEnum.IRAN)
+    priority=models.IntegerField(_("Priority"),default=100)
     
 
     class Meta:
@@ -47,12 +47,12 @@ class Profile(models.Model):
         settings_django.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,null=True,blank=True,related_name='user_eng'
     )
-    status = models.CharField(_("وضعیت"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
-    first_name = models.CharField(_("نام"), max_length=200)
-    last_name = models.CharField(_("نام خانوادگی"), max_length=200)
-    mobile = models.CharField(_("موبایل"), max_length=50,null=True,blank=True)
-    bio = models.CharField(_("درباره"), max_length=500,null=True,blank=True)
-    image_origin = models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'Profile/', height_field=None, width_field=None, max_length=1200,blank=True,null=True)
+    status = models.CharField(_("Status"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
+    first_name = models.CharField(_("First Name"), max_length=200)
+    last_name = models.CharField(_("Last Name"), max_length=200)
+    mobile = models.CharField(_("Mobile"), max_length=50,null=True,blank=True)
+    bio = models.CharField(_("Bio"), max_length=500,null=True,blank=True)
+    image_origin = models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'Profile/', height_field=None, width_field=None, max_length=1200,blank=True,null=True)
     
     def name(self):
         return self.first_name+' '+self.last_name
@@ -79,7 +79,7 @@ class Profile(models.Model):
             return MEDIA_URL+str(self.image_origin)
         else:
             return STATIC_URL+'dashboard/img/default_avatar.png'
-    def save(self):  
+    def save_old(self):  
         
         old_image=None      
         try:
@@ -123,15 +123,15 @@ class Profile(models.Model):
 
 
 class Jumbotron(models.Model):
-    pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
-    title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
-    posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
-    short_description=models.TextField(_("شرح کوتاه"),blank=True,null=True)
-    description=models.TextField(_("شرح کامل"),blank=True,null=True)
-    action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
-    action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
-    video_text=models.CharField(_("متن ویدیو"), max_length=100,blank=True,null=True)
-    video_url=models.CharField(_("لینک ویدیو"), max_length=2000,blank=True,null=True)
+    pretitle=models.CharField(_("Pre Title"), max_length=500,blank=True,null=True)
+    title=models.CharField(_("Title"), max_length=500,blank=True,null=True)
+    posttitle=models.CharField(_("Post Title"), max_length=500,blank=True,null=True)
+    short_description=models.TextField(_("Short Description"),blank=True,null=True)
+    description=models.TextField(_("Full Description"),blank=True,null=True)
+    action_text=models.CharField(_("Button Text"), max_length=100,blank=True,null=True)
+    action_url=models.CharField(_("Button Link URL"), max_length=2000,blank=True,null=True)
+    video_text=models.CharField(_("Video Text"), max_length=100,blank=True,null=True)
+    video_url=models.CharField(_("Video Link URL"), max_length=2000,blank=True,null=True)
     
     class Meta:
         verbose_name = _("Jumbotron")
@@ -147,26 +147,25 @@ class Jumbotron(models.Model):
 
 
 class Page(Jumbotron):
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    archive=models.BooleanField(_("بایگانی شود؟"),default=False)  
-    
-    header_image_origin=models.ImageField(_("تصویر سربرگ  345*970 "),blank=True,null=True, upload_to=IMAGE_FOLDER+'Page/Banner/', height_field=None, width_field=None, max_length=None)
-    image_origin=models.ImageField(_("تصویر بزرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/', height_field=None, width_field=None, max_length=None)
-    grid_image_origin=models.ImageField(_("تصویر گرید"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/Grid/', height_field=None, width_field=None, max_length=None)
-    thumbnail_origin=models.ImageField(_("تصویر کوچک"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/thumbnail/', height_field=None, width_field=None, max_length=None)
-    priority=models.IntegerField(_("ترتیب"),default=1000)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    archive=models.BooleanField(_("Archive?"),default=False)  
+    header_image_origin=models.ImageField(_("Header Image 345*970 "),blank=True,null=True, upload_to=IMAGE_FOLDER+'Page/Banner/', height_field=None, width_field=None, max_length=None)
+    image_origin=models.ImageField(_("Big Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/', height_field=None, width_field=None, max_length=None)
+    grid_image_origin=models.ImageField(_("Grid Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/Grid/', height_field=None, width_field=None, max_length=None)
+    thumbnail_origin=models.ImageField(_("Thumbnail Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/thumbnail/', height_field=None, width_field=None, max_length=None)
+    priority=models.IntegerField(_("Priority"),default=1000)
     profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.PROTECT)
-    date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
-    tags=models.ManyToManyField("Tag", verbose_name=_("برچسب ها"),blank=True)
-    comments=models.ManyToManyField("Comment", verbose_name=_("نظرات"),blank=True)
-    likes=models.ManyToManyField("Like", verbose_name=_("لایک ها"),blank=True)
-    relateds=models.ManyToManyField("Page", verbose_name=_("صفحات مرتبط") ,blank=True)
-    partials=models.ManyToManyField("PartialPage", verbose_name=_("صفحات جزئی"),blank=True)
-    title_secondary=models.CharField(_("عنوان دوم"), max_length=200,null=True,blank=True)
-    description_secondary=models.CharField(_("توضیح دوم"), max_length=2000,null=True,blank=True)
-    links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
-    documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
-    meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
+    date_added=models.DateTimeField(_("Date Added"), auto_now=False, auto_now_add=True)
+    tags=models.ManyToManyField("Tag", verbose_name=_("Tags"),blank=True)
+    comments=models.ManyToManyField("Comment", verbose_name=_("Comments"),blank=True)
+    likes=models.ManyToManyField("Like", verbose_name=_("Likes"),blank=True)
+    relateds=models.ManyToManyField("Page", verbose_name=_("Related Pages") ,blank=True)
+    partials=models.ManyToManyField("PartialPage", verbose_name=_("Partial Pages"),blank=True)
+    title_secondary=models.CharField(_("Secondary Title"), max_length=200,null=True,blank=True)
+    description_secondary=models.CharField(_("Secondary Description"), max_length=2000,null=True,blank=True)
+    links=models.ManyToManyField("Link", verbose_name=_("Links"),blank=True)
+    documents=models.ManyToManyField("Document", verbose_name=_("Documents"),blank=True)
+    meta_datas=models.ManyToManyField("MetaData", verbose_name=_("Meta Datas"),blank=True)
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("Pages")
@@ -208,17 +207,17 @@ class Page(Jumbotron):
 
 
 class PartialPage(models.Model):
-    pretitle=models.CharField(_("پیش عنوان"), max_length=1000,null=True,blank=True)
-    title=models.CharField(_("عنوان"), max_length=1000,null=True,blank=True)
-    posttitle=models.CharField(_("پس عنوان"), max_length=1000,null=True,blank=True)
-    description=models.TextField(_("شرح کامل"))
-    image_origin=models.ImageField(_("تصویر بزرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Blog/Partials/', height_field=None, width_field=None, max_length=None)
-    priority=models.IntegerField(_("ترتیب"),default=1000)
+    pretitle=models.CharField(_("Pre Title"), max_length=1000,null=True,blank=True)
+    title=models.CharField(_("Title"), max_length=1000,null=True,blank=True)
+    posttitle=models.CharField(_("Post Title"), max_length=1000,null=True,blank=True)
+    description=models.TextField(_("Full Description"))
+    image_origin=models.ImageField(_("Big Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Blog/Partials/', height_field=None, width_field=None, max_length=None)
+    priority=models.IntegerField(_("Priority"),default=1000)
     profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.PROTECT)
-    date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
-    links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
-    documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
-    galleries=models.ManyToManyField("GalleryAlbum", verbose_name=_("گالری ها"),blank=True)
+    date_added=models.DateTimeField(_("Data Added"), auto_now=False, auto_now_add=True)
+    links=models.ManyToManyField("Link", verbose_name=_("Links"),blank=True)
+    documents=models.ManyToManyField("Document", verbose_name=_("Documents"),blank=True)
+    galleries=models.ManyToManyField("GalleryAlbum", verbose_name=_("Gallery Albums"),blank=True)
   
     class Meta:
         verbose_name = _("PartialPage")
@@ -241,10 +240,10 @@ class PartialPage(models.Model):
 
 
 class Tag(models.Model):
-    priority=models.IntegerField(_("ترتیب"),default=100)
-    image_header=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Tag/', height_field=None, width_field=None, max_length=None)
-    title=models.CharField(_("عنوان"), max_length=50)
-    icon=models.ForeignKey("Icon", verbose_name=_("آیکون"),null=True,blank=True, on_delete=models.SET_NULL)
+    priority=models.IntegerField(_("Priority"),default=100)
+    image_header=models.ImageField(_("Header Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Tag/', height_field=None, width_field=None, max_length=None)
+    title=models.CharField(_("Title"), max_length=50)
+    icon=models.ForeignKey("Icon", verbose_name=_("Icon"),null=True,blank=True, on_delete=models.SET_NULL)
     
     def image(self):
         if self.image_header is None:
@@ -275,15 +274,15 @@ class Tag(models.Model):
 
 
 class Icon(models.Model):
-    title=models.CharField(_("عنوان"), max_length=50)    
-    image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
-    url=models.CharField(_("لینک"), max_length=2000,null=True,blank=True)    
-    icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
-    icon_material=models.CharField(_("آیکون متریال"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
-    icon_svg=models.TextField(_("آیکون svg"),null=True,blank=True)
-    color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    width=models.IntegerField(_("عرض"),default=128)
-    height=models.IntegerField(_("ارتفاع"),default=128)
+    title=models.CharField(_("Title"), max_length=50)    
+    image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
+    url=models.CharField(_("Link URL"), max_length=2000,null=True,blank=True)    
+    icon_fa=models.CharField(_("Icon FontAwesome"),max_length=50,null=True,blank=True)
+    icon_material=models.CharField(_("Icon Material"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
+    icon_svg=models.TextField(_("Icon svg"),null=True,blank=True)
+    color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    width=models.IntegerField(_("Width"),default=128)
+    height=models.IntegerField(_("Height"),default=128)
     def get_tag_icon(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
@@ -322,8 +321,8 @@ class Icon(models.Model):
 
 
 class Link(Icon):
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)
     
     def to_link_tag(self):
         return """
@@ -348,13 +347,13 @@ class Link(Icon):
 
 
 class HomeSlider(Jumbotron):
-    image_banner=models.ImageField(_("تصویر اسلایدر  1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
+    image_banner=models.ImageField(_("Image 1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
     archive=models.BooleanField(_("بایگانی شود؟"),default=False)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+    priority=models.IntegerField(_("Priority"),default=100)
     
     
-    tag_number=models.IntegerField(_("عدد برچسب"),default=100)
-    tag_text=models.CharField(_("متن برچسب"), max_length=100,blank=True,null=True)
+    tag_number=models.IntegerField(_("Tag Number"),default=100)
+    tag_text=models.CharField(_("Tag Text"), max_length=100,blank=True,null=True)
     
     class Meta:
         verbose_name = _("HomeSlider")
@@ -390,8 +389,8 @@ class Blog(Page):
 
 
 class Document(Icon):
-    profile=models.ForeignKey("Profile", verbose_name=_("پروفایل"), on_delete=models.CASCADE)
-    file=models.FileField(_("فایل ضمیمه"), upload_to=IMAGE_FOLDER+'Document', max_length=100)
+    profile=models.ForeignKey("Profile", verbose_name=_("Profile"), on_delete=models.CASCADE)
+    file=models.FileField(_("File"), upload_to=IMAGE_FOLDER+'Document', max_length=100)
     
     class Meta:
         verbose_name = _("Document")
@@ -423,8 +422,8 @@ class Document(Icon):
    
 
 class Like(models.Model):
-    profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.CASCADE)
-    date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
+    profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("Profile"), on_delete=models.CASCADE)
+    date_added=models.DateTimeField(_("Date Added"), auto_now=False, auto_now_add=True)
     
     class Meta:
         verbose_name = _("Like")
@@ -438,7 +437,7 @@ class Like(models.Model):
 
 
 class OurWork(Page):
-    location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
+    location=models.CharField(_('Google Map Location 400*400'),max_length=500,null=True,blank=True)    
     
     class Meta:
         verbose_name = _("OurWork")
@@ -456,8 +455,8 @@ class OurWork(Page):
 
 
 
-class MetaData(models.Model):    
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+class MetaData(models.Model):
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
     key=models.CharField(_("key name"), max_length=50,default='name')
     value=models.CharField(_("key value"), max_length=50,default='description')
     content=models.CharField(_("content"), max_length=2000)
@@ -473,8 +472,8 @@ class MetaData(models.Model):
 
 
 class MainPic(models.Model):
-    name=models.CharField(_("جای تصویر"), max_length=50,choices=MainPicEnum.choices)    
-    image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'MainPic/', height_field=None, width_field=None, max_length=None,null=True,blank=True)
+    name=models.CharField(_("Image Title"), max_length=50,choices=MainPicEnum.choices)    
+    image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'MainPic/', height_field=None, width_field=None, max_length=None,null=True,blank=True)
 
     class Meta:
         verbose_name = _("MainPic")
@@ -494,12 +493,12 @@ class MainPic(models.Model):
 
 
 class ContactMessage(models.Model):
-    fname=models.CharField(_("نام"), max_length=50)
-    lname=models.CharField(_("نام خانوادگی"), max_length=50)
-    email=models.EmailField(_("ایمیل"), max_length=254)
-    subject=models.CharField(_("عنوان پیام"), max_length=50)
-    message=models.CharField(_("متن پیام"), max_length=50)
-    date_added=models.DateTimeField(_("افزوده شده در"), auto_now=False, auto_now_add=True)
+    fname=models.CharField(_("First Name"), max_length=50)
+    lname=models.CharField(_("Last Name"), max_length=50)
+    email=models.EmailField(_("Email"), max_length=254)
+    subject=models.CharField(_("Title"), max_length=50)
+    message=models.CharField(_("Message"), max_length=50)
+    date_added=models.DateTimeField(_("Date Added"), auto_now=False, auto_now_add=True)
     class Meta:
         verbose_name = _("ContactMessage")
         verbose_name_plural = _("ContactMessages")
@@ -512,8 +511,8 @@ class ContactMessage(models.Model):
 
 
 class Parameter(models.Model):
-    name=models.CharField(_("نام"), max_length=50,choices=ParametersEnum.choices)
-    value=models.CharField(_("مقدار"), max_length=10000)
+    name=models.CharField(_("Parameter Name"), max_length=50,choices=ParametersEnum.choices)
+    value=models.CharField(_("Parameter Value"), max_length=10000)
     
 
     class Meta:
@@ -528,12 +527,13 @@ class Parameter(models.Model):
 
 
 class FAQ(models.Model):
-    for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
-    icon=models.CharField(_("آیکون"),choices=IconsEnum.choices,default=IconsEnum.help_outline, max_length=50)
-    color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    priority=models.IntegerField(_("ترتیب"))
-    question=models.CharField(_("سوال"), max_length=200)
-    answer=models.CharField(_("پاسخ"), max_length=5000)
+    
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    icon=models.CharField(_("Icon"),choices=IconsEnum.choices,default=IconsEnum.help_outline, max_length=50)
+    color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    priority=models.IntegerField(_("Priority"))
+    question=models.CharField(_("Question"), max_length=200)
+    answer=models.CharField(_("Answer"), max_length=5000)
     
     class Meta:
         verbose_name = _("FAQ")
@@ -550,10 +550,10 @@ class FAQ(models.Model):
 
 
 class Comment(models.Model):
-    profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.CASCADE)
-    text=models.TextField(_("نظر"))
-    date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
-    replys=models.ManyToManyField("Comment", verbose_name=_("پاسخ ها"),blank=True)
+    profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("Profile"), on_delete=models.CASCADE)
+    text=models.TextField(_("Text"))
+    date_added=models.DateTimeField(_("Date Added"), auto_now=False, auto_now_add=True)
+    replys=models.ManyToManyField("Comment", verbose_name=_("Replies"),blank=True)
     
     class Meta:
         verbose_name = _("Comment")
@@ -583,13 +583,13 @@ class Comment(models.Model):
 
 
 class Testimonial(models.Model):
-    for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
-    image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'Testimonial/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
-    title=models.CharField(_("عنوان"), max_length=2000)
-    body=models.CharField(_("متن"), max_length=2000,null=True,blank=True)
-    footer=models.CharField(_("پانوشت"), max_length=200)
-    priority=models.IntegerField(_("ترتیب"),default=100)
-    profile=models.ForeignKey("Profile", null=True,blank=True,verbose_name=_("profile"), on_delete=models.PROTECT)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'Testimonial/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    title=models.CharField(_("Title"), max_length=2000)
+    body=models.CharField(_("Body"), max_length=2000,null=True,blank=True)
+    footer=models.CharField(_("Footer"), max_length=200)
+    priority=models.IntegerField(_("Priority"),default=100)
+    profile=models.ForeignKey("Profile", null=True,blank=True,verbose_name=_("Profile"), on_delete=models.PROTECT)
     
     class Meta:
         verbose_name = _("Testimonial")
@@ -605,12 +605,12 @@ class Testimonial(models.Model):
         return f'{ADMIN_URL}{APP_NAME}/testimonial/{self.pk}/change/'
 
 class OurService(Page):
-    icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
-    icon_material=models.CharField(_("آیکون متریال"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
-    icon_svg=models.TextField(_("آیکون svg"),null=True,blank=True)
-    color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    width=models.IntegerField(_("عرض"),default=128)
-    height=models.IntegerField(_("ارتفاع"),default=128)
+    icon_fa=models.CharField(_("Icon FontAwesome"),max_length=50,null=True,blank=True)
+    icon_material=models.CharField(_("Icon Material"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
+    icon_svg=models.TextField(_("Icon svg"),null=True,blank=True)
+    color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    width=models.IntegerField(_("Width"),default=128)
+    height=models.IntegerField(_("Height"),default=128)
     def get_tag_icon(self):
         if self.thumbnail_origin is not None and self.thumbnail_origin:
             return f'<img src="{MEDIA_URL}{str(self.thumbnail_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
@@ -644,32 +644,20 @@ class OurService(Page):
 
 
 
-
-class Banner(Jumbotron):
-    image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    archive=models.BooleanField(_("بایگانی شود؟"),default=False)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+class GalleryAlbum(Jumbotron):
+    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Album/', height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    archive=models.BooleanField(_("Archive?"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)
+    thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Album/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     
-    class Meta:
-        verbose_name = _("Banner")
-        verbose_name_plural = _("Banners")
+    photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("Photos"),blank=True)
+    
+    
     def image(self):
-        return MEDIA_URL+str(self.image_banner)
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return self.action_url
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/banner/{self.pk}/change/'
-
-
-class GalleryAlbum(Banner):
-    
-    photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("تصویر ها"),blank=True)
-    
-    
+        return MEDIA_URL+str(self.image_origin)
+    def thumbnail(self):
+        return MEDIA_URL+str(self.thumbnail_origin)
     class Meta:
         verbose_name = _("GalleryAlbum")
         verbose_name_plural = _("GalleryAlbums")
@@ -687,13 +675,19 @@ class GalleryAlbum(Banner):
         return reverse("OurService_detail", kwargs={"pk": self.pk})
 
 
-class GalleryPhoto(Banner):
-    thumbnail_origin=models.ImageField(_("تصویر کوچک "), upload_to=IMAGE_FOLDER+'Gallery/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
-    def thumbnail(self):
-        if self.thumbnail_origin:
-            return MEDIA_URL+str(self.thumbnail_origin)
-        return self.image()
+class GalleryPhoto(Jumbotron):
+    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Photo/', height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    archive=models.BooleanField(_("Archive?"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)    
+    thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Photo/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     
+    def image(self):
+        return MEDIA_URL+str(self.image_origin)
+    def thumbnail(self):
+        return MEDIA_URL+str(self.thumbnail_origin)
+
+
     class Meta:
         verbose_name = _("GalleryPhoto")
         verbose_name_plural = _("GalleryPhotos")
@@ -709,18 +703,18 @@ class GalleryPhoto(Banner):
 
 
 class SocialLink(models.Model):
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)
     
-    title=models.CharField(_("عنوان"), max_length=50)    
-    image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
-    url=models.CharField(_("لینک"), max_length=2000,null=True,blank=True)    
-    icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
-    icon_material=models.CharField(_("آیکون متریال"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
-    icon_svg=models.TextField(_("آیکون svg"),null=True,blank=True)
-    color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    width=models.IntegerField(_("عرض"),default=128)
-    height=models.IntegerField(_("ارتفاع"),default=128)
+    title=models.CharField(_("Title"), max_length=50)    
+    image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
+    url=models.CharField(_("Link URL"), max_length=2000,null=True,blank=True)    
+    icon_fa=models.CharField(_("Icon FontAwesome"),max_length=50,null=True,blank=True)
+    icon_material=models.CharField(_("Icon Material"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
+    icon_svg=models.TextField(_("Icon svg"),null=True,blank=True)
+    color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    width=models.IntegerField(_("Width"),default=128)
+    height=models.IntegerField(_("Height"),default=128)
     def get_tag_icon(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
@@ -750,12 +744,12 @@ class SocialLink(models.Model):
 
 
 class OurTeam(models.Model):
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
-    name=models.CharField(_("نام"), max_length=100)
-    job=models.CharField(_("سمت"), max_length=100)
-    description=models.CharField(_("توضیحات"), max_length=500)
-    priority=models.IntegerField(_("ترتیب"),default=1000)
-    image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurTeam/', height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    name=models.CharField(_("Full Name"), max_length=100)
+    job=models.CharField(_("Job"), max_length=100)
+    description=models.CharField(_("Description"), max_length=500)
+    priority=models.IntegerField(_("Priority"),default=1000)
+    image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'OurTeam/', height_field=None, width_field=None, max_length=None)
     social_links=models.ManyToManyField("SocialLink", verbose_name=_("social_links"),blank=True)
     resume_categories=models.ManyToManyField("ResumeCategory", verbose_name=_("ResumeCategories"),blank=True)
     def __str__(self):
@@ -801,15 +795,15 @@ class ResumeCategory(models.Model):
 
 class Notification(models.Model):
     profile=models.ForeignKey("Profile", verbose_name=_("پروفایل"), on_delete=models.CASCADE)
-    title=models.CharField(_("عنوان"), max_length=50)
-    body=models.CharField(_("توضیحات"), max_length=500,null=True,blank=True)
+    title=models.CharField(_("Title"), max_length=50)
+    body=models.CharField(_("Description"), max_length=500,null=True,blank=True)
     url=models.CharField(_("url"), max_length=1100,blank=True,null=True)
-    seen=models.BooleanField(_('دیده شد'),default=False)
-    priority=models.IntegerField(_("اولویت"),default=1000)
-    date_added=models.DateTimeField(_('تاریخ ایجاد'),auto_now_add=True,auto_now=False)
-    date_seen=models.DateTimeField(_('تاریخ دیده شده'),auto_now_add=False,auto_now=False,null=True,blank=True)
-    icon=models.CharField(_("آیکون"), max_length=50,default='notification_important')
-    color=models.CharField(_("رنگ"), choices=ColorEnum.choices,default=ColorEnum.INFO, max_length=500,null=True,blank=True)
+    seen=models.BooleanField(_("Seen?"),default=False)
+    priority=models.IntegerField(_("Priority"),default=1000)
+    date_added=models.DateTimeField(_('Date Added'),auto_now_add=True,auto_now=False)
+    date_seen=models.DateTimeField(_('Date Seen'),auto_now_add=False,auto_now=False,null=True,blank=True)
+    icon=models.CharField(_("Icon"), max_length=50,default='notification_important')
+    color=models.CharField(_("Color"), choices=ColorEnum.choices,default=ColorEnum.INFO, max_length=500,null=True,blank=True)
     # def send(self,user,channel_name,event_name):
     #     try:
     #           PusherChannelEventRepo(user=user).get(channel_name,event_name).send_message(
