@@ -237,45 +237,30 @@
     <div class="container">
         <div class="count-wrapper count-bg" data-background="{% static 'engapp/img/section-bg3.jpg' %}">
             <div class="row justify-content-center">
+                {% for count_down_item in  count_down_items %}
+                  
+                
+                
+                
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="count-clients">
                         <div class="single-counter">
                             <div class="count-number">
-                                <span class="counter">34</span>
+                                <span class="counter">{{count_down_item.counter}}</span>
                             </div>
                             <div class="count-text">
-                                <p>Machinery</p>
-                                <h5>Tools</h5>
+                                <p>{{count_down_item.pretitle}}</p>
+                                <h5>{{count_down_item.title}}</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="count-clients">
-                        <div class="single-counter">
-                            <div class="count-number">
-                                <span class="counter">76</span>
-                            </div>
-                            <div class="count-text">
-                                <p>Machinery</p>
-                                <h5>Tools</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="count-clients">
-                        <div class="single-counter">
-                            <div class="count-number">
-                                <span class="counter">08</span>
-                            </div>
-                            <div class="count-text">
-                                <p>Machinery</p>
-                                <h5>Tools</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
+                
+                {% endfor %}
+
+
+
             </div>
         </div>
     </div>

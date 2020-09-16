@@ -163,9 +163,11 @@ class Page(Jumbotron):
     partials=models.ManyToManyField("PartialPage", verbose_name=_("Partial Pages"),blank=True)
     title_secondary=models.CharField(_("Secondary Title"), max_length=200,null=True,blank=True)
     description_secondary=models.CharField(_("Secondary Description"), max_length=2000,null=True,blank=True)
-    links=models.ManyToManyField("Link", verbose_name=_("Links"),blank=True)
-    documents=models.ManyToManyField("Document", verbose_name=_("Documents"),blank=True)
+    links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
+    documents=models.ManyToManyField("Document", verbose_name=_("documents"),blank=True)
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("Meta Datas"),blank=True)
+    count_down_items=models.ManyToManyField("CountDownItem", verbose_name=_("count_down_items"),blank=True)
+    
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("Pages")
@@ -367,6 +369,55 @@ class HomeSlider(Jumbotron):
         return reverse("HomeSlider_detail", kwargs={"pk": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/homeslider/{self.pk}/change/'
+
+
+class Banner(Jumbotron):
+    image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    archive=models.BooleanField(_("بایگانی شود؟"),default=False)
+    priority=models.IntegerField(_("ترتیب"),default=100)
+    
+    class Meta:
+        verbose_name = _("Banner")
+        verbose_name_plural = _("بنر های  ")
+    def image(self):
+        return MEDIA_URL+str(self.image_banner)
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return self.action_url
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/banner/{self.pk}/change/'
+
+
+
+
+
+class CountDownItem(models.Model):
+    image_origin=models.ImageField(_("تصویر  345*970 "), upload_to=IMAGE_FOLDER+'CountDownItem/', null=True,blank=True,height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    pretitle=models.CharField(_("Pre Title"), max_length=500,blank=True,null=True)
+    title=models.CharField(_("Title"), max_length=500,blank=True,null=True)
+    counter=models.IntegerField(_("شمارنده"),default=100)
+    priority=models.IntegerField(_("ترتیب"),default=100)
+
+    
+    class Meta:
+        verbose_name = _("CountDownItem")
+        verbose_name_plural = _("CountDownItems")
+    def image(self):
+        if self.image_origin:
+            return MEDIA_URL+str(self.image_origin)
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return self.title
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/coundownitem/{self.pk}/change/'
+
+
 
 
 

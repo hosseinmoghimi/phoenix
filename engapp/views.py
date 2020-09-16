@@ -4,7 +4,7 @@ from .enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
-from .repo import ProfileRepo,LikeRepo,PageRepo,TagRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
+from .repo import CountDownItemRepo,BannerRepo,ProfileRepo,LikeRepo,PageRepo,TagRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
 from .serializers import NotificationSerializer,BlogSerializer,CommentSerializer
 from app.repo import ProfileTransactionRepo
 from django.shortcuts import render,redirect,reverse
@@ -313,6 +313,7 @@ class BasicView(View):
         parameter_repo=ParameterRepo(user=user)
         context=getContext(request=request)        
         context['home_sliders']=HomeSliderRepo(user=user).list()
+        context['count_down_items']=CountDownItemRepo(user=user).list_for_home()
         context['our_services']=OurServiceRepo(user=user).list_for_home()
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)

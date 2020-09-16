@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout, authenticate
 from .models import Comment,Like,Page,Tag,Banner,OurWork,ContactMessage,FAQ,ResumeCategory,Document,Profile,ProfileTransaction,HomeSlider, Region, Link, MetaData, Notification, SocialLink, OurTeam, OurService, GalleryPhoto, Testimonial, Blog, Parameter, FAQ, MainPic
+from .models import CountDownItem
 from .enums import ParametersEnum, MainPicEnum, ProfileStatusEnum
 from django.contrib.auth.models import User
 from .apps import APP_NAME
@@ -104,6 +105,17 @@ class TestimonialRepo:
 class BannerRepo:
     def __init__( self, user=None):
         self.objects=Banner.objects.filter(archive=False)
+        self.user=user   
+    def list(self):
+        return self.objects.order_by('priority')
+    
+    def list_for_home(self):
+        return self.objects.filter(for_home=True).order_by('priority')
+
+
+class CountDownItemRepo:
+    def __init__( self, user=None):
+        self.objects=CountDownItem.objects
         self.user=user   
     def list(self):
         return self.objects.order_by('priority')

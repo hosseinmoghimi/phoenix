@@ -2,6 +2,7 @@ from .models import *
 from django.contrib import admin
 
 
+admin.site.register(CountDownItem)
 admin.site.register(Page)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)
@@ -10,6 +11,7 @@ admin.site.register(GalleryAlbum)
 admin.site.register(Comment)
 admin.site.register(Like)
 admin.site.register(Tag)
+admin.site.register(Banner)
 admin.site.register(Icon)
 admin.site.register(OurWork)
 admin.site.register(Blog)

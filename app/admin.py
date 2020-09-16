@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Page,PartialPage,Jumbotron,GalleryAlbum,Like,Comment,Tag,Banner,Icon,OurWork,Signature,ResumeCategory,Resume,HomeSlider,Document,ProfileTransaction, Region,Link,MetaData,Notification,Profile,SocialLink,OurTeam,OurService,GalleryPhoto,Testimonial,Blog,Parameter,ContactMessage,FAQ,MainPic
+from .models import CountDownItem,Page,PartialPage,Jumbotron,GalleryAlbum,Like,Comment,Tag,Banner,Icon,OurWork,Signature,ResumeCategory,Resume,HomeSlider,Document,ProfileTransaction, Region,Link,MetaData,Notification,Profile,SocialLink,OurTeam,OurService,GalleryPhoto,Testimonial,Blog,Parameter,ContactMessage,FAQ,MainPic
 
 
+admin.site.register(CountDownItem)
 admin.site.register(Page)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)

@@ -44,6 +44,30 @@ class Jumbotron(models.Model):
         return f'{ADMIN_URL}{APP_NAME}/jumbotron/{self.pk}/change/'
 
 
+class CountDownItem(models.Model):
+    image_origin=models.ImageField(_("تصویر  345*970 "), upload_to=IMAGE_FOLDER+'CountDownItem/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    pretitle=models.CharField(_("Pre Title"), max_length=500,blank=True,null=True)
+    title=models.CharField(_("Title"), max_length=500,blank=True,null=True)
+    counter=models.IntegerField(_("شمارنده"),default=100)
+    priority=models.IntegerField(_("ترتیب"),default=100)
+
+    
+    class Meta:
+        verbose_name = _("CountDownItem")
+        verbose_name_plural = _("CountDownItems")
+    def image(self):
+        if self.image_origin:
+            return MEDIA_URL+str(self.image_origin)
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return self.title
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/coundownitem/{self.pk}/change/'
+
+
 
 class Banner(Jumbotron):
     image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
@@ -88,6 +112,7 @@ class Page(Jumbotron):
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
+    count_down_items=models.ManyToManyField("CountDownItem", verbose_name=_("شمارنده ها"),blank=True)
     
     class Meta:
         verbose_name = _("Page")
