@@ -413,7 +413,7 @@ class ProductComment(models.Model):
 class WareHouse(models.Model):
     name=models.CharField(_("نام انبار"), max_length=50)
     address=models.CharField(_("آدرس"), max_length=100)
-    agents=models.ManyToManyField("Employee", verbose_name=_("employees"))
+    agents=models.ManyToManyField("Employee", verbose_name=_("employees"),blank=True)
     def products_in_stock(self):
         return ProductInStock.objects.filter(ware_house=self)
     class Meta:
@@ -470,7 +470,6 @@ class Supplier(models.Model):
             return STATIC_URL+'market/img/default_supplier.png'
     def get_absolute_url(self):
         return reverse('market:supplier',kwargs={'supplier_id':self.pk})
-
 
 class Shipper(models.Model):
     region = models.ForeignKey("app.Region", verbose_name=_("region"), on_delete=models.PROTECT)
