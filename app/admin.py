@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import CountDownItem,Page,PartialPage,Jumbotron,GalleryAlbum,Like,Comment,Tag,Banner,Icon,OurWork,Signature,ResumeCategory,Resume,HomeSlider,Document,ProfileTransaction, Region,Link,MetaData,Notification,Profile,SocialLink,OurTeam,OurService,GalleryPhoto,Testimonial,Blog,Parameter,ContactMessage,FAQ,MainPic
-
+from .models import *
 
 admin.site.register(CountDownItem)
 admin.site.register(Page)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)
 
-admin.site.register(GalleryAlbum)
+# admin.site.register(GalleryAlbum)
+# admin.site.register(GalleryPhoto)
 admin.site.register(Comment)
 admin.site.register(Like)
 admin.site.register(Tag)
@@ -19,7 +19,6 @@ admin.site.register(Signature)
 admin.site.register(ContactMessage)
 admin.site.register(Document)
 admin.site.register(FAQ)
-admin.site.register(GalleryPhoto)
 admin.site.register(HomeSlider)
 admin.site.register(Link)
 admin.site.register(MainPic)

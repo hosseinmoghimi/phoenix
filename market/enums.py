@@ -14,7 +14,7 @@ class OrderStatusEnum(TextChoices):
     CONFIRMED = 'تایید مشتری', _('تایید مشتری')
 
 
-class EmployeeEnum(TextChoices):    
+class EmployeeEnum(TextChoices):
     GUARD='نگهبان',_('نگهبان')      
     MANAGER='مدیر',_('مدیر')      
     TECHNICAL='فنی',_('فنی')    

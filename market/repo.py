@@ -71,69 +71,6 @@ class CustomerRepo():
 
 
 
-class AccountantRepo():
-    def __init__(self,user=None):
-        self.user=user
-        self.objects=Accountant.objects
-        self.profile=ProfileRepo(user=user).me
-        try:
-            self.me = self.objects.get(profile=self.profile)          
-        except :
-            self.me = None
-    def list(self):
-        return self.objects.all()
-        
-    def get(self,accountant_id):
-        try:
-            return self.objects.get(pk=accountant_id)
-        except :
-            return None
-  
-   
-
-class ManagerRepo():
-    def __init__(self,user=None):
-        self.user=user
-        self.objects=Manager.objects
-        self.profile=ProfileRepo(user=user).me
-        try:
-            self.me = self.objects.get(profile=self.profile)          
-        except :
-            self.me = None
-    def list(self):
-        return self.objects.all()
-        
-    def get(self,manager_id):
-        try:
-            return self.objects.get(pk=manager_id)
-        except :
-            return None
-
-
-  
-
-class CashierRepo():
-    def __init__(self,user=None):
-        self.user=user
-        self.objects=Cashier.objects
-        self.profile=ProfileRepo(user=user).me
-        try:
-            self.me = self.objects.get(profile=self.profile)          
-        except :
-            self.me = None
-    def list(self):
-        return self.objects.all()
-        
-    def get(self,cashier_id):
-        try:
-            return self.objects.get(pk=cashier_id)
-        except :
-            return None
-
-
-  
-
-
 class ProductUnitRepo:
     def get_default(self):
         try:

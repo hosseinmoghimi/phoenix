@@ -691,43 +691,6 @@ class OurService(Page):
         return reverse("app:page", kwargs={"page_id": self.pk})
 
 
-class GalleryAlbum(Banner):
-    
-    photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("تصویر ها"),blank=True)
-    
-    
-    class Meta:
-        verbose_name = _("GalleryAlbum")
-        verbose_name_plural = _("آلبوم های تصاویر")
-
-    def __str__(self):
-        return self.title
-    
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/ourservice/{self.pk}/change/'
-   
-   
-    def __unicode__(self):
-        return self.title
-    def get_absolute_url(self):
-        return reverse("OurService_detail", kwargs={"pk": self.pk})
-
-
-class GalleryPhoto(Banner):
-    
-    
-    class Meta:
-        verbose_name = _("GalleryPhoto")
-        verbose_name_plural = _("تصاویر")
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse("app:home")
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/galleryphoto/{self.pk}/change/'
-    
 
 
 class SocialLink(models.Model):
@@ -800,6 +763,65 @@ class OurTeam(models.Model):
         managed = True
         verbose_name = 'OurTeam'
         verbose_name_plural = 'تیم ما'
+
+
+class GalleryAlbum(Jumbotron):
+    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Album/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    archive=models.BooleanField(_("Archive?"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)
+    thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Album/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    
+    photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("Photos"),blank=True)
+    
+    
+    def image(self):
+        return MEDIA_URL+str(self.image_origin)
+    def thumbnail(self):
+        return MEDIA_URL+str(self.thumbnail_origin)
+    
+    class Meta:
+        verbose_name = _("GalleryAlbum")
+        verbose_name_plural = _("آلبوم های تصاویر")
+
+    def __str__(self):
+        return self.title
+    
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/ourservice/{self.pk}/change/'
+   
+   
+    def __unicode__(self):
+        return self.title
+    def get_absolute_url(self):
+        return reverse("OurService_detail", kwargs={"pk": self.pk})
+
+
+class GalleryPhoto(Jumbotron):
+    
+    image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Photo/', height_field=None, width_field=None, max_length=None)
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
+    archive=models.BooleanField(_("Archive?"),default=False)
+    priority=models.IntegerField(_("Priority"),default=100)    
+    thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Photo/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
+    
+    def image(self):
+        return MEDIA_URL+str(self.image_origin)
+    def thumbnail(self):
+        return MEDIA_URL+str(self.thumbnail_origin)
+
+    class Meta:
+        verbose_name = _("GalleryPhoto")
+        verbose_name_plural = _("تصاویر")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("app:home")
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/galleryphoto/{self.pk}/change/'
+    
 
 
 class ProfileTransaction(models.Model):

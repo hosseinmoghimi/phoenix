@@ -202,11 +202,11 @@ class Brand(models.Model):
 
 class Employee(models.Model):
     profile=models.ForeignKey("app.Profile", verbose_name=_("profile"),null=True,blank=True, on_delete=models.PROTECT)
-    employer_supplier=models.ForeignKey("Supplier", verbose_name=_("supplier"), on_delete=models.CASCADE,null=True,blank=True)
-    employer_shipper=models.ForeignKey("Shipper", verbose_name=_("shipper"), on_delete=models.CASCADE,null=True,blank=True)
     
-    degree=models.CharField(_("degree"),choices=DegreeLevelEnum.choices,default=DegreeLevelEnum.KARSHENASI, max_length=50)
-    major=models.CharField(_("major"), max_length=50)
+    role=models.CharField(_("نقش"),choices=EmployeeEnum.choices,default=EmployeeEnum.DEFAULT, max_length=50)
+    degree=models.CharField(_("مدرک"),choices=DegreeLevelEnum.choices,default=DegreeLevelEnum.KARSHENASI, max_length=50)
+    major=models.CharField(_("رشته تحصیلی"),null=True,blank=True, max_length=50)
+    introducer=models.CharField(_("معرف"),null=True,blank=True, max_length=50)
     def __str__(self):
         return self.profile.name()
     
@@ -223,43 +223,6 @@ class Employee(models.Model):
     def get_edit_url(self):
         if self.profile is not None:
             return self.profile.get_edit_url()
-
-class Accountant(Employee):
-    
-    class Meta:
-        verbose_name = _("Accountant")
-        verbose_name_plural = _("حسابداران")
-
-    def get_absolute_url(self):
-        return reverse('market:accountant',kwargs={'accountant_id':self.pk})
-    def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/accountant/'+str(self.pk)+'/change/'
-
-class Cashier(Employee):
-    
-    
-    class Meta:
-        verbose_name = _("Cashier")
-        verbose_name_plural = _("صندوقدار ها")
-
-
-    def get_absolute_url(self):
-        return reverse('market:cashier',kwargs={'cashier_id':self.pk})
-    def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/cashier/'+str(self.pk)+'/change/'
-
-class Manager(Employee):
-    
-    
-    class Meta:
-        verbose_name = _("Manager")
-        verbose_name_plural = _("مدیر ها")
-
-    
-    def get_absolute_url(self):
-        return reverse('market:manager',kwargs={'manager_id':self.pk})
-    def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/manager/'+str(self.pk)+'/change/'
 
 
 class ProductInStock(models.Model):
@@ -413,7 +376,7 @@ class ProductComment(models.Model):
 class WareHouse(models.Model):
     name=models.CharField(_("نام انبار"), max_length=50)
     address=models.CharField(_("آدرس"), max_length=100)
-    agents=models.ManyToManyField("Employee", verbose_name=_("employees"),blank=True)
+    employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
     def products_in_stock(self):
         return ProductInStock.objects.filter(ware_house=self)
     class Meta:
@@ -442,11 +405,11 @@ class Supplier(models.Model):
     ship_fee=models.IntegerField(_('هزینه ارسال بسته'),default=DEFAULT_SHIPPING_FEE)
     address=models.CharField(_("آدرس"), max_length=100 , null=True,blank=True)
     tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)    
+    employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
     warehouses=models.ManyToManyField("market.WareHouse", verbose_name=_("warehouses"),blank=True)
     def ware_houses(self):
         return WareHouse.objects.filter(supplier=self)
-    def employees(self):
-        return Employee.objects.filter(employer_supplier_id=self.pk)    
+    
     class Meta:
         verbose_name = _("Supplier")
         verbose_name_plural = _("فروشگاه ها")
@@ -484,9 +447,9 @@ class Shipper(models.Model):
     video_title=models.CharField(_("عنوان ویدیو"),blank=True, max_length=100)
     video_link=models.CharField(_("لینک ویدیو"),blank=True, max_length=1000)
     address=models.CharField(_("آدرس"), max_length=100 , null=True,blank=True)
-    tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)
-    def employees(self):
-        return Employee.objects.filter(employer_supplier_id=self.pk)   
+    tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)    
+    employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
+   
     def mobile(self):
         if self.profile is not None:
             return self.profile.mobile 

@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout, authenticate
-from .models import Comment,Like,Page,Tag,Banner,OurWork,ContactMessage,FAQ,ResumeCategory,Document,Profile,ProfileTransaction,HomeSlider, Region, Link, MetaData, Notification, SocialLink, OurTeam, OurService, GalleryPhoto, Testimonial, Blog, Parameter, FAQ, MainPic
+from .models import *
 from .models import CountDownItem
 from .enums import ParametersEnum, MainPicEnum, ProfileStatusEnum
 from django.contrib.auth.models import User
