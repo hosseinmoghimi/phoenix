@@ -4,7 +4,7 @@ import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-DEBUG =True
+DEBUG =False
 
 
 ALLOWED_HOSTS = ['www.hamescctv.com','hamescctv.com','www.imenyar.com','imenyar.com','www.tonusdoor.com','tonusdoor.com']
@@ -25,7 +25,7 @@ DATABASES = {
 
 TIME_ZONE = 'Asia/Tehran'
 
-SITE_URL='/phoenix/'
+SITE_URL='/'
 
 
 ADMIN_URL=SITE_URL+'admin/'
