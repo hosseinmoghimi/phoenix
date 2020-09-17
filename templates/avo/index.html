@@ -189,7 +189,7 @@
 						<div class="img w-100">
 							<img src="{{about_pic.image}}" width="100%" alt="">
 							{% if perms.app.change_parameter %}
-							<p class="text-centerleo-rtl text-right">
+							<p class="text-center leo-rtl text-right">
 								<a href="{{about_pic.get_edit_url}}"
 									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
 								</a>
@@ -201,7 +201,7 @@
 						<div class="text text-md-right">
 							<h3 class="leo-rtl text-right">{{about_us_title.value}}</h3>
 							{% if perms.app.change_parameter %}
-							<p class="text-centerleo-rtl text-right">
+							<p class="text-center leo-rtl text-right">
 								<a href="{{about_us_title.get_edit_url}}"
 									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
 								</a>
@@ -211,7 +211,7 @@
 
 								{{about_us_short.value|safe}}
 								{% if perms.app.change_parameter %}
-							<p class="text-centerleo-rtl text-right">
+							<p class="text-center leo-rtl text-right">
 								<a href="{{about_us_short.get_edit_url}}"
 									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
 								</a>
@@ -227,7 +227,7 @@
 					<p>
 						{{app.slogan.value|safe}}
 						{% if perms.app.change_parameter %}
-					<p class="text-centerleo-rtl text-right">
+					<p class="text-center leo-rtl text-right">
 						<a href="{{app.slogan.get_edit_url}}"
 							class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
 						</a>
@@ -285,7 +285,7 @@
 
 						{% endif %}
 						{% if perms.app.change_ourservice %}
-						<p class="text-centerleo-rtl text-right">
+						<p class="text-center leo-rtl text-right">
 							<a href="{{our_service.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
 								خدمات</a>
 						</p>

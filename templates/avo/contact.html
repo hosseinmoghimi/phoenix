@@ -113,7 +113,7 @@
             <div class="text">
               <p><span>آدرس :</span> {{app.address.value}}</p>
               {% if perms.app.change_parameter %}
-              <p class="text-centerleo-rtl text-right">
+              <p class="text-center leo-rtl text-right">
                 <a href="{{app.address.get_edit_url}}"
                   class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
                 </a>
@@ -128,7 +128,7 @@
             <div class="text">
               <p><span>تلفن :</span> <a href="tel://{{app.tel.value}}">{{app.tel.value}}</a></p>
               {% if perms.app.change_parameter %}
-              <p class="text-centerleo-rtl text-right">
+              <p class="text-center leo-rtl text-right">
                 <a href="{{app.tel.get_edit_url}}"
                   class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
                 </a>
@@ -136,6 +136,24 @@
               {% endif %}
             </div>
           </div>
+
+
+          <div class="dbox w-100 d-flex ftco-animate leo-rtl">
+            <div class="icon d-flex align-items-center justify-content-center ml-2">
+              <span class="fa fa-mobile"></span>
+            </div>
+            <div class="text">
+              <p><span>موبایل :</span> <a href="tel://{{app.mobile.value}}">{{app.mobile.value}}</a></p>
+              {% if perms.app.change_parameter %}
+              <p class="text-center leo-rtl text-right">
+                <a href="{{app.mobile.get_edit_url}}"
+                  class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
+                </a>
+              </p>
+              {% endif %}
+            </div>
+          </div>
+
           <div class="dbox w-100 d-flex ftco-animate leo-rtl">
             <div class="icon d-flex align-items-center justify-content-center ml-2">
               <span class="fa fa-paper-plane"></span>
@@ -143,7 +161,7 @@
             <div class="text">
               <p><span>ایمیل :</span> <a href="mailto:{{app.email}}">{{app.email.value}}</a></p>
               {% if perms.app.change_parameter %}
-              <p class="text-centerleo-rtl text-right">
+              <p class="text-center leo-rtl text-right">
                 <a href="{{app.email.get_edit_url}}"
                   class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
                 </a>
@@ -159,7 +177,7 @@
               <p><span>وب سایت : </span> <a href="{{app.url.value}}">
                   <span class="leo-ltr text-primary">{{app.url.value}}</span></a></p>
               {% if perms.app.change_parameter %}
-              <p class="text-centerleo-rtl text-right">
+              <p class="text-center leo-rtl text-right">
                 <a href="{{app.url.get_edit_url}}"
                   class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
                 </a>
@@ -174,7 +192,7 @@
         <div class="text-center">
           <h3 class="text-center">موقعیت</h3>
           {% if perms.app.change_parameter %}
-          <p class="text-centerleo-rtl text-center">
+          <p class="text-center leo-rtl text-center">
             <a href="{{location.get_edit_url}}"
               class="btn btn-info py-md-3 py-2 px-2 px-md-4 text-light">ویرایش
             </a>
