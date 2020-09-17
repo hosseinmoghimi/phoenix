@@ -4,7 +4,7 @@ import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-DEBUG =False
+DEBUG =True
 
 
 ALLOWED_HOSTS = ['www.hamescctv.com','hamescctv.com','www.imenyar.com','imenyar.com','www.tonusdoor.com','tonusdoor.com']
@@ -31,7 +31,7 @@ SITE_URL='/phoenix/'
 ADMIN_URL=SITE_URL+'admin/'
 STATIC_URL = SITE_URL+'static/'
 
-STATIC_ROOT = '/home2/imenyarc/public_html/phoenix/staticfiles/'
+STATIC_ROOT = '/home2/imenyarc/public_html/phoenix/staticfiles'
 
 MEDIA_URL =  SITE_URL+'media/'
 MEDIA_ROOT = '/home2/imenyarc/public_html/phoenix/media/'
