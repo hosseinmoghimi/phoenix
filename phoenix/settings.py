@@ -22,7 +22,7 @@ elif SERVER_ON_PARS:
     SERVER_ON_LOCAL=False  
     SERVER_ON_HEROKU=False
     SERVER_ON_PARS=True
-    from . import settings_hames as server_settings
+    from . import settings_khafonli as server_settings
 
 
 elif SERVER_ON_HEROKU:
