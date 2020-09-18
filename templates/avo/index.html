@@ -394,7 +394,10 @@
 							<div class="px-4 px-lg-4">
 								<div class="desc">
 									<div class="top  text-right">
+										{% if our_work.pretitle %}
 										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+										  
+										{% endif %}
 										<h2 class="mb-2 text-right"><a class="text-right"
 												href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
@@ -438,7 +441,10 @@
 							<div class="px-4 px-lg-4">
 								<div class="desc text-md-right">
 									<div class="top">
+										{% if our_work.pretitle %}
 										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+										  
+										{% endif %}
 										<h2 class="mb-2"><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
 									</div>

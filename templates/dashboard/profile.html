@@ -60,10 +60,41 @@
 
 
       </div>
+
+      
+
     </div>
 
     {% endif %}
-  
+
+
+
+
+    
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">مسئولیت های اجرایی</h4>
+        <p class="card-category"></p>
+      </div>
+      <div class="card-body">
+     
+        {% for employee in selected_profile.employee_set.all %}
+        {% for workunit in employee.workunit_set.all %}
+        {% for project in workunit.project_set.all %}
+    <small class="text-secondary"><small></small>پروژه :</small> </small>
+        <a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a>
+        {% endfor %}
+      <small class="text-secondary ml-4"> <small></small>واحد سازمانی :</small></small> 
+      <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a>
+      {% endfor %}
+      <small class="text-secondary ml-4"> <small>نقش :</small></small>
+      {{employee.role}}
+      <hr>
+        {% endfor %}
+
+      </div>
+    </div>
+
 
 
   </div>
@@ -177,7 +208,7 @@
     <div class="card">
       <div class="card-header card-header-primary">
         <h4 class="card-title ">مانده حساب : {{rest | to_price}}</h4>
-        <p class="card-category"> بیست تراکنش آخر       
+        <p class="card-category"> بیست تراکنش آخر
           &nbsp;&nbsp;&nbsp;
           <a href="{% url 'app:transactions' profile_id=selected_profile.id %}">
             لیست کامل
@@ -263,8 +294,8 @@
                 <td>
                   {{permission.name}}
                 </td>
-                
-                
+
+
                 <td class="text-primary">
                   {{permission.codename}}
                 </td>
@@ -276,7 +307,7 @@
     </div>
 
     {% endif %}
-    
+
   </div>
 
 </div>
@@ -290,7 +321,7 @@
   $("#dashboard-profile-link").addClass("active");
 </script>
 
- {% if selected_profile %}
+{% if selected_profile %}
 
 
 
