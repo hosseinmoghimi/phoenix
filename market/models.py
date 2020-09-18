@@ -250,6 +250,7 @@ class Product(models.Model):
     is_new=models.BooleanField(_("جدید است؟"),default=False)
     brand=models.ForeignKey("Brand",related_name='brand',null=True,blank=True,on_delete=models.PROTECT)
     category=models.ForeignKey("Category",related_name='products',on_delete=models.PROTECT)
+    thumbnail=models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'Product/thumbnail/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image=models.ImageField(_("تصویر 1"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image2=models.ImageField(_("تصویر 2"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image3=models.ImageField(_("تصویر 3"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
@@ -264,7 +265,6 @@ class Product(models.Model):
     adder=models.ForeignKey("app.Profile",on_delete=models.SET_NULL,null=True,blank=True)
     time_added=models.DateTimeField(_("تاریخ ایجاد"), auto_now=False, auto_now_add=True)
     time_updated=models.DateTimeField(_("تاریخ اصلاح"), auto_now=True, auto_now_add=False)
-    thumbnail=models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'Product/thumbnail/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     unit_names=models.ManyToManyField("ProductUnit", verbose_name=_("واحد های قابل فروش"))
     related=models.ManyToManyField("Product", verbose_name=_("related"),blank=True)
     comments=models.ManyToManyField("app.Comment", verbose_name=_("نظرات کاربرات"),blank=True)
@@ -283,21 +283,19 @@ class Product(models.Model):
     def get_image(self):
         if self.image is not None and self.image and len(str(self.image))>0 :
             return MEDIA_URL+str(self.image)
-        return STATIC_URL+'dashboard/img/default_avatar.png'
+        return f'{STATIC_URL}one-tech/images/default_product.png'
     def get_image2(self):
-        if self.image2 is None:
-            return self.image
-        return MEDIA_URL+str(self.image2)
+        if self.image2 is not None and self.image2 and len(str(self.image2))>0 :
+            return MEDIA_URL+str(self.image2)
+        return self.get_image()
     def get_image3(self):
-        if self.image3 is None:
-            return self.image2
-        return MEDIA_URL+str(self.image3)
+        if self.image3 is not None and self.image3 and len(str(self.image3))>0 :
+            return MEDIA_URL+str(self.image3)
+        return self.get_image2()
     def get_thumbnail(self):
-        if self.thumbnail is None:
-            if self.image is None:
-                return self.image
-            return None
-        return self.thumbnail
+        if self.thumbnail is not None and self.thumbnail and len(str(self.thumbnail))>0 :           
+            return MEDIA_URL+str(self.thumbnail)
+        return f'{STATIC_URL}one-tech/images/default_product.png'
     def save_temp(self):
         if not self.image:
             super(Product,self).save()             

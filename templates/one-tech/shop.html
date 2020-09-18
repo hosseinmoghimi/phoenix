@@ -131,12 +131,11 @@
 
 							{% for product in products %}
 							<!-- Product Item -->
-							<div
-								class="col-lg-3 col-md-4 col-sm-6 col-6 {% if product_related.is_new %}is_new{% endif %} {% if product_related.discount %}discount{% endif %} product_item is_new">
+							<div class="col-lg-3 col-md-4 col-sm-6 col-6 {% if product_related.is_new %}is_new{% endif %} {% if product_related.discount %}discount{% endif %} product_item is_new">
 								<div class="product_border"></div>
 								<div
 									class="product_image  d-flex flex-column align-items-center justify-content-center">
-									<a href="{{product.get_absolute_url}}"><img src="{{product.get_image}}" alt=""></a>
+									<a href="{{product.get_absolute_url}}"><img src="{{product.get_thumbnail}}" alt=""></a>
 								</div>
 								<div class="product_content">
 									<div class="product_price">&nbsp;</div>
@@ -146,12 +145,12 @@
 
 										</div>
 									</div>
-								</div>
-								<div class="product_fav">
-									{% if perms.market.can_change_product %}
-									<a href="{{product.get_edit_url}}"><i class="material-icons">settings</i></a>
-									{% endif %}
-								</div>
+								</div>{% if perms.market.can_change_product %}
+								<div class="product_fav1">
+									
+									<a href="{{product.get_edit_url}}" class="leo-farsi"><i class="material-icons">settings</i> ویرایش</a>
+									
+								</div>{% endif %}
 								<ul class="product_marks">
 									{% if product.is_new %}
 									<li class="product_mark product_new leo-farsi">جدید</li>
@@ -164,6 +163,25 @@
 								</ul>
 							</div>
 							{% endfor %}
+
+						{% if add_product_form %}
+						<div class="col-lg-4 mx-5">
+						  <div class="card p-3">
+							  <h3 class="text-center my-3">افزودن کالای جدید</h3>
+							<form class="leo-rtl text-right" action="{% url 'market:add_product' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" value="{{parent.id}}" name="category_id">
+								
+								<select style="width: fit-content !important;" name="unit_name" id="" class="form-control">
+									{% for unit_name in unit_names %}
+									<option value="{{unit_name}}">{{unit_name}}</option>									  
+									{% endfor %}
+								</select>
+<input type="text" name="name" class="form-control" placeholder="نام کالا" required id="">
+<input type="submit" class="btn btn-success" value="تایید">
+							</form>
+						  </div></div>
+						{% endif %}
 						</div>
 
 					</div>

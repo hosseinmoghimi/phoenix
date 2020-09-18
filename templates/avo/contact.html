@@ -111,7 +111,11 @@
               <span class="fa fa-map-marker"></span>
             </div>
             <div class="text">
-              <p><span>آدرس :</span> {{app.address.value}}</p>
+              <p><span>آدرس :</span> 
+                <small>
+                {{app.address.value}}
+              </small>
+              </p>
               {% if perms.app.change_parameter %}
               <p class="text-center leo-rtl text-right">
                 <a href="{{app.address.get_edit_url}}"
