@@ -574,7 +574,7 @@ class ProfileRepo:
         user.first_name = first_name
         user.last_name = last_name
         user.save()
-        profile=Profile(user=user,first_name=first_name,last_name=last_name,region_id=region_id)
+        profile=Profile(user=user,first_name=first_name,mobile='',last_name=last_name,region_id=region_id)
         profile.save()
         return profile
 
