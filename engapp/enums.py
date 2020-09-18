@@ -108,6 +108,7 @@ class ParametersEnum(TextChoices):
     EMAIL='EMAIL',_('EMAIL')
     FAX='FAX',_('FAX')
     TEL='TEL',_('TEL')
+    SINCE='SINCE',_('SINCE')
     LOCATION='LOCATION',_('LOCATION')
     ADDRESS='ADDRESS',_('ADDRESS')
     SLOGAN='SLOGAN',_('SLOGAN')

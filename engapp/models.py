@@ -350,7 +350,7 @@ class Link(Icon):
 
 class HomeSlider(Jumbotron):
     image_origin=models.ImageField(_("Image 1333*2000 "), upload_to=IMAGE_FOLDER+'HomeSlider/', height_field=None, width_field=None, max_length=None)
-    archive=models.BooleanField(_("بایگانی شود؟"),default=False)
+    archive=models.BooleanField(_('archive?'),default=False)
     priority=models.IntegerField(_("Priority"),default=100)
     
     
@@ -373,13 +373,14 @@ class HomeSlider(Jumbotron):
 
 class Banner(Jumbotron):
     image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
     archive=models.BooleanField(_("بایگانی شود؟"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
     
     class Meta:
         verbose_name = _("Banner")
-        verbose_name_plural = _("بنر های  ")
+        verbose_name_plural = _("Banners")
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
@@ -395,12 +396,13 @@ class Banner(Jumbotron):
 
 
 class CountDownItem(models.Model):
-    image_origin=models.ImageField(_("تصویر  345*970 "), upload_to=IMAGE_FOLDER+'CountDownItem/', null=True,blank=True,height_field=None, width_field=None, max_length=None)
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    image_origin=models.ImageField(_("Image  345*970 "), upload_to=IMAGE_FOLDER+'CountDownItem/', null=True,blank=True,height_field=None, width_field=None, max_length=None)
+    
+    for_home=models.BooleanField(_("Show on homepage"),default=False)
     pretitle=models.CharField(_("Pre Title"), max_length=500,blank=True,null=True)
     title=models.CharField(_("Title"), max_length=500,blank=True,null=True)
-    counter=models.IntegerField(_("شمارنده"),default=100)
-    priority=models.IntegerField(_("ترتیب"),default=100)
+    counter=models.IntegerField(_("counter"),default=100)
+    priority=models.IntegerField(_("priority"),default=100)
 
     
     class Meta:

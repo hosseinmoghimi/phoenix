@@ -64,7 +64,8 @@
 
   </div>
 
-
+  {% if ware_house.supplier_set.all %}
+  
   <div class="col-lg-6">
     <div class="card">
       <div class="card-header card-header-primary">
@@ -113,6 +114,61 @@
     </div>
 
   </div>
+
+{% endif %}
+
+{% if ware_house.project_set.all %}
+  
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title mt-0"> لیست پروژه های مرتبط با  {{ware_house.name}}</h4>
+        <p class="card-category"></p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <th>
+                ID
+              </th>
+              <th>
+                نام
+              </th>
+
+            
+
+            </thead>
+            <tbody>
+              {% for project in ware_house.project_set.all %}
+              <tr>
+                <td>
+                  <a class="text-primary" href="{{project.get_edit_url}}">
+                    <i class="material-icons">settings</i>
+                    {{project.id}} </a>
+
+               
+                </td>
+                <td>
+                  <a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a>
+
+                </td>
+
+
+               
+
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{% endif %}
 
 
   <div class="col-12">

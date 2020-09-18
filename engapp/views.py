@@ -313,6 +313,7 @@ class BasicView(View):
         parameter_repo=ParameterRepo(user=user)
         context=getContext(request=request)        
         context['home_sliders']=HomeSliderRepo(user=user).list()
+        context['since']=parameter_repo.get(ParametersEnum.SINCE)
         context['count_down_items']=CountDownItemRepo(user=user).list_for_home()
         context['our_services']=OurServiceRepo(user=user).list_for_home()
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)

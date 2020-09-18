@@ -68,6 +68,11 @@
                                         <li><a href="#">Contact</a></li>
                                         {% if profile %}
                                         <li><a href="{{profile.get_absolute_url}}">{{profile.name}}</a></li>
+                                        <li><a href="{% url 'authentication:logout' %}">logout</a></li>
+                                 
+                                        {% else %}
+                                        <li><a href="{% url 'authentication:login' %}">login</a></li>
+                                 
                                         {% endif %}
                                     </ul>
                                 </nav>
@@ -80,7 +85,10 @@
                         </div>
                         <!-- Mobile Menu -->
                         <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
+                            
+                            <div class="mobile_menu d-block d-lg-none">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>

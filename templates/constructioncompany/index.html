@@ -109,6 +109,9 @@
                 {% if perms.engapp.change_parameter %}
                 <p><a class="btn btn-info" href="{{about_us_short.get_edit_url}}">Edit</a></p>
                 {% endif %}
+                {% if perms.engapp.change_mainpic %}
+                <p><a class="btn btn-info" href="{{about_pic.get_edit_url}}">Edit Image</a></p>
+                {% endif %}
                 <a href="{% url 'engapp:about' %}" class="btn red-btn2">read more</a>
             </div>
         </div>
@@ -116,12 +119,22 @@
             <!-- img -->
             <div class="right-img">
                 <img src="{{about_pic.image}}" alt="">
+               
+
             </div>
             <div class="support-img-cap text-center">
-                <span>1994</span>
-                <p>Since</p>
-                {% if perms.engapp.change_mainpic %}
-                <p><a class="btn btn-info" href="{{about_pic.get_edit_url}}">Edit</a></p>
+                
+                <p>Since</p><span>
+{% if since %}
+  {{since.value}}
+{% else %}
+  2001
+{% endif %}
+
+
+                </span>
+                {% if perms.engapp.change_parameter %}
+                <p><a class="btn btn-info" href="{{since.get_edit_url}}">Edit</a></p>
                 {% endif %}
             </div>
         </div>

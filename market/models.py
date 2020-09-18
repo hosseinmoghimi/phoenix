@@ -430,6 +430,8 @@ class Supplier(models.Model):
     def get_absolute_url(self):
         return reverse('market:supplier',kwargs={'supplier_id':self.pk})
 
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/supplier/{self.pk}/change/'
 class Shipper(models.Model):
     region = models.ForeignKey("app.Region", verbose_name=_("region"), on_delete=models.PROTECT)
     profile=models.ForeignKey("app.Profile", verbose_name=_("profile"),null=True,blank=True, on_delete=models.SET_NULL)
