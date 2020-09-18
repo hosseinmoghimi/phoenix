@@ -1,7 +1,6 @@
 {% extends "dashboard/layout.html" %}
 {% load static %}
 {% load to_price %}
-{% load to_contract_status_color %}
 {% block contents %}
 
 
@@ -16,59 +15,31 @@
                     <i class="material-icons">settings</i>
                 </div>
                 <p class="card-category">لیست</p>
-                <h3 class="card-title">لینک ها
+                <h3 class="card-title">پروژه ها
 
                 </h3>
             </div>
             <div class="card-body">
                 <p class="mt-3">
-                    
-
-                    <a class="btn btn-primary btn-block mb-2" href="{% url 'automation:product_requests' %}">
+                    {% for project in projects %}
+                      
+                    <a class="btn btn-primary btn-block mb-2" href="{{project.get_absolute_url}}">
                         <i class="material-icons">add_shopping_cart</i>
-                        درخواست های خرید کالا</a>
+                        {{project.title}}</a>
+                    {% endfor %}
+
 
                    </p>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                
+                <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">افزودن پروژه جدید</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-                <p class="card-category">لیست</p>
-                <h3 class="card-title">واحد ها
-
-                </h3>
-            </div>
-            <div class="card-body">
-                <p class="mt-3">
-                    {% for work_unit in work_units %}
-
-
-                    <a class="d-block mb-2 text-{{work_unit.color}}" href="{{work_unit.get_absolute_url}}">
-                        <i class="material-icons">{{work_unit.icon}}</i>
-                        {{work_unit.title}}</a>
-
-                    {% endfor %}</p>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-danger">link</i>
-                    <a href="{{ADMIN_URL}}automation/workunit/add/">اضافه کردن واحد</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+   
 
 </div>
 

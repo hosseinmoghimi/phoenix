@@ -12,7 +12,7 @@ class WorkUnit(models.Model):
     title=models.CharField(_("title"),choices=UnitNameEnum.choices,default=UnitNameEnum.ACCOUNTING, max_length=50)
     icon=models.CharField(_("icon"),choices=IconsEnum.choices,default=IconsEnum.link, max_length=50)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    agents=models.ManyToManyField("Agent", verbose_name=_("agents"),blank=True)
+    employees=models.ManyToManyField("market.Employee", verbose_name=_("نیروی انسانی"),blank=True)
 
     class Meta:
         verbose_name = _("WorkUnit")
@@ -41,9 +41,10 @@ class ProductRequestSignature(models.Model):
         return reverse("ProductRequestSignature_detail", kwargs={"pk": self.pk})
 
 class ProductRequest(models.Model):
-    work_unit=models.ForeignKey("WorkUnit", verbose_name=_("واحد سازمانی"), on_delete=models.CASCADE)
-    product=models.ForeignKey("market.Product", verbose_name=_("product"), on_delete=models.CASCADE)
-    product_unit=models.ForeignKey("market.ProductUnit", verbose_name=_("product_unit"), on_delete=models.CASCADE)
+    employee=models.ForeignKey("market.Employee", verbose_name=_("employee"),null=True,blank=True, on_delete=models.SET_NULL)
+    work_unit=models.ForeignKey("WorkUnit", verbose_name=_("واحد سازمانی"), on_delete=models.PROTECT)
+    product=models.ForeignKey("market.Product", verbose_name=_("product"), on_delete=models.PROTECT)
+    product_unit=models.ForeignKey("market.ProductUnit", verbose_name=_("product_unit"), on_delete=models.PROTECT)
     quantity=models.IntegerField(_("quantity"))
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     status=models.CharField(_("status"),choices=ProductRequestStatusEnum.choices,default=ProductRequestStatusEnum.REQUESTED, max_length=50)

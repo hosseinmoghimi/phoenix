@@ -15,7 +15,7 @@ urlpatterns = [
     path('market/', include('market.urls')),
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
-    path('', include('market.urls')),
+    path('', include('automation.urls')),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}),
       
