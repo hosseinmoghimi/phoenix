@@ -24,6 +24,9 @@ class WorkUnit(models.Model):
     def get_absolute_url(self):
         return reverse("automation:work_unit", kwargs={"work_unit_id": self.pk})
 
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/workunit/{self.pk}/change/'
+
 class ProductRequestSignature(models.Model):
     signature=models.ForeignKey("app.Signature", verbose_name=_("signatures"), on_delete=models.PROTECT)
     status=models.CharField(_("status"),choices=ProductRequestStatusEnum.choices,default=ProductRequestStatusEnum.REQUESTED, max_length=50)
