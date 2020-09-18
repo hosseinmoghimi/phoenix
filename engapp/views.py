@@ -55,6 +55,8 @@ def getContext(request):
     context['engapp']={
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
         'logo':MainPicRepo().get(name=MainPicEnum.LOGO),
+        'loading':MainPicRepo().get(name=MainPicEnum.LOADING),
+        'big_logo':MainPicRepo().get(name=MainPicEnum.BIG_LOGO),
         'pretitle':parameter_repo.get(ParametersEnum.PRE_TILTE),
         'title':parameter_repo.get(ParametersEnum.TITLE),
         'address':parameter_repo.get(ParametersEnum.ADDRESS),    
