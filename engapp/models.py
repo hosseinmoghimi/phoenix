@@ -638,9 +638,9 @@ class Comment(models.Model):
 class Testimonial(models.Model):
     for_home=models.BooleanField(_("Show on homepage"),default=False)
     image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'Testimonial/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
-    title=models.CharField(_("Title"), max_length=2000)
-    body=models.CharField(_("Body"), max_length=2000,null=True,blank=True)
-    footer=models.CharField(_("Footer"), max_length=200)
+    title=models.CharField(_("Title"), max_length=2000,null=True,blank=True)
+    body=models.CharField(_("Body"), max_length=2000)
+    footer=models.CharField(_("Footer"), max_length=200,null=True,blank=True)
     priority=models.IntegerField(_("Priority"),default=100)
     profile=models.ForeignKey("Profile", null=True,blank=True,verbose_name=_("Profile"), on_delete=models.PROTECT)
     

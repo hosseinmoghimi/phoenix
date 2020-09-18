@@ -34,7 +34,7 @@
 
                             </div>
                             {% if perms.engapp.change_homeslider %}
-                            <span class="d-block">   <a class=" d-inline" href="{{home_slider.get_edit_url}}">
+                            <span class="d-block"> <a class=" d-inline" href="{{home_slider.get_edit_url}}">
                                     Edit
 
                                 </a></span>
@@ -119,17 +119,17 @@
             <!-- img -->
             <div class="right-img">
                 <img src="{{about_pic.image}}" alt="">
-               
+
 
             </div>
             <div class="support-img-cap text-center">
-                
+
                 <p>Since</p><span>
-{% if since %}
-  {{since.value}}
-{% else %}
-  2001
-{% endif %}
+                    {% if since %}
+                    {{since.value}}
+                    {% else %}
+                    2001
+                    {% endif %}
 
 
                 </span>
@@ -155,7 +155,7 @@
                             <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourwork/add/">Add Project</a></p>
                             {% endif %}
                         </div>
-                        <span class="back-text">Gellary</span>
+                        <span class="back-text">Gellery</span>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -251,10 +251,10 @@
         <div class="count-wrapper count-bg" data-background="{% static 'engapp/img/section-bg3.jpg' %}">
             <div class="row justify-content-center">
                 {% for count_down_item in  count_down_items %}
-                  
-                
-                
-                
+
+
+
+
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="count-clients">
                         <div class="single-counter">
@@ -268,8 +268,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 {% endfor %}
 
 
@@ -289,7 +289,8 @@
                     <div class="front-text">
                         <h2 class="">Our team</h2>
                         {% if perms.engapp.add_ourteam %}
-                        <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourteam/add/">Add Our Team Member</a></p>
+                        <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourteam/add/">Add Our Team Member</a>
+                        </p>
                         {% endif %}
                     </div>
                     <span class="back-text">experts</span>
@@ -298,8 +299,8 @@
         </div>
         <div class="row">
             <!-- single Team -->
-          {% for our_team in our_teams %}
-             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
+            {% for our_team in our_teams %}
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                 <div class="single-team mb-30">
                     <div class="team-img">
                         <img src="{{our_team.image}}" alt="">
@@ -310,11 +311,11 @@
                     </div>
                 </div>
             </div>
-    
-          {% endfor %}
-          
-           
-            
+
+            {% endfor %}
+
+
+
         </div>
     </div>
 </div>
@@ -340,6 +341,7 @@
         <div class="row">
             <div class="col-xl-10 col-lg-11 col-md-10 offset-xl-1">
                 <div class="h1-testimonial-active">
+                 {% for testimonial in testimonials %}
                     <!-- Single Testimonial -->
                     <div class="single-testimonial">
                         <!-- Testimonial Content -->
@@ -352,48 +354,46 @@
                                         fill-opacity="0" fill="rgb(0, 0, 0)"
                                         d="M82.623,59.861 L48.661,59.861 L48.661,25.988 L59.982,3.406 L76.963,3.406 L65.642,25.988 L82.623,25.988 L82.623,59.861 ZM3.377,25.988 L14.698,3.406 L31.679,3.406 L20.358,25.988 L37.340,25.988 L37.340,59.861 L3.377,59.861 L3.377,25.988 Z" />
                                 </svg>
-                                <p>Mollit anim laborum.Dvcuis aute iruxvfg dhjkolohr in re voluptate velit esscillumlore
-                                    eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg
-                                    dhjinulpadeserunt mollitemnth incididbnt ut;o5tu layjobore mofllit anim. Mollit anim
-                                    laborum.Dvcuis aute iruxvfg dhjkolohr in re voluptate velit esscillumlore eu quife
-                                    nrulla parihatur. Excghcepteur sfwsignjn.</p>
+                                {% if testimonial.title %}
+                                <h4 style="color:#eee" class=mb-3>{{testimonial.title}}</h4>
+                                  
+                                {% endif %}
+                                <p>
+                                    {{testimonial.body}}
+                                  
+                                   
+                               
+                               
+                                </p>
+
+
+                                {% if testimonial.footer %}
+                                <h6 style="color:#eee">{{testimonial.footer}}</h6>
+                                  
+                                {% endif %}
+                                {% if perms.engapp.change_testimonial %}
+                                <p>
+                                    <a class="btn btn-info" href="{{testimonial.get_edit_url}}">Edit</a>
+
+                                </p>
+                              {% endif %}
+
                             </div>
                             <!-- founder -->
                             <div class="testimonial-founder d-flex align-items-center">
                                 <div class="founder-text">
-                                    <span>Jessya Inn</span>
-                                    <p>Co Founder</p>
+                                    <span>{{testimonial.profile.name}}</span>
+                                    <p>{{testimonial.profile.bio}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Single Testimonial -->
-                    <div class="single-testimonial">
-                        <!-- Testimonial Content -->
-                        <div class="testimonial-caption ">
-                            <div class="testimonial-top-cap">
-                                <!-- SVG icon -->
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    width="86px" height="63px">
-                                    <path fill-rule="evenodd" stroke-width="1px" stroke="rgb(255, 95, 19)"
-                                        fill-opacity="0" fill="rgb(0, 0, 0)"
-                                        d="M82.623,59.861 L48.661,59.861 L48.661,25.988 L59.982,3.406 L76.963,3.406 L65.642,25.988 L82.623,25.988 L82.623,59.861 ZM3.377,25.988 L14.698,3.406 L31.679,3.406 L20.358,25.988 L37.340,25.988 L37.340,59.861 L3.377,59.861 L3.377,25.988 Z" />
-                                </svg>
-                                <p>Mollit anim laborum.Dvcuis aute iruxvfg dhjkolohr in re voluptate velit esscillumlore
-                                    eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg
-                                    dhjinulpadeserunt mollitemnth incididbnt ut;o5tu layjobore mofllit anim. Mollit anim
-                                    laborum.Dvcuis aute iruxvfg dhjkolohr in re voluptate velit esscillumlore eu quife
-                                    nrulla parihatur. Excghcepteur sfwsignjn.</p>
-                            </div>
-                            <!-- founder -->
-                            <div class="testimonial-founder d-flex align-items-center">
-                                <div class="founder-text">
-                                    <span>Jessya Inn</span>
-                                    <p>Co Founder</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                 {% endfor %}
+                 
+                 
+                   
+                  
+                    
                 </div>
             </div>
         </div>
