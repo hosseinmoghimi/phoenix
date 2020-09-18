@@ -7,37 +7,114 @@
 
 
 <div class="row">
- <div class="col-12">
-  <div class="card">
-    <div class="card-header card-header-primary">
-      <h4 class="card-title ">{{ware_house.name}}</h4>
-      <p class="card-category">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title mt-0"> لیست پرسنل {{ware_house.name}}</h4>
+        <p class="card-category"></p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <th>
+                ID
+              </th>
+              <th>
+                نام
+              </th>
 
-      </p>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <p>
-          انبار : 
-          <a href="{{ware_house.get_absolute_url}}">{{ware_house.name}}</a>
-          <small>
-             مسئول : 
-        <a href="{{ware_house.profile.get_absolute_url}}">{{ware_house.profile.name}}</a>
-      
-      </small>    </p>
-        <p>
-          فروشگاه : 
-          <a href="{{ware_house.supplier.get_absolute_url}}">{{ware_house.supplier.name}}</a>
-      <small>   مسئول :  
-        <a href="{{ware_house.supplier.profile.get_absolute_url}}">{{ware_house.supplier.profile.name}}</a>
-    </small> 
-        </p>
-        
+              <th>
+                سمت
+              </th>
+
+            </thead>
+            <tbody>
+              {% for employee in ware_house.employees.all %}
+              <tr>
+                <td>
+                  <a class="text-primary" href="{{employee.get_edit_url}}">
+                    <i class="material-icons">settings</i>
+                    {{employee.id}} </a>
+
+               
+                </td>
+                <td>
+                  <a class="text-primary" href="{{employee.get_absolute_url}}">{{employee.profile.name}}</a>
+
+                </td>
+
+
+                <td>
+                  
+                  {{employee.role}}
+                  
+
+                </td>
+
+
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
   </div>
 
- </div>
+
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title mt-0"> لیست فروشگاه های مرتبط با  {{ware_house.name}}</h4>
+        <p class="card-category"></p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <th>
+                ID
+              </th>
+              <th>
+                نام
+              </th>
+
+            
+
+            </thead>
+            <tbody>
+              {% for supplier in ware_house.supplier_set.all %}
+              <tr>
+                <td>
+                  <a class="text-primary" href="{{supplier.get_edit_url}}">
+                    <i class="material-icons">settings</i>
+                    {{supplier.id}} </a>
+
+               
+                </td>
+                <td>
+                  <a class="text-primary" href="{{supplier.get_absolute_url}}">{{supplier.name}}</a>
+
+                </td>
+
+
+               
+
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
   <div class="col-12">
 
 
@@ -59,11 +136,8 @@
               </th>
 
               <th>
-                تعداد
-              </th>
-
-              <th>
-                واحد
+                موجودی
+             
               </th>
               <th>
                 تاریخ ثبت
@@ -89,10 +163,8 @@
                     {{product_in_stock.quantity}}
 
                   </span>
-                </td>
-
-                <td>
-                  <span class="badge badge-info">
+               
+                  <span class="badge badge-info mx-3">
                     {{product_in_stock.unit_name.name}}</span>
                 </td>
 
@@ -139,7 +211,7 @@
             </a></div>
           <div class="card-body">
             <h6 class="card-category text-gray text-center"></h6>
-            <h4 class="card-title text-center"> کالایی در انبار {{ware_house.name}} موجود نمی باشد.</h4>
+            <h4 class="card-title text-center"> کالایی در {{ware_house.name}} موجود نمی باشد.</h4>
 
 
 

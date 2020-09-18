@@ -680,14 +680,11 @@ class SupplierView(View):
                 raise Http404
 
             context['supplier']=supplier
-            ware_houses=supplier.ware_houses()
-            context['ware_houses']=supplier.ware_houses()
             products=ProductRepo(user=request.user).list_by_supplier(supplier_id=supplier_id)
             context['products']=products
             shops=ShopRepo(user=user).get_by_supplier(supplier_id=supplier_id)
             context['shops']=shops
             context['remove_shop_form']=RemoveShopForm()
-            context['employees']=supplier.employees()
             return render(request,TEMPLATE_ROOT+'supplier.html',context)
     def list(self,request):
         user=request.user

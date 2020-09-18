@@ -405,8 +405,6 @@ class Supplier(models.Model):
     tel=models.CharField(_("تلفن"), max_length=50 , null=True,blank=True)    
     employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
     warehouses=models.ManyToManyField("market.WareHouse", verbose_name=_("warehouses"),blank=True)
-    def ware_houses(self):
-        return WareHouse.objects.filter(supplier=self)
     
     class Meta:
         verbose_name = _("Supplier")
