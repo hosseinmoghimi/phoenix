@@ -83,13 +83,13 @@
         {% for project in workunit.project_set.all %}
     <small class="text-secondary"><small></small>پروژه :</small> </small>
         <a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a>
+        <small class="text-secondary ml-4"> <small></small>واحد سازمانی :</small></small> 
+        <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a>
+        <small class="text-secondary ml-4"> <small>نقش :</small></small>
+        {{employee.role}}
+        <hr>
         {% endfor %}
-      <small class="text-secondary ml-4"> <small></small>واحد سازمانی :</small></small> 
-      <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a>
-      {% endfor %}
-      <small class="text-secondary ml-4"> <small>نقش :</small></small>
-      {{employee.role}}
-      <hr>
+        {% endfor %}
         {% endfor %}
 
       </div>
