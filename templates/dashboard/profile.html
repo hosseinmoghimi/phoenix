@@ -61,7 +61,7 @@
 
       </div>
 
-      
+
 
     </div>
 
@@ -70,28 +70,33 @@
 
 
 
-    
+
     <div class="card">
       <div class="card-header card-header-primary">
         <h4 class="card-title">مسئولیت های اجرایی</h4>
         <p class="card-category"></p>
       </div>
       <div class="card-body">
-     
-        {% for employee in selected_profile.employee_set.all %}
-        {% for workunit in employee.workunit_set.all %}
-        {% for project in workunit.project_set.all %}
-    <small class="text-secondary"><small></small>پروژه :</small> </small>
-        <a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a>
-        <small class="text-secondary ml-4"> <small></small>واحد سازمانی :</small></small> 
-        <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a>
-        <small class="text-secondary ml-4"> <small>نقش :</small></small>
-        {{employee.role}}
-        <hr>
-        {% endfor %}
-        {% endfor %}
-        {% endfor %}
+        <table class="table">
+          <thead class=" text-primary">
+            <td>پروژه</td>
+            <td> واحد سازمانی</td>
+            <td>نقش</td>
+          </thead>
 
+          {% for employee in selected_profile.employee_set.all %}
+          {% for workunit in employee.workunit_set.all %}
+          {% for project in workunit.project_set.all %}
+
+          <tr>
+            <td><a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a></td>
+            <td> <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a></td>
+            <td> {{employee.role}}</td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+          {% endfor %}
+        </table>
       </div>
     </div>
 
