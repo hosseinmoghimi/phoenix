@@ -658,3 +658,14 @@ class ProfileTransactionRepo:
                 transaction.rest=transaction.rest(profile_id=profile_id)
                 transaction.direction=transaction.direction(profile_id)
             return transactions      
+
+class SignatureRepo:
+    def __init__(self,user):
+        self.objects=Signature.objects
+        self.user=user
+        self.profile=ProfileRepo(user=self.user).me
+    def add(self,description):
+        if self.profile is not None:
+            signature=Signature(profile=self.profile,description=description)
+            signature.save()
+            return signature

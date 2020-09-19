@@ -129,6 +129,26 @@
 
                 {% endfor %}
 
+
+
+
+                {% if sign_product_request_form %}
+                  <form action="{% url 'automation:sign_product_request' %}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="product_request_id" value="{{product_request.id}}">
+                  وضعیت :
+                      <select class="form-control" name="status" id="">
+                        {% for status_option in  status_options %}
+                          
+                        <option value="{{status_option}}">{{status_option}}</option>
+                        {% endfor %}
+                    </select>
+                      <input placeholder="توضیحات" class="form-control" type="text" name="description">
+
+                      <input type="submit" class="btn btn-primary" value="امضا">
+                    </form>
+                {% endif %}
+
             </div>
         </div>
     </div>

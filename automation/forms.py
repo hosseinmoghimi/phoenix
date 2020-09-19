@@ -8,8 +8,9 @@ class AddProductRequestForm(forms.Form):
     profile_id=forms.IntegerField(required=True)
 
 class SignProductRequestForm(forms.Form):
-    request_id=forms.IntegerField(required=True)
+    product_request_id=forms.IntegerField(required=True)
     status=forms.CharField(max_length=50, required=True)
+    description=forms.CharField(max_length=500, required=False)
 
 class AddWorkUnitForm(forms.Form):
     project_id=forms.IntegerField(required=True)
