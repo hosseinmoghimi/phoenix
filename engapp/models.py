@@ -294,6 +294,7 @@ class Icon(models.Model):
             return f'<i  style="position:inherit !important;" class="text-{self.color} {self.icon_fa}"></i>'
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
+        return ""
     def get_tag(self):
         if self.url:
             icon=self.get_tag_icon()

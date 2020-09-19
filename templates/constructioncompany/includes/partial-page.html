@@ -45,3 +45,37 @@
     </div>
 </div>
 {% endfor %}
+{% if partial_page.documents.all %}
+  <div>
+   <h4>  Documents</h4>  
+  </div>
+{% endif %}
+
+{% for document in partial_page.documents.all %}
+<div>
+    
+      
+            <a target="_blank" href="{{document.get_download_url}}">
+                {{document.get_tag_icon | safe}}&nbsp;
+               {{document.title}}</a>
+      
+                
+</div>
+{% endfor %}
+
+{% if partial_page.links.all %}
+  <div>
+   <h4>  Links</h4>  
+  </div>
+{% endif %}
+{% for link in partial_page.links.all %}
+<div>
+    
+      
+            <a target="_blank" href="{{link.url}}">
+                {{link.get_tag_icon | safe}}&nbsp;
+               {{link.title}}</a>
+      
+                
+</div>
+{% endfor %}
