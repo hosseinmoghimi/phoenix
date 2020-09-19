@@ -1,7 +1,7 @@
 from app import settings
 from .apps import APP_NAME
 from .enums import IconsEnum, ParametersEnum,MainPicEnum
-from app.forms import *
+from .forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
 from .repo import CountDownItemRepo,BannerRepo,ProfileRepo,LikeRepo,PageRepo,TagRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, LinkRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
@@ -26,6 +26,7 @@ TEMPLATE_ROOT_DASHBOARD='dashboard/'
 def getContext(request):
     user=request.user
     context={}
+    # context['search_form']=SearchForm()
     context['TEMPLATE_ROOT']=TEMPLATE_ROOT
     context['CURRENCY']=CURRENCY 
     
@@ -224,6 +225,7 @@ class OurWorkView(View):
         comments_s=json.dumps(CommentSerializer(page.comments,many=True).data)
         context['comments_s']=comments_s
         context['my_like']=LikeRepo(user=request.user,object_type='Page').my_like(object_id=page_id)
+        context['search_form']=SearchForm()
         return render(request,TEMPLATE_ROOT+'page.html',context)
 
 
@@ -299,12 +301,15 @@ class BasicView(View):
         context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
         return render(request,TEMPLATE_ROOT_DASHBOARD+'resume.html',context)
     def search(self,request):
+        # context=getContext(request=request)
+        # return render(request,TEMPLATE_ROOT+'pages.html',context)
+
         if request.method=='POST':
             search_form=SearchForm(request.POST)
             if search_form.is_valid():
                 search_for=search_form.cleaned_data['search_for']          
                 context=getContext(request=request)
-                context['pages_pre_title']=f'جست و جو برای '
+                context['pages_pre_title']=f'search for '
                 context['pages_title']=search_for
                 context['pages_header_image']=MainPicRepo().get(name=MainPicEnum.SEARCH)
                 context['blogs']=PageRepo(user=request.user).search(search_for=search_for)           

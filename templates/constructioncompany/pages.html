@@ -28,7 +28,7 @@
                       
                     {% endif %}
               
-                  {% if perms.app.change_mainpic and pages_header_image.get_edit_url %}
+                  {% if pages_header_image.get_edit_url and perms.app.change_mainpic and pages_header_image.get_edit_url %}
                   <p class="">
                       <a href="{{pages_header_image.get_edit_url}}"
                           class="btn btn-info py-md-3 py-2 px-2 px-md-4">Edit Image
@@ -107,10 +107,11 @@
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">
                     <aside class="single_sidebar_widget search_widget">
-                        <form action="#">
+                        <form action="{% url 'engapp:search' %}" method="POST">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder='Search Keyword'
+                                    <input type="text" name="search_for" class="form-control" placeholder='Search Keyword'
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
                                     <div class="input-group-append">
                                         <button class="btns" type="button"><i class="ti-search"></i></button>

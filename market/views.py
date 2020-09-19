@@ -17,6 +17,7 @@ if PUSHER_IS_ENABLE:
 
 TEMPLATE_ROOT='market/'
 def getContext(request):
+    
     user=request.user
     context=app_getContext(request)
     # context['current_profile']=ProfileRepo(user=user).get_by_user(user=user)
@@ -539,6 +540,7 @@ class TableView(View):
 class IndexView(View):
     def my_list(self,request,*args, **kwargs):
         user=request.user
+
         context=getContext(request=request)
         product_repo=ProductRepo(user=user)
         context['products']=product_repo.my_list()
@@ -573,7 +575,10 @@ class IndexView(View):
                 
     def index(self,request,*args,**kwargs):
 
+        
         user=request.user
+        if not user or user is None or not user.is_authenticated :
+            return redirect(reverse('authentication:login'))
         if user is None or not user.is_authenticated:
             return redirect(reverse('authentication:login'))
         profile=ProfileRepo(user=user).me
