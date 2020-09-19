@@ -111,7 +111,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <input type="text" name="search_for" class="form-control" placeholder='Search Keyword'
+                                    <input required type="text" name="search_for" class="form-control" placeholder='Search Keyword'
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
                                     <div class="input-group-append">
                                         <button class="btns" type="button"><i class="ti-search"></i></button>
