@@ -312,7 +312,7 @@ class BasicView(View):
                 context['pages_pre_title']=f'search for '
                 context['pages_title']=search_for
                 context['pages_header_image']=MainPicRepo().get(name=MainPicEnum.SEARCH)
-                context['blogs']=PageRepo(user=request.user).search(search_for=search_for)           
+                context['pages']=PageRepo(user=request.user).search(search_for=search_for)           
                 return render(request,TEMPLATE_ROOT+'pages.html',context)
 
     def home(self,request):

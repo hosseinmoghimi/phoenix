@@ -266,7 +266,7 @@ class PageRepo:
         return self.objects.filter(for_home=True).order_by('priority')
 
     def search(self,search_for):
-        pages=self.objects.filter(title__contains=search_for)
+        pages=self.objects.filter(Q(title__contains=search_for) | Q(pretitle__contains=search_for))
         return pages
 
 class NotificationRepo:
