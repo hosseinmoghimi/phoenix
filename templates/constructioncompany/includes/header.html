@@ -49,7 +49,7 @@
                                 <nav> 
                                     <ul id="navigation">                                                                                                                   
                                         <li><a href="{% url 'engapp:home' %}">Home</a></li>
-                                        <li><a href="#">About</a></li>
+                                        <li><a href="{% url 'engapp:about' %}">About</a></li>
                                         <li><a href="{% url 'app:home' %}">Persian</a></li>
                                         <li><a href="#">Services</a></li>
                                         <li><a href="#">Blog</a>
@@ -65,7 +65,7 @@
                                                 <li><a href="#">Services Details</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">Contact</a></li>
+                                        <li><a href="{% url 'engapp:contact' %}">Contact</a></li>
                                         {% if profile %}
                                         <li><a href="{{profile.get_absolute_url}}">{{profile.name}}</a></li>
                                         <li><a href="{% url 'authentication:logout' %}">logout</a></li>
@@ -80,7 +80,7 @@
                         </div>             
                         <div class="col-xl-2 col-lg-2 col-md-3">
                             <div class="header-right-btn f-right d-none d-lg-block">
-                                <a href="#" class="btn">Contact Now</a>
+                                <a href="{% url 'engapp:contact' %}" class="btn">Contact Now</a>
                             </div>
                         </div>
                         <!-- Mobile Menu -->

@@ -267,6 +267,11 @@ class BasicView(View):
         context['about_pic']=about_pic
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us']=ParameterRepo(user=request.user).get(ParametersEnum.ABOUT_US)
+       
+        context['pages_title']=ParameterRepo().get(ParametersEnum.ABOUT_US_TITLE)
+        main_pic_repo=MainPicRepo()
+        slider=main_pic_repo.get(name=MainPicEnum.ABOUT_HEADER)
+        context['pages_header_image']=slider        
         return render(request,TEMPLATE_ROOT+'about.html',context)
     def terms(self,request):        
         context=getContext(request=request)
@@ -327,9 +332,9 @@ class BasicView(View):
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)
         
-        context['our_teams']=OurTeamRepo(user=request.user).list_for_home()
         context['blogs']=BlogRepo(user=request.user).list_for_home()
         context['our_works']=OurWorkRepo(user=request.user).list_for_home()
+        context['our_teams']=OurTeamRepo(user=request.user).list_for_home()
         context['testimonials']=TestimonialRepo(user=request.user).list_for_home()
         context['banners']=BannerRepo(user=request.user).list_for_home()
         about_pic=MainPicRepo(user=request.user).get(MainPicEnum.ABOUT)
@@ -353,6 +358,15 @@ class ContactView(View):
         context['location']=parameter_repo.get(ParametersEnum.LOCATION)
         context['contact_us']=parameter_repo.get(ParametersEnum.CONTACT_US)
         context['contact_form']=ContactMessageForm()
+
+
+
+
+        context['pages_title']=ParameterRepo().get(ParametersEnum.CONTACT_US_TITLE)
+        main_pic_repo=MainPicRepo()
+        slider=main_pic_repo.get(name=MainPicEnum.CONTACT_HEADER)
+        context['pages_header_image']=slider        
+
         return render(request,TEMPLATE_ROOT+'contact.html',context)
     def post(self,request,*args, **kwargs):
         if request.method=='POST':
