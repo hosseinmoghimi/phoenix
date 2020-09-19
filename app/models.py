@@ -55,7 +55,7 @@ class CountDownItem(models.Model):
     
     class Meta:
         verbose_name = _("CountDownItem")
-        verbose_name_plural = _("CountDownItems")
+        verbose_name_plural = _("شمارنده ها")
     def image(self):
         if self.image_origin:
             return MEDIA_URL+str(self.image_origin)

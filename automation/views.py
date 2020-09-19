@@ -39,6 +39,9 @@ class WorkUnitView(View):
     def work_unit(self,request,work_unit_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        product_requests=ProductRequestRepo(user=request.user).list_for_work_unit(work_unit_id=work_unit_id)
+        print(product_requests)
+        context['product_requests']=product_requests
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work_unit.html',context)
 class ProjectView(View):

@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import Agent,ProductRequestSignature,WorkUnit,ProductRequest,PurchaseAgent,LetterSignature,Letter,Project
+from .models import ProductRequestSignature,WorkUnit,ProductRequest,PurchaseAgent,LetterSignature,Letter,Project
 
 admin.site.register(WorkUnit)
-admin.site.register(Agent)
 admin.site.register(LetterSignature)
 admin.site.register(ProductRequestSignature)
 admin.site.register(ProductRequest)

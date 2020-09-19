@@ -20,6 +20,8 @@ class WorkUnitRepo:
                 work_unit.save()
                 project.work_units.add(work_unit)
                 return work_unit
+    
+
 
 class ProjectRepo:
     def __init__(self,user=None):
@@ -42,3 +44,5 @@ class ProductRequestRepo:
             return self.objects.get(pk=product_request_id)
         except:
             return None
+    def list_for_work_unit(self,work_unit_id):
+        return self.objects.filter(work_unit_id=work_unit_id)

@@ -1,7 +1,7 @@
 {% extends "dashboard/layout.html" %}
 {% load static %}
 {% load to_price %}
-{% load to_contract_status_color %}
+{% load to_persian_date %}
 {% block contents %}
 
 
@@ -22,13 +22,36 @@
             </div>
             <div class="card-body">
 
+                <p>
+                    تاریخ درخواست : 
+                    {{product_request.date_added|to_persian_date|safe}}
+                    
+                </p>
+                <p>
+                    پرسنل درخواست کننده : <a
+                        href="{{product_request.employee.profile.get_absolute_url}}">{{product_request.employee.profile.name}}</a>
+                </p>
 
-                <a class="btn btn-info"
-                    href="{{product_request.work_unit.get_absolute_url}}">{{product_request.work_unit.title}}</a>
 
-                <a class="btn btn-primary"
-                    href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
-                <span class="text-warning">{{product_request.quantity}} {{product_request.product_unit.name}}</span>
+                <p>
+                    واحد درخواست کننده : <a
+                        href="{{product_request.work_unit.get_absolute_url}}">{{product_request.work_unit.title}}</a>
+                </p>
+
+
+                <p>
+                    کالای درخواست شده : <a class="btn btn-primary"
+                        href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
+                </p>
+
+                <p>
+                    تعداد :
+                    <span class="text-warning">{{product_request.quantity}} {{product_request.product_unit.name}}</span>
+                </p>
+
+
+
+               
 
             </div>
 
@@ -41,38 +64,77 @@
 
                 <div>
 
-                    {% if product_request.signatures.all %}
-                    <span class="stats text-secondary mx-2">امضا شده توسط: </span>
-
-                    {% for signature in product_request.signatures.all %}
 
 
-
-                    <span class="stats text-success mx-2">
-
-                        <i class="material-icons">done</i>
-                        {{signature.profile.name}}
-
-                    </span>
-                    {% endfor %} {% endif %}
-
-                </div>
-
-                <div class="stats">
-                    <i class="material-icons text-danger">link</i>
-                    <a href="{{product_request.get_edit_url}}">ویرایش کردن درخواست</a>
-
-                    <i class="material-icons text-danger">link</i>
-                    <a href="{{product_request.get_absolute_url}}">جزییات درخواست</a>
-
+                    <p>
+                        <i class="material-icons text-danger">link</i>
+                        <a href="{{product_request.get_edit_url}}">ویرایش کردن درخواست</a>
+                    </p>
+                    <p> <i class="material-icons text-danger">link</i>
+                        <a href="{{product_request.get_absolute_url}}">جزییات درخواست</a>
+                    </p>
                 </div>
 
             </div>
         </div>
+
+
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+                <p class="card-category">امضاهای</p>
+                <h3 class="card-title">درخواست شماره {{product_request.pk}}
+
+                </h3>
+            </div>
+            <div class="card-body">
+               
+                
+                {% for signature in product_request.signatures.all %}
+
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="mb-0">
+                            <a href="{{signature.signature.profile.get_absolute_url}}">
+                                <span class="stats text-success mx-2">
+
+                                    <i class="material-icons">done</i>
+                                    {{signature.signature.profile.name}}
+
+                                </span>
+                            </a>
+
+                            &nbsp;&nbsp;
+                            <small>
+
+                                {{signature.signature.date_added|to_persian_date|safe}}
+                            </small>
+                            &nbsp;&nbsp;{{signature.get_status_tag|safe}}
+
+                           
+
+                        </p>
+
+                    </div>
+                    <div class="col-lg-12 mb-3">
+                        <p> <small class="text-secondary mx-5"> {{signature.signature.description}} </small></p>
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+        </div>
     </div>
-
-
 </div>
+
+
 
 
 {% endblock %}

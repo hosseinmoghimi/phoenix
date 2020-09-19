@@ -13,10 +13,10 @@ class WorkUnit(models.Model):
     icon=models.CharField(_("icon"),choices=IconsEnum.choices,default=IconsEnum.link, max_length=50)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     employees=models.ManyToManyField("market.Employee", verbose_name=_("نیروی انسانی"),blank=True)
-
+    description=models.CharField(_("description"), max_length=500,null=True,blank=True)
     class Meta:
         verbose_name = _("WorkUnit")
-        verbose_name_plural = _("واحد های سازمانی")
+        verbose_name_plural = _("WorkUnits - واحد های سازمانی")
 
     def __str__(self):
         return self.title
@@ -31,11 +31,27 @@ class ProductRequestSignature(models.Model):
     signature=models.ForeignKey("app.Signature", verbose_name=_("signatures"), on_delete=models.PROTECT)
     status=models.CharField(_("status"),choices=ProductRequestStatusEnum.choices,default=ProductRequestStatusEnum.REQUESTED, max_length=50)
     
-    
+    def get_status_tag(self):
+        color='primary'
+        if self.status==ProductRequestStatusEnum.ACCEPTED:
+            color='success'
+        if self.status==ProductRequestStatusEnum.CANCELED:
+            color='secondary'
+        if self.status==ProductRequestStatusEnum.COMPLETED:
+            color='primary'
+        if self.status==ProductRequestStatusEnum.DENIED:
+            color='danger'
+        if self.status==ProductRequestStatusEnum.PROCCESSING:
+            color='light'
+        if self.status==ProductRequestStatusEnum.IN_PROGRESS:
+            color='warning'
+        if self.status==ProductRequestStatusEnum.REQUESTED:
+            color='info'
+        return f'<span class="badge badge-{color}">{self.status}</span>'
 
     class Meta:
         verbose_name = _("ProductRequestSignature")
-        verbose_name_plural = _("ProductRequestSignatures")
+        verbose_name_plural = _("ProductRequestSignatures -امضاهای درخواست های خرید")
 
     def __str__(self):
         return f'{self.signature.profile.name()} : {self.status}'
@@ -55,8 +71,24 @@ class ProductRequest(models.Model):
     signatures=models.ManyToManyField("ProductRequestSignature", verbose_name=_("signatures"),blank=True)
     class Meta:
         verbose_name = _("ProductRequest")
-        verbose_name_plural = _("ProductRequests")
-
+        verbose_name_plural = _("ProductRequests -درخواست های خرید")
+    def get_status_tag(self):
+        color='primary'
+        if self.status==ProductRequestStatusEnum.ACCEPTED:
+            color='success'
+        if self.status==ProductRequestStatusEnum.CANCELED:
+            color='secondary'
+        if self.status==ProductRequestStatusEnum.COMPLETED:
+            color='primary'
+        if self.status==ProductRequestStatusEnum.DENIED:
+            color='danger'
+        if self.status==ProductRequestStatusEnum.PROCCESSING:
+            color='light'
+        if self.status==ProductRequestStatusEnum.IN_PROGRESS:
+            color='warning'
+        if self.status==ProductRequestStatusEnum.REQUESTED:
+            color='info'
+        return f'<span class="badge badge-{color}">{self.status}</span>'
     def __str__(self):
         return f'{self.work_unit.title} / {self.product.name} : {self.quantity} {self.product_unit}'
 
@@ -72,21 +104,7 @@ class PurchaseAgent(models.Model):
 
     class Meta:
         verbose_name = _("PurchaseAgent")
-        verbose_name_plural = _("PurchaseAgents")
-
-    def __str__(self):
-        return f'{self.profile.name()} ({self.rank})'
-
-    def get_absolute_url(self):
-        return reverse("PurchaseAgent_detail", kwargs={"pk": self.pk})
-
-class Agent(models.Model):
-    profile=models.ForeignKey("app.Profile", verbose_name=_("profile"), on_delete=models.CASCADE)
-    rank=models.IntegerField(_("rank"),default=0)
-    role=models.CharField(_("پست سازمانی"),choices=AgentRoleEnum.choices,default=AgentRoleEnum.DEFAULT, max_length=50)
-    class Meta:
-        verbose_name = _("PurchaseAgent")
-        verbose_name_plural = _("مامور")
+        verbose_name_plural = _("PurchaseAgents - مسئول های خرید")
 
     def __str__(self):
         return f'{self.profile.name()} ({self.rank})'
@@ -102,7 +120,7 @@ class LetterSignature(models.Model):
 
     class Meta:
         verbose_name = _("LetterSignature")
-        verbose_name_plural = _("LetterSignatures")
+        verbose_name_plural = _("LetterSignatures - امضا های نامه ها")
 
     def __str__(self):
         return self.name
@@ -120,7 +138,7 @@ class Letter(models.Model):
     
     class Meta:
         verbose_name = _("Letter")
-        verbose_name_plural = _("Letters")
+        verbose_name_plural = _("Lettes - نامه ها")
 
     def __str__(self):
         return self.title
@@ -136,7 +154,7 @@ class Project(OurWork):
 
     class Meta:
         verbose_name = _("Project")
-        verbose_name_plural = _("Projects")
+        verbose_name_plural = _("Projects - پروژه ها")
 
     def __str__(self):
         return self.title
