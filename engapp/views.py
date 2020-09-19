@@ -178,6 +178,7 @@ class BlogView(View):
         context['pages']=TagRepo(user=request.user).pages(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'pages.html',context)
 
+
 class OurWorkView(View):
     def add_blog(self,request,*args, **kwargs):
         if request.method=='POST':
