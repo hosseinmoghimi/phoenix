@@ -58,6 +58,12 @@
             <a target="_blank" href="{{document.get_download_url}}">
                 {{document.get_tag_icon | safe}}&nbsp;
                {{document.title}}</a>
+               {% if perms.engapp.change_document %}
+                 
+            <a  href="{{document.get_edit_url}}">
+               
+            Edit</a>
+               {% endif %}
       
                 
 </div>
@@ -76,6 +82,11 @@
                 {{link.get_tag_icon | safe}}&nbsp;
                {{link.title}}</a>
       
-                
+               {% if perms.engapp.change_link %}
+                 
+               <a  href="{{link.get_edit_url}}">
+                  
+               Edit</a>
+                  {% endif %}
 </div>
 {% endfor %}
