@@ -60,7 +60,7 @@
                {{document.title}}</a>
                {% if perms.engapp.change_document %}
                  
-            <a  href="{{document.get_edit_url}}">
+            <a class="btn btn-info"  href="{{document.get_edit_url}}">
                
             Edit</a>
                {% endif %}
@@ -84,7 +84,7 @@
       
                {% if perms.engapp.change_link %}
                  
-               <a  href="{{link.get_edit_url}}">
+               <a class="btn btn-info" href="{{link.get_edit_url}}">
                   
                Edit</a>
                   {% endif %}
