@@ -381,8 +381,8 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 @font-face {
     font-family: 'gijgo-material';
-    src: url('../fonts/gijgo-material.eot?235541');
-    src: url('../fonts/gijgo-material.eot?235541#iefix') format('embedded-opentype'), url('../fonts/gijgo-material.ttf?235541') format('truetype'), url('../fonts/gijgo-material.woff?235541') format('woff'), url('../fonts/gijgo-material.svg?235541#gijgo-material') format('svg');
+    src: url('../fonts/gijgo-material.eot');
+    src: url('../fonts/gijgo-material.eot') format('embedded-opentype'), url('../fonts/gijgo-material.ttf') format('truetype'), url('../fonts/gijgo-material.woff') format('woff'), url('../fonts/gijgo-material.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
