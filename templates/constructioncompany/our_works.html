@@ -72,7 +72,7 @@
                         <!--Nav Button  -->
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" href="{% url 'engapp:our_works' %}"
+                                <a class="nav-item nav-link" id="category_0" href="{% url 'engapp:our_works' %}"
                                    > Show all </a>
 
                                     <!-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="{% url 'engapp:our_works' %}"
@@ -82,7 +82,7 @@
                                       
                                     <!-- <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="{{our_work_category.get_absolute_url}}"
                                     role="tab" aria-controls="nav-profile" aria-selected="false"> {{our_work_category.title}}</a> -->
-                                    <a class="nav-item nav-link"  href="{{our_work_category.get_absolute_url}}"
+                                    <a class="nav-item nav-link" id="category_{{our_work_category.id}}" href="{{our_work_category.get_absolute_url}}"
                                     > {{our_work_category.title}}</a>
                                     
                                     {% endfor %}
@@ -136,5 +136,15 @@
 
 {% endblock  %}
 {% block scripts %}
+{% if our_work_category %}
   
+  <script>
+      $("#category_{{our_work_category.id}}").addClass("active")
+  </script>
+{% else %}
+   <script>
+      $("#category_0").addClass("active")
+  </script>
+{% endif %}
+
 {% endblock  %}

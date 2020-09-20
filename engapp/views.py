@@ -216,9 +216,10 @@ class OurWorkView(View):
             context['pages_header_image']=slider 
             context['our_works']=OurWorkRepo(user=request.user).list()
         if category_id is not None:
-            category=OurWorkRepo().get_category(category_id=category_id)
-            context['pages_title']=category.title
-            slider=category
+            our_work_category=OurWorkRepo().get_category(category_id=category_id)
+            context['our_work_category']=our_work_category
+            context['pages_title']=our_work_category.title
+            slider=our_work_category
             context['pages_header_image']=slider    
             context['our_works']=OurWorkRepo(user=request.user).list().filter(category_id=category_id)
         return render(request,TEMPLATE_ROOT+'our_works.html',context)
