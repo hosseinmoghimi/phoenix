@@ -17,7 +17,14 @@
 
 
 	<meta name="robots" content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+	{% if  app.favicon.image %}
+	  	<link rel="shortcut icon" type="image/x-icon" href="{{app.favicon.image}}">
 
+	{% else %}
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'avo/img/favicon.ico' %}">
+
+	{% endif %}
+        
 	<meta name="theme-color" content="{{theme_color}}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" href="{% static 'dashboard/icons/css.css' %}" />

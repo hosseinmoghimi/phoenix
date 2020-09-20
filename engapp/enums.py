@@ -128,6 +128,7 @@ class ParametersEnum(TextChoices):
     VIDEO_TITLE='VIDEO_TITLE',_('VIDEO_TITLE')
 
 class MainPicEnum(TextChoices):    
+    FAVICON='FAVICON',_('FAVICON')    
     CAROUSEL='CAROUSEL',_('CAROUSEL')    
     FAQ='FAQ',_('FAQ')     
     SEARCH='SEARCH',_('SEARCH')    

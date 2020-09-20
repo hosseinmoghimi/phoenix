@@ -17,8 +17,13 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="manifest" href="site.webmanifest">
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'engapp/img/favicon.ico' %}">
+        {% if  engapp.favicon.image %}
+        <link rel="shortcut icon" type="image/x-icon" href="{{engapp.favicon.image}}">
         
+        {% else %}
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'engapp/img/favicon.ico' %}">
+  {% endif %}
         
         
         

@@ -49,15 +49,16 @@ def getContext(request):
         context['profiles']=None            
         context['my_channel_events_s']='[]'
         context['notifications_s']='[]'
-
+    main_pic_repo=MainPicRepo()
     parameter_repo=ParameterRepo(user=user)
     context['theme_color']=parameter_repo.get(ParametersEnum.THEME_COLOR).value
     context['PUSHER_IS_ENABLE']=PUSHER_IS_ENABLE
     context['engapp']={
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
-        'logo':MainPicRepo().get(name=MainPicEnum.LOGO),
-        'loading':MainPicRepo().get(name=MainPicEnum.LOADING),
-        'big_logo':MainPicRepo().get(name=MainPicEnum.BIG_LOGO),
+        'logo':main_pic_repo.get(name=MainPicEnum.LOGO),
+        'loading':main_pic_repo.get(name=MainPicEnum.LOADING),
+        'big_logo':main_pic_repo.get(name=MainPicEnum.BIG_LOGO),
+        'favicon':main_pic_repo.get(name=MainPicEnum.FAVICON),
         'pretitle':parameter_repo.get(ParametersEnum.PRE_TILTE),
         'title':parameter_repo.get(ParametersEnum.TITLE),
         'address':parameter_repo.get(ParametersEnum.ADDRESS),    
