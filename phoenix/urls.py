@@ -16,7 +16,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('accounting/', include('accounting.urls')),
-    path('', include('app.urls')),
+    path('', include('accounting.urls')),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}),
       

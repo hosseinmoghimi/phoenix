@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 
+admin.site.register(FinancialDocumentCategory)
 admin.site.register(FinancialYear)
 admin.site.register(FinancialAccount)
 admin.site.register(FinancialTransaction)

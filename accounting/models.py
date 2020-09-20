@@ -2,14 +2,33 @@ from django.db import models
 from django.utils.translation import gettext as _
 from .apps import APP_NAME
 from django.shortcuts import reverse
-class FinancialDocument(models.Model):    
 
+class FinancialDocumentCategory(models.Model):
+    title=models.CharField(_("دسته بندی سند های مالی"), max_length=50)
+
+    
+
+    class Meta:
+        verbose_name = _("FinancialDocumentCategory")
+        verbose_name_plural = _("دسته بندی های سند های مالی")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("CurrentFeeCategory_detail", kwargs={"pk": self.pk})
+
+
+class FinancialDocument(models.Model):    
+    financial_year=models.ForeignKey("FinancialYear", verbose_name=_("سال مالی"), on_delete=models.PROTECT)
     title=models.CharField(_("عنوان"), max_length=50)
+    category=models.ForeignKey("FinancialDocumentCategory",null=True, verbose_name=_("دسته بندی"), on_delete=models.PROTECT)
     amount=models.IntegerField(_("مبلغ"))
     date_added=models.DateTimeField(_("تاریخ ثبت"), auto_now=False, auto_now_add=True)
     date_edited=models.DateTimeField(_("تاریخ ویرایش"), auto_now=True, auto_now_add=False)
     date_document=models.DateTimeField(_("تاریخ سند"), auto_now=False, auto_now_add=False)
-    
+    links=models.ManyToManyField("app.Link", verbose_name=_("لینک ها"))
+    documents=models.ManyToManyField("app.Document", verbose_name=_("فایل ها"))
 
     class Meta:
         verbose_name = _("FinancialDocument")
@@ -19,12 +38,13 @@ class FinancialDocument(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("FinancialDocument_detail", kwargs={"pk": self.pk})
+        return reverse("accounting:financial_document", kwargs={"financial_document_id": self.pk})
+
 
 class FinancialYear(models.Model):
     title=models.CharField(_("عنوان"), max_length=50)
     year=models.IntegerField(_("سال مالی"),default=1399)
-    documents=models.ManyToManyField("FinancialDocument", blank=True,verbose_name=_("اسناد مالی"))
+    # documents=models.ManyToManyField("FinancialDocument", blank=True,verbose_name=_("اسناد مالی"))
 
 
     class Meta:
@@ -35,7 +55,8 @@ class FinancialYear(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("FinancialYear_detail", kwargs={"pk": self.pk})
+        return reverse("accounting:financial_year", kwargs={"financial_year_id": self.pk})
+
 
 class FinancialAccount(models.Model):
     title=models.CharField(_("عنوان"), max_length=50)
@@ -64,6 +85,7 @@ class FinancialTransaction(FinancialDocument):
 
     def get_absolute_url(self):
         return reverse("FinancialAccount_detail", kwargs={"pk": self.pk})
+
 
 class FinancialProfile(FinancialAccount):
     profile=models.ForeignKey("app.Profile", verbose_name=_("پروفایل"), on_delete=models.PROTECT)
@@ -130,7 +152,7 @@ class Bank(models.Model):
 
 
 class CurrentFeeCategory(models.Model):
-    name=models.CharField(_("دسته بندی هزینه های جاری"), max_length=50)
+    title=models.CharField(_("دسته بندی هزینه های جاری"), max_length=50)
 
     
 
@@ -139,14 +161,14 @@ class CurrentFeeCategory(models.Model):
         verbose_name_plural = _("دسته بندی های هزینه های جاری")
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         return reverse("CurrentFeeCategory_detail", kwargs={"pk": self.pk})
 
 
 class CurrentFee(FinancialDocument):
-    category=models.ForeignKey("CurrentFeeCategory", verbose_name=_("دسته بندی هزینه های جاری"), on_delete=models.CASCADE)
+    fee_category=models.ForeignKey("CurrentFeeCategory", verbose_name=_("دسته بندی هزینه های جاری"), on_delete=models.CASCADE)
     
 
     class Meta:

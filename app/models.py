@@ -241,7 +241,7 @@ class Icon(models.Model):
         if self.icon_material is not None and len(self.icon_material)>0:
             return f'<i class="text-{self.color} material-icons">{self.icon_material}</i>'
         if self.icon_fa is not None and len(self.icon_fa)>0:
-            return f'<span   style="position:inherit !important;" class="text-{self.color} {self.icon_fa}"></span>'
+            return f'<i   style="position:inherit !important;" class="text-{self.color} {self.icon_fa}"></i>'
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):

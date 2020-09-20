@@ -28,10 +28,46 @@ class FinancialProfileRepo:
     def list(self):
         return self.objects.all()
 
+
 class FinancialAccountRepo:
     def __init__(self,user):
         self.user=user
         self.objects=FinancialAccount.objects
         self.profile=ProfileRepo(user=user).me
+    def get(self,pk):
+        try:
+            return self.objects.get(pk=pk)
+        except:
+            return None
     def list(self):
         return self.objects.all()
+
+
+class FinancialYearRepo:
+    def __init__(self,user):
+        self.user=user
+        self.objects=FinancialYear.objects
+        self.profile=ProfileRepo(user=user).me
+    def get(self,financial_year_id):
+        try:
+            return self.objects.get(pk=financial_year_id)
+        except:
+            return None
+    def list(self):
+        return self.objects.all()
+
+
+class FinancialDocumentRepo:
+    def __init__(self,user):
+        self.user=user
+        self.objects=FinancialDocument.objects
+        self.profile=ProfileRepo(user=user).me
+    def get(self,financial_document_id):
+        try:
+            return self.objects.get(pk=financial_document_id)
+        except:
+            return None
+    def list(self):
+        return self.objects.all()
+    def list_by_year(self,financial_year_id):
+        return self.objects.filter(financial_year_id=financial_year_id)

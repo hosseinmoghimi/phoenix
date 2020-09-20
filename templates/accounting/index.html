@@ -9,9 +9,87 @@
 
 
 <div class="row">
+  {% if financial_document %}
 
+  <div class="col-lg-12">
+    {% include 'accounting/includes/financial_document.html' %}
+  </div>
+  {% endif %}
+  {% if financial_documents %}
+
+  <div class="col-lg-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-{{our_service.color}} card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">{{our_service.icon}}</i>
+        </div>
+        <h3 class="card-title">سند های مالی</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class=" text-primary">
+            <td>
+              دسته بندی
+            </td>
+
+
+            <td>
+              عنوان
+            </td>
+
+
+            <td>
+              مبلغ
+            </td>
+
+
+
+
+          </thead>
+
+          <tbody>
+            {% for financial_document in financial_documents %}
+            <tr>
+              <td>
+              
+                {{financial_document.category.title}}
+              
+                
+              </td>
+
+              <td>
+                <a href="{{financial_document.get_absolute_url}}">
+                  {{financial_document.title}}
+                </a>
+
+              </td>
+
+
+              <td>
+                {{financial_document.amount|to_price}}
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if perms.app.change_ourservice %}
+        <a href="{{our_service.get_edit_url}}" class="btn btn-block btn-primary btn-round">
+          <i class="material-icons">date_range</i>
+          ویرایش</a>
+        {% endif %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
   {% if financial_profile_list %}
-  
+
   <div class="col-lg-12">
     <div class="card card-stats">
       <div class="card-header card-header-{{our_service.color}} card-header-icon">
@@ -26,10 +104,10 @@
             <td>
               عنوان
             </td>
-  
-  
+
+
           </thead>
-  
+
           <tbody>
             {% for financial_profile in financial_profile_list %}
             <tr>
@@ -42,7 +120,7 @@
             {% endfor %}
           </tbody>
         </table>
-  
+
         {% if perms.app.change_ourservice %}
         <a href="{{our_service.get_edit_url}}" class="btn btn-block btn-primary btn-round">
           <i class="material-icons">date_range</i>
@@ -58,54 +136,104 @@
   </div>
   {% endif %}
 
-  
-{% if financial_account_list %}
-  
-<div class="col-lg-12">
-  <div class="card card-stats">
-    <div class="card-header card-header-{{our_service.color}} card-header-icon">
-      <div class="card-icon">
-        <i class="material-icons">{{our_service.icon}}</i>
+
+  {% if financial_year_list %}
+
+  <div class="col-lg-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-{{our_service.color}} card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">{{our_service.icon}}</i>
+        </div>
+        <h3 class="card-title">سال های مالی</h3>
       </div>
-      <h3 class="card-title">حساب های مالی</h3>
-    </div>
-    <div class="card-body">
-      <table class="table">
-        <thead class=" text-primary">
-          <td>
-            عنوان
-          </td>
-
-
-        </thead>
-
-        <tbody>
-          {% for financial_account in financial_account_list %}
-          <tr>
+      <div class="card-body">
+        <table class="table">
+          <thead class=" text-primary">
             <td>
-              <a href="{{financial_account.get_absolute_url}}">
-                {{financial_account.title}}
-              </a>
+              عنوان
             </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
 
-      {% if perms.app.change_ourservice %}
-      <a href="{{our_service.get_edit_url}}" class="btn btn-block btn-primary btn-round">
-        <i class="material-icons">date_range</i>
-        ویرایش</a>
-      {% endif %}
-    </div>
-    <div class="card-footer">
-      <div class="stats">
-        <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+
+          </thead>
+
+          <tbody>
+            {% for financial_year in financial_year_list %}
+            <tr>
+              <td>
+                <a href="{{financial_year.get_absolute_url}}">
+                  {{financial_year.title}}
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if perms.app.change_ourservice %}
+        <a href="{{our_service.get_edit_url}}" class="btn btn-block btn-primary btn-round">
+          <i class="material-icons">date_range</i>
+          ویرایش</a>
+        {% endif %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+        </div>
       </div>
     </div>
   </div>
-</div>
-{% endif %}
+  {% endif %}
+
+
+  {% if financial_account_list %}
+
+  <div class="col-lg-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-{{our_service.color}} card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">{{our_service.icon}}</i>
+        </div>
+        <h3 class="card-title">حساب های مالی</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class=" text-primary">
+            <td>
+              عنوان
+            </td>
+
+
+          </thead>
+
+          <tbody>
+            {% for financial_account in financial_account_list %}
+            <tr>
+              <td>
+                <a href="{{financial_account.get_absolute_url}}">
+                  {{financial_account.title}}
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if perms.app.change_ourservice %}
+        <a href="{{our_service.get_edit_url}}" class="btn btn-block btn-primary btn-round">
+          <i class="material-icons">date_range</i>
+          ویرایش</a>
+        {% endif %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
 
 
   {% if financial_transaction_list %}
@@ -126,7 +254,7 @@
             </td>
 
             <td>
-             بستانکار
+              بستانکار
             </td>
 
             <td>
