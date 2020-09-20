@@ -759,7 +759,7 @@ class ProductRepo:
             if profile is not None:
                 region=profile.region
 
-        products=self.objects.filter(name__contains=search_for)
+        products=self.objects.filter(Q(name__contains=search_for) | Q(model_name__contains=search_for) )
         for product in products:
             product.price=Shop.objects.filter(product_id=product.id).filter(supplier__in=Supplier.objects.filter(region=region)).aggregate(Min('price'))['price__min']
         categories=Category.objects.filter(name__contains=search_for)
