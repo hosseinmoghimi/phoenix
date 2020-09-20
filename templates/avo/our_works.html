@@ -62,9 +62,16 @@
 							<div class="px-4 px-lg-4">
 								<div class="desc">
 									<div class="top">
-										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+										{% if our_work.pretitle %}
+										<span class="subheading leo-farsi text-right">{{our_work.pretitle}}</span>
+
+										{% endif %}
 										<h2 class="mb-2"><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
+										{% if our_work.posttitle %}
+										<span class="subheading leo-farsi text-right">{{our_work.posttitle}}</span>
+
+										{% endif %}
 									</div>
 									<div class="absolute">
 										<p>{{our_work.short_desc}}</p>
@@ -104,9 +111,16 @@
 							<div class="px-4 px-lg-4">
 								<div class="desc text-md-right">
 									<div class="top">
+										{% if our_work.pretitle %}
 										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
+
+										{% endif %}
 										<h2 class="mb-2"><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
+										{% if our_work.posttitle %}
+										<span class="subheading leo-farsi">{{our_work.posttitle}}</span>
+
+										{% endif %}
 									</div>
 									<div class="absolute">
 										<p>{{our_work.short_desc}}</p>
@@ -156,5 +170,5 @@
 
 <script>
 	$("#our-works-link").addClass('active')
-  </script>
+</script>
 {% endblock %}

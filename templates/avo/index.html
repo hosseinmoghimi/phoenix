@@ -10,7 +10,7 @@
 <section class="hero-wrap degree-right js-fullheight">
 	<div class="home-slider js-fullheight owl-carousel">
 		{% if perms.auth.change_user %}
- <div class="slider-item js-fullheight"
+		<div class="slider-item js-fullheight"
 			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
 			<div class="overlay"></div>
 			<div class="container">
@@ -55,12 +55,12 @@
 
 				</div>
 			</div>
-		</div> 
+		</div>
 		{% endif %}
 
 		{% if not user.is_authenticated %}
 
-<!-- 		
+		<!-- 		
 		<div class="slider-item js-fullheight"
 			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
 			<div class="overlay"></div>
@@ -228,8 +228,7 @@
 						{{app.slogan.value|safe}}
 						{% if perms.app.change_parameter %}
 					<p class="text-center leo-rtl text-right">
-						<a href="{{app.slogan.get_edit_url}}"
-							class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+						<a href="{{app.slogan.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
 						</a>
 					</p>
 					{% endif %}
@@ -273,7 +272,7 @@
 
 				<div class="services-2 d-flex ftco-animate">
 					<span>0{{forloop.counter}}</span>
-					<div class="text mx-2">					
+					<div class="text mx-2">
 						<a class="mb-0" href="{{our_service.get_absolute_url}}">
 							<h4 class="leo-rtl text-right">{{our_service.title}}</h4>
 
@@ -396,11 +395,15 @@
 									<div class="top  text-right">
 										{% if our_work.pretitle %}
 										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
-										  
+
 										{% endif %}
 										<h2 class="mb-2 text-right"><a class="text-right"
 												href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
+										{% if our_work.posttitle %}
+										<span class="subheading leo-farsi">{{our_work.posttitle}}</span>
+
+										{% endif %}
 									</div>
 									<div class="absolute">
 										<p>{{our_work.short_description}}</p>
@@ -443,10 +446,15 @@
 									<div class="top">
 										{% if our_work.pretitle %}
 										<span class="subheading leo-farsi">{{our_work.pretitle}}</span>
-										  
+
 										{% endif %}
 										<h2 class="mb-2"><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a>
 										</h2>
+										{% if our_work.posttitle %}
+										<span class="subheading leo-farsi">{{our_work.posttitle}}</span>
+
+										{% endif %}
+
 									</div>
 									<div class="absolute">
 										<p>{{our_work.short_description}}</p>

@@ -8,6 +8,45 @@
 
 
 <div class="row">
+    <!-- my employees -->
+    <div class="col-lg-6 col-md-6 col-sm-12">
+
+
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">مسئولیت های اجرایی
+                    {{profile.name}}
+                </h4>
+                <p class="card-category"></p>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead class=" text-primary">
+                        <td>پروژه</td>
+                        <td> واحد سازمانی</td>
+                        <td>نقش</td>
+                    </thead>
+
+                    {% for employee in profile.employee_set.all %}
+                    {% for workunit in employee.workunit_set.all %}
+                    {% for project in workunit.project_set.all %}
+
+                    <tr>
+                        <td><a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a></td>
+                        <td> <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a></td>
+                        <td> {{employee.role}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -22,40 +61,36 @@
             <div class="card-body">
                 <p class="mt-3">
                     {% for project in projects %}
-                      
+
                     <a class=" mb-2" href="{{project.get_absolute_url}}">
                         <i class="material-icons">add_shopping_cart</i>
                         {{project.title}}</a>
                     {% endfor %}
 
 
-                   </p>
+                </p>
             </div>
             <div class="card-footer">
                 <div class="stats">
-                <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">افزودن پروژه جدید</a>
+                    <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">افزودن پروژه جدید</a>
                 </div>
             </div>
         </div>
     </div>
 
-   
 
-</div>
+    {% endblock %}
+    {% block scripts %}
 
-
-{% endblock %}
-{% block scripts %}
-
-<script>
-    $("#automation-link").addClass("active");
+    <script>
+        $("#automation-link").addClass("active");
 
 
 
 
 
-</script>
-{% endblock %}
-{% block styles %}
+    </script>
+    {% endblock %}
+    {% block styles %}
 
-{% endblock %}
+    {% endblock %}

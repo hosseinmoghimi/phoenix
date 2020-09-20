@@ -1,10 +1,14 @@
 from .models import Project,WorkUnit,ProductRequest,ProductRequestSignature
 from .apps import APP_NAME
+from app.repo import ProfileRepo
 from app.repo import SignatureRepo
 class WorkUnitRepo:
     def __init__(self,user=None):
         self.objects=WorkUnit.objects
         self.user=user
+        self.profile=ProfileRepo(user=user).me
+    def my_work_units(self):
+        return self.profile.employee_set.all()
     def list(self):
         return self.objects.all()
     def work_unit(self,work_unit_id):

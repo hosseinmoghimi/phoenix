@@ -24,6 +24,7 @@ class BasicView(View):
         user=request.user
         context=getContext(request)
         context['projects']=ProjectRepo(user=user).list()   
+        context['my_work_units']=WorkUnitRepo(user=user).my_work_units()   
         return render(request,TEMPLATE_ROOT+'index.html',context)
 
 class WorkUnitView(View):

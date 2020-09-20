@@ -36,8 +36,16 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
+                
+                  <a href="{{project.get_edit_url}}"> 
                     <i class="material-icons text-danger">link</i>
-                    <a href="{{project.get_edit_url}}">ویرایش</a>
+                    ویرایش
+                   </a>
+                   <a href="{% url 'app:our_work' our_work_id=project.id %}"> 
+                    <i class="material-icons text-danger">link</i>
+                    نمایش در سایت اصلی
+                   </a>
+
                 </div>
             </div>
         </div>
