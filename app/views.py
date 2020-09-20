@@ -195,7 +195,8 @@ class OurWorkView(View):
                 if blog is not None:
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
-    def list(self,request,*args, **kwargs):
+    
+    def list(self,request,category_id=None,*args, **kwargs):
         user=request.user
         context=getContext(request=request)
         if user.has_perm(APP_NAME+'.add_blog'):
@@ -204,6 +205,19 @@ class OurWorkView(View):
             context['icons_s']=json.dumps(icons)
         context['our_works_header_image']=MainPicRepo(user=request.user).get(name=MainPicEnum.OUR_WORK_HEADER)        
         context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is None:
+            context['pages_title']='Our Projects'
+            main_pic_repo=MainPicRepo()
+            slider=main_pic_repo.get(name=MainPicEnum.OUR_WORK_HEADER)
+            context['pages_header_image']=slider 
+            context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is not None:
+            category=OurWorkRepo().get_category(category_id=category_id)
+            context['pages_title']=category.title
+            slider=category
+            context['pages_header_image']=slider    
+            context['our_works']=OurWorkRepo(user=request.user).list().filter(category_id=category_id)
+        
         return render(request,TEMPLATE_ROOT+'our_works.html',context)
     def our_work(self,request,our_work_id,*args, **kwargs):
         context=getContext(request=request)
@@ -318,6 +332,7 @@ class BasicView(View):
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)
         
+        context['our_work_categories']=OurWorkRepo(user=request.user).get_categories()
         context['blogs']=BlogRepo(user=request.user).list_for_home()
         context['our_works']=OurWorkRepo(user=request.user).list_for_home()
         context['testimonials']=TestimonialRepo(user=request.user).list_for_home()

@@ -7,6 +7,8 @@ admin.site.register(Page)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)
 
+
+admin.site.register(OurWorkCategory)
 admin.site.register(GalleryAlbum)
 admin.site.register(Comment)
 admin.site.register(Like)

@@ -199,15 +199,28 @@ class OurWorkView(View):
                 if blog is not None:
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
-    def list(self,request,*args, **kwargs):
+    
+    def list(self,request,category_id=None,*args, **kwargs):
         user=request.user
         context=getContext(request=request)
+        context['our_work_categories']=OurWorkRepo(user=request.user).get_categories() 
         if user.has_perm(APP_NAME+'.add_blog'):
             context['add_blog_form']=AddBlogForm()
             icons=list(IconsEnum)
             context['icons_s']=json.dumps(icons)
         context['our_works_header_image']=MainPicRepo(user=request.user).get(name=MainPicEnum.OUR_WORK_HEADER)        
-        context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is None:
+            context['pages_title']='Our Projects'
+            main_pic_repo=MainPicRepo()
+            slider=main_pic_repo.get(name=MainPicEnum.OUR_WORK_HEADER)
+            context['pages_header_image']=slider 
+            context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is not None:
+            category=OurWorkRepo().get_category(category_id=category_id)
+            context['pages_title']=category.title
+            slider=category
+            context['pages_header_image']=slider    
+            context['our_works']=OurWorkRepo(user=request.user).list().filter(category_id=category_id)
         return render(request,TEMPLATE_ROOT+'our_works.html',context)
     def our_work(self,request,our_work_id,*args, **kwargs):
         context=getContext(request=request)
@@ -325,7 +338,9 @@ class BasicView(View):
     def home(self,request):
         user=request.user
         parameter_repo=ParameterRepo(user=user)
-        context=getContext(request=request)        
+        context=getContext(request=request)       
+        
+        context['our_work_categories']=OurWorkRepo(user=request.user).get_categories() 
         context['home_sliders']=HomeSliderRepo(user=user).list()
         context['since']=parameter_repo.get(ParametersEnum.SINCE)
         context['count_down_items']=CountDownItemRepo(user=user).list_for_home()

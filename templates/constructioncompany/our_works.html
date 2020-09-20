@@ -1,0 +1,140 @@
+{% extends "constructioncompany/layout.html" %}
+{% load static %}
+{% block header %}
+  
+{% endblock  %}
+{% block contents %}
+  
+
+<!-- slider Area Start-->
+<div class="slider-area ">
+    <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
+        data-background="{{pages_header_image.image}}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap pt-100">
+                        {% if pages_pre_title %}
+                        <h3 class="mb-3 bread ">{{pages_pre_title}}</h3>
+                          
+                        {% endif %}
+                        {% if pages_title %}
+                    <h2 class="mb-3 ">{{pages_title}}</h2>
+                      
+                    {% endif %}
+                        {% if pages_post_title %}
+                    <h3 class="mb-3 bread ">{{pages_post_title}}</h3>
+                      
+                    {% endif %}
+              
+                  {% if pages_header_image.get_edit_url and perms.app.change_mainpic and pages_header_image.get_edit_url %}
+                  <p class="">
+                      <a href="{{pages_header_image.get_edit_url}}"
+                          class="btn btn-info py-md-3 py-2 px-2 px-md-4">Edit Image
+                      </a>
+                  </p>
+                  {% endif %}
+
+                        <nav aria-label="breadcrumb ">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'engapp:home' %}">Home</a></li>
+                                
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- slider Area End-->
+
+
+<!-- Project Area Start -->
+<section class="project-area  section-padding30">
+    <div class="container">
+        <div class="project-heading mb-35">
+            <div class="row align-items-end">
+                <div class="col-lg-6">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle section-tittle3">
+                        <div class="front-text">
+                            <h2 class="">Our Projects</h2>
+                            {% if perms.engapp.add_ourwork %}
+                            <p><a class="btn btn-info" href="{{ADMIN_URL}}{{APP_NAME}}/ourwork/add/">Add Project</a></p>
+                            {% endif %}
+                        </div>
+                        <span class="back-text">Gellery</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="properties__button">
+                        <!--Nav Button  -->
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" href="{% url 'engapp:our_works' %}"
+                                   > Show all </a>
+
+                                    <!-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="{% url 'engapp:our_works' %}"
+                                    role="tab" aria-controls="nav-home" aria-selected="false"> Show all </a>
+                                     -->
+                                    {% for our_work_category in our_work_categories %}
+                                      
+                                    <!-- <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="{{our_work_category.get_absolute_url}}"
+                                    role="tab" aria-controls="nav-profile" aria-selected="false"> {{our_work_category.title}}</a> -->
+                                    <a class="nav-item nav-link"  href="{{our_work_category.get_absolute_url}}"
+                                    > {{our_work_category.title}}</a>
+                                    
+                                    {% endfor %}
+                            </div>
+                        </nav>
+                        <!--End Nav Button  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Nav Card -->
+                <div class="tab-content active" id="nav-tabContent">
+
+
+
+                    <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="project-caption">
+                            <div class="row">
+                                {% for our_work in our_works %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="single-project mb-30">
+                                        <div class="project-img">
+                                            <img src="{{our_work.grid_image}}" alt="">
+                                        </div>
+                                        <div class="project-cap">
+                                            <a href="{{our_work.get_absolute_url}}" class="plus-btn"><i
+                                                    class="ti-plus"></i></a>
+                                            <h4><a href="{{our_work.get_absolute_url}}">{{our_work.title}}</a></h4>
+                                            <p>{{our_work.short_description}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- End Nav Card -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Project Area End -->
+
+{% endblock  %}
+{% block scripts %}
+  
+{% endblock  %}

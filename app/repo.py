@@ -242,7 +242,8 @@ class OurWorkRepo:
         except:
             return None
     
-    
+    def get_categories(self):
+        return OurWorkCategory.objects.order_by('priority')
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
 
