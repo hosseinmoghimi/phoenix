@@ -27,7 +27,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <p class="mt-3">
+                    <p class="mt-3 text-secondary">
 
                         {% if work_unit.description %}
                         {{work_unit.description}}
@@ -61,6 +61,12 @@
                 <p class="card-category"></p>
             </div>
             <div class="card-body">
+
+{% if product_requests %}
+  
+
+
+
                 <table class="table">
                     <thead class=" text-primary">
                         <td></td>
@@ -106,6 +112,12 @@
 
 
                 </table>
+                {% else %}
+  <p class="text-center text-warning">
+      درخواستی ثبت نشده است.
+  </p>
+{% endif %}
+
             </div>
 
             <div class="card-footer">
