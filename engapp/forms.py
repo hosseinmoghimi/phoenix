@@ -58,7 +58,7 @@ class UploadProfileImageForm(forms.Form):
 class ContactMessageForm(forms.ModelForm):    
     class Meta:
         model = ContactMessage
-        fields = ("fname","lname","email","subject","message")
+        fields = ("name","email","subject","message")
 
 class EditProfileForm(forms.Form):
 

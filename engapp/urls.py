@@ -18,6 +18,7 @@ urlpatterns = [
     path('blog/<int:blog_id>/',views.BlogView().blog,name='blog'),
     path('our_works/',views.OurWorkView().list,name='our_works'),
     path('our_work/<int:our_work_id>/',views.OurWorkView().our_work,name='our_work'),
+    path('our_works_by_category/<int:category_id>/',views.OurWorkView().list,name='our_works_by_category'),
     path('our_team/',views.BasicView().our_team,name='our_team'),
     path('resume/<int:our_team_id>/',views.BasicView().resume,name='resume'),
     path('change_profile_image/',views.ProfileView().change_profile_image,name='change_profile_image'),

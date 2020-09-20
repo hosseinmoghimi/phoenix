@@ -1,9 +1,14 @@
-from .models import Project,WorkUnit,ProductRequest
+from .models import Project,WorkUnit,ProductRequest,ProductRequestSignature
 from .apps import APP_NAME
+from app.repo import ProfileRepo
+from app.repo import SignatureRepo
 class WorkUnitRepo:
     def __init__(self,user=None):
         self.objects=WorkUnit.objects
         self.user=user
+        self.profile=ProfileRepo(user=user).me
+    def my_work_units(self):
+        return self.profile.employee_set.all()
     def list(self):
         return self.objects.all()
     def work_unit(self,work_unit_id):
@@ -20,10 +25,13 @@ class WorkUnitRepo:
                 work_unit.save()
                 project.work_units.add(work_unit)
                 return work_unit
+    
+
 
 class ProjectRepo:
     def __init__(self,user=None):
         self.objects=Project.objects
+        self.user=user
     def list(self):
         return self.objects.all()
     def project(self,project_id):
@@ -34,6 +42,7 @@ class ProjectRepo:
 
 class ProductRequestRepo:
     def __init__(self,user=None):
+        self.user=user
         self.objects=ProductRequest.objects
     def list(self):
         return self.objects.all()
@@ -42,3 +51,15 @@ class ProductRequestRepo:
             return self.objects.get(pk=product_request_id)
         except:
             return None
+    def list_for_work_unit(self,work_unit_id):
+        return self.objects.filter(work_unit_id=work_unit_id)
+    def sign(self,product_request_id,status,description):
+        if self.user.is_authenticated:
+            signature=SignatureRepo(user=self.user).add(description=description)
+            if signature is not None:
+                product_request=self.product_request(product_request_id=product_request_id)
+                product_request_signature=ProductRequestSignature(signature=signature,status=status)
+                product_request_signature.save()
+                product_request.signatures.add(product_request_signature)
+                return product_request
+            

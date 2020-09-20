@@ -165,16 +165,20 @@
                         <!--Nav Button  -->
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                <a class="nav-item nav-link" href="{% url 'engapp:our_works' %}"
+                                   > Show all </a>
+
+                                    <!-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="{% url 'engapp:our_works' %}"
                                     role="tab" aria-controls="nav-home" aria-selected="false"> Show all </a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                                    role="tab" aria-controls="nav-profile" aria-selected="false"> Intorior</a>
-                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                                    role="tab" aria-controls="nav-contact" aria-selected="false">Recent</a>
-                                <a class="nav-item nav-link" id="nav-last-tab" data-toggle="tab" href="#nav-last"
-                                    role="tab" aria-controls="nav-contact" aria-selected="false">Big building</a>
-                                <a class="nav-item nav-link" id="nav-technology" data-toggle="tab" href="#nav-techno"
-                                    role="tab" aria-controls="nav-contact" aria-selected="false">Park</a>
+                                     -->
+                                    {% for our_work_category in our_work_categories %}
+                                      
+                                    <!-- <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="{{our_work_category.get_absolute_url}}"
+                                    role="tab" aria-controls="nav-profile" aria-selected="false"> {{our_work_category.title}}</a> -->
+                                    <a class="nav-item nav-link"  href="{{our_work_category.get_absolute_url}}"
+                                    > {{our_work_category.title}}</a>
+                                    
+                                    {% endfor %}
                             </div>
                         </nav>
                         <!--End Nav Button  -->

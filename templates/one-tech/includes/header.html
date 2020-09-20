@@ -69,8 +69,9 @@
 					<div class="header_search">
 						<div class="header_search_content">
 							<div class="header_search_form_container">
-								<form action="#" class="header_search_form clearfix">
-									<input type="search" required="required" class="header_search_input"
+								<form action="{% url 'market:search' %}" method="POST" class="header_search_form clearfix">
+								{% csrf_token %}
+									<input type="search" name="search_for" required="required" class="header_search_input"
 										style="float: right;padding-right: 15px;padding-left: 5px;"
 										placeholder="جستجو ...">
 									<div class="custom_dropdown d-none" style="float: right;">

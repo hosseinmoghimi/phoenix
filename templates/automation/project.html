@@ -36,53 +36,65 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
+                
+                  <a href="{{project.get_edit_url}}"> 
                     <i class="material-icons text-danger">link</i>
-                    <a href="{{project.get_edit_url}}">ویرایش</a>
+                    ویرایش
+                   </a>
+                   <a href="{% url 'app:our_work' our_work_id=project.id %}"> 
+                    <i class="material-icons text-danger">link</i>
+                    نمایش در سایت اصلی
+                   </a>
+
                 </div>
             </div>
         </div>
+
+
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                  <i class="material-icons">settings</i>
+              </div>
+              <p class="card-category">لیست</p>
+              <h3 class="card-title">واحد ها
+
+              </h3>
+          </div>
+          <div class="card-body">
+            {% for work_unit in project.work_units.all %}
+            <p class="mt-3">
+                 
+
+
+              <a class="d-block mb-2 text-{{work_unit.color}}" href="{{work_unit.get_absolute_url}}">
+                  <i class="material-icons">{{work_unit.icon}}</i>
+                  {{work_unit.title}}</a>
+
+              </p>
+            {% endfor %}
+            {% if perms.automation.add_workunit and add_work_unit_form%}
+           
+            <form action="{% url 'automation:add_work_unit' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="project_id" value="{{project.id}}">
+                <input type="text" name="title" class="form-control" placeholder="نام واحد سازمانی جدید" id="">
+<input type="submit" class="btn btn-sm btn-success" value="افزودن">
+              </form>
+            {% endif %}
+          </div>
+          <div class="card-footer">
+              <div class="stats">
+                  <i class="material-icons text-danger">link</i>
+                  <a href="{{ADMIN_URL}}automation/work_unit/add/">اضافه کردن واحد</a>
+              </div>
+          </div>
+      </div>
+
     </div>
   <!-- work units -->
     <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-                <p class="card-category">لیست</p>
-                <h3 class="card-title">واحد ها
-
-                </h3>
-            </div>
-            <div class="card-body">
-              {% for work_unit in project.work_units.all %}
-              <p class="mt-3">
-                   
-
-
-                <a class="d-block mb-2 text-{{work_unit.color}}" href="{{work_unit.get_absolute_url}}">
-                    <i class="material-icons">{{work_unit.icon}}</i>
-                    {{work_unit.title}}</a>
-
-                </p>
-              {% endfor %}
-              {% if perms.automation.add_workunit and add_work_unit_form%}
-             
-              <form action="{% url 'automation:add_work_unit' %}" method="POST">
-                  {% csrf_token %}
-                  <input type="hidden" name="project_id" value="{{project.id}}">
-                  <input type="text" name="title" class="form-control" placeholder="نام واحد سازمانی جدید" id="">
- <input type="submit" class="btn btn-sm btn-success" value="افزودن">
-                </form>
-              {% endif %}
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-danger">link</i>
-                    <a href="{{ADMIN_URL}}automation/work_unit/add/">اضافه کردن واحد</a>
-                </div>
-            </div>
-        </div>
+       
     </div>
 
 
@@ -95,12 +107,12 @@
               <i class="material-icons">store</i>
             </div>
             <p class="card-category">فایل excel</p>
-            <h3 class="card-title"> انبار های {{project.name}}</h3>
+            <h3 class="card-title"> انبار های {{project.title}}</h3>
           </div>
           <div class="card-body">
             {% for ware_house in  project.warehouses.all  %}
             <div>
-              <a href=" {{ware_house.get_absolute_url}}" class="btn btn-block btn-link btn-success">
+              <a href=" {{ware_house.get_absolute_url}}" class="">
                 <i class="material-icons">get_app</i>
                 {{ware_house.name}}
               </a>

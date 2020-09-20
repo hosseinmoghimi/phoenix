@@ -39,7 +39,7 @@
 				<!-- Shop Sidebar -->
 				<div class="shop_sidebar">
 					{% if categories %}
-					  
+
 					<div class="sidebar_section">
 						<div class="sidebar_title text-right leo-farsi"> دسته بندی</div>
 						<ul class="sidebar_categories">
@@ -65,7 +65,7 @@
 						</div>
 					</div>
 
-			<div class="sidebar_section d-none ">
+					<div class="sidebar_section d-none ">
 						<div class="sidebar_subtitle color_subtitle  leo-farsi text-right">رنگ</div>
 						<ul class="colors_list text-right">
 							<li class="color text-right"><a href="#" style="background: #b19c83;"></a></li>
@@ -80,7 +80,7 @@
 					</div>
 					<div class="sidebar_section mt-4 ">
 						<div class="sidebar_title text-right leo-farsi"> برند ها </div>
-					
+
 						<ul class="brands_list">
 							{% for brand in brands %}
 							<li style="text-align: right;"><a class="leo-farsi"
@@ -131,25 +131,33 @@
 
 							{% for product in products %}
 							<!-- Product Item -->
-							<div class="col-lg-3 col-md-4 col-sm-6 col-6 {% if product_related.is_new %}is_new{% endif %} {% if product_related.discount %}discount{% endif %} product_item is_new">
+							<div
+								class="col-lg-3 col-md-4 col-sm-6 col-6 {% if product_related.is_new %}is_new{% endif %} {% if product_related.discount %}discount{% endif %} product_item is_new">
 								<div class="product_border"></div>
 								<div
 									class="product_image  d-flex flex-column align-items-center justify-content-center">
-									<a href="{{product.get_absolute_url}}"><img src="{{product.get_thumbnail}}" alt=""></a>
+									<a href="{{product.get_absolute_url}}"><img src="{{product.get_thumbnail}}"
+											alt=""></a>
 								</div>
 								<div class="product_content">
 									<div class="product_price">&nbsp;</div>
 									<div class="product_name">
-										<div><a href="{{product.get_absolute_url}}" class="leo-farsi"
-												tabindex="0">{{product.name}}</a>
+										<div><a href="{{product.get_absolute_url}}" class="leo-farsi text-center"
+												tabindex="0">{{product.name}}
+											{% if product.model_name %}
+											<br>
+											<span class="text-secondary">{{product.model_name}}</span>
+											{% endif %}
+										</a>
 
 										</div>
 									</div>
 								</div>{% if perms.market.can_change_product %}
 								<div class="product_fav1">
-									
-									<a href="{{product.get_edit_url}}" class="leo-farsi"><i class="material-icons">settings</i> ویرایش</a>
-									
+
+									<a href="{{product.get_edit_url}}" class="leo-farsi"><i
+											class="material-icons">settings</i> ویرایش</a>
+
 								</div>{% endif %}
 								<ul class="product_marks">
 									{% if product.is_new %}
@@ -164,24 +172,28 @@
 							</div>
 							{% endfor %}
 
-						{% if add_product_form %}
-						<div class="col-lg-4 mx-5">
-						  <div class="card p-3">
-							  <h3 class="text-center my-3">افزودن کالای جدید</h3>
-							<form class="leo-rtl text-right" action="{% url 'market:add_product' %}" method="POST">
-								{% csrf_token %}
-								<input type="hidden" value="{{parent.id}}" name="category_id">
-								
-								<select style="width: fit-content !important;" name="unit_name" id="" class="form-control">
-									{% for unit_name in unit_names %}
-									<option value="{{unit_name}}">{{unit_name}}</option>									  
-									{% endfor %}
-								</select>
-<input type="text" name="name" class="form-control" placeholder="نام کالا" required id="">
-<input type="submit" class="btn btn-success" value="تایید">
-							</form>
-						  </div></div>
-						{% endif %}
+							{% if add_product_form %}
+							<div class="col-lg-4 mx-5">
+								<div class="card p-3">
+									<h3 class="text-center my-3">افزودن کالای جدید</h3>
+									<form class="leo-rtl text-right" action="{% url 'market:add_product' %}"
+										method="POST">
+										{% csrf_token %}
+										<input type="hidden" value="{{parent.id}}" name="category_id">
+
+										<select style="width: fit-content !important;" name="unit_name" id=""
+											class="form-control">
+											{% for unit_name in unit_names %}
+											<option value="{{unit_name}}">{{unit_name}}</option>
+											{% endfor %}
+										</select>
+										<input type="text" name="name" class="form-control" placeholder="نام کالا"
+											required id="">
+										<input type="submit" class="btn btn-success" value="تایید">
+									</form>
+								</div>
+							</div>
+							{% endif %}
 						</div>
 
 					</div>

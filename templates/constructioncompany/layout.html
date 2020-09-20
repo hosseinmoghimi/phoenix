@@ -16,9 +16,14 @@
         <meta name="theme-color" content="{{theme_color}}" />
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'engapp/img/favicon.ico' %}">
+        <link rel="manifest" href="{% static 'engapp/site.webmanifest' %}">
+        {% if  engapp.favicon.image %}
+        <link rel="shortcut icon" type="image/x-icon" href="{{engapp.favicon.image}}">
         
+        {% else %}
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'engapp/img/favicon.ico' %}">
+  {% endif %}
         
         
         
@@ -94,7 +99,7 @@
         <script src="{% static 'engapp/js/jquery.counterup.min.js' %}"></script>
 
         <!-- contact js -->
-        <script src="{% static 'engapp/js/contact.js' %}"></script>
+        <!-- <script src="{% static 'engapp/js/contact.js' %}"></script> -->
         <script src="{% static 'engapp/js/jquery.form.js' %}"></script>
         <script src="{% static 'engapp/js/jquery.validate.min.js' %}"></script>
         <script src="{% static 'engapp/js/mail-script.js' %}"></script>

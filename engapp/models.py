@@ -275,6 +275,43 @@ class Tag(models.Model):
 
 
 
+
+
+class OurWorkCategory(models.Model):
+    priority=models.IntegerField(_("Priority"),default=100)
+    image_header=models.ImageField(_("Header Image"),null=True,blank=True, upload_to=IMAGE_FOLDER+'OurWorkCategory/', height_field=None, width_field=None, max_length=None)
+    title=models.CharField(_("Title"), max_length=50)
+     
+    def image(self):
+        if self.image_header is None:
+            return None
+        return MEDIA_URL+str(self.image_header)
+
+    def to_link_tag(self):
+        return """
+        <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
+             
+                {get_tag_icon}
+            
+              {title}</a>
+          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          
+    class Meta:
+        verbose_name = _("OurWorkCategory")
+        verbose_name_plural = _("OurWorkCategories")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('engapp:our_works_by_category',kwargs={'category_id':self.pk})
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/ourworkcategory/{self.pk}/change/'
+
+
+
+
+
 class Icon(models.Model):
     title=models.CharField(_("Title"), max_length=50)    
     image_origin=models.ImageField(_("Image"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
@@ -491,6 +528,8 @@ class Like(models.Model):
 
 
 class OurWork(Page):
+    category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("Category"), on_delete=models.SET_NULL)
+    
     location=models.CharField(_('Google Map Location 400*400'),max_length=500,null=True,blank=True)    
     
     class Meta:
@@ -547,8 +586,7 @@ class MainPic(models.Model):
 
 
 class ContactMessage(models.Model):
-    fname=models.CharField(_("First Name"), max_length=50)
-    lname=models.CharField(_("Last Name"), max_length=50)
+    name=models.CharField(_("Last Name"), max_length=50)
     email=models.EmailField(_("Email"), max_length=254)
     subject=models.CharField(_("Title"), max_length=50)
     message=models.CharField(_("Message"), max_length=50)

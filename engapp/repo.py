@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout, authenticate
-from .models import Comment,Like,Page,Tag,OurWork,ContactMessage,FAQ,Banner,ResumeCategory,Document,Profile,HomeSlider, Region, Link, MetaData, Notification, SocialLink, OurTeam, OurService, GalleryPhoto, Testimonial, Blog, Parameter, FAQ, MainPic
+from .models import OurWorkCategory,Comment,Like,Page,Tag,OurWork,ContactMessage,FAQ,Banner,ResumeCategory,Document,Profile,HomeSlider, Region, Link, MetaData, Notification, SocialLink, OurTeam, OurService, GalleryPhoto, Testimonial, Blog, Parameter, FAQ, MainPic
 from .enums import ParametersEnum, MainPicEnum, ProfileStatusEnum
 from django.contrib.auth.models import User
 from .apps import APP_NAME
@@ -179,6 +179,7 @@ class TagRepo:
             return self.objects.get(pk=tag_id)
         except:
             return None
+
 class ParameterRepo:
     
     def __init__(self,user=None):
@@ -236,7 +237,11 @@ class OurWorkRepo:
         self.objects=OurWork.objects.filter(archive=False)
     def list(self):
         return self.objects.filter(archive=False).order_by('priority')
-          
+    
+    def get_category(self,category_id):
+        return OurWorkCategory.objects.get(pk=category_id)
+    def get_categories(self):
+        return OurWorkCategory.objects.order_by('priority')
     def our_work(self,our_work_id):
         try:
             return self.objects.get(pk=our_work_id)
@@ -342,8 +347,8 @@ class ContactMessageRepo:
     def __init__(self,user=None):
         self.user=user
         self.objects=ContactMessage.objects
-    def add(self,fname,lname,email,subject,message):
-        contact_message=ContactMessage(fname=fname,lname=lname,email=email,subject=subject,message=message)
+    def add(self,name,email,subject,message):
+        contact_message=ContactMessage(name=name,email=email,subject=subject,message=message)
         contact_message.save()
     def list(self):
         if self.user.has_perm(APP_NAME+'.view_contactmessage'):

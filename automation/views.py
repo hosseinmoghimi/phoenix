@@ -1,6 +1,7 @@
 from app import settings
 from .apps import APP_NAME
 from app.enums import IconsEnum, ParametersEnum
+from .enums import ProductRequestStatusEnum
 from .forms import *
 from .repo import WorkUnitRepo,ProductRequestRepo,ProjectRepo
 from app.constants import CURRENCY
@@ -23,6 +24,7 @@ class BasicView(View):
         user=request.user
         context=getContext(request)
         context['projects']=ProjectRepo(user=user).list()   
+        context['my_work_units']=WorkUnitRepo(user=user).my_work_units()   
         return render(request,TEMPLATE_ROOT+'index.html',context)
 
 class WorkUnitView(View):
@@ -39,6 +41,9 @@ class WorkUnitView(View):
     def work_unit(self,request,work_unit_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        product_requests=ProductRequestRepo(user=request.user).list_for_work_unit(work_unit_id=work_unit_id)
+        print(product_requests)
+        context['product_requests']=product_requests
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work_unit.html',context)
 class ProjectView(View):
@@ -61,5 +66,18 @@ class ProductRequestView(View):
     def product_request(self,request,product_request_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        if  True:
+            context['sign_product_request_form']=SignProductRequestForm()
+            context['status_options']=list(x.value for x in ProductRequestStatusEnum)
         context['product_request']=ProductRequestRepo(user=user).product_request(product_request_id=product_request_id)
         return render(request,TEMPLATE_ROOT+'product_request.html',context)
+    def sign(self,request):        
+        if request.method=='POST':
+            sign_product_request_form=SignProductRequestForm(request.POST)
+            if sign_product_request_form.is_valid():
+                product_request_id=sign_product_request_form.cleaned_data['product_request_id']
+                status=sign_product_request_form.cleaned_data['status']
+                description=sign_product_request_form.cleaned_data['description']
+                product_request=ProductRequestRepo(user=request.user).sign(status=status,product_request_id=product_request_id,description=description)
+                return redirect(product_request.get_absolute_url())
+                

@@ -132,6 +132,7 @@ class ParametersEnum(TextChoices):
     THEME_COLOR='رنگ سربرگ کروم در موبایل',_('رنگ سربرگ کروم در موبایل')
 
 class MainPicEnum(TextChoices):    
+    FAVICON='آیکون سایت',_('آیکون سایت')     
     CAROUSEL='سایت',_('سایت')    
     FAQ='سوالات',_('سوالات')     
     SEARCH='جستجو',_('جستجو')    

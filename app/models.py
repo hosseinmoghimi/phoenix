@@ -55,7 +55,7 @@ class CountDownItem(models.Model):
     
     class Meta:
         verbose_name = _("CountDownItem")
-        verbose_name_plural = _("CountDownItems")
+        verbose_name_plural = _("شمارنده ها")
     def image(self):
         if self.image_origin:
             return MEDIA_URL+str(self.image_origin)
@@ -615,7 +615,41 @@ class Like(models.Model):
         return f'{name} @ {self.persian_date_added()}'
 
 
+class OurWorkCategory(models.Model):
+    title=models.CharField(_("عنوان"), max_length=50)
+    priority=models.IntegerField(_("ترتیب"),default=100)
+    image_header=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'OurWorkCategory/', height_field=None, width_field=None, max_length=None)
+     
+    def image(self):
+        if self.image_header is None:
+            return None
+        return MEDIA_URL+str(self.image_header)
+
+    def to_link_tag(self):
+        return """
+        <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
+             
+                {get_tag_icon}
+            
+              {title}</a>
+          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          
+    class Meta:
+        verbose_name = _("دسته بندی  پروژه")
+        verbose_name_plural = _("دسته بندی  پروژه ها")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('app:our_works_by_category',kwargs={'category_id':self.pk})
+    def get_edit_url(self):
+        return f'{ADMIN_URL}app/ourworkcategory/{self.pk}/change/'
+
+
 class OurWork(Page):
+    category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
+    
     location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
     
     class Meta:

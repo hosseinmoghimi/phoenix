@@ -49,15 +49,16 @@ def getContext(request):
         context['profiles']=None            
         context['my_channel_events_s']='[]'
         context['notifications_s']='[]'
-
+    main_pic_repo=MainPicRepo()
     parameter_repo=ParameterRepo(user=user)
     context['theme_color']=parameter_repo.get(ParametersEnum.THEME_COLOR).value
     context['PUSHER_IS_ENABLE']=PUSHER_IS_ENABLE
     context['engapp']={
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
-        'logo':MainPicRepo().get(name=MainPicEnum.LOGO),
-        'loading':MainPicRepo().get(name=MainPicEnum.LOADING),
-        'big_logo':MainPicRepo().get(name=MainPicEnum.BIG_LOGO),
+        'logo':main_pic_repo.get(name=MainPicEnum.LOGO),
+        'loading':main_pic_repo.get(name=MainPicEnum.LOADING),
+        'big_logo':main_pic_repo.get(name=MainPicEnum.BIG_LOGO),
+        'favicon':main_pic_repo.get(name=MainPicEnum.FAVICON),
         'pretitle':parameter_repo.get(ParametersEnum.PRE_TILTE),
         'title':parameter_repo.get(ParametersEnum.TITLE),
         'address':parameter_repo.get(ParametersEnum.ADDRESS),    
@@ -198,15 +199,29 @@ class OurWorkView(View):
                 if blog is not None:
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
-    def list(self,request,*args, **kwargs):
+    
+    def list(self,request,category_id=None,*args, **kwargs):
         user=request.user
         context=getContext(request=request)
+        context['our_work_categories']=OurWorkRepo(user=request.user).get_categories() 
         if user.has_perm(APP_NAME+'.add_blog'):
             context['add_blog_form']=AddBlogForm()
             icons=list(IconsEnum)
             context['icons_s']=json.dumps(icons)
         context['our_works_header_image']=MainPicRepo(user=request.user).get(name=MainPicEnum.OUR_WORK_HEADER)        
-        context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is None:
+            context['pages_title']='Our Projects'
+            main_pic_repo=MainPicRepo()
+            slider=main_pic_repo.get(name=MainPicEnum.OUR_WORK_HEADER)
+            context['pages_header_image']=slider 
+            context['our_works']=OurWorkRepo(user=request.user).list()
+        if category_id is not None:
+            our_work_category=OurWorkRepo().get_category(category_id=category_id)
+            context['our_work_category']=our_work_category
+            context['pages_title']=our_work_category.title
+            slider=our_work_category
+            context['pages_header_image']=slider    
+            context['our_works']=OurWorkRepo(user=request.user).list().filter(category_id=category_id)
         return render(request,TEMPLATE_ROOT+'our_works.html',context)
     def our_work(self,request,our_work_id,*args, **kwargs):
         context=getContext(request=request)
@@ -324,7 +339,9 @@ class BasicView(View):
     def home(self,request):
         user=request.user
         parameter_repo=ParameterRepo(user=user)
-        context=getContext(request=request)        
+        context=getContext(request=request)       
+        
+        context['our_work_categories']=OurWorkRepo(user=request.user).get_categories() 
         context['home_sliders']=HomeSliderRepo(user=user).list()
         context['since']=parameter_repo.get(ParametersEnum.SINCE)
         context['count_down_items']=CountDownItemRepo(user=user).list_for_home()
@@ -372,12 +389,12 @@ class ContactView(View):
         if request.method=='POST':
             contact_form=ContactMessageForm(request.POST)
             if contact_form.is_valid():
-                fname=contact_form.cleaned_data['fname']
-                lname=contact_form.cleaned_data['lname']
+                name=contact_form.cleaned_data['name']
+                # lname=contact_form.cleaned_data['lname']
                 email=contact_form.cleaned_data['email']
                 subject=contact_form.cleaned_data['subject']
                 message=contact_form.cleaned_data['message']
-                ContactMessageRepo().add(fname=fname,lname=lname,email=email,subject=subject,message=message)
+                ContactMessageRepo().add(name=name,email=email,subject=subject,message=message)
                 return redirect(reverse('app:contact'))
 
 
