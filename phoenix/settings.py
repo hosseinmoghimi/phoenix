@@ -59,6 +59,7 @@ if not SERVER_ON_HEROKU:
 # Application definition
 
 INSTALLED_APPS = [
+    'accounting',
     'app',
     'automation',
     'engapp',
