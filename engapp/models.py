@@ -586,8 +586,7 @@ class MainPic(models.Model):
 
 
 class ContactMessage(models.Model):
-    fname=models.CharField(_("First Name"), max_length=50)
-    lname=models.CharField(_("Last Name"), max_length=50)
+    name=models.CharField(_("Last Name"), max_length=50)
     email=models.EmailField(_("Email"), max_length=254)
     subject=models.CharField(_("Title"), max_length=50)
     message=models.CharField(_("Message"), max_length=50)

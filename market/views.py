@@ -565,11 +565,11 @@ class IndexView(View):
                     context['categories']=catgories
                 else:
                     context['empty_search']=True              
-                    return render(request,TEMPLATE_ROOT+'search.html',context=context)
+                    return render(request,'one-tech/search.html',context=context)
                     # if request.user.is_authenticated:
                     #     context['new_word_form']=NewWordForm()
                 context['search_for']=search_for
-                return render(request,TEMPLATE_ROOT+'search.html',context=context)            
+                return render(request,'one-tech/shop.html',context=context)            
             return render(request,TEMPLATE_ROOT+'search.html',context=context)                
         return render(request,TEMPLATE_ROOT+'search.html',context=context)
                 

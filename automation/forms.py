@@ -15,6 +15,3 @@ class SignProductRequestForm(forms.Form):
 class AddWorkUnitForm(forms.Form):
     project_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=50, required=True)
-
-
-

@@ -763,7 +763,7 @@ class ProductRepo:
         for product in products:
             product.price=Shop.objects.filter(product_id=product.id).filter(supplier__in=Supplier.objects.filter(region=region)).aggregate(Min('price'))['price__min']
         categories=Category.objects.filter(name__contains=search_for)
-        suppliers=Supplier.objects.filter(name__contains=search_for)
+        suppliers=Supplier.objects.filter(title__contains=search_for)
         return {'products':products,'categories':categories,'suppliers':suppliers}
     def related(self,product_id):
         product=self.get(product_id=product_id)

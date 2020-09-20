@@ -347,8 +347,8 @@ class ContactMessageRepo:
     def __init__(self,user=None):
         self.user=user
         self.objects=ContactMessage.objects
-    def add(self,fname,lname,email,subject,message):
-        contact_message=ContactMessage(fname=fname,lname=lname,email=email,subject=subject,message=message)
+    def add(self,name,email,subject,message):
+        contact_message=ContactMessage(name=name,email=email,subject=subject,message=message)
         contact_message.save()
     def list(self):
         if self.user.has_perm(APP_NAME+'.view_contactmessage'):

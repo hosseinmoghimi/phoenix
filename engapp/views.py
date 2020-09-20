@@ -389,12 +389,12 @@ class ContactView(View):
         if request.method=='POST':
             contact_form=ContactMessageForm(request.POST)
             if contact_form.is_valid():
-                fname=contact_form.cleaned_data['fname']
-                lname=contact_form.cleaned_data['lname']
+                name=contact_form.cleaned_data['name']
+                # lname=contact_form.cleaned_data['lname']
                 email=contact_form.cleaned_data['email']
                 subject=contact_form.cleaned_data['subject']
                 message=contact_form.cleaned_data['message']
-                ContactMessageRepo().add(fname=fname,lname=lname,email=email,subject=subject,message=message)
+                ContactMessageRepo().add(name=name,email=email,subject=subject,message=message)
                 return redirect(reverse('app:contact'))
 
 
