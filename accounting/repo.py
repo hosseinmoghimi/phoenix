@@ -19,24 +19,43 @@ class FinancialTransactionRepo:
     def list_for_account(self,financial_account_id):
         return self.objects.filter(Q(from_account_id=financial_account_id)|Q(to_account_id=financial_account_id))
 
+    def get(self,financial_transaction_id):
+        try:
+            return self.objects.get(pk=financial_transaction_id)
+        except:
+            return None
 
 class FinancialProfileRepo:
     def __init__(self,user):
         self.user=user
         self.objects=FinancialProfile.objects
         self.profile=ProfileRepo(user=user).me
+        try:
+            self.me=self.objects.get(profile=self.profile)
+        except:
+            self.me=None
     def list(self):
         return self.objects.all()
 
+    def get(self,financial_profile_id):
+        try:
+            return self.objects.get(pk=financial_profile_id)
+        except:
+            return None
 
 class FinancialAccountRepo:
     def __init__(self,user):
         self.user=user
         self.objects=FinancialAccount.objects
         self.profile=ProfileRepo(user=user).me
-    def get(self,pk):
+    def get(self,financial_account_id):
         try:
-            return self.objects.get(pk=pk)
+            return FinancialProfile.objects.get(pk=financial_account_id)
+        except:
+            pass
+
+        try:
+            return self.objects.get(pk=financial_account_id)
         except:
             return None
     def list(self):

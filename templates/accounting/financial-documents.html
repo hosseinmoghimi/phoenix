@@ -1,0 +1,99 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+
+
+  {% if financial_documents %}
+
+  <div class="col-md-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-danger card-header-icon">
+        <div class="card-icon">
+        <i class="fa fa-google"></i>
+        </div>
+        <h3 class="card-title">سند های مالی</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class=" text-primary">
+            <td>
+              دسته بندی
+            </td>
+
+
+            <td>
+              عنوان
+            </td>
+
+
+            <td>
+              مبلغ
+            </td>
+
+
+
+
+          </thead>
+
+          <tbody>
+            {% for financial_document in financial_documents %}
+            <tr>
+              <td>
+         
+                {{financial_document.category.title}}
+              
+                
+              </td>
+
+              <td>
+                <a href="{{financial_document.get_absolute_url}}">
+                  {{financial_document.title}}
+                </a>
+
+              </td>
+
+
+              <td>
+                {{financial_document.amount|to_price}}
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+       
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+  $("#accounting-link").addClass("active");
+
+
+</script>
+
+{% endblock %}
+{% block styles %}
+
+{% endblock %}
