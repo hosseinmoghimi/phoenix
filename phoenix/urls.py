@@ -9,14 +9,16 @@ from django.conf.urls import url
 from .settings import SERVER_ON_HEROKU
 
 urlpatterns = [
+    path('', include('app.urls')),
+
+
+    path('accounting/', include('accounting.urls')),
     path('fa/', include('app.urls')),
     path('en/', include('engapp.urls')),
     path('automation/', include('automation.urls')),
     path('market/', include('market.urls')),
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
-    path('accounting/', include('accounting.urls')),
-    path('', include('accounting.urls')),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}),
       
