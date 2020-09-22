@@ -11,13 +11,13 @@
     <!-- my employees -->
     <div class="col-lg-6 col-md-6 col-sm-12">
 
-<div class="card" id="app">
-    <p>latitude:</p>
-    <h2 v-text='location.latitude'></h2>
-    <p>longitude:</p>
-    <h2 v-text='location.longitude'></h2>
-    <button class="btn btn-danger" @click="showToast">موقعیت من را پیدا کن</button>
-</div>
+        <div class="card" id="app">
+            <p>latitude:</p>
+            <h2 v-text='location.latitude'></h2>
+            <p>longitude:</p>
+            <h2 v-text='location.longitude'></h2>
+            <button class="btn btn-danger" @click="showToast">موقعیت من را پیدا کن</button>
+        </div>
 
         <div class="card">
             <div class="card-header card-header-primary">
@@ -95,13 +95,15 @@
         let app = new Vue({
             el: "#app",
             data: {
-                location:{latitude:0,longitude:0},
+                location: { latitude: 0, longitude: 0 },
 
             },
             methods: {
                 showToast: function () {
-
-                    this.location=JSON.parse(Android.getLocation())
+                    let location1 = Android.getLocation()
+                    showNotification('bottom', 'center', 'face', 'primary', location1)
+                     
+                    this.location = JSON.parse(location1)
                 },
 
             },
