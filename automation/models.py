@@ -84,15 +84,15 @@ class Employee(models.Model):
             return self.profile.get_edit_url()
 
 class ProductRequest(models.Model):
-    employee=models.ForeignKey("market.Employee", verbose_name=_("employee"),null=True,blank=True, on_delete=models.SET_NULL)
+    employee=models.ForeignKey("Employee", verbose_name=_("پرسنل"),null=True,blank=True, on_delete=models.SET_NULL)
     work_unit=models.ForeignKey("WorkUnit", verbose_name=_("واحد سازمانی"), on_delete=models.PROTECT)
-    product=models.ForeignKey("market.Product", verbose_name=_("product"), on_delete=models.PROTECT)
-    product_unit=models.ForeignKey("market.ProductUnit", verbose_name=_("product_unit"), on_delete=models.PROTECT)
-    quantity=models.IntegerField(_("quantity"))
+    product=models.ForeignKey("market.Product", verbose_name=_("کالا"), on_delete=models.PROTECT)
+    product_unit=models.CharField(_("واحد"), max_length=50)
+    quantity=models.IntegerField(_("تعداد"))
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
-    status=models.CharField(_("status"),choices=ProductRequestStatusEnum.choices,default=ProductRequestStatusEnum.REQUESTED, max_length=50)
-    purchase_agent=models.ForeignKey("PurchaseAgent", verbose_name=_("purchase_agent"), on_delete=models.PROTECT,null=True,blank=True)
-    signatures=models.ManyToManyField("ProductRequestSignature", verbose_name=_("signatures"),blank=True)
+    status=models.CharField(_("وضعیت"),choices=ProductRequestStatusEnum.choices,default=ProductRequestStatusEnum.REQUESTED, max_length=50)
+    purchase_agent=models.ForeignKey("PurchaseAgent", verbose_name=_("مسئول خرید"), on_delete=models.PROTECT,null=True,blank=True)
+    signatures=models.ManyToManyField("ProductRequestSignature", verbose_name=_("امضا ها"),blank=True)
     class Meta:
         verbose_name = _("ProductRequest")
         verbose_name_plural = _("ProductRequests -درخواست های خرید")

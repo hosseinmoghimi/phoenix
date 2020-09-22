@@ -2,7 +2,7 @@ from .models import Project,WorkUnit,ProductRequest,ProductRequestSignature,Empl
 from .apps import APP_NAME
 from app.repo import ProfileRepo
 from app.repo import SignatureRepo
-from market.repo import EmployeeRepo,ProductRepo
+from market.repo import ProductRepo
 class WorkUnitRepo:
     def __init__(self,user=None):
         self.objects=WorkUnit.objects
@@ -29,7 +29,7 @@ class WorkUnitRepo:
     
 
 
-class EmployeeRepo():
+class EmployeeRepo:
     def my_employees(self):
         return Employee.objects.filter(profile=self.profile)
     def __init__(self,user=None):
@@ -37,7 +37,7 @@ class EmployeeRepo():
         self.objects=Employee.objects
         self.profile=ProfileRepo(user=user).me
         try:
-            self.me=Employee.objects.filter(profile=self.profile).first()
+            self.me=self.objects.filter(profile=self.profile).first()
         except:
             self.me=None
         try:
@@ -101,5 +101,7 @@ class ProductRequestRepo:
                 product_request_signature=ProductRequestSignature(signature=signature,status=status)
                 product_request_signature.save()
                 product_request.signatures.add(product_request_signature)
+                product_request.status=status
+                product_request.save()
                 return product_request
             
