@@ -9,7 +9,7 @@ from django.conf.urls import url
 from .settings import SERVER_ON_HEROKU
 
 urlpatterns = [
-    path('', include('automation.urls')),
+    path('', include('app.urls')),
 
 
     path('accounting/', include('accounting.urls')),

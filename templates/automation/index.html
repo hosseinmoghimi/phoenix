@@ -12,7 +12,11 @@
     <div class="col-lg-6 col-md-6 col-sm-12">
 
 <div class="card" id="app">
-    <button class="btn btn-danger" @click="showToast">showToast</button>
+    <p>latitude:</p>
+    <h2 v-text='location.latitude'></h2>
+    <p>longitude:</p>
+    <h2 v-text='location.longitude'></h2>
+    <button class="btn btn-danger" @click="showToast">موقعیت من را پیدا کن</button>
 </div>
 
         <div class="card">
@@ -91,12 +95,13 @@
         let app = new Vue({
             el: "#app",
             data: {
+                location:{latitude:0,longitude:0},
 
             },
             methods: {
                 showToast: function () {
-                    
-                    Android.showToast("sdsdsdsdsdsdsdsdsd")
+
+                    this.location=JSON.parse(Android.getLocation())
                 },
 
             },
