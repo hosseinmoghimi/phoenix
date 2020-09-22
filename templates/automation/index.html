@@ -95,26 +95,26 @@
         let app = new Vue({
             el: "#app",
             data: {
-                location: { latitude: 0, longitude: 0 },
+                location: { latitude: 5, longitude: 6 },
 
             },
             methods: {
                 getLocation: function () {
                     let location1 = Android.getLocation()
                     // showNotification('bottom', 'center', 'face', 'primary', location1)
-                    showNotification('bottom', 'center', 'face', 'primary', 'location1 : '+location1)
+                    // showNotification('bottom', 'center', 'face', 'primary', 'location1 : '+location1)
                      
                     this.location = JSON.parse(location1)
-                    showNotification('bottom', 'center', 'face', 'primary', this.location)
-                    showNotification('bottom', 'center', 'face', 'primary','latitude : '+ this.location.latitude)
-                    showNotification('bottom', 'center', 'face', 'primary', 'longitude : '+this.location.longitude)
+                    // showNotification('bottom', 'center', 'face', 'primary', this.location)
+                    // showNotification('bottom', 'center', 'face', 'primary','latitude : '+ this.location.latitude)
+                    // showNotification('bottom', 'center', 'face', 'primary', 'longitude : '+this.location.longitude)
                 },
 
             },
         })
 
 
-
+        app.getLocation()
     </script>
     {% endblock %}
     {% block styles %}
