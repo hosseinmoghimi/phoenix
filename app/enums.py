@@ -131,6 +131,10 @@ class ParametersEnum(TextChoices):
     CSRF_FAILURE_MESSAGE='پیام درخواست نامعتبر',_('پیام درخواست نامعتبر')
     THEME_COLOR='رنگ سربرگ کروم در موبایل',_('رنگ سربرگ کروم در موبایل')
 
+
+
+
+
 class MainPicEnum(TextChoices):    
     FAVICON='آیکون سایت',_('آیکون سایت')     
     CAROUSEL='سایت',_('سایت')    

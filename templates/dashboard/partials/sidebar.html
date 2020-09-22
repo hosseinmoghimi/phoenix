@@ -7,13 +7,16 @@
     </a>
 </li>
 
-<li class="nav-item " id="dashboard-link">
-    <a class="nav-link" href="{% url 'market:home' %}">
-        <i class="fa fa-whatsapp"></i>
-        <p>فروشگاه</p>
+{% if profile %}
+  
+<li class="nav-item " id="dashboard-profile-link">
+    <a class="nav-link" href="{% url 'app:profile' profile.id %}">
+       
+        <i class="fa fa-user"></i>
+        <p>{{profile.name}}</p>
     </a>
 </li>
-
+{% endif %}
 <li class="nav-item " id="automation-link">
     <a class="nav-link" href="{% url 'automation:home' %}">
         <i class="material-icons">flash_auto</i>
@@ -24,7 +27,7 @@
 
 <li class="nav-item " id="accounting-link">
     <a class="nav-link" href="{% url 'accounting:home' %}">
-        <i class="material-icons">flash_auto</i>
+        <i class="fa fa-money"></i>
         <p>حسابداری</p>
     </a>
 </li>

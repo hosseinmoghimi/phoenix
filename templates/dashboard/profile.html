@@ -154,7 +154,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="bmd-label-floating">آدرس</label>
-                <input name="address" type="text" class="form-control" value="{{selected_profile.address}}">
+                <input name="address" name="address" type="text" class="form-control" value="{{selected_profile.address}}">
               </div>
             </div>
           </div>
@@ -182,8 +182,8 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label class="bmd-label-floating">Postal Code</label>
-                <input type="text" class="form-control">
+                <label class="bmd-label-floating">کد پستی</label>
+                <input type="text" name="postal_code" class="form-control" value="{{selected_profile.postal_code}}">
               </div>
             </div>
           </div>
@@ -275,7 +275,7 @@
     {% endif %}
 
     {% if edit_profile_form %}
-    <div class="card">
+    <div class="card d-none">
       <div class="card-header card-header-primary">
         <h4 class="card-title ">سطوح دسترسی</h4>
         <p class="card-category"> در سامانه</p>

@@ -327,13 +327,14 @@ class Profile(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,null=True,blank=True
     )
-    status = models.CharField(_("وضعیت"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
     first_name = models.CharField(_("نام"), max_length=200)
     last_name = models.CharField(_("نام خانوادگی"), max_length=200)
+    status = models.CharField(_("وضعیت"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
     mobile = models.CharField(_("موبایل"), max_length=50,null=True,blank=True)
     bio = models.CharField(_("درباره"), max_length=500,null=True,blank=True)
     image_origin = models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'Profile/', height_field=None, width_field=None, max_length=1200,blank=True,null=True)
-    
+    address=models.CharField(_('آدرس'),max_length=100,null=True,blank=True)
+    postal_code=models.CharField(_('کد پستی'),max_length=50,null=True,blank=True)
     def name(self):
         return self.first_name+' '+self.last_name
     def get_my_qrcode(self):

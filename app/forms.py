@@ -69,6 +69,8 @@ class EditProfileForm(forms.Form):
     region_id=forms.CharField(max_length=50, required=False)
     address=forms.CharField(max_length=50, required=False)
     bio=forms.CharField(max_length=500, required=False)
+    address=forms.CharField(max_length=100, required=False)
+    postal_code=forms.CharField(max_length=50, required=False)
 
 class ChangeProfileForm(forms.Form):
     actived=forms.IntegerField(required=True)

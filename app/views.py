@@ -392,10 +392,11 @@ class ProfileView(View):
             last_name=edit_profile_form.cleaned_data['last_name']
             region_id=edit_profile_form.cleaned_data['region_id']
             mobile=edit_profile_form.cleaned_data['mobile']
-            address=edit_profile_form.cleaned_data['address']
             bio=edit_profile_form.cleaned_data['bio']
+            address=edit_profile_form.cleaned_data['address']
+            postal_code=edit_profile_form.cleaned_data['postal_code']
             # print(new_profile['bio'])
-            profile=ProfileRepo(user=request.user).edit_profile(profile_id=profile_id,first_name=first_name,last_name=last_name,mobile=mobile,region_id=region_id,address=address,bio=bio) 
+            profile=ProfileRepo(user=request.user).edit_profile(profile_id=profile_id,first_name=first_name,last_name=last_name,mobile=mobile,region_id=region_id,address=address,postal_code=postal_code,bio=bio) 
         return redirect(reverse('app:profile',kwargs={'profile_id':profile.pk}))
     def change_profile(self,request):
         if not request.method=='POST':
