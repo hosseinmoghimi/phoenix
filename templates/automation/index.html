@@ -102,6 +102,7 @@
                 getLocation: function () {
                     let location1 = Android.getLocation()
                     // showNotification('bottom', 'center', 'face', 'primary', location1)
+                    showNotification('bottom', 'center', 'face', 'primary', 'location1 : '+location1)
                      
                     this.location = JSON.parse(location1)
                     showNotification('bottom', 'center', 'face', 'primary', this.location)
