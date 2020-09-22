@@ -920,7 +920,7 @@ class ProfileTransaction(models.Model):
 
 class Document(Icon):
     profile=models.ForeignKey("Profile", verbose_name=_("پروفایل"), on_delete=models.CASCADE)
-    file=models.FileField(_("فایل ضمیمه"), upload_to=IMAGE_FOLDER+'Document', max_length=100)
+    file=models.FileField(_("فایل ضمیمه"), upload_to=APP_NAME+'/Document', max_length=100)
     
     class Meta:
         verbose_name = _("Document")
