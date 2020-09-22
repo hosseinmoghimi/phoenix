@@ -11,7 +11,9 @@
     <!-- my employees -->
     <div class="col-lg-6 col-md-6 col-sm-12">
 
-
+<div class="card" id="app">
+    <button class="btn btn-danger" @click="showToast">showToast</button>
+</div>
 
         <div class="card">
             <div class="card-header card-header-primary">
@@ -28,7 +30,7 @@
                         <td>نقش</td>
                     </thead>
 
-                    {% for employee in my_employees %} 
+                    {% for employee in my_employees %}
                     {% for workunit in employee.workunit_set.all %}
                     {% for project in workunit.project_set.all %}
 
@@ -86,6 +88,18 @@
         $("#automation-link").addClass("active");
 
 
+        let app = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+                showToast: function () {
+                    Android.show_toast("sdsdsdsdsdsdsdsdsd")
+                },
+
+            },
+        })
 
 
 
