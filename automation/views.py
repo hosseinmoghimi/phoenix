@@ -42,8 +42,7 @@ class WorkUnitView(View):
                 product_request_repo=ProductRequestRepo(user=user)
                 product_request=product_request_repo.add(product_id=product_id,quantity=quantity,work_unit_id=work_unit_id,product_unit=product_unit)
                 if product_request is not None:
-                    return JsonResponse({'message':'sssssssss'})
-                return JsonResponse({'message':'ERROR'})
+                    return redirect(reverse('automation:work_unit',kwargs={'work_unit_id':work_unit_id}))
                 
     def add_work_unit(self,request,*args, **kwargs):
         user=request.user

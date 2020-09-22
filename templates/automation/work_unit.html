@@ -132,6 +132,7 @@
             </div>
         </div>
 
+        {% if add_product_request_form %}
         <div class="card" v-if="show_add_product_request">
             <div class="card-header card-header-primary">
                 <h4 class="card-title">افزودن درخواست کالا برای واحد {{work_unit.title}}</h4>
@@ -142,8 +143,7 @@
 
 
                 <div>
-                    {% if add_product_request_form %}
-
+<form action="{% url 'automation:add_product_request' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
                     <div class="row">
@@ -180,13 +180,13 @@
                         </div>
                         <div>
 
-                            <button @click="AddProductRequest" class="btn btn-success">تایید</button>
+                            <button type="submit" class="btn btn-success">تایید</button>
                         </div>
                     </div>
 
-                    {% endif %}
+                  
 
-
+                </form>
                 </div>
 
             </div>
@@ -202,7 +202,7 @@
                 </div>
             </div>
         </div>
-
+        {% endif %}
     </div>
 
     <!-- Employees -->
