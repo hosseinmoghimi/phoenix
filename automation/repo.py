@@ -82,11 +82,6 @@ class ProductRequestRepo:
         employee=EmployeeRepo(user=self.user).me  
         work_unit=WorkUnitRepo(user=self.user).work_unit(work_unit_id=work_unit_id)  
         product=ProductRepo(user=self.user).get(product_id=product_id)  
-        print(f'employee : {employee}')  
-        print(f'product_unit : {product_unit}')  
-        print(f'quantity : {quantity}')  
-        print(f'work_unit : {work_unit}')  
-        print(f'product : {product}')  
         if employee is not None and product is not None and work_unit is not None:   
             product_request=ProductRequest(employee=employee,product=product,product_unit=product_unit,quantity=quantity,work_unit=work_unit)
             product_request.save()
