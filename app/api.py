@@ -24,12 +24,6 @@ class NotificationApi(APIView):
             # print(new_profile['bio'])
             NotificationRepo(user=request.user).add(priority=priority,profile_id=profile_id,title=title,body=body,color=color,icon=icon,url=url) 
             return JsonResponse({'result':SUCCEED})
-class AuthApi(APIView):
-    def check_available_username(self,request):
-        username=request.POST['username']
-        # csrfmiddlewaretoken=request.POST['csrfmiddlewaretoken']
-        available=ProfileRepo(user=request.user).check_availabe_username(username=username)
-        return JsonResponse({'available':available})
 
 class BasicApi(APIView):
     def toggle_like(self,request,*args, **kwargs):
@@ -76,7 +70,6 @@ urlpatterns=[
     path('delete_comment/',BasicApi().delete_comment,name='delete_comment'),
     path('add_comment/',BasicApi().add_comment,name='add_comment'),
     
-    path('check_available_username/',AuthApi().check_available_username,name='check_available_username'),
     path('add_notification/',NotificationApi().add_notification,name='add_notification'),
 ]
 

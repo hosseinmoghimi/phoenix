@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('app.urls')),
 
 
+    path('api/', include('phoenix_api.urls')),
     path('accounting/', include('accounting.urls')),
     path('fa/', include('app.urls')),
     path('en/', include('engapp.urls')),

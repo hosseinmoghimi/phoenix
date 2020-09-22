@@ -61,6 +61,7 @@ if not SERVER_ON_HEROKU:
 INSTALLED_APPS = [
     'accounting',
     'app',
+    'phoenix_api',
     'automation',
     'engapp',
     'market',
