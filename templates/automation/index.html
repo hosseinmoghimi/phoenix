@@ -13,10 +13,10 @@
 
         <div class="card" id="app">
             <p>latitude:</p>
-            <h2 v-text='location.latitude'></h2>
+            <h2 v-text="location.latitude"></h2>
             <p>longitude:</p>
-            <h2 v-text='location.longitude'></h2>
-            <button class="btn btn-danger" @click="showToast">موقعیت من را پیدا کن</button>
+            <h2 v-text="location.longitude"></h2>
+            <button class="btn btn-danger" @click="getLocation">موقعیت من را پیدا کن</button>
         </div>
 
         <div class="card">
@@ -99,11 +99,14 @@
 
             },
             methods: {
-                showToast: function () {
+                getLocation: function () {
                     let location1 = Android.getLocation()
-                    showNotification('bottom', 'center', 'face', 'primary', location1)
+                    // showNotification('bottom', 'center', 'face', 'primary', location1)
                      
                     this.location = JSON.parse(location1)
+                    showNotification('bottom', 'center', 'face', 'primary', this.location)
+                    showNotification('bottom', 'center', 'face', 'primary','latitude : '+ this.location.latitude)
+                    showNotification('bottom', 'center', 'face', 'primary', 'longitude : '+this.location.longitude)
                 },
 
             },
