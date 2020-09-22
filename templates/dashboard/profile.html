@@ -69,38 +69,6 @@
 
 
 
-<!-- my employees -->
-
-    <div class="card">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title">مسئولیت های اجرایی</h4>
-        <p class="card-category"></p>
-      </div>
-      <div class="card-body">
-        <table class="table">
-          <thead class=" text-primary">
-            <td>پروژه</td>
-            <td> واحد سازمانی</td>
-            <td>نقش</td>
-          </thead>
-
-          {% for employee in selected_profile.employee_set.all %}
-          {% for workunit in employee.workunit_set.all %}
-          {% for project in workunit.project_set.all %}
-
-          <tr>
-            <td><a class="text-primary" href="{{project.get_absolute_url}}">{{project.title}}</a></td>
-            <td> <a class="text-primary" href="{{workunit.get_absolute_url}}">{{workunit.title}}</a></td>
-            <td> {{employee.role}}</td>
-          </tr>
-          {% endfor %}
-          {% endfor %}
-          {% endfor %}
-        </table>
-      </div>
-    </div>
-
-
 
   </div>
   <div class="col-md-8">
@@ -154,7 +122,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="bmd-label-floating">آدرس</label>
-                <input name="address" name="address" type="text" class="form-control" value="{{selected_profile.address}}">
+                <input name="address" name="address" type="text" class="form-control"
+                  value="{{selected_profile.address}}">
               </div>
             </div>
           </div>
@@ -208,71 +177,7 @@
 
 
 
-
-    {% if transactions %}
-    <div class="card">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title ">مانده حساب : {{rest | to_price}}</h4>
-        <p class="card-category"> بیست تراکنش آخر
-          &nbsp;&nbsp;&nbsp;
-          <a href="{% url 'app:transactions' profile_id=selected_profile.id %}">
-            لیست کامل
-          </a>
-        </p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th>
-                عنوان
-              </th>
-              <th>
-                بستانکار
-              </th>
-              <th>
-                بدهکار
-              </th>
-              <th>
-                مبلغ
-              </th>
-              <th>
-                تاریخ
-              </th>
-            </thead>
-            <tbody>
-              {% for transaction in transactions %}
-              <tr>
-                <td>
-                  {{transaction.title}}
-                </td>
-                <td>
-                  <a href="{{transaction.from_profile.get_absolute_url}}">
-                    {{transaction.from_profile.name}}
-                  </a>
-                </td>
-                <td>
-                  <a href="{{transaction.to_profile.get_absolute_url}}">
-                    {{transaction.to_profile.name}}
-                  </a>
-
-                </td>
-                <td class="{{transaction.direction | to_transaction_color }}">
-                  {{transaction.amount | to_price}}
-                </td>
-                <td>
-                  {{transaction.date_added | to_persian_date | safe }}
-                </td>
-              </tr>
-
-              {% endfor %}
-
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    {% endif %}
+    
 
     {% if edit_profile_form %}
     <div class="card d-none">

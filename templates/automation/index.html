@@ -28,7 +28,7 @@
                         <td>نقش</td>
                     </thead>
 
-                    {% for employee in profile.employee_set.all %}
+                    {% for employee in my_employees %} 
                     {% for workunit in employee.workunit_set.all %}
                     {% for project in workunit.project_set.all %}
 

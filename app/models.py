@@ -1,7 +1,7 @@
 from django.http import HttpResponse,Http404
 import uuid 
 from .apps import APP_NAME
-from .enums import ResumeCategoryEnum,IconsEnum, TransactionDirectionEnum, ColorEnum, ParametersEnum, MainPicEnum, ProfileStatusEnum, RegionEnum, TransactionTypeEnum
+from .enums import EmployeeEnum,DegreeLevelEnum,ResumeCategoryEnum,IconsEnum, TransactionDirectionEnum, ColorEnum, ParametersEnum, MainPicEnum, ProfileStatusEnum, RegionEnum, TransactionTypeEnum
 from .constants import *
 from .persian import PersianCalendar
 from .settings import *
@@ -966,7 +966,6 @@ class ResumeCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse("ResumeCategory_detail", kwargs={"pk": self.pk})
-
 
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))

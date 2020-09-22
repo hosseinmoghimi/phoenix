@@ -70,7 +70,7 @@ class IndexView(View):
             financial_transaction=FinancialTransactionRepo(user=request.user).get(financial_transaction_id=financial_document_id)
             context['financial_document']=financial_transaction
             context['to_account']=FinancialAccountRepo(user=request.user).get(financial_account_id=financial_transaction.to_account.pk)
-            print(financial_transaction.from_account.pk)
+          
             context['from_account']=FinancialAccountRepo(user=request.user).get(financial_account_id=financial_transaction.from_account.pk)
         # context['financial_account']=Fi
         # context['financial_documents']=FinancialDocumentRepo(user=request.user).list_by_year(financial_year_id=financial_year_id)

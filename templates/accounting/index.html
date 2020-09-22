@@ -411,7 +411,9 @@
               </td>
 
               <td>
-                {{transaction.date_document | to_persian_date|safe}}
+                <small>
+                  {{transaction.date_document | to_persian_date|safe}}
+                </small>
               </td>
 
             </tr>
@@ -420,7 +422,7 @@
           </tbody>
         </table>
 
-     
+
       </div>
       <div class="card-footer">
         <div class="stats">

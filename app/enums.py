@@ -55,6 +55,15 @@ class AddressTitleEnum(TextChoices):
     COMPANY = 'شرکت', _('شرکت')
     GARDEN = 'باغ', _('باغ')
     
+
+class EmployeeEnum(TextChoices):
+    GUARD='نگهبان',_('نگهبان')      
+    MANAGER='مدیر',_('مدیر')      
+    TECHNICAL='فنی',_('فنی')    
+    DEFAULT='تایید نشده',_('تایید نشده')
+    ACCOUNTANT='حسابدار',_('حسابدار')
+    CASHIER='صندوقدار',_('صندوقدار')
+    
     
 class TransactionDirectionEnum(TextChoices):
     TO_PROFILE='تحویل به ',_('تحویل به ')

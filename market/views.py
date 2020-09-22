@@ -181,8 +181,8 @@ class ShopView(View):
         if can_add_product and not parent_id==0:
             add_product_form=AddProductForm()
             context['add_product_form']=add_product_form
-        unit_names=ProductUnitRepo(user=user).list()
-        context['unit_names']=unit_names
+            unit_names=ProductUnitRepo(user=user).list()
+            context['unit_names']=unit_names
         # return render(request=request,template_name=TEMPLATE_ROOT+'list.html',context=context)
     
         return render(request=request,template_name='one-tech/shop.html',context=context)
@@ -286,6 +286,8 @@ class ShopView(View):
                 return redirect(reverse('market:list',kwargs={'parent_id':category_id}))
     def brand(self,request,brand_id,*args, **kwargs):
         return JsonResponse({'brand_id':brand_id})
+
+
 class DownloadView(View):
     def get(self,request,*args,**kwargs):
         if 'supplier_id' in kwargs:
@@ -469,6 +471,7 @@ class ProductView(View):
                 is_liked=ProductRepo(user=request.user).add_like(product_id=product_id)
                 return JsonResponse({'is_liked':is_liked})
 
+
 class CartView(View):
     
     def submit_cart(self,request):
@@ -521,6 +524,7 @@ class CartView(View):
         context['selected_customer']=CustomerRepo(user=user).get(customer_id=customer_id)
         return render(request,'one-tech/cart.html',context)
 
+
 class TableView(View): 
     def list(self,request):
         user=request.user
@@ -536,7 +540,8 @@ class TableView(View):
         context['suppliers']=suppliers
         context['customers']=customers
         return render(request,TEMPLATE_ROOT+'tables.html',context=context)
-         
+
+
 class IndexView(View):
     def my_list(self,request,*args, **kwargs):
         user=request.user
@@ -631,6 +636,7 @@ class IndexView(View):
             return ShopView().list(request=request,parent_id=parent_id)
         return ShopView().list(request=request,parent_id=0)
     
+
 class WareHouse(View):
     def ware_house(self,request,ware_house_id,*args,**kwargs):
         user=request.user
@@ -641,6 +647,7 @@ class WareHouse(View):
             raise Http404
         context['ware_house']=ware_house
         return render(request,TEMPLATE_ROOT+'ware-house.html',context)
+
 
 class SupplierView(View):
     def supplier(self,request,supplier_id,*args,**kwargs):
@@ -698,6 +705,7 @@ class SupplierView(View):
         suppliers=SupplierRepo(user=user).list()
         context['suppliers']=suppliers
         return render(request,TEMPLATE_ROOT+'tables.html',context)
+
 
 class OrderView(View):
     def orders(self,request,customer_id=None,supplier_id=None,shipper_id=None,start_date=None,end_date=None):

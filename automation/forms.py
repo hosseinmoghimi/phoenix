@@ -5,7 +5,6 @@ class AddProductRequestForm(forms.Form):
     quantity=forms.IntegerField(required=True)
     product_unit=forms.CharField(max_length=50, required=True)
     work_unit_id=forms.IntegerField(required=True)
-    profile_id=forms.IntegerField(required=True)
 
 class SignProductRequestForm(forms.Form):
     product_request_id=forms.IntegerField(required=True)

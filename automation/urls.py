@@ -2,7 +2,8 @@ from django.urls import path,include
 from . import views
 app_name="automation"
 urlpatterns = [
-    path('',views.BasicView().home,name='home'), 
+    path('',views.BasicView().home,name='home'),
+    path('add_product_request/',views.WorkUnitView().add_product_request,name='add_product_request'),
     path('add_work_unit/',views.WorkUnitView().add_work_unit,name='add_work_unit'),
     path('add_project/',views.WorkUnitView().add_work_unit,name='project'),
     path('sign_product_request/',views.ProductRequestView().sign,name='sign_product_request'),

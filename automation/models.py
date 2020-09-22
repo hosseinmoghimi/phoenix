@@ -1,7 +1,7 @@
 from app.persian import PersianCalendar
 from django.db import models
 from .enums import UnitNameEnum,ProductRequestStatusEnum,LetterStatusEnum,AgentRoleEnum
-from app.enums import ColorEnum,IconsEnum
+from app.enums import ColorEnum,IconsEnum,EmployeeEnum,DegreeLevelEnum
 from django.shortcuts import reverse
 from app.settings import ADMIN_URL
 from django.utils.translation import gettext as _
@@ -12,7 +12,7 @@ class WorkUnit(models.Model):
     title=models.CharField(_("title"),choices=UnitNameEnum.choices,default=UnitNameEnum.ACCOUNTING, max_length=50)
     icon=models.CharField(_("icon"),choices=IconsEnum.choices,default=IconsEnum.link, max_length=50)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    employees=models.ManyToManyField("market.Employee", verbose_name=_("نیروی انسانی"),blank=True)
+    employees=models.ManyToManyField("Employee", verbose_name=_("نیروی انسانی"),blank=True)
     description=models.CharField(_("description"), max_length=500,null=True,blank=True)
     class Meta:
         verbose_name = _("WorkUnit")
@@ -58,6 +58,30 @@ class ProductRequestSignature(models.Model):
 
     def get_absolute_url(self):
         return reverse("ProductRequestSignature_detail", kwargs={"pk": self.pk})
+
+class Employee(models.Model):
+    profile=models.ForeignKey("app.Profile",related_name='automationprofile', verbose_name=_("profile"),null=True,blank=True, on_delete=models.PROTECT)
+    
+    role=models.CharField(_("نقش"),choices=EmployeeEnum.choices,default=EmployeeEnum.DEFAULT, max_length=50)
+    degree=models.CharField(_("مدرک"),choices=DegreeLevelEnum.choices,default=DegreeLevelEnum.KARSHENASI, max_length=50)
+    major=models.CharField(_("رشته تحصیلی"),null=True,blank=True, max_length=50)
+    introducer=models.CharField(_("معرف"),null=True,blank=True, max_length=50)
+    def __str__(self):
+        return self.profile.name()
+    
+    def name(self):
+        if self.profile is not None:
+            return self.profile.name()
+        return "پروفایل خالی"
+    class Meta:
+        verbose_name = _("Employee")
+        verbose_name_plural = _("کارمندان")
+    
+    def get_absolute_url(self):
+        return reverse('app:profile',kwargs={'profile_id':self.profile.pk})
+    def get_edit_url(self):
+        if self.profile is not None:
+            return self.profile.get_edit_url()
 
 class ProductRequest(models.Model):
     employee=models.ForeignKey("market.Employee", verbose_name=_("employee"),null=True,blank=True, on_delete=models.SET_NULL)
