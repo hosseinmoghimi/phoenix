@@ -62,8 +62,8 @@
             </div>
             <div class="card-body">
 
-{% if product_requests %}
-  
+                {% if product_requests %}
+
 
 
 
@@ -113,10 +113,10 @@
 
                 </table>
                 {% else %}
-  <p class="text-center text-warning">
-      درخواستی ثبت نشده است.
-  </p>
-{% endif %}
+                <p class="text-center text-warning">
+                    درخواستی ثبت نشده است.
+                </p>
+                {% endif %}
 
             </div>
 
@@ -142,6 +142,10 @@
                 </h3>
             </div>
             <div class="card-body">
+                {% if not work_unit.employees.all %}
+                <p>پرسنلی برای این واحد سازمانی ثبت نشده است.</p>
+                {% endif %}
+
                 <table class="table">
 
 
