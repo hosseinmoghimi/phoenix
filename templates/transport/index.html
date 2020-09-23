@@ -1,6 +1,7 @@
 {% extends "dashboard/layout.html" %}
 {% load static %}
 {% load to_price %}
+{% load to_persian_date %}
 {% block contents %}
 
 
@@ -14,19 +15,35 @@
   <div class="card card-stats">
     <div class="card-header card-header-success card-header-icon">
       <div class="card-icon">
-        <i class="material-icons">contact_phone</i>
+        <i class="fa fa-bus"></i>
       </div>
       <h3 class="card-title">{{request_service.title}}</h3>
     </div>
     <div class="card-body">
      
-      
+      <p>درخواست وسیله  : 
+        {{request_service.vehicle_type}}
+
+      </p>
+      <p>
+        {{request_service.quantity}} سرویس
+
+      </p>
+      <p>
+        تاریخ درخواست :
+        {{request_service.date_needed | to_persian_date|safe}}
+
+      </p>
     </div>
     <div class="card-footer">
       <div class="stats">
         <a href="{{entry.get_absolute_url}}">
           <i class="material-icons">date_range</i>
           جزییات</a>
+
+          <a href="{{request_service.get_edit_url}}">
+            <i class="material-icons">date_range</i>
+            ویرایش</a>
         
       </div>
     </div>
