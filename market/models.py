@@ -7,9 +7,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from io import BytesIO
-from .enums import EmployeeEnum,ProfileEnum,OrderStatusEnum
+from .enums import ProfileEnum,OrderStatusEnum
 from .constants import *
-from app.enums import DegreeLevelEnum,TransactionDirectionEnum, IconsEnum, RegionEnum,AddressTitleEnum
+from app.enums import EmployeeEnum,DegreeLevelEnum,TransactionDirectionEnum, IconsEnum, RegionEnum,AddressTitleEnum
 from app.persian import PersianCalendar
 from app.repo import ParameterRepo
 from app.models import Profile

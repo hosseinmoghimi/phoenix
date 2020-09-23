@@ -14,14 +14,6 @@ class OrderStatusEnum(TextChoices):
     CONFIRMED = 'تایید مشتری', _('تایید مشتری')
 
 
-class EmployeeEnum(TextChoices):
-    GUARD='نگهبان',_('نگهبان')      
-    MANAGER='مدیر',_('مدیر')      
-    TECHNICAL='فنی',_('فنی')    
-    DEFAULT='تایید نشده',_('تایید نشده')
-    ACCOUNTANT='حسابدار',_('حسابدار')
-    CASHIER='صندوقدار',_('صندوقدار')
-
 class ProfileEnum(TextChoices):
     SUPPLIER='فروشنده',_('فروشنده')
     SHIPPER='دلیوری',_('دلیوری')

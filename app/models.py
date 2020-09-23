@@ -1,7 +1,7 @@
 from django.http import HttpResponse,Http404
 import uuid 
 from .apps import APP_NAME
-from .enums import ResumeCategoryEnum,IconsEnum, TransactionDirectionEnum, ColorEnum, ParametersEnum, MainPicEnum, ProfileStatusEnum, RegionEnum, TransactionTypeEnum
+from .enums import EmployeeEnum,DegreeLevelEnum,ResumeCategoryEnum,IconsEnum, TransactionDirectionEnum, ColorEnum, ParametersEnum, MainPicEnum, ProfileStatusEnum, RegionEnum, TransactionTypeEnum
 from .constants import *
 from .persian import PersianCalendar
 from .settings import *
@@ -241,7 +241,7 @@ class Icon(models.Model):
         if self.icon_material is not None and len(self.icon_material)>0:
             return f'<i class="text-{self.color} material-icons">{self.icon_material}</i>'
         if self.icon_fa is not None and len(self.icon_fa)>0:
-            return f'<span   style="position:inherit !important;" class="text-{self.color} {self.icon_fa}"></span>'
+            return f'<i   style="position:inherit !important;" class="text-{self.color} {self.icon_fa}"></i>'
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
@@ -327,13 +327,14 @@ class Profile(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,null=True,blank=True
     )
-    status = models.CharField(_("وضعیت"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
     first_name = models.CharField(_("نام"), max_length=200)
     last_name = models.CharField(_("نام خانوادگی"), max_length=200)
+    status = models.CharField(_("وضعیت"), max_length=50,choices=ProfileStatusEnum.choices,default=ProfileStatusEnum.ENABLED)
     mobile = models.CharField(_("موبایل"), max_length=50,null=True,blank=True)
     bio = models.CharField(_("درباره"), max_length=500,null=True,blank=True)
     image_origin = models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'Profile/', height_field=None, width_field=None, max_length=1200,blank=True,null=True)
-    
+    address=models.CharField(_('آدرس'),max_length=100,null=True,blank=True)
+    postal_code=models.CharField(_('کد پستی'),max_length=50,null=True,blank=True)
     def name(self):
         return self.first_name+' '+self.last_name
     def get_my_qrcode(self):
@@ -919,7 +920,7 @@ class ProfileTransaction(models.Model):
 
 class Document(Icon):
     profile=models.ForeignKey("Profile", verbose_name=_("پروفایل"), on_delete=models.CASCADE)
-    file=models.FileField(_("فایل ضمیمه"), upload_to=IMAGE_FOLDER+'Document', max_length=100)
+    file=models.FileField(_("فایل ضمیمه"), upload_to=APP_NAME+'/Document', max_length=100)
     
     class Meta:
         verbose_name = _("Document")
@@ -965,7 +966,6 @@ class ResumeCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse("ResumeCategory_detail", kwargs={"pk": self.pk})
-
 
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))

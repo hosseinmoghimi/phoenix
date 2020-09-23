@@ -1,0 +1,187 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+<div class="row">
+    <div class="col-md-4">
+        {% if financial_profile %}
+        <div class="card card-profile" id="profile-app" v-cloak>
+          <div class="card-avatar">
+            <a href="{{financial_profile.profile.get_absolute_url}}">
+              <img class="img" src="{{financial_profile.profile.image}}" />
+    
+    
+            </a>
+          </div>
+          <div class="card-body">
+            {% if upload_profile_image_form %}
+    
+    
+            <form enctype="multipart/form-data" action="{% url 'app:change_profile_image' %}" method="POST">
+              {% csrf_token %}
+    
+              <input name="profile_id" value="{{financial_profile.profile.id}}" type="hidden" />
+    
+    
+    
+              <input type="file" accept="image/jpeg" @input="has_image_for_upload=true" required id="image" name="image"
+                class="d-none btn btn-warning">
+    
+    
+              <label for="image" v-if="!has_image_for_upload" class="btn btn-warning btn-round">
+                <i class="material-icons">face</i>
+                انتخاب تصویر</label>
+    
+    
+    
+              <button class="btn btn-success btn-round" v-show="has_image_for_upload" type="submit">
+    
+                <i class="material-icons">backup</i> آپلود تصویر
+              </button>
+    
+            </form>
+          
+            {% endif %}
+            <h6 class="card-category text-gray text-center">{{financial_profile.profile.region}}</h6>
+            <h4 class="card-title text-center">{{financial_profile.profile.name}}</h4>
+            {% if financial_profile.profile.bio %}
+    
+            <p class="card-description text-center">
+              {{financial_profile.profile.bio}}
+            </p>
+    
+            {% endif %}
+    
+    <a href="{{financial_profile.profile.get_absolute_url}}">
+        بیشتر
+    </a>
+            <div>
+                
+            </div>
+    
+          </div>
+    
+    
+    
+        </div>
+    
+        {% endif %}
+    </div>
+
+
+  {% if financial_transaction_list %}
+
+  <div class="col-lg-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+         <i class="fa fa-whatsapp"></i>
+        </div>
+        <h3 class="card-title">تراکنش های مالی</h3>
+      </div>
+      <div class="card-body">
+          <div>
+              <p>
+                  <a href="{{ADMIN_URL}}{{APP_NAME}}/financialtransaction/add/">
+                افزودن تراکنش</a>
+              </p>
+          </div>
+        <table class="table">
+          <thead class=" text-primary">
+            <td>
+              عنوان
+            </td>
+
+            <td>
+              بستانکار
+            </td>
+
+            <td>
+              بدهکار
+            </td>
+
+            <td>
+              مبلغ
+            </td>
+
+            <td>
+              تاریخ
+            </td>
+          </thead>
+
+          <tbody>
+            {% for transaction in financial_transaction_list %}
+            <tr>
+
+              <td>
+                <a href="{{transaction.get_absolute_url}}">
+                
+                {{transaction.title}}
+</a>
+              </td>
+              <td>
+                <a href="{{transaction.from_account.get_absolute_url}}">
+                  {{transaction.from_account}}
+                </a>
+
+              </td>
+              <td> <a href="{{transaction.to_account.get_absolute_url}}">
+
+                  {{transaction.to_account}}
+                </a>
+              </td>
+              <td>
+                {{transaction.amount | to_price}}
+              </td>
+
+              <td>
+                {{transaction.date_document | to_persian_date|safe}}
+              </td>
+
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+       
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+  $("#accounting-link").addClass("active");
+
+
+
+</script>
+<script>
+    let profile_app = new Vue({
+      el: "#profile-app",
+      data: {
+        has_image_for_upload: false,
+  
+      }
+    })
+  </script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

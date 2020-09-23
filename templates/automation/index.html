@@ -11,7 +11,22 @@
     <!-- my employees -->
     <div class="col-lg-6 col-md-6 col-sm-12">
 
+        <div class="card d-none" id="app">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">موقعیت
+                    
+                </h4>
+                <p class="card-category"></p>
+            </div>
+            <div class="card-body">
 
+                <p>latitude:</p>
+                <h2 v-text="location.latitude"></h2>
+                <p>longitude:</p>
+                <h2 v-text="location.longitude"></h2>
+                <button class="btn btn-danger" @click="getLocation">موقعیت من را پیدا کن</button>
+            </div>
+        </div>
 
         <div class="card">
             <div class="card-header card-header-primary">
@@ -28,7 +43,7 @@
                         <td>نقش</td>
                     </thead>
 
-                    {% for employee in profile.employee_set.all %}
+                    {% for employee in my_employees %}
                     {% for workunit in employee.workunit_set.all %}
                     {% for project in workunit.project_set.all %}
 
@@ -86,9 +101,29 @@
         $("#automation-link").addClass("active");
 
 
+        let app = new Vue({
+            el: "#app",
+            data: {
+                location: { latitude: 5, longitude: 6 },
+
+            },
+            methods: {
+                getLocation: function () {
+                    let location1 = Android.getLocation()
+                    // showNotification('bottom', 'center', 'face', 'primary', location1)
+                    // showNotification('bottom', 'center', 'face', 'primary', 'location1 : '+location1)
+
+                    this.location = JSON.parse(location1)
+                    // showNotification('bottom', 'center', 'face', 'primary', this.location)
+                    // showNotification('bottom', 'center', 'face', 'primary','latitude : '+ this.location.latitude)
+                    // showNotification('bottom', 'center', 'face', 'primary', 'longitude : '+this.location.longitude)
+                },
+
+            },
+        })
 
 
-
+        app.getLocation()
     </script>
     {% endblock %}
     {% block styles %}

@@ -55,6 +55,15 @@ class AddressTitleEnum(TextChoices):
     COMPANY = 'شرکت', _('شرکت')
     GARDEN = 'باغ', _('باغ')
     
+
+class EmployeeEnum(TextChoices):
+    GUARD='نگهبان',_('نگهبان')      
+    MANAGER='مدیر',_('مدیر')      
+    TECHNICAL='فنی',_('فنی')    
+    DEFAULT='تایید نشده',_('تایید نشده')
+    ACCOUNTANT='حسابدار',_('حسابدار')
+    CASHIER='صندوقدار',_('صندوقدار')
+    
     
 class TransactionDirectionEnum(TextChoices):
     TO_PROFILE='تحویل به ',_('تحویل به ')
@@ -130,6 +139,10 @@ class ParametersEnum(TextChoices):
     OUR_TEAM_LINK='لینک تیم ما',_('لینک تیم ما')
     CSRF_FAILURE_MESSAGE='پیام درخواست نامعتبر',_('پیام درخواست نامعتبر')
     THEME_COLOR='رنگ سربرگ کروم در موبایل',_('رنگ سربرگ کروم در موبایل')
+
+
+
+
 
 class MainPicEnum(TextChoices):    
     FAVICON='آیکون سایت',_('آیکون سایت')     

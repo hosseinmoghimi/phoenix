@@ -54,7 +54,7 @@
 
 
 
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-6 col-sm-12" id="product-request-app">
         <div class="card">
             <div class="card-header card-header-primary">
                 <h4 class="card-title">کالاهای درخواست شده برای واحد {{work_unit.title}}</h4>
@@ -62,11 +62,7 @@
             </div>
             <div class="card-body">
 
-{% if product_requests %}
-  
-
-
-
+                {% if product_requests %}
                 <table class="table">
                     <thead class=" text-primary">
                         <td></td>
@@ -95,7 +91,7 @@
                             <td><a class="btn btn-warning"
                                     href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
                             </td>
-                            <td>{{product_request.quantity}} {{product_request.unit_name}}</td>
+                            <td>{{product_request.quantity}} {{product_request.product_unit}}</td>
                             <td>
                                 <a href=" {{product_request.employee.profile.get_absolute_url}}">
                                     {{product_request.employee.profile.name}}</a>
@@ -113,20 +109,100 @@
 
                 </table>
                 {% else %}
-  <p class="text-center text-warning">
-      درخواستی ثبت نشده است.
-  </p>
-{% endif %}
+                <p class="text-center text-warning">
+                    درخواستی ثبت نشده است.
+                </p>
+                {% endif %}
+
 
             </div>
 
             <div class="card-footer">
                 <div class="stats">
-                    <i class="material-icons text-danger">link</i>
-                    <a href="{{ADMIN_URL}}{{APP_NAME}}/productrequest/add/">افزودن درخواست کالا</a>
+                    {% if add_product_request_form %}
+
+
+                    <a class="text-primary" style="cursor: pointer;"
+                        @click="show_add_product_request=!show_add_product_request">
+                        <i class="material-icons text-danger">link</i>
+                        افزودن درخواست کالا</a>
+
+                    {% endif %}
                 </div>
             </div>
         </div>
+
+        {% if add_product_request_form %}
+        <div class="card" v-if="show_add_product_request">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">افزودن درخواست کالا برای واحد {{work_unit.title}}</h4>
+                <p class="card-category"></p>
+            </div>
+            <div class="card-body">
+
+
+
+                <div>
+<form action="{% url 'automation:add_product_request' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">کالای درخواستی</label>
+                                <input type="number" class="form-control" name="product_id" v-model="product_id"
+                                    value="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">تعداد</label>
+                                <input v-model="quantity" type="number" name="quantity" class="form-control" value="">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">واحد</label>
+                                <select v-model="product_unit" name="product_unit" class="form-control">
+                                    <option disabled>واحد شمارش کالا</option>
+
+                                    {% for unit_name in unit_names %}
+
+
+                                    <option value="{{unit_name}}">{{unit_name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        <div>
+
+                            <button type="submit" class="btn btn-success">تایید</button>
+                        </div>
+                    </div>
+
+                  
+
+                </form>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <div class="stats">
+
+
+                    <a class="text-primary">
+                        <i class="material-icons text-danger">link</i>
+                        افزودن درخواست کالا</a>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Employees -->
@@ -142,6 +218,10 @@
                 </h3>
             </div>
             <div class="card-body">
+                {% if not work_unit.employees.all %}
+                <p>پرسنلی برای این واحد سازمانی ثبت نشده است.</p>
+                {% endif %}
+
                 <table class="table">
 
 
@@ -209,7 +289,59 @@
 <script>
     $("#automation-link").addClass("active");
 
+    let csrfmiddlewaretoken = ''
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+    })
 
+
+    var product_request_app = new Vue(
+        {
+            el: "#product-request-app",
+            data: {
+                show_add_product_request: false,
+                product_id: 0,
+                quantity: 1,
+                product_unit: 'عدد',
+            },
+            methods: {
+                AddProductRequest: function () {
+                    console.log("AddProductRequest")
+                    url = "{% url 'automation:add_product_request' %}"
+                    product_id = this.product_id
+                    quantity = this.quantity
+                    product_unit = this.product_unit
+                    work_unit_id = JSON.parse("{{work_unit.id}}")
+
+
+                    var posting = $.post(url, {
+                        product_id: product_id,
+                        quantity: quantity,
+                        product_unit: product_unit,
+                        work_unit_id: work_unit_id,
+                        csrfmiddlewaretoken: csrfmiddlewaretoken
+                    });
+
+                    // Put the results in a div
+                    posting.done(function (data) {
+                        // word_app.word = (data.word);
+                        // word_app.definitions = (data.definitions);
+                        // product_request_app.shops = data.shops
+                        // if (price == 0)
+                        //     showNotification('bottom', 'center', 'face', 'warning', 'با موفقیت از فروشگاه حذف شد')
+                        // else
+                            showNotification('bottom', 'center', 'face', 'primary', data.message)
+                        // // console.log(word_app.word);
+                        console.log(data);
+
+                    })
+
+                },
+
+            },
+        }
+    )
 
 
 

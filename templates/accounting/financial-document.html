@@ -1,0 +1,229 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+  {% if financial_document %}
+
+  <div class="col-lg-12">
+  
+    <div class="card card-stats">
+        <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">settings</i>
+            </div>
+            <h5 class="card-title text-secondary mt-3 mx-3 mb-0">{{financial_document.category.title}}</h5>
+
+            <h3 class="card-title mt-3 mx-3 mb-0">{{financial_document.title}}</h3>
+
+            <p class="text-warning m-0">
+              
+              <small>        <small> تاریخ ثبت : </small>
+      <span style="color: coral!important;">
+              {{financial_document.date_added|to_persian_date|safe}}
+            </span></small>
+            </p> 
+        </div>
+        <div class="card-body">
+          <h5 class=" btn btn-primary">مبلغ  {{financial_document.amount|to_price}}</h5>
+          
+        
+            {% if to_account %}
+            <h3>بستانکار</h3>
+         
+           
+           <div>
+                  <a href="{{to_account.get_absolute_url}}">
+                    {{doc.get_tag_icon|safe}}  {{financial_document.to_account}}
+                  </a>
+              </div>
+  {% endif %}
+              {% if from_account %}
+              <h3>بدهکار</h3>
+            
+             
+             <div>
+                    <a href="{{from_account.get_absolute_url}}">
+                      {{doc.get_tag_icon|safe}}  {{from_account}}
+                    </a>
+                </div>
+                 {% endif %}
+              
+
+
+
+            {% if financial_document.documents.all %}
+            <h3>فایل های ضمیمه</h3>
+           {% endif %}
+            {% for doc in financial_document.documents.all %}
+              <div>
+                  <a href="{{doc.get_download_url}}">
+                    {{doc.get_tag_icon|safe}}  {{doc.title}}
+                  </a>
+              </div>
+            {% endfor %}
+
+
+
+            {% if financial_document.links.all %}
+            <h3>لینک های ضمیمه</h3>
+           {% endif %}
+            {% for link in financial_document.links.all %}
+              <div>
+                  <a href="{{link.url}}">
+                    {{link.get_tag_icon|safe}}  {{link.title}}
+                  </a>
+              </div>
+            {% endfor %}
+
+        </div>
+        <div class="card-footer">
+            <div class="stats">
+                <i class="material-icons">date_range</i>۲۴ ساعت اخیر
+            </div>
+        </div>
+    </div>
+    
+  </div>
+ 
+  {% if financial_document %}
+  <a href="{{financial_document.get_edit_url}}">
+    
+  {% endif %}
+   ویرایش
+  </a>
+  {% endif %}
+  
+</div>
+
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+  let initDashboardPageCharts = function () {
+
+    if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
+      /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+
+      dataDailySalesChart = {
+        labels: ['شنبه', '1', '2', '3', '4', '5', 'جمعه'],
+        series: [
+          [12, 60, 87, 17, 23, 18, 38]
+        ]
+      };
+
+      optionsDailySalesChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 1
+        }),
+        low: 0,
+        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+      }
+
+      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+      md.startAnimationForLineChart(dailySalesChart);
+
+
+
+      /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
+
+      dataCompletedTasksChart = {
+        labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
+        series: [
+          [230, 750, 100, 300, 280, 240, 200, 190]
+        ]
+      };
+
+      optionsCompletedTasksChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      }
+
+      var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
+
+      // start animation for the Completed Tasks Chart - Line Chart
+      md.startAnimationForLineChart(completedTasksChart);
+
+
+      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+      var dataWebsiteViewsChart = {
+        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+        series: [
+          [542, 443, 320, 780, 553, 453, 326, 434, 568, 400, 300, 200]
+
+        ]
+      };
+      var optionsWebsiteViewsChart = {
+        axisX: {
+          showGrid: true,
+        },
+        low: 0,
+        high: 1000,
+        chartPadding: {
+          top: 0,
+          right: 5,
+          bottom: 0,
+          left: 0
+        }
+      };
+      var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc: function (value) {
+              return value[0];
+            }
+          }
+        }]
+      ];
+      var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+
+      //start animation for the Emails Subscription Chart
+      md.startAnimationForBarChart(websiteViewsChart);
+    }
+  }
+
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    initDashboardPageCharts();
+
+  });
+</script>
+<script>
+  $("#accounting-link").addClass("active");
+
+  $(".carousel-item:first").addClass("active");
+
+  $("#carouselExampleIndicators:first").addClass("active");
+
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

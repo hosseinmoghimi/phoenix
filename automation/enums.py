@@ -8,6 +8,8 @@ class UnitNameEnum(TextChoices):
     CIVIL='عمران',_('عمران')
     TASISAT='تاسیسات',_('تاسیسات')
     ENGINEERING='مهندسی',_('مهندسی')
+
+
 class AgentRoleEnum(TextChoices):
     DEFAULT='پیش فرض',_('پیش فرض')
     ACCOUNTANT='حسابدار',_('حسابدار')

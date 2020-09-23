@@ -506,7 +506,7 @@ class ProfileRepo:
             return True
         return False
     
-    def edit_profile(self,profile_id,first_name,last_name,mobile,region_id,address,bio):
+    def edit_profile(self,profile_id,first_name,last_name,mobile,region_id,address,bio,postal_code):
         user=self.user
         if user.is_authenticated:
             profile=self.get_by_user(user)
@@ -518,8 +518,9 @@ class ProfileRepo:
                     edited_profile.last_name=last_name
                     edited_profile.mobile=mobile
                     edited_profile.region_id=region_id
-                    edited_profile.address=address
                     edited_profile.bio=bio
+                    edited_profile.address=address
+                    edited_profile.postal_code=postal_code
                     
                     edited_profile.save()
                     return edited_profile

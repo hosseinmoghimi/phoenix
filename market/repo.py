@@ -25,6 +25,10 @@ class EmployeeRepo():
         self.objects=Employee.objects
         self.profile=ProfileRepo(user=user).me
         try:
+            self.me=Employee.objects.filter(profile=self.profile).first()
+        except:
+            self.me=None
+        try:
             self.me = self.objects.get(profile=self.profile)          
         except :
             self.me = None
