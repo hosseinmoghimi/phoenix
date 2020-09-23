@@ -9,106 +9,7 @@
 <!-- home-slider  -->
 <section class="hero-wrap degree-right js-fullheight">
 	<div class="home-slider js-fullheight owl-carousel">
-		{% if perms.auth.change_user %}
-		<div class="slider-item js-fullheight"
-			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
-			<div class="overlay"></div>
-			<div class="container">
 
-				<div class="row no-gutters slider-text js-fullheight align-items-center" style="height: 3220px;">
-					<div class="col-md-12 ftco-animate fadeInUp ftco-animated">
-
-						<div class="absolute">
-							<h4 class="number" data-number="67">0</h4>
-							<p>محصول و سرویس</p>
-						</div>
-
-
-						<div class="text">
-
-
-							<h1 class="mb-4 leo-rtl text-right">برای ویرایش محتوای سایت</h1>
-
-
-
-							<p class=" leo-rtl text-right">با ورود به بخش مدیریت محتوای سایت را ویرایش کنید.</p>
-
-
-
-							<p class=""><a href="{{ADMIN_URL}}"
-									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">مدیریت</a>
-							</p>
-
-
-							<p class="mb-0"><a href="{{ADMIN_URL}}app/homeslider/add/"
-									class="btn btn-info py-md-3 py-2 px-2 px-md-4">افزودن اسلایدر</a>
-							</p>
-
-						</div>
-					</div>
-
-					<a href="https://vimeo.com/259411563"
-						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
-						<span class="fa fa-play"></span>
-					</a>
-
-
-				</div>
-			</div>
-		</div>
-		{% endif %}
-
-		{% if not user.is_authenticated %}
-
-		<!-- 		
-		<div class="slider-item js-fullheight"
-			style="background-image: url({% static 'avo/img/admin-slider-back.jpg' %}); height: 3220px;">
-			<div class="overlay"></div>
-			<div class="container">
-
-				<div class="row no-gutters slider-text js-fullheight align-items-center" style="height: 3220px;">
-					<div class="col-md-12 ftco-animate fadeInUp ftco-animated">
-
-						<div class="absolute">
-							<h4 class="number" data-number="67">0</h4>
-							<p>محصول و سرویس</p>
-						</div>
-
-
-						<div class="text">
-
-
-							<h1 class="mb-4 leo-rtl text-right">برای استفاده بهتر از خدمات و محتوای سایت</h1>
-
-
-
-							<p class=" leo-rtl text-right">با استفاده از حساب کاربری خود وارد سایت شوید</p>
-
-
-
-							<p class=""><a href="{% url 'authentication:login' %}"
-									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">ورود</a>
-							</p>
-
-
-
-							</p>
-
-						</div>
-					</div>
-
-					<a href="https://vimeo.com/259411563"
-						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
-						<span class="fa fa-play"></span>
-					</a>
-
-
-				</div>
-			</div>
-		</div>
-		 -->
-
-		{% endif %}
 
 
 		{% for home_slider in home_sliders %}
@@ -148,11 +49,17 @@
 
 								{% endif %}
 								{% if perms.app.change_homeslider %}
-
+							<p>
 								<a href="{{home_slider.get_edit_url}}"
 									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش اسلایدر</a>
+							</p>
 
-								{% endif %}
+							<p class="">
+								<a href="{{ADMIN_URL}}" class="btn btn-primary py-md-3 py-2 px-2 px-md-4">پنل مدیریتی سایت </a>
+								<a href="{{ADMIN_URL}}app/homeslider/add/"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">افزودن اسلایدر</a>
+							</p>
+							{% endif %}
 
 
 							</p>

@@ -35,7 +35,7 @@ elif SERVER_ON_HEROKU:
     from . import settings_heroku as server_settings   
     SECRET_KEY = server_settings.SECRET_KEY
     #STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-    
+
 
 # READ SECRET_KEY FROM SECURE UNTRACKED FILE
 if not SERVER_ON_HEROKU:
@@ -59,6 +59,7 @@ if not SERVER_ON_HEROKU:
 # Application definition
 
 INSTALLED_APPS = [
+    'projectmanager',
     'transport',
     'accounting',
     'app',

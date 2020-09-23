@@ -16,6 +16,13 @@
         <p>{{profile.name}}</p>
     </a>
 </li>
+<li class="nav-item " id="project-manager-link">
+    <a class="nav-link" href="{% url 'projectmanager:home'%}">
+       
+        <i class="fa fa-user"></i>
+        <p>مدیریت پروژه</p>
+    </a>
+</li>
 {% endif %}
 <li class="nav-item " id="automation-link">
     <a class="nav-link" href="{% url 'automation:home' %}">
