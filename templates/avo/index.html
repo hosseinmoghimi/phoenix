@@ -41,12 +41,11 @@
 							<h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.posttitle}}</h4>
 							{% endif %}
 
-							<p class="">
 								{% if home_slider.action_text %}
-
-								<a href="{{home_slider.action_url}}"
+<p>				<a href="{{home_slider.action_url}}"
 									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">{{home_slider.action_text}}</a>
-
+</p>
+				
 								{% endif %}
 								{% if perms.app.change_homeslider %}
 							<p>
@@ -62,7 +61,6 @@
 							{% endif %}
 
 
-							</p>
 						</div>
 					</div>
 					{% if home_slider.video_link %}

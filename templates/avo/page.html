@@ -42,7 +42,16 @@
 
                 {% endif %}
 
-                {% if perms.app.change_blog %}
+                {% if page.action_text %}
+<p class="text-right">
+                <a href="{{page.action_url}}"
+                    class="btn btn-primary py-md-3 py-2 px-2 px-md-4">
+                    <span >
+                    {{page.action_text}}</span></a></p>
+
+                {% endif %}
+
+                {% if perms.app.change_page %}
                 <p>
                     <a class="btn btn-info" href="{{page.get_edit_url}}">
                         <span class="leo-farsi">
