@@ -9,6 +9,7 @@
 
 <div class="row">
   <div class="col-lg-6 col-md-6 col-sm-12">
+   <!-- project categories -->
     <div class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
         <div class="card-icon">
@@ -53,6 +54,55 @@
         </div>
       </div>
     </div>
+
+
+
+<!-- work units -->
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">واحد های سازمانی
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        {% for work_unit in work_units %}
+
+        
+        <h4 class="mt-4">
+           <a class="d-block text-primary mb-2" href="{{work_unit.get_absolute_url}}">
+            <i class="material-icons">dashboard</i>
+            {{work_unit.title}}</a>
+            
+        </h4>
+        {% for employee in work_unit.employees.all %}
+  <div class="my-3">  <a class="d-inline mx-5 text-primary" href="{{employee.profile.get_absolute_url}}">
+          <i class="fa fa-user"></i>
+          {{employee.profile.name}}</a>
+          <span class="badge badge-info">{{employee.role}}</span>
+        </div>    
+        {% endfor %}
+        </p>
+        <hr>
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+          <i class="material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
+
+            اضافه کردن واحد سازمانی</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="col-lg-6 col-md-6 col-sm-12">

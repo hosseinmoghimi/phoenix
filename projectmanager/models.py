@@ -171,7 +171,7 @@ class WorkUnit(ManagerPage):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("automation:work_unit", kwargs={"work_unit_id": self.pk})
+        return reverse("projectmanager:work_unit", kwargs={"work_unit_id": self.pk})
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/workunit/{self.pk}/change/'
