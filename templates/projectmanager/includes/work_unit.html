@@ -2,9 +2,11 @@
     <a class="text-primary mb-2" href="{{work_unit.get_absolute_url}}">
       <i class="material-icons">dashboard</i>
       {{work_unit.title}}</a>
-      <a class="btn btn-link btn-warning btn-sm" href="{{work_unit.get_edit_url}}">
+     {% if perms.projectmanager.change_workunit %}
+     <a class="btn btn-link btn-warning btn-sm" href="{{work_unit.get_edit_url}}">
         <i class="fa fa-edit"></i>
         </a>
+     {% endif %}
   </h4>
   {% for employee in work_unit.employees.all %}
   <div class="">
