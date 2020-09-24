@@ -470,7 +470,7 @@ class MetaData(models.Model):
         verbose_name_plural = _("متا دیتا - کلمات کلیدی سئو")
 
     def __str__(self):
-        return f'{self.key} : {self.value}'+('*' if self.for_home else '')
+        return ('*** '  if self.for_home else '')+f'{self.key} : {self.value}: {self.content[:20]}'
 
     def get_absolute_url(self):
         return reverse("MetaData_detail", kwargs={"pk": self.pk})
