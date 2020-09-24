@@ -1,6 +1,7 @@
 {% extends "dashboard/layout.html" %}
 {% load static %}
 {% load to_price %}
+{% load to_persian_date %}
 {% block contents %}
 
 
@@ -61,6 +62,67 @@
                 </div>
             </div>
         </div>
+        {% if perms.projectmanager.view_pagelog %}
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+               
+                <p class="card-category">لاگ</p>
+
+            
+                <h3 class="card-title">{{project.title}}
+                  
+                    
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table">
+ 
+          <thead>
+              <td>پروفایل</td>
+              <td>اکشن</td>
+              <td>تاریخ</td>
+          </thead>
+          <tbody>
+              {% for page_log in project.pagelog_set.all %}
+                <tr>
+                    <td><a href="{{page_log.profile.get_absolute_url}}">{{page_log.profile.name}}</a></td>
+                    <td>{{page_log.action}}</td>
+                    <td>{{page_log.date_added|to_persian_date|safe}}</td>
+                </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      </div>
+      
+                
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_project  and project.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{project.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+
+
+    {% endif %}
+    
     </div>
     {% if project.location %}
     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -104,10 +166,14 @@
             </div>
         </div>
 
-        {% endif %}
 
     </div>
 
+
+    {% endif %}
+
+
+   
 
 
 </div>
