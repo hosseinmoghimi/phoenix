@@ -53,6 +53,8 @@ class ManagerPage(models.Model):
     
     meta_datas=models.ManyToManyField("app.MetaData", verbose_name=_("meta_datas"),blank=True)    
     tags=models.ManyToManyField("app.Tag", verbose_name=_("tags"),blank=True)    
+    links=models.ManyToManyField("app.Link", verbose_name=_("links"),blank=True)    
+    documents=models.ManyToManyField("app.Document", verbose_name=_("documents"),blank=True)    
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
@@ -364,6 +366,21 @@ class MaterialLog(models.Model):
     def get_absolute_url(self):
         return reverse("MaterialPackage_detail", kwargs={"pk": self.pk})
 
+class Contractor(models.Model):
+    title=models.CharField(_("title"), max_length=50)
+    profile=models.ForeignKey("app.Profile", verbose_name=_("profile"), on_delete=models.CASCADE)
+
+    
+
+    class Meta:
+        verbose_name = _("Contractor")
+        verbose_name_plural = _("Contractors")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("Contractor_detail", kwargs={"pk": self.pk})
 
 
 
