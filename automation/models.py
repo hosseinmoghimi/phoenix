@@ -187,3 +187,4 @@ class Project(OurWork):
         return reverse("automation:project", kwargs={"project_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/project/{self.pk}/change/'
+        

@@ -23,13 +23,13 @@
 
         {% for project_category in project_categories %}
 
-        <p class="mt-4">
-      <h4 >   <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
+        <p class="mt-3">
+          <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
             <i class="material-icons">{{project_category.icon}}</i>
             {{project_category.title}}</a>
-</h4> 
+
           {% for project in project_category.project_set.all %}
-          <a class="d-block mx-5 text-primary" href="{{project.get_absolute_url}}">
+          <a class="d-block mx-5 text-secondary" href="{{project.get_absolute_url}}">
             <i class="material-icons">{{project_category.icon}}</i>
             {{project.title}}</a>
           {% endfor %}
@@ -52,45 +52,39 @@
           <i class="material-icons">home</i>
         </div>
         <p class="card-category">لیست</p>
-        <h3 class="card-title">پروژه ها
+        <h3 class="card-title">قرارداد ها
 
         </h3>
       </div>
       <div class="card-body">
         <p class="mt-3">
-          {% for project in projects %}
-
-        <div class="mb-3">
-          <a class=" mb-2 btn btn-primary" href="{{project.get_absolute_url}}">
-            <i class="material-icons">get_app</i>
-            {{project.title}}</a> </div>
+          {% for contract in contracts %}
+        <p>
+          {{contract.project.emplyer.name}}
+        </p>
+        <div class="mb-3">قرارداد :
+          <a class=" mb-2 text-{{contract.color}}" href="{{contract.get_absolute_url}}">
+            <i class="material-icons">{{contract.icon}}</i>
+            {{contract.title}}</a> </div>
         <div>
-          <small> مبلغ : </small> {{project.amount| to_price}}
+          <small> مبلغ : </small> {{contract.amount| to_price}}
         </div>
         <div>
-          <small> وضعیت : </small> <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+          <small> وضعیت : </small> <span class="badge badge-{{contract.status}}">{{contract.status}}</span>
         </div>
 
-        {% if perms.projectmanager.change_project %}
-        <div>
 
-          <a href="{{project.get_edit_url}}" class="btn btn-sm btn-link btn-danger">
-            <i class="material-icons">settings</i>
-            ویرایش
-          </a>
-        </div>
-
-        {% endif %}
-
-
-
+        <div><small>پروژه : </small>
+          <a class="mb-2 text-{{contract.project.color}}" href="{{contract.project.get_absolute_url}}">
+            <small> <i class="material-icons">{{contract.project.icon}}</i>
+              {{contract.project.title}}</small></a> </div>
         <hr>
         {% endfor %}</p>
       </div>
       <div class="card-footer">
         <div class="stats">
           <i class="material-icons text-danger">link</i>
-          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a>
+          <a href="{{ADMIN_URL}}manager/contract/add/">اضافه کردن قرارداد</a>
         </div>
       </div>
     </div>

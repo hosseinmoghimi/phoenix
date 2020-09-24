@@ -1,8 +1,11 @@
 from django.contrib import admin
-from .models import Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 
 
 
+admin.site.register(ProjectCategory)
+admin.site.register(Project)
+admin.site.register(WorkUnit)
 admin.site.register(Employee)
 admin.site.register(MaterialBrand)
 admin.site.register(MaterialCategory)
