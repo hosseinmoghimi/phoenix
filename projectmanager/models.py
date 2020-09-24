@@ -5,6 +5,7 @@ from .apps import APP_NAME
 from app.settings import ADMIN_URL,MEDIA_URL
 from app.enums import DegreeLevelEnum
 from app.models import OurWork
+from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
 from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum
@@ -179,6 +180,7 @@ class WorkUnit(ManagerPage):
 
 class Employee(models.Model):
     profile=models.ForeignKey("app.Profile",related_name='emp', verbose_name=_("profile"),null=True,blank=True, on_delete=models.PROTECT)
+    work_unit=models.ForeignKey("WorkUnit", verbose_name=_("work_unit"),null=True,blank=True, on_delete=models.PROTECT)
     
     role=models.CharField(_("نقش"),choices=EmployeeEnum.choices,default=EmployeeEnum.DEFAULT, max_length=50)
     degree=models.CharField(_("مدرک"),choices=DegreeLevelEnum.choices,default=DegreeLevelEnum.KARSHENASI, max_length=50)
@@ -187,6 +189,20 @@ class Employee(models.Model):
     def __str__(self):
         return self.profile.name()
     
+    def save(self):
+        group_name=self.role+' '+self.work_unit.title
+        try:
+            origin_group=Group.objects.get(name=group_name)
+        except:
+            Group.objects.filter(name=group_name).delete()
+            origin_group = None
+        if  origin_group is None:
+            origin_group=Group(name=group_name)
+            origin_group.save()
+        if origin_group is not None:
+                self.profile.user.groups.add(origin_group)
+        super(Employee,self).save()
+
     def name(self):
         if self.profile is not None:
             return f'{self.profile.name()} {self.role}'

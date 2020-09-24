@@ -20,6 +20,7 @@ import os
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
+
 class Jumbotron(models.Model):
     pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
