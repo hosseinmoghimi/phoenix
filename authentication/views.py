@@ -7,6 +7,7 @@ from app.repo import ProfileRepo
 from django.views import View
 from app.repo import MainPicRepo,RegionRepo
 from app.enums import MainPicEnum
+from app.settings import SITE_URL
 TEMPLATE_ROOT='authentication/'
 # Create your views here.
 class AuthView(View):
@@ -26,7 +27,7 @@ class AuthView(View):
                 new_password=reset_password_form.cleaned_data['new_password']
                 request1=ProfileRepo(user=request.user).reset_password(request=request,username=username,old_password=old_password,new_password=new_password)                
                 if request1 is not None:                                     
-                    return redirect(reverse('app:home'))
+                    return redirect(reverse('projectmanager:home'))
             
             context=getContext(request)
             context['message']='نام کاربری و کلمه عبور صحیح نمی باشد'            
@@ -44,7 +45,7 @@ class AuthView(View):
         return redirect(reverse('authentication:login'))
     def auth(self,request,back_url=None):
         if back_url is None:
-            back_url=reverse('app:home')
+            back_url=reverse('projectmanager:home')
         
         if request.method=='POST':
             login_form=LoginForm(request.POST)
