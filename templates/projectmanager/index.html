@@ -31,7 +31,7 @@
             
         </h4>
         {% for project in project_category.project_set.all %}
-  <div>  <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
+  <div class="my-3">  <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
           <i class="material-icons">{{project_category.icon}}</i>
           {{project.title}}</a>
           <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
