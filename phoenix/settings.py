@@ -87,11 +87,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+MIDDLEWARE_CLASSES = [
+    'app.get_username.RequestMiddleware',
+    ]
 
 if SERVER_ON_HEROKU and False: 
     MIDDLEWARE_CLASSES = [
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'app.get_username.RequestMiddleware',
     ]
     MIDDLEWARE = [
         'django.middleware.security.SecurityMiddleware',

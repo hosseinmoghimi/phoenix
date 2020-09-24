@@ -5,6 +5,8 @@ from .apps import APP_NAME
 from app.settings import ADMIN_URL,MEDIA_URL
 from app.enums import DegreeLevelEnum
 from app.models import OurWork
+from app.get_username import get_username
+from django.contrib.auth.models import User
 from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
@@ -59,15 +61,21 @@ class ManagerPage(models.Model):
             return None
         return MEDIA_URL+str(self.image_header_origin)
 
-    def save(self):
-        super(ManagerPage,self).save()
-        log=PageLog(page=self,manager_page_id=self.pk,name=self.title,profile=None,action=LogActionEnum.SAVE)
-        log.save()
+    # def save(self):
+    #     super(ManagerPage,self).save()
+    #     username=get_username()
+    #     # user=User.objects.get(username=username)
+    #     # profile=ProfileRepo(user=user).me
+    #     log=PageLog(page=self,manager_page_id=self.pk,name=self.title+' username:'+str(username),profile=None,action=LogActionEnum.SAVE)
+    #     log.save()
 
-    def delete(self):
-        log=PageLog(manager_page_id=self.pk,page=None,name=self.title,profile=None,action=LogActionEnum.DELETE)
-        log.save()
-        super(ManagerPage,self).delete()
+    # def delete(self):
+    #     super(ManagerPage,self).save()
+    #     user=User.objects.get(username=get_username())
+    #     profile=ProfileRepo(user=user).me
+    #     log=PageLog(manager_page_id=self.pk,page=None,name=self.title,profile=profile,action=LogActionEnum.DELETE)
+    #     log.save()
+    #     super(ManagerPage,self).delete()
 
     def __str__(self):
         return self.title
