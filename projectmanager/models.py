@@ -56,10 +56,18 @@ class ManagerPage(models.Model):
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
-    # def save(self):
-    #     super(ManagerPage,self).save()
-    #     self.priority=self.pk
-    #     super(ManagerPage,self).save()
+    def save(self):
+        if self.priority==0:
+            super(ManagerPage,self).save()
+            self.priority=self.pk
+            super(ManagerPage,self).save()
+            return self
+        # else:
+        #     try:
+        #         self.priority=ManagerPage.objects.get(pk=self.pk).priority
+        #     except:                
+        #         self.priority=self.pk
+        return super(ManagerPage,self).save()
 
 
     def image_header(self):
@@ -138,6 +146,7 @@ class Project(ManagerPage):
     status=models.CharField(_('status'),max_length=50,choices=ProjectStatusEnum.choices,default=ProjectStatusEnum.DEFAULT)
     amount=models.IntegerField(_('مبلغ'),default=0)
 
+    
     def get_status_color(self):
         if self.status==ProjectStatusEnum.DEFAULT:
             return 'primary'

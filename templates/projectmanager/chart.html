@@ -1,0 +1,377 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+
+  {% if work_units %}
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <!-- work units -->
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">چارت سازمانی
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        {% for work_unit in work_units %}
+
+
+        {% include "projectmanager/includes/work_unit.html" %}
+
+        <div class="ml-5">
+          {% for work_unit in work_unit.childs %}
+
+          {% include "projectmanager/includes/work_unit.html" %}
+
+          <div class="ml-5">
+            {% for work_unit in work_unit.childs %}
+
+            {% include "projectmanager/includes/work_unit.html" %}
+
+            <div class="ml-5">
+              {% for work_unit in work_unit.childs %}
+
+              {% include "projectmanager/includes/work_unit.html" %}
+
+              <div class="ml-5">
+                {% for work_unit in work_unit.childs %}
+
+                {% include "projectmanager/includes/work_unit.html" %}
+
+                <div class="ml-5">
+                  {% for work_unit in work_unit.childs %}
+
+                  {% include "projectmanager/includes/work_unit.html" %}
+
+                  <div class="ml-5">
+                    {% for work_unit in work_unit.childs %}
+
+                    {% include "projectmanager/includes/work_unit.html" %}
+
+                    {% endfor %}
+                  </div>
+
+                  {% endfor %}
+                </div>
+
+
+                {% endfor %}
+              </div>
+
+
+              {% endfor %}
+            </div>
+
+
+            {% endfor %}
+          </div>
+
+          {% endfor %}
+        </div>
+
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+          <i class="material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
+
+            اضافه کردن واحد سازمانی</a>
+          {% endif %}
+
+          {% if perms.projectmanager.add_project %}
+          <i class="ml-3 material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/employee/add/">
+
+            اضافه کردن پرسنل</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+  {% if project_categories %}
+  <div class="col-lg-6 col-md-6 col-sm-12">
+    <!-- project categories -->
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">دسته بندی پروژه ها
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        {% for project_category in project_categories %}
+
+
+        <h4 class="mt-4">
+          <a class="d-block text-primary mb-2" href="{{project_category.get_absolute_url}}">
+            <i class="material-icons">{{project_category.icon}}</i>
+            {{project_category.title}}</a>
+
+        </h4>
+        {% for project in project_category.project_set.all %}
+        <div class="my-3"> <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
+            <i class="material-icons">{{project_category.icon}}</i>
+            {{project.title}}</a>
+          <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+        </div>
+        {% endfor %}
+        </p>
+        <hr>
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+          <i class="material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">
+
+            اضافه کردن پروژه</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+  {% endif %}
+
+  {% if projects %}
+  <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">home</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">پروژه ها
+
+        </h3>
+      </div>
+      <div class="card-body">
+        <p class="mt-3">
+          {% for project in projects %}
+
+        <div class="mb-3">
+          <a class=" mb-2 btn btn-primary" href="{{project.get_absolute_url}}">
+            <i class="material-icons">get_app</i>
+            {{project.title}}</a> </div>
+        <div>
+          <small> مبلغ : </small> {{project.amount| to_price}}
+        </div>
+        <div>
+          <small> وضعیت : </small> <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+        </div>
+
+        {% if perms.projectmanager.change_project %}
+        <div>
+          {% if priority_form %}
+
+
+          <form class="d-inline" action="{% url 'projectmanager:priority' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="direction" value="down">
+            <input type="hidden" name="pk" value="{{project.id}}">
+            <input type="hidden" name="base_class" value="project">
+            <button type="submit" class="btn btn-sm btn-link btn-danger go_down_btn"><i
+                class="material-icons">keyboard_arrow_down</i></button>
+
+
+
+          </form>
+          <a href="{{project.get_edit_url}}" class="btn btn-sm btn-link btn-danger">
+            <i class="material-icons">settings</i>
+            ویرایش
+          </a>
+          <form class="d-inline" action="{% url 'projectmanager:priority' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{project.id}}">
+            <input type="hidden" name="direction" value="up">
+            <input type="hidden" name="base_class" value="project">
+            <button type="submit" class="btn btn-sm btn-link btn-success go_up_btn"><i
+                class="material-icons">keyboard_arrow_up</i></button>
+          </form>
+
+          {% endif %}
+
+        </div>
+        <div>
+
+
+        </div>
+
+        {% endif %}
+
+
+
+        <hr>
+        {% endfor %}</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+
+          <i class="material-icons text-danger">link</i>
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">
+
+            اضافه کردن پروژه</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+  let initDashboardPageCharts = function () {
+
+    if ($('#dailySalesChart').length != 0 || $('#completedTasksChart').length != 0 || $('#websiteViewsChart').length != 0) {
+      /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+
+      dataDailySalesChart = {
+        labels: ['شنبه', '1', '2', '3', '4', '5', 'جمعه'],
+        series: [
+          [12, 60, 87, 17, 23, 18, 38]
+        ]
+      };
+
+      optionsDailySalesChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 1
+        }),
+        low: 0,
+        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+      }
+
+      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+      md.startAnimationForLineChart(dailySalesChart);
+
+
+
+      /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
+
+      dataCompletedTasksChart = {
+        labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
+        series: [
+          [230, 750, 100, 300, 280, 240, 200, 190]
+        ]
+      };
+
+      optionsCompletedTasksChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      }
+
+      var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
+
+      // start animation for the Completed Tasks Chart - Line Chart
+      md.startAnimationForLineChart(completedTasksChart);
+
+
+      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+
+      var dataWebsiteViewsChart = {
+        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+        series: [
+          [542, 443, 320, 780, 553, 453, 326, 434, 568, 400, 300, 200]
+
+        ]
+      };
+      var optionsWebsiteViewsChart = {
+        axisX: {
+          showGrid: true,
+        },
+        low: 0,
+        high: 1000,
+        chartPadding: {
+          top: 0,
+          right: 5,
+          bottom: 0,
+          left: 0
+        }
+      };
+      var responsiveOptions = [
+        ['screen and (max-width: 640px)', {
+          seriesBarDistance: 5,
+          axisX: {
+            labelInterpolationFnc: function (value) {
+              return value[0];
+            }
+          }
+        }]
+      ];
+      var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
+
+      //start animation for the Emails Subscription Chart
+      md.startAnimationForBarChart(websiteViewsChart);
+    }
+  }
+
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    initDashboardPageCharts();
+
+  });
+</script>
+<script>
+  $("#chart-link").addClass("active");
+
+
+  $(".go_up_btn:first").addClass('d-none')
+
+  $(".go_down_btn:last").addClass('d-none')
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

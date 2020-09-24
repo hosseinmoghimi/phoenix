@@ -29,8 +29,12 @@ class BasicView(View):
         context['priority_form']=PriorityForm()
         context['project_categories']=ProjectCategoryRepo(user=user).list()
         context['projects']=ProjectRepo(user=user).list()
-        context['work_units']=WorkUnitRepo(user=user).get_roots()
         return render(request,TEMPLATE_ROOT+'index.html',context)
+    def chart(self,request,*args, **kwargs):
+        user=request.user
+        context=getContext(request)        
+        context['work_units']=WorkUnitRepo(user=user).get_roots()
+        return render(request,TEMPLATE_ROOT+'chart.html',context)
  
         
     def search(self,request,*args, **kwargs):
