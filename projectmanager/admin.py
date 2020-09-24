@@ -6,11 +6,15 @@ from app.repo import ProfileRepo
 from .enums import LogActionEnum
 class ProjectAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
+        if obj.location:
+            obj.location=obj.location.replace('width="600"','width="100%"')
+            obj.location=obj.location.replace('height="450"','height="400"')
         super().save_model(request, obj, form, change)
         user=request.user
         profile=ProfileRepo(user=user).me
         log=PageLog(page=obj,manager_page_id=obj.pk,name=obj.title,profile=profile,action=LogActionEnum.SAVE)
         log.save()
+
 
     def delete_model(self, request, obj):
         user=request.user
