@@ -214,8 +214,8 @@
 
         <script src="{% static 'pusher/pusher.min.js'%}"></script>
         <script>
-            notifications = {{ notifications_s | safe }}
-            notifications_count = {{ notifications_count | safe }}
+            notifications = JSON.parse(`{{notifications_s|escapejs}}`)
+            notifications_count = JSON.parse(`{{notifications_count|escapejs}}`)
 
 
             // Vue application
@@ -242,7 +242,7 @@
 
 
         <script>
-            my_channel_events ={{my_channel_events_s | safe}}
+            my_channel_events =JSON.parse(`{{my_channel_events_s|escapejs}}`)
 
 
             my_channel_events.forEach(my_channel_event => {
