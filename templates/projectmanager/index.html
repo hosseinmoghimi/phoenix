@@ -23,17 +23,22 @@
 
         {% for project_category in project_categories %}
 
-        <p class="mt-4">
-        <h4> <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
+        
+        <h4 class="mt-4">
+           <a class="d-block text-primary mb-2" href="{{project_category.get_absolute_url}}">
             <i class="material-icons">{{project_category.icon}}</i>
             {{project_category.title}}</a>
+            
         </h4>
         {% for project in project_category.project_set.all %}
-        <a class="d-block mx-5 text-primary" href="{{project.get_absolute_url}}">
+  <div>  <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
           <i class="material-icons">{{project_category.icon}}</i>
           {{project.title}}</a>
+          <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+        </div>    
         {% endfor %}
         </p>
+        <hr>
         {% endfor %}
       </div>
       <div class="card-footer">
