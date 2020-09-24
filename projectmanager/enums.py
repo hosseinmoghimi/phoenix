@@ -27,10 +27,17 @@ class UnitNameEnum(TextChoices):
 class EmployeeEnum(TextChoices):
     GUARD='نگهبان',_('نگهبان')      
     MANAGER='مدیر',_('مدیر')      
-    TECHNICAL='فنی',_('فنی')    
+    TECHNICAL='فنی',_('فنی')     
+    SUPPORT='پشتیبان',_('پشتیبان')    
+    SERVICEMAN='خدمات',_('خدمات')    
     DEFAULT='تایید نشده',_('تایید نشده')
-    ACCOUNTANT='حسابدار',_('حسابدار')
-    CASHIER='صندوقدار',_('صندوقدار')
+    SARPARAST='سرپرست',_('سرپرست')
+    KARSHENAS='کارشناس',_('کارشناس')
+    MOSHAVER='مشاور',_('مشاور')
+    NAZER='ناظر',_('ناظر')
+    SECRETER='منشی',_('منشی')
+    RECRUIT='کارآموز',_('کارآموز')
+    AMIN='امین اموال',_('امین اموال')
     
 
 class AgentRoleEnum(TextChoices):

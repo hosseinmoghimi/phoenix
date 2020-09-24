@@ -46,7 +46,7 @@ class ManagerPage(models.Model):
     video_url=models.CharField(_("لینک ویدیو"), max_length=2000,blank=True,null=True)
     
 
-    priority=models.IntegerField(_("ترتیب"),default=100)  
+    priority=models.IntegerField(_("ترتیب"),default=0)  
 
     image_header_origin=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'Page/', height_field=None, width_field=None, max_length=None)
     images=models.ManyToManyField("Image", verbose_name=_("تصویر ها"),blank=True)
@@ -56,7 +56,12 @@ class ManagerPage(models.Model):
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
-    
+    # def save(self):
+    #     super(ManagerPage,self).save()
+    #     self.priority=self.pk
+    #     super(ManagerPage,self).save()
+
+
     def image_header(self):
         if self.image_header is None:
             return None
@@ -152,18 +157,22 @@ class Project(ManagerPage):
         verbose_name_plural = _("Projects")
 
     def __str__(self):
-        return self.title
+        return str(self.priority)+' - '+self.title
 
     def get_absolute_url(self):
         return reverse("projectmanager:project", kwargs={"project_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/project/{self.pk}/change/'
         
-class WorkUnit(ManagerPage):
+class WorkUnit(ManagerPage): 
+
+    parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
+   
     
-    employees=models.ManyToManyField("Employee", verbose_name=_("نیروی انسانی"),blank=True)
-    
-     
+    def employees(self):
+        return Employee.objects.filter(work_unit=self)
+    def childs(self):
+        return WorkUnit.objects.filter(parent=self)
     class Meta:
         verbose_name = _("WorkUnit")
         verbose_name_plural = _("WorkUnits")
@@ -200,7 +209,8 @@ class Employee(models.Model):
             origin_group=Group(name=group_name)
             origin_group.save()
         if origin_group is not None:
-                self.profile.user.groups.add(origin_group)
+                if self.profile.user is not None:
+                    self.profile.user.groups.add(origin_group)
         super(Employee,self).save()
 
     def name(self):

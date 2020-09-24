@@ -8,8 +8,107 @@
 
 
 <div class="row">
+
+  {% if work_units %}
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <!-- work units -->
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">واحد های سازمانی
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        {% for work_unit in work_units %}
+
+
+        {% include "projectmanager/includes/work_unit.html" %}
+
+        <div class="ml-5">
+          {% for work_unit in work_unit.childs %}
+
+          {% include "projectmanager/includes/work_unit.html" %}
+
+          <div class="ml-5">
+            {% for work_unit in work_unit.childs %}
+
+            {% include "projectmanager/includes/work_unit.html" %}
+
+            <div class="ml-5">
+              {% for work_unit in work_unit.childs %}
+
+              {% include "projectmanager/includes/work_unit.html" %}
+
+              <div class="ml-5">
+                {% for work_unit in work_unit.childs %}
+
+                {% include "projectmanager/includes/work_unit.html" %}
+
+                <div class="ml-5">
+                  {% for work_unit in work_unit.childs %}
+
+                  {% include "projectmanager/includes/work_unit.html" %}
+
+                  <div class="ml-5">
+                    {% for work_unit in work_unit.childs %}
+
+                    {% include "projectmanager/includes/work_unit.html" %}
+
+                    {% endfor %}
+                  </div>
+
+                  {% endfor %}
+                </div>
+
+
+                {% endfor %}
+              </div>
+
+
+              {% endfor %}
+            </div>
+
+
+            {% endfor %}
+          </div>
+
+          {% endfor %}
+        </div>
+
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+          <i class="material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
+
+            اضافه کردن واحد سازمانی</a>
+          {% endif %}
+
+          {% if perms.projectmanager.add_project %}
+          <i class="ml-3 material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/employee/add/">
+
+            اضافه کردن پرسنل</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+  {% if project_categories %}
   <div class="col-lg-6 col-md-6 col-sm-12">
-   <!-- project categories -->
+    <!-- project categories -->
     <div class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
         <div class="card-icon">
@@ -24,19 +123,19 @@
 
         {% for project_category in project_categories %}
 
-        
+
         <h4 class="mt-4">
-           <a class="d-block text-primary mb-2" href="{{project_category.get_absolute_url}}">
+          <a class="d-block text-primary mb-2" href="{{project_category.get_absolute_url}}">
             <i class="material-icons">{{project_category.icon}}</i>
             {{project_category.title}}</a>
-            
+
         </h4>
         {% for project in project_category.project_set.all %}
-  <div class="my-3">  <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
-          <i class="material-icons">{{project_category.icon}}</i>
-          {{project.title}}</a>
+        <div class="my-3"> <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
+            <i class="material-icons">{{project_category.icon}}</i>
+            {{project.title}}</a>
           <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
-        </div>    
+        </div>
         {% endfor %}
         </p>
         <hr>
@@ -57,54 +156,13 @@
 
 
 
-<!-- work units -->
-    <div class="card card-stats">
-      <div class="card-header card-header-info card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">settings</i>
-        </div>
-        <p class="card-category">لیست</p>
-        <h3 class="card-title">واحد های سازمانی
 
-        </h3>
-      </div>
-      <div class="card-body">
-
-        {% for work_unit in work_units %}
-
-        
-        <h4 class="mt-4">
-           <a class="d-block text-primary mb-2" href="{{work_unit.get_absolute_url}}">
-            <i class="material-icons">dashboard</i>
-            {{work_unit.title}}</a>
-            
-        </h4>
-        {% for employee in work_unit.employees.all %}
-  <div class="my-3">  <a class="d-inline mx-5 text-primary" href="{{employee.profile.get_absolute_url}}">
-          <i class="fa fa-user"></i>
-          {{employee.profile.name}}</a>
-          <span class="badge badge-info">{{employee.role}}</span>
-        </div>    
-        {% endfor %}
-        </p>
-        <hr>
-        {% endfor %}
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          {% if perms.projectmanager.add_project %}
-          <i class="material-icons text-danger">link</i>
-
-          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
-
-            اضافه کردن واحد سازمانی</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
 
   </div>
 
+  {% endif %}
+
+  {% if projects %}
   <div class="col-lg-6 col-md-6 col-sm-12">
     <div class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
@@ -133,11 +191,39 @@
 
         {% if perms.projectmanager.change_project %}
         <div>
+          {% if priority_form %}
 
+
+          <form class="d-inline" action="{% url 'projectmanager:priority' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="direction" value="down">
+            <input type="hidden" name="pk" value="{{project.id}}">
+            <input type="hidden" name="base_class" value="project">
+            <button type="submit" class="btn btn-sm btn-link btn-danger go_down_btn"><i
+                class="material-icons">keyboard_arrow_down</i></button>
+
+
+
+          </form>
           <a href="{{project.get_edit_url}}" class="btn btn-sm btn-link btn-danger">
             <i class="material-icons">settings</i>
             ویرایش
           </a>
+          <form class="d-inline" action="{% url 'projectmanager:priority' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{project.id}}">
+            <input type="hidden" name="direction" value="up">
+            <input type="hidden" name="base_class" value="project">
+            <button type="submit" class="btn btn-sm btn-link btn-success go_up_btn"><i
+                class="material-icons">keyboard_arrow_up</i></button>
+          </form>
+
+          {% endif %}
+
+        </div>
+        <div>
+
+
         </div>
 
         {% endif %}
@@ -160,6 +246,9 @@
       </div>
     </div>
   </div>
+  {% endif %}
+
+
 </div>
 
 
@@ -276,7 +365,9 @@
   $("#project-manager-link").addClass("active");
 
 
+  $(".go_up_btn:first").addClass('d-none')
 
+  $(".go_down_btn:last").addClass('d-none')
 
 
 </script>
