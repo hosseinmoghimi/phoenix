@@ -8,6 +8,11 @@ class ProjectStatusEnum(TextChoices):
     DELIVERED='تحویل شده',_('تحویل شده')
     ANALYZING='درحال آنالیز',_('درحال آنالیز')
 
+class LogActionEnum(TextChoices):
+    DEFAULT='DEFAULT',_('DEFAULT')
+    DELETE='DELETE',_('DELETE')
+    SAVE='SAVE',_('SAVE')
+    INITIAL='INITIAL',_('INITIAL')
 class UnitNameEnum(TextChoices):
     ACCOUNTING='حسابداری',_('حسابداری')
     MANAGEMENT='مدیریت',_('مدیریت')

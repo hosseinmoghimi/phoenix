@@ -34,6 +34,6 @@ class ProjectView(View):
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
-        context['page']=ProjectRepo(user=user).project(project_id=project_id)
-        return render(request,TEMPLATE_ROOT+'page.html',context)
+        context['project']=ProjectRepo(user=user).project(project_id=project_id)
+        return render(request,TEMPLATE_ROOT+'project.html',context)
 

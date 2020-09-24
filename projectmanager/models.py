@@ -5,23 +5,24 @@ from .apps import APP_NAME
 from app.settings import ADMIN_URL,MEDIA_URL
 from app.enums import DegreeLevelEnum
 from app.models import OurWork
-from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum
+from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 class PageLog(models.Model):
     name=models.CharField(_("name"), max_length=50)
-    page=models.ForeignKey("ManagerPage", verbose_name=_("page"), on_delete=models.PROTECT)
+    manager_page_id=models.IntegerField(_("manager_page_id"), default=0)
+    page=models.ForeignKey("ManagerPage", verbose_name=_("page"),null=True,blank=True, on_delete=models.SET_NULL)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
-    profile=models.ForeignKey("app.Profile", verbose_name=_("ایجاد کننده"), on_delete=models.CASCADE)
+    profile=models.ForeignKey("app.Profile",null=True,blank=True, verbose_name=_("ایجاد کننده"), on_delete=models.CASCADE)
     description=models.CharField(_("description"),null=True,blank=True ,max_length=500)
-    action=models.CharField(_("action"), max_length=50)
+    action=models.CharField(_("action"),choices=LogActionEnum.choices,default=LogActionEnum.DEFAULT, max_length=50)
     
     class Meta:
         verbose_name = _("PageLog")
         verbose_name_plural = _("PageLogs")
 
     def __str__(self):
-        return self.name
+        return f'{self.manager_page_id} - {self.page if self.page else ""} - {self.action} - {self.name} - {self.profile.name() if self.profile else ""}'
 
     def get_absolute_url(self):
         return reverse("PageLog_detail", kwargs={"pk": self.pk})
@@ -58,7 +59,15 @@ class ManagerPage(models.Model):
             return None
         return MEDIA_URL+str(self.image_header_origin)
 
-    
+    def save(self):
+        super(ManagerPage,self).save()
+        log=PageLog(page=self,manager_page_id=self.pk,name=self.title,profile=None,action=LogActionEnum.SAVE)
+        log.save()
+
+    def delete(self):
+        log=PageLog(manager_page_id=self.pk,page=None,name=self.title,profile=None,action=LogActionEnum.DELETE)
+        log.save()
+        super(ManagerPage,self).delete()
 
     def __str__(self):
         return self.title
