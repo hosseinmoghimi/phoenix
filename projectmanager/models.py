@@ -138,17 +138,20 @@ class ProjectCategory(ManagerPage):
 
 class Project(ManagerPage):
     category=models.ForeignKey("ProjectCategory",null=True,blank=True, verbose_name=_("category"), on_delete=models.SET_NULL)
+    parent=models.ForeignKey("Project",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
    
     location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
     
     
     work_units=models.ManyToManyField("WorkUnit", verbose_name=_("work_units"),blank=True)
     material_warehouses=models.ManyToManyField("MaterialWareHouse", verbose_name=_("material_warehouses"),blank=True)
+    contractors=models.ManyToManyField("Contractor", verbose_name=_("contractors"),blank=True)
 
     status=models.CharField(_('status'),max_length=50,choices=ProjectStatusEnum.choices,default=ProjectStatusEnum.DEFAULT)
     amount=models.IntegerField(_('مبلغ'),default=0)
 
-    
+    def childs(self):
+        return Project.objects.filter(parent=self)
     def get_status_color(self):
         if self.status==ProjectStatusEnum.DEFAULT:
             return 'primary'
@@ -369,7 +372,6 @@ class MaterialLog(models.Model):
 class Contractor(models.Model):
     title=models.CharField(_("title"), max_length=50)
     profile=models.ForeignKey("app.Profile", verbose_name=_("profile"), on_delete=models.CASCADE)
-
     
 
     class Meta:
@@ -377,16 +379,10 @@ class Contractor(models.Model):
         verbose_name_plural = _("Contractors")
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
     def get_absolute_url(self):
         return reverse("Contractor_detail", kwargs={"pk": self.pk})
-
-
-
-
-
-
 
 
 

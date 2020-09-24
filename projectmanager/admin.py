@@ -1,7 +1,7 @@
 
 
 from django.contrib import admin
-from .models import PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 from app.repo import ProfileRepo
 from .enums import LogActionEnum
 class ProjectAdmin(admin.ModelAdmin):
@@ -23,6 +23,7 @@ class ProjectAdmin(admin.ModelAdmin):
         log.save()
         super().delete_model(request, obj)
 
+admin.site.register(Contractor)
 admin.site.register(PageLog)
 admin.site.register(ProjectCategory)
 admin.site.register(Project,ProjectAdmin)

@@ -124,19 +124,25 @@
         {% for project_category in project_categories %}
 
 
-        <h4 class="mt-4">
-          <a class="d-block text-primary mb-2" href="{{project_category.get_absolute_url}}">
-            <i class="material-icons">{{project_category.icon}}</i>
-            {{project_category.title}}</a>
+        <h4 class="mt-4 text-secondary">
+         
+            <i class="material-icons">dashboard</i>
+            {{project_category.title}}
 
         </h4>
-        {% for project in project_category.project_set.all %}
-        <div class="my-3"> <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
-            <i class="material-icons">{{project_category.icon}}</i>
-            {{project.title}}</a>
-          <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+        <div class="my-3">
+          {% for project in project_category.project_set.all %}
+          <div class="mb-3">
+            <h6>
+              <a class="d-inline mx-5 text-primary" href="{{project.get_absolute_url}}">
+                <i class="material-icons">build</i>
+                {{project.title}}</a>
+              <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+
+            </h6>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
         </p>
         <hr>
         {% endfor %}

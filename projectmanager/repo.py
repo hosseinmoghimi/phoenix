@@ -83,6 +83,8 @@ class ProjectRepo:
         self.user=user
     def list(self):
         return self.objects.order_by('-priority')
+    def get_roots(self):
+        return self.objects.filter(parent=None)
     def project(self,project_id):
         try:
             return self.objects.get(pk=project_id)
