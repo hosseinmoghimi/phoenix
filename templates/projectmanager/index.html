@@ -39,10 +39,10 @@
       <div class="card-footer">
         <div class="stats">
           {% if perms.projectmanager.add_project %}
-
+          <i class="material-icons text-danger">link</i>
 
           <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">
-            <i class="material-icons text-danger">link</i>
+
             اضافه کردن پروژه</a>
           {% endif %}
         </div>
@@ -78,9 +78,9 @@
 
         {% if perms.projectmanager.change_project %}
         <div>
-
+          <i class="material-icons">settings</i>
           <a href="{{project.get_edit_url}}" class="btn btn-sm btn-link btn-danger">
-            <i class="material-icons">settings</i>
+
             ویرایش
           </a>
         </div>
