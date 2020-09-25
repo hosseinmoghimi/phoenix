@@ -91,7 +91,8 @@ class MaterialRequestRepo:
         material=MaterialRepo(user=user).material(material_id=material_id)
         project=ProjectRepo(user=user).project(project_id=project_id)
         if project is not None and material is not None and (employee is not None or contractor is not None):
-            material_request=MaterialRequest(requested_material=material,unit_name=unit_name,quantity=quantity,for_project=project,contractor=contractor,employee=employee)
+            title=f'درخواست {quantity} {unit_name} " {material.title} " برای پروژه {project.title}'
+            material_request=MaterialRequest(title=title,requested_material=material,unit_name=unit_name,quantity=quantity,for_project=project,contractor=contractor,employee=employee)
             material_request.save()
             if material_request is not None:
                 return material_request
