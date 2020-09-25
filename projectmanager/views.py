@@ -3,7 +3,7 @@ from .forms import *
 from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
-from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo
+from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
@@ -47,8 +47,25 @@ class MaterialView(View):
     def material(self,request,material_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
-        context['material']=MaterialRepo(user=user).material(material_id=material_id)
+        material=MaterialRepo(user=user).material(material_id=material_id)
+        context['material']=material
+        context['projects']=ProjectRepo(user=user).my_projects()
+        context['add_metrial_request_form']=AddMaterialRequestForm()
+        context['unit_names']=['عدد','کیلو','دستگاه']
         return render(request,TEMPLATE_ROOT+'material.html',context)
+    def add_material_request(self,request):
+        if request.method=='POST':
+            add_material_request=AddMaterialRequestForm(request.POST)
+            if add_material_request.is_valid():
+                project_id=add_material_request.cleaned_data['project_id']
+                material_id=add_material_request.cleaned_data['material_id']
+                quantity=add_material_request.cleaned_data['quantity']
+                unit_name=add_material_request.cleaned_data['unit_name']
+                material_request=MaterialRequestRepo(user=request.user).add(unit_name=unit_name,quantity=quantity,project_id=project_id,material_id=material_id)
+                if material_request is not None:
+                    return redirect(reverse('projectmanager:project',kwargs={'project_id':project_id}))
+                else:
+                    return redirect(reverse('projectmanager:material',kwargs={'material_id':material_id}))
 
 
 

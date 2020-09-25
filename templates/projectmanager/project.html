@@ -207,12 +207,12 @@
 
 
                 <p class="card-category">{{project.title}}</p>
-          
-         
-                    
+
+
+
 
                 <h3 class="card-title">
-                    
+
                     درخواست متریال
 
 
@@ -234,7 +234,7 @@
                         </thead>
                         <tbody>
                             {% for material_request in project.materialrequest_set.all %}
-                            <tr> 
+                            <tr>
                                 <td><a
                                         href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
                                 </td>
@@ -244,18 +244,19 @@
                                 <td><a
                                         href="{{material_request.contractor.profile.get_absolute_url}}">{{material_request.contractor.title}}</a>
                                 </td>
-                                <td><span class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span></td>
+                                <td><span
+                                        class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                </td>
                                 <td><small>
                                         {{material_request.date_added|to_persian_date|safe}}
                                     </small>
                                 </td>
                                 <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
-                           <td>
-                               <a class="btn btn-link btn-warning"
-                                href="{{material_request.get_edit_url}}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                           </td>
+                                <td>
+                                    <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -275,7 +276,10 @@
         </div>
 
     </div>
+    <div class="cao-12">
 
+    
+    </div>
 
 
 </div>

@@ -61,53 +61,72 @@
             </div>
         </div>
     </div>
-    {% if material.location %}
+
+    {% if add_metrial_request_form %}
+
+
     <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-               
-                <p class="card-category">موقعیت</p>
 
-            
-                <h3 class="card-title">{{material.title}}
-                  
-                    
 
-                </h3>
-            </div>
+        <div class="card">
             <div class="card-body">
+                <form action="{% url 'projectmanager:add_material_request' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
+                    <div class="row">
+                          <input type="hidden" class="form-control" name="material_id"
+                                    value="{{material.id}}">
+                           
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">پروژه</label>
+                                            <select class="form-control" name="project_id" id="">
+                                                {% for project in projects %}
+                                                  <option value="{{project.id}}">{{project.title}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">تعداد</label>
+                                <input v-model="quantity" type="number" name="quantity" class="form-control"
+                                    value="">
+                            </div>
+                        </div>
 
-      
-      
-      
-      
-      {{material.location|safe}}
-      
-            </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">واحد</label>
+                                <select v-model="unit_name" name="unit_name" class="form-control">
+                                    <option disabled>واحد شمارش کالا</option>
+
+                                    {% for unit_name in unit_names %}
+
+
+                                    <option value="{{unit_name}}">{{unit_name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        <div>
+
+                            <button type="submit" class="btn btn-success">تایید</button>
+                        </div>
+                    </div>
 
 
 
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_project  and material.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{material.get_edit_url}}">
-
-                        ویرایش </a>
-                    {% endif %}
-                </div>
+                </form>
             </div>
         </div>
 
-        {% endif %}
 
     </div>
-
-
+    {% endif %}
 
 </div>
 

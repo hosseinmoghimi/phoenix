@@ -136,6 +136,7 @@ class ProjectCategory(ManagerPage):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/projectcategory/{self.pk}/change/'
 
+
 class Project(ManagerPage):
     category=models.ForeignKey("ProjectCategory",null=True,blank=True, verbose_name=_("category"), on_delete=models.SET_NULL)
     parent=models.ForeignKey("Project",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
@@ -178,6 +179,7 @@ class Project(ManagerPage):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/project/{self.pk}/change/'
         
+
 class WorkUnit(ManagerPage): 
 
     parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
@@ -368,6 +370,7 @@ class MaterialLog(models.Model):
 
     def get_absolute_url(self):
         return reverse("MaterialPackage_detail", kwargs={"pk": self.pk})
+
 
 class Contractor(models.Model):
     title=models.CharField(_("title"), max_length=50)
