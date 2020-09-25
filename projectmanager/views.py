@@ -4,7 +4,7 @@ from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum
-from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
@@ -29,6 +29,7 @@ class BasicView(View):
         context=getContext(request)
         context['priority_form']=PriorityForm()
         context['project_categories']=ProjectCategoryRepo(user=user).list()
+        context['material_categories']=MaterialCategoryRepo(user=user).list_root()
         context['projects']=ProjectRepo(user=user).get_roots()
         return render(request,TEMPLATE_ROOT+'index.html',context)
     def chart(self,request,*args, **kwargs):
@@ -59,6 +60,12 @@ class MaterialView(View):
         context['add_metrial_request_form']=AddMaterialRequestForm()
         context['unit_names']=['عدد','کیلو','دستگاه']
         return render(request,TEMPLATE_ROOT+'material.html',context)
+    def category(self,request,category_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        category=MaterialCategoryRepo(user=user).category(category_id=category_id)
+        context['category']=category        
+        return render(request,TEMPLATE_ROOT+'material-category.html',context)
 class MaterialRequestView(View):
     def material_request(self,request,material_request_id,*args, **kwargs):
         user=request.user

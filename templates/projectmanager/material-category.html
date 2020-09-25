@@ -1,0 +1,144 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">category</i>
+                </div>
+
+                {% if category.parent %}
+                <p class="card-category">
+                    {{category.parent.get_breadcrumb_url | safe}}
+                </p>
+                {% endif %}
+
+                <p class="card-category"></p>
+
+
+                <h3 class="card-title">{{category.title}}
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                {% if category.materialcategory_set.all %}
+                <h5>زیر مجموعه ها</h5>
+
+                {% for material_category in category.materialcategory_set.all %}
+                <a href="{{material_category.get_absolute_url}}">
+                    <h5>
+                        <i class="material-icons">category
+                        </i>
+
+                        {{material_category.title}}
+                    </h5>
+                </a>
+                {% endfor %}
+                {% endif %}
+
+                {% if category.short_description %}
+                <p>
+                    {{category.short_description |safe}}
+                </p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_category  and category.get_edit_url%}
+                    <i class="material-icons text-danger">settings</i>
+
+                    <a href="{{category.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if category.materials %}
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">category</i>
+                </div>
+
+
+
+                <p class="card-category">{{category.title}}</p>
+
+
+                <h3 class="card-title">متریال ها
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+
+             
+
+                {% for material in category.materials %}
+                <a href="{{material.get_absolute_url}}">
+                    <h5>
+                        <i class="material-icons">category
+                        </i>
+
+                        {{material.title}}
+                    </h5>
+                </a>
+                {% endfor %}
+
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_category  and category.get_edit_url%}
+                    <i class="material-icons text-danger">settings</i>
+
+                    <a href="{{category.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        //  initDashboardPageCharts();
+
+    });
+</script>
+<script>
+    $("#project-manager-link").addClass("active");
+
+
+
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

@@ -217,6 +217,29 @@ class MaterialRepo:
             return None
     
     
+              
+
+class MaterialCategoryRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialCategory.objects
+        self.user=user
+    def list(self):
+        return self.objects.order_by('-priority')
+    def list_root(self):
+        return self.objects.filter(parent=None).order_by('-priority')
+    
+    def category(self,category_id):
+        try:
+            return self.objects.get(pk=category_id)
+        except:
+            return None
+    def get(self,pk):
+        try:
+            return self.objects.get(pk=pk)
+        except:
+            return None
+    
+    
 
 
 

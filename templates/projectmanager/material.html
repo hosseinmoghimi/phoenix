@@ -14,6 +14,13 @@
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
+                {% if material.category %}
+                <p class="card-category">
+                    <a href="{{material.category.get_absolute_url}}">
+                    {{material.category}}</a></p>
+
+                {% endif %}
+
                 {% if material.pretitle %}
                 <p class="card-category">{{material.pretitle}}</p>
 
@@ -23,30 +30,19 @@
                     <p class="card-category">{{material.posttitle}}</p>
 
                     {% endif %}
-
+                    {% if material.model %}
+                    <p class="card-category">{{material.model}}</p>
+    
+                    {% endif %}
                 </h3>
             </div>
             <div class="card-body">
 
-                <div>
-                    <small> وضعیت : </small> <span class="badge badge-{{material.get_status_color}}">{{material.status}}</span>
-                  </div>
+                {% if material.description %}
+                <p class="">{{material.description|safe}}</p>
 
-
-                {% for project_category in project_categories %}
-
-                <p class="mt-4">
-                <h4> <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
-                        <i class="material-icons">{{project_category.icon}}</i>
-                        {{project_category.title}}</a>
-                </h4>
-                {% for project in project_category.project_set.all %}
-                <a class="d-block mx-5 text-primary" href="{{project.get_absolute_url}}">
-                    <i class="material-icons">{{project_category.icon}}</i>
-                    {{project.title}}</a>
-                {% endfor %}
-                </p>
-                {% endfor %}
+                {% endif %}
+               
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -62,71 +58,8 @@
         </div>
     </div>
 
-    {% if add_metrial_request_form %}
-
-
-    <div class="col-lg-6 col-md-6 col-sm-12">
-
-
-        <div class="card">
-            <div class="card-body">
-                <form action="{% url 'projectmanager:add_material_request' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
-                    <div class="row">
-                          <input type="hidden" class="form-control" name="material_id"
-                                    value="{{material.id}}">
-                           
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">پروژه</label>
-                                            <select class="form-control" name="project_id" id="">
-                                                {% for project in projects %}
-                                                  <option value="{{project.id}}">{{project.title}}</option>
-                                                {% endfor %}
-                                            </select>
-                                            
-                                        </div>
-                                    </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">تعداد</label>
-                                <input v-model="quantity" type="number" name="quantity" class="form-control"
-                                    value="">
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">واحد</label>
-                                <select v-model="unit_name" name="unit_name" class="form-control">
-                                    <option disabled>واحد شمارش کالا</option>
-
-                                    {% for unit_name in unit_names %}
-
-
-                                    <option value="{{unit_name}}">{{unit_name}}</option>
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-                        </div>
-                        <div>
-
-                            <button type="submit" class="btn btn-success">تایید</button>
-                        </div>
-                    </div>
-
-
-
-                </form>
-            </div>
-        </div>
-
-
-    </div>
-    {% endif %}
+   
+    
 
 </div>
 

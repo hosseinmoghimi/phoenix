@@ -174,11 +174,11 @@ class Project(ManagerPage):
     def save(self):
         self.child_class='project'
         super(Project,self).save()
-    def get_breadcrumb_link(self):
+    def get_breadcrumb_url(self):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
         else:
-            return self.parent.get_breadcrumb_link()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     def childs(self):
         return Project.objects.filter(parent=self)
     def get_status_color(self):
@@ -217,11 +217,11 @@ class WorkUnit(ManagerPage):
         self.child_class='workunit'
         super(WorkUnit,self).save()
     parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
-    def get_breadcrumb_link(self):
+    def get_breadcrumb_url(self):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
         else:
-            return self.parent.get_breadcrumb_link()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def get_template(self):
         work_unit=self
@@ -339,6 +339,11 @@ class MaterialBrand(ManagerPage):
 
 
 class MaterialCategory(ManagerPage):
+    def get_breadcrumb_url(self):
+        if self.parent is None:
+            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+        else:
+            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def save(self):
         self.child_class='materialcategory'
@@ -346,7 +351,8 @@ class MaterialCategory(ManagerPage):
     parent=models.ForeignKey("MaterialCategory", verbose_name=_("دسته بندی بالاتر"),on_delete=models.PROTECT,blank=True,null=True)
     
     rate=models.IntegerField(_("امتیاز"),default=0)
-    
+    def materials(self):
+        return Material.objects.filter(category=self)
     
    
     class Meta:
@@ -355,10 +361,10 @@ class MaterialCategory(ManagerPage):
 
 
     def get_absolute_url(self):
-        return reverse("market:list", kwargs={"parent_id": self.pk})
+        return reverse("projectmanager:material_category", kwargs={"category_id": self.pk})
   
     def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/category/'+str(self.pk)+'/change/'
+        return ADMIN_URL+APP_NAME+'/materialcategory/'+str(self.pk)+'/change/'
 
 
 class Material(ManagerPage):

@@ -9,101 +9,6 @@
 
 <div class="row">
 
-  {% if work_units %}
-  <div class="col-lg-12 col-md-12 col-sm-12">
-    <!-- work units -->
-    <div class="card card-stats">
-      <div class="card-header card-header-info card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">settings</i>
-        </div>
-        <p class="card-category">لیست</p>
-        <h3 class="card-title">چارت سازمانی
-
-        </h3>
-      </div>
-      <div class="card-body">
-
-        {% for work_unit in work_units %}
-
-
-        {% include "projectmanager/includes/work_unit.html" %}
-
-        <div class="ml-5">
-          {% for work_unit in work_unit.childs %}
-
-          {% include "projectmanager/includes/work_unit.html" %}
-
-          <div class="ml-5">
-            {% for work_unit in work_unit.childs %}
-
-            {% include "projectmanager/includes/work_unit.html" %}
-
-            <div class="ml-5">
-              {% for work_unit in work_unit.childs %}
-
-              {% include "projectmanager/includes/work_unit.html" %}
-
-              <div class="ml-5">
-                {% for work_unit in work_unit.childs %}
-
-                {% include "projectmanager/includes/work_unit.html" %}
-
-                <div class="ml-5">
-                  {% for work_unit in work_unit.childs %}
-
-                  {% include "projectmanager/includes/work_unit.html" %}
-
-                  <div class="ml-5">
-                    {% for work_unit in work_unit.childs %}
-
-                    {% include "projectmanager/includes/work_unit.html" %}
-
-                    {% endfor %}
-                  </div>
-
-                  {% endfor %}
-                </div>
-
-
-                {% endfor %}
-              </div>
-
-
-              {% endfor %}
-            </div>
-
-
-            {% endfor %}
-          </div>
-
-          {% endfor %}
-        </div>
-
-        {% endfor %}
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          {% if perms.projectmanager.add_project %}
-          <i class="material-icons text-danger">link</i>
-
-          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
-
-            اضافه کردن واحد سازمانی</a>
-          {% endif %}
-
-          {% if perms.projectmanager.add_project %}
-          <i class="ml-3 material-icons text-danger">link</i>
-
-          <a href="{{ADMIN_URL}}{{APP_NAME}}/employee/add/">
-
-            اضافه کردن پرسنل</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}
 
 
   {% if project_categories %}
@@ -170,6 +75,49 @@
     </div>
 
 
+<!-- material categories -->
+ <!-- project categories -->
+ <div class="card card-stats">
+  <div class="card-header card-header-info card-header-icon">
+    <div class="card-icon">
+      <i class="material-icons">settings</i>
+    </div>
+    <p class="card-category">لیست</p>
+    <h3 class="card-title">دسته بندی های متریال
+
+    </h3>
+  </div>
+  <div class="card-body">
+
+    {% for material_category in material_categories %}
+
+<a href="{{material_category.get_absolute_url}}">
+    <h4 class="mt-4 text-primary">
+     
+        <i class="material-icons">dashboard</i>
+        {{material_category.title}}
+
+    </h4>
+   </a>
+    
+    <hr>
+    {% endfor %}
+  </div>
+  <div class="card-footer">
+    <div class="stats">
+      {% if perms.projectmanager.add_materialcategory %}
+      <i class="material-icons text-danger">link</i>
+
+      <a href="{{ADMIN_URL}}{{APP_NAME}}/materialcategory/add/">
+
+        اضافه کردن دسته بندی متریال</a>
+      {% endif %}
+
+
+      
+    </div>
+  </div>
+</div>
 
 
 
