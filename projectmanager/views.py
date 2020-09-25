@@ -3,7 +3,7 @@ from .forms import *
 from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
-from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo
+from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
@@ -43,6 +43,13 @@ class BasicView(View):
         context['project_categories']=ProjectCategoryRepo(user=user).list()
         context['projects']=ProjectRepo(user=user).list()
         return render(request,TEMPLATE_ROOT+'search.html',context)
+class MaterialView(View):
+    def material(self,request,material_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        context['material']=MaterialRepo(user=user).material(material_id=material_id)
+        return render(request,TEMPLATE_ROOT+'material.html',context)
+
 
 
 class ProjectView(View):

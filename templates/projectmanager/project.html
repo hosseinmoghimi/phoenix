@@ -2,6 +2,7 @@
 {% load static %}
 {% load to_price %}
 {% load to_persian_date %}
+{% load to_material_request_status_color %}
 {% block contents %}
 
 
@@ -35,7 +36,7 @@
                 </div>
                 {% if project.childs %}
                 <h4 class="mt-4">ریز پروژه ها</h4>
-          
+
                 <div class="ml-4 mb-3">
                     {% for project in  project.childs %}
                     <h6 class="mb-3">
@@ -46,10 +47,10 @@
                         </a></h6>
                     {% endfor %}
                 </div>
-      {% endif %}
+                {% endif %}
                 {% if project.contractors.all %}
                 <h4 class="mt-4">پیمانکار ها</h4>
-              
+
                 <div class="ml-4 mb-3">
                     {% for contractor in  project.contractors.all %}
                     <h6 class="mt-4">
@@ -61,7 +62,7 @@
 
                     {% endfor %}
                 </div>
-  {% endif %}
+                {% endif %}
                 {% if project.work_units.all %}
                 <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
                 {% endif %}
@@ -196,6 +197,84 @@
     {% endif %}
 
 
+
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+
+
+                <p class="card-category">{{project.title}}</p>
+          
+         
+                    
+
+                <h3 class="card-title">
+                    
+                    درخواست متریال
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                            <td>متریال</td>
+                            <td>پرسنل</td>
+                            <td>پیمانکار</td>
+                            <td>وضعیت</td>
+                            <td>تاریخ</td>
+                            <td>تعداد</td>
+                            <td></td>
+                        </thead>
+                        <tbody>
+                            {% for material_request in project.materialrequest_set.all %}
+                            <tr> 
+                                <td><a
+                                        href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.contractor.profile.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                </td>
+                                <td><span class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span></td>
+                                <td><small>
+                                        {{material_request.date_added|to_persian_date|safe}}
+                                    </small>
+                                </td>
+                                <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+                           <td>
+                               <a class="btn btn-link btn-warning"
+                                href="{{material_request.get_edit_url}}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                           </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
 

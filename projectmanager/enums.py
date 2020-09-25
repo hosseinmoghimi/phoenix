@@ -39,6 +39,13 @@ class EmployeeEnum(TextChoices):
     RECRUIT='کارآموز',_('کارآموز')
     AMIN='امین اموال',_('امین اموال')
     
+class MaterialRequestStatus(TextChoices):
+    DEFAULT='پیش فرض',_('پیش فرض')
+    INITIAL='درخواست اولیه',_('درخواست اولیه')
+    ACCEPTED='پذیرفته شده',_('پذیرفته شده')
+    IN_PROGRESS='در حال بررسی',_('در حال بررسی')
+    DENIED='رد شده',_('رد شده')
+    CANCELED='لغو شده',_('لغو شده')
 
 class AgentRoleEnum(TextChoices):
     DEFAULT='پیش فرض',_('پیش فرض')

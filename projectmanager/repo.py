@@ -122,6 +122,28 @@ class ProjectRepo:
             up_object.save()
 
 
+              
+
+class MaterialRepo:
+    def __init__(self,user=None):
+        self.objects=Material.objects
+        self.user=user
+    def list(self):
+        return self.objects.order_by('-priority')
+    
+    def material(self,material_id):
+        try:
+            return self.objects.get(pk=material_id)
+        except:
+            return None
+    def get(self,pk):
+        try:
+            return self.objects.get(pk=pk)
+        except:
+            return None
+    
+    
+
 
 
 

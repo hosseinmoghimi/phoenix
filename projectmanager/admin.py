@@ -1,9 +1,16 @@
 
 
 from django.contrib import admin
-from .models import Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import MaterialRequest,Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 from app.repo import ProfileRepo
 from .enums import LogActionEnum
+class MaterialRequestAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        user=request.user
+        profile=ProfileRepo(user=user).me
+        log=PageLog(page=obj,manager_page_id=obj.pk,name=obj.title,profile=profile,action=LogActionEnum.SAVE)
+        log.save()
 class ProjectAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if obj.location:
@@ -23,6 +30,7 @@ class ProjectAdmin(admin.ModelAdmin):
         log.save()
         super().delete_model(request, obj)
 
+admin.site.register(MaterialRequest,MaterialRequestAdmin)
 admin.site.register(Contractor)
 admin.site.register(PageLog)
 admin.site.register(ProjectCategory)

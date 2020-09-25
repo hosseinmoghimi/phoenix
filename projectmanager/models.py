@@ -8,7 +8,7 @@ from app.models import OurWork
 from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
-from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum
+from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatus
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 class PageLog(models.Model):
@@ -294,7 +294,7 @@ class Material(ManagerPage):
 
 
     def get_absolute_url(self):
-        return reverse("Material_detail", kwargs={"pk": self.pk})
+        return reverse("projectmanager:material", kwargs={"material_id": self.pk})
 
 
 class MaterialWareHouse(ManagerPage):
@@ -385,6 +385,26 @@ class Contractor(models.Model):
         return reverse("Contractor_detail", kwargs={"pk": self.pk})
 
 
+class MaterialRequest(ManagerPage):
+    requested_material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
+    quantity=models.IntegerField(_('تعداد'))
+    unit_name=models.CharField(_('واحد'),max_length=50)
+    employee=models.ForeignKey("Employee",null=True,blank=True,verbose_name="employee",on_delete=models.PROTECT)
+    contractor=models.ForeignKey("Contractor",null=True,blank=True,verbose_name="contractor",on_delete=models.PROTECT)
+    for_project=models.ForeignKey("Project",verbose_name="project",on_delete=models.PROTECT)
+    status=models.CharField(_("status"),choices=MaterialRequestStatus.choices,default=MaterialRequestStatus.INITIAL, max_length=50)
+    
+    class Meta:
+        verbose_name = _("MaterialRequest")
+        verbose_name_plural = _("MaterialRequests")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("MaterialRequest_detail", kwargs={"pk": self.pk})
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/materialrequest/{self.pk}/change'
 
 
 
