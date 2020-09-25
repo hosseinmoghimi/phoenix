@@ -1,0 +1,88 @@
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% block contents %}
+
+
+
+
+
+<div class="row">
+
+  {% if work_units %}
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <!-- work units -->
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+        <p class="card-category">لیست</p>
+        <h3 class="card-title">چارت سازمانی
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        {% for work_unit in work_units %}
+
+
+       
+        {{work_unit.get_template|safe}}
+
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          {% if perms.projectmanager.add_project %}
+          <i class="material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/workunit/add/">
+
+            اضافه کردن واحد سازمانی</a>
+          {% endif %}
+
+          {% if perms.projectmanager.add_project %}
+          <i class="ml-3 material-icons text-danger">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/employee/add/">
+
+            اضافه کردن پرسنل</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+ 
+
+
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script>
+
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+   // initDashboardPageCharts();
+
+  });
+</script>
+<script>
+  $("#chart-link").addClass("active");
+
+
+  $(".go_up_btn:first").addClass('d-none')
+
+  $(".go_down_btn:last").addClass('d-none')
+
+
+</script>
+{% endblock %}
+{% block styles %}
+
+{% endblock %}

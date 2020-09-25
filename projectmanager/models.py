@@ -184,7 +184,40 @@ class WorkUnit(ManagerPage):
 
     parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
    
-    
+    def get_template(self):
+        work_unit=self
+        template= f"""
+        <div>
+        <h4 class="mt-4">
+            <a class="text-primary mb-2" href="{work_unit.get_absolute_url()}">
+                <i class="material-icons">apartment</i>
+                {work_unit.title}</a>  
+         </h4>
+        """
+        for employee in work_unit.employee_set.all():
+            template+=f"""
+                <div class="">
+                    <small>
+                        <a class="d-inline ml-5 text-secondary" href="{employee.profile.get_absolute_url()}">
+                        <i class="fa fa-user"></i>
+                        {employee.profile.name()}</a>
+
+                        <span class="badge badge-info">{employee.role}</span>
+                    </small>
+                </div>
+            """
+        template+="""
+        <div class="ml-5">
+        """
+        for work_unit1 in work_unit.workunit_set.all():
+            template+=work_unit1.get_template()
+        template+="""
+        </div>
+        """
+
+
+        template+='</div>'
+        return template
     def employees(self):
         return Employee.objects.filter(work_unit=self)
     def childs(self):

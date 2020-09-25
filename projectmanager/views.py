@@ -34,7 +34,7 @@ class BasicView(View):
         user=request.user
         context=getContext(request)        
         context['work_units']=WorkUnitRepo(user=user).get_roots()
-        return render(request,TEMPLATE_ROOT+'chart.html',context)
+        return render(request,TEMPLATE_ROOT+'chart2.html',context)
  
         
     def search(self,request,*args, **kwargs):

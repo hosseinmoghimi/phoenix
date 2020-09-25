@@ -9,8 +9,8 @@ class EmployeeRepo:
         self.profile=ProfileRepo(user=user).me
         self.me=None
         #must be deleted
-        print('self.profile')
-        print(self.profile)
+        # print('self.profile')
+        # print(self.profile)
         if self.profile is None:
             self.me=None
         else:
@@ -119,10 +119,11 @@ class ProjectRepo:
         self.profile=ProfileRepo(user=self.user).me
         self.me_employee=EmployeeRepo(user=self.user).me
         self.me_contractor=ContractorRepo(user=self.user).me
-        print('me_employee')
-        print(self.me_employee)
-        print('me_contractor')
-        print(self.me_contractor)
+        #must be deleted
+        # print('me_employee')
+        # print(self.me_employee)
+        # print('me_contractor')
+        # print(self.me_contractor)
     def my_projects(self):
         if self.me_contractor is not None:
             return self.me_contractor.project_set.all()

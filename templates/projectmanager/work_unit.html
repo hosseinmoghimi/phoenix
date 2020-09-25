@@ -302,52 +302,52 @@
     })
 
 
-    var product_request_app = new Vue(
-        {
-            el: "#product-request-app",
-            data: {
-                show_add_product_request: false,
-                product_id: 0,
-                quantity: 1,
-                product_unit: 'عدد',
-            },
-            methods: {
-                AddProductRequest: function () {
-                    console.log("AddProductRequest")
-                    url = "{% url 'automation:add_product_request' %}"
-                    product_id = this.product_id
-                    quantity = this.quantity
-                    product_unit = this.product_unit
-                    work_unit_id = JSON.parse("{{work_unit.id}}")
+    // var product_request_app = new Vue(
+    //     {
+    //         el: "#product-request-app",
+    //         data: {
+    //             show_add_product_request: false,
+    //             product_id: 0,
+    //             quantity: 1,
+    //             product_unit: 'عدد',
+    //         },
+    //         methods: {
+    //             AddProductRequest: function () {
+    //                 console.log("AddProductRequest")
+    //                 url = "{% url 'automation:add_product_request' %}"
+    //                 product_id = this.product_id
+    //                 quantity = this.quantity
+    //                 product_unit = this.product_unit
+    //                 work_unit_id = JSON.parse("{{work_unit.id}}")
 
 
-                    var posting = $.post(url, {
-                        product_id: product_id,
-                        quantity: quantity,
-                        product_unit: product_unit,
-                        work_unit_id: work_unit_id,
-                        csrfmiddlewaretoken: csrfmiddlewaretoken
-                    });
+    //                 var posting = $.post(url, {
+    //                     product_id: product_id,
+    //                     quantity: quantity,
+    //                     product_unit: product_unit,
+    //                     work_unit_id: work_unit_id,
+    //                     csrfmiddlewaretoken: csrfmiddlewaretoken
+    //                 });
 
-                    // Put the results in a div
-                    posting.done(function (data) {
-                        // word_app.word = (data.word);
-                        // word_app.definitions = (data.definitions);
-                        // product_request_app.shops = data.shops
-                        // if (price == 0)
-                        //     showNotification('bottom', 'center', 'face', 'warning', 'با موفقیت از فروشگاه حذف شد')
-                        // else
-                            showNotification('bottom', 'center', 'face', 'primary', data.message)
-                        // // console.log(word_app.word);
-                        console.log(data);
+    //                 // Put the results in a div
+    //                 posting.done(function (data) {
+    //                     // word_app.word = (data.word);
+    //                     // word_app.definitions = (data.definitions);
+    //                     // product_request_app.shops = data.shops
+    //                     // if (price == 0)
+    //                     //     showNotification('bottom', 'center', 'face', 'warning', 'با موفقیت از فروشگاه حذف شد')
+    //                     // else
+    //                         showNotification('bottom', 'center', 'face', 'primary', data.message)
+    //                     // // console.log(word_app.word);
+    //                     console.log(data);
 
-                    })
+    //                 })
 
-                },
+    //             },
 
-            },
-        }
-    )
+    //         },
+    //     }
+    // )
 
 
 
