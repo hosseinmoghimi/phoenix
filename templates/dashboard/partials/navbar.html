@@ -10,7 +10,7 @@
             {% if search_form %}
 
 
-            <form class="navbar-form" action="{% url 'app:search' %}" method="POST">
+            <form class="navbar-form" action="{% if search_form.action %}{{search_form.action}}{% else %}{% url 'app:search' %}{% endif %}" method="POST">
                 {% csrf_token %}
                 <div class="input-group no-border">
                     <input type="text" name="search_for" class="form-control" placeholder="جستجو ...">

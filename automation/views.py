@@ -67,6 +67,7 @@ class WorkUnitView(View):
             context['add_product_request_form']=add_product_request_form
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work_unit.html',context)
+
 class ProjectView(View):
     def project(self,request,project_id,*args, **kwargs):
         user=request.user

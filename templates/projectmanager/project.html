@@ -62,7 +62,7 @@
                 <div class="ml-4 mb-3">
                     {% for contractor in  project.contractors.all %}
                     <h6 class="mt-4">
-                        <a class="d-block mb-2 text-primary" href="{{contractor.profile.get_absolute_url}}">
+                        <a class="d-block mb-2 text-primary" href="{{contractor.get_absolute_url}}">
                             <i class="material-icons">engineering</i>
                             {{contractor.title}}
                         </a>
@@ -260,7 +260,7 @@
                                         href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
                                 </td>
                                 <td><a
-                                        href="{{material_request.contractor.profile.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
                                 </td>
                                 <td><span
                                         class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
@@ -270,10 +270,14 @@
                                     </small>
                                 </td>
                                 <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
-                                <td>
+                                <td>      
+                                    <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
+                                        <i class="fa fa-user"></i>
+                                    </a>
                                     <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
                                         <i class="fa fa-edit"></i>
                                     </a>
+                              
                                 </td>
                             </tr>
                             {% endfor %}

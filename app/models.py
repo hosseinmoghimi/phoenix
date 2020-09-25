@@ -184,6 +184,7 @@ class Signature(models.Model):
     profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     description=models.CharField(_("description"), max_length=200)
+    status=models.CharField(_("status"), max_length=200)
     class Meta:
         verbose_name = _("Signature")
         verbose_name_plural = _("امضا ها")

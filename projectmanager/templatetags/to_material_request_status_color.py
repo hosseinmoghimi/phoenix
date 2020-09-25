@@ -1,25 +1,25 @@
 from app.errors import LEO_ERRORS
 from django import template
 register = template.Library()
-from projectmanager.enums import MaterialRequestStatus
+from projectmanager.enums import MaterialRequestStatusEnum
 
 
 @register.filter
 def to_material_request_status_color(value):
     """converts int to string"""  
-    if value==MaterialRequestStatus.INITIAL:
+    if value==MaterialRequestStatusEnum.INITIAL:
         return 'info'
-    if value==MaterialRequestStatus.DEFAULT:
+    if value==MaterialRequestStatusEnum.DEFAULT:
         return 'danger'
-    if value==MaterialRequestStatus.ACCEPTED:
+    if value==MaterialRequestStatusEnum.ACCEPTED:
         return 'success'
-    if value==MaterialRequestStatus.IN_PROGRESS:
+    if value==MaterialRequestStatusEnum.IN_PROGRESS:
         return 'warning'
-    if value==MaterialRequestStatus.DENIED:
+    if value==MaterialRequestStatusEnum.DENIED:
         return 'danger'
-    if value==MaterialRequestStatus.CANCELED:
+    if value==MaterialRequestStatusEnum.CANCELED:
         return 'secondary'
-    if value==MaterialRequestStatus.DELIVERED:
+    if value==MaterialRequestStatusEnum.DELIVERED:
         return 'success'        
     
     return 'secondary'

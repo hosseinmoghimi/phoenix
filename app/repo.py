@@ -666,8 +666,8 @@ class SignatureRepo:
         self.objects=Signature.objects
         self.user=user
         self.profile=ProfileRepo(user=self.user).me
-    def add(self,description):
+    def add(self,description,status):
         if self.profile is not None:
-            signature=Signature(profile=self.profile,description=description)
+            signature=Signature(profile=self.profile,status=status,description=description)
             signature.save()
             return signature

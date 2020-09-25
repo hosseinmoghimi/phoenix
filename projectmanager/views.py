@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect
 from .forms import *
 from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
+from .enums import MaterialRequestStatusEnum
 from .repo import ProjectRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
@@ -39,10 +40,15 @@ class BasicView(View):
         
     def search(self,request,*args, **kwargs):
         user=request.user
-        context=getContext(request)
-        context['project_categories']=ProjectCategoryRepo(user=user).list()
-        context['projects']=ProjectRepo(user=user).list()
-        return render(request,TEMPLATE_ROOT+'search.html',context)
+        if request.method=='POST':
+            search_form=SearchForm(request.POST)
+            if search_form.is_valid():
+                search_for=search_form.cleaned_data['search_for']
+                context=getContext(request)
+                context['pages']=ManagerPageRepo(user=user).search(search_for=search_for)
+                context['search_for']=search_for
+                return render(request,TEMPLATE_ROOT+'search.html',context)
+
 class MaterialView(View):
     def material(self,request,material_id,*args, **kwargs):
         user=request.user
@@ -53,6 +59,31 @@ class MaterialView(View):
         context['add_metrial_request_form']=AddMaterialRequestForm()
         context['unit_names']=['عدد','کیلو','دستگاه']
         return render(request,TEMPLATE_ROOT+'material.html',context)
+class MaterialRequestView(View):
+    def material_request(self,request,material_request_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        if user and user.is_authenticated:
+            context['sign_material_request_form']=SignMaterialRequestForm()
+            context['status_options']=list(x.value for x in MaterialRequestStatusEnum)
+        material_request=MaterialRequestRepo(user=user).material_request(material_request_id=material_request_id)
+        context['material_request']=material_request
+        return render(request,TEMPLATE_ROOT+'material-request.html',context)
+    def sign(self,request,*args, **kwargs):
+        if request.method=='POST':
+            sign_material_request_form=SignMaterialRequestForm(request.POST)
+            if sign_material_request_form.is_valid():
+                material_request_id=sign_material_request_form.cleaned_data['material_request_id']
+                status=sign_material_request_form.cleaned_data['status']
+                description=sign_material_request_form.cleaned_data['description']
+                
+                user=request.user
+                material_request=MaterialRequestRepo(user=user).sign(description=description,status=status,material_request_id=material_request_id)
+                
+                if material_request is not None:
+                    return redirect(material_request.get_absolute_url())
+        return Http404
+
     def add_material_request(self,request):
         if request.method=='POST':
             add_material_request=AddMaterialRequestForm(request.POST)

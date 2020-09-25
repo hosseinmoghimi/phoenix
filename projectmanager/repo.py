@@ -1,7 +1,8 @@
 
 from .models import MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
-from app.repo import ProfileRepo
+from app.repo import ProfileRepo,SignatureRepo
 from django.contrib.auth.models import Group
+from django.db.models import Q
 class EmployeeRepo:
     def __init__(self,user):
         self.objects=Employee.objects
@@ -22,6 +23,14 @@ class EmployeeRepo:
 
 
 class ManagerPageRepo:
+    def search(self,search_for):
+        return self.objects.filter(
+            Q(title__contains=search_for) | 
+            Q(pretitle__contains=search_for)| 
+            Q(posttitle__contains=search_for)| 
+            Q(description__contains=search_for)
+            )
+    
     def __init__(self,user):
         self.objects=ManagerPage.objects
         self.user=user
@@ -84,6 +93,11 @@ class MaterialRequestRepo:
     def __init__(self,user):
         self.user=user
         self.objects=MaterialRequest.objects
+    def material_request(self,material_request_id):
+        try:
+            return self.objects.get(pk=material_request_id)
+        except:
+            return None            
     def add(self,unit_name,quantity,project_id,material_id):
         user=self.user
         contractor=ContractorRepo(user=user).me
@@ -97,7 +111,19 @@ class MaterialRequestRepo:
             if material_request is not None:
                 return material_request
 
-                
+    def sign(self,description,status,material_request_id):
+        if self.user and self.user is not None and self.user.is_authenticated:
+            signature=SignatureRepo(user=self.user).add(status=status,description=description)
+            if signature is not None:
+                material_request=self.material_request(material_request_id=material_request_id)
+                # product_request_signature=ProductRequestSignature(signature=signature,status=status)
+                signature.save()
+                material_request.signatures.add(signature)
+                # material_request.status=status
+                # material_request.save()
+                return material_request
+
+                      
 
 class ContractorRepo:
     def __init__(self,user):

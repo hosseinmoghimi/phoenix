@@ -39,7 +39,7 @@ class EmployeeEnum(TextChoices):
     RECRUIT='کارآموز',_('کارآموز')
     AMIN='امین اموال',_('امین اموال')
     
-class MaterialRequestStatus(TextChoices):
+class MaterialRequestStatusEnum(TextChoices):
     DEFAULT='پیش فرض',_('پیش فرض')
     INITIAL='درخواست اولیه',_('درخواست اولیه')
     ACCEPTED='پذیرفته شده',_('پذیرفته شده')

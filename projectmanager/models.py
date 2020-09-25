@@ -2,13 +2,14 @@ from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from .apps import APP_NAME
-from app.settings import ADMIN_URL,MEDIA_URL
+from app.settings import ADMIN_URL,MEDIA_URL,SITE_URL
 from app.enums import DegreeLevelEnum
 from app.models import OurWork
 from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
-from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatus
+from django.contrib.contenttypes.models import ContentType
+from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 class PageLog(models.Model):
@@ -58,6 +59,7 @@ class ManagerPage(models.Model):
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
+    child_class=models.CharField(_("child_class"), max_length=50)
     def save(self):
         if self.priority==0:
             super(ManagerPage,self).save()
@@ -95,10 +97,26 @@ class ManagerPage(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+    def cast(self):
+        return self.real_type.get_object_for_this_type(pk=self.pk)
+
+    def _get_real_type(self):
+        return ContentType.objects.get_for_model(type(self))
+
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("Pages")
+    def get_absolute_url(self):
+        # child_classes=['project','work_unit','materialrequest']
+        # for child_class in child_classes:
+        #     if self.child_class==child_class:
+        #         return f'{ADMIN_URL}{APP_NAME}/{child_class}/{self.pk}/change/'
+        
+        return f'{SITE_URL}{APP_NAME}/{self.child_class}/{self.pk}/'
+    
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/{self.child_class}/{self.pk}/change/'
 
 
 class Image(models.Model):
@@ -124,7 +142,9 @@ class Image(models.Model):
 class ProjectCategory(ManagerPage):
      
     
-
+    def save(self):
+        self.child_class='projectcategory'
+        super(ProjectCategory,self).save()
     
     class Meta:
         verbose_name = _("ProjectCategory")
@@ -151,6 +171,9 @@ class Project(ManagerPage):
     status=models.CharField(_('status'),max_length=50,choices=ProjectStatusEnum.choices,default=ProjectStatusEnum.DEFAULT)
     amount=models.IntegerField(_('مبلغ'),default=0)
     
+    def save(self):
+        self.child_class='project'
+        super(Project,self).save()
     def get_breadcrumb_link(self):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
@@ -189,7 +212,10 @@ class Project(ManagerPage):
         
 
 class WorkUnit(ManagerPage): 
-
+    
+    def save(self):
+        self.child_class='workunit'
+        super(WorkUnit,self).save()
     parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
     def get_breadcrumb_link(self):
         if self.parent is None:
@@ -293,6 +319,9 @@ class Employee(models.Model):
 
 class MaterialBrand(ManagerPage):
     
+    def save(self):
+        self.child_class='materialbrand'
+        super(MaterialBrand,self).save()
     rate=models.IntegerField(_("امتیاز"),default=0)    
     url=models.CharField(_("آدرس اینترتی"),null=True,blank=True,max_length=100)
 
@@ -311,6 +340,9 @@ class MaterialBrand(ManagerPage):
 
 class MaterialCategory(ManagerPage):
     
+    def save(self):
+        self.child_class='materialcategory'
+        super(MaterialCategory,self).save()
     parent=models.ForeignKey("MaterialCategory", verbose_name=_("دسته بندی بالاتر"),on_delete=models.PROTECT,blank=True,null=True)
     
     rate=models.IntegerField(_("امتیاز"),default=0)
@@ -331,6 +363,9 @@ class MaterialCategory(ManagerPage):
 
 class Material(ManagerPage):
     
+    def save(self):
+        self.child_class='material'
+        super(Material,self).save()
     brand=models.ForeignKey("MaterialBrand", verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"), max_length=50)
     category=models.ForeignKey("MaterialCategory",related_name='material_category',on_delete=models.PROTECT)
@@ -348,6 +383,9 @@ class Material(ManagerPage):
 
 class MaterialWareHouse(ManagerPage):
     
+    def save(self):
+        self.child_class='materilawarehouse'
+        super(MaterialWareHouse,self).save()
     location=models.CharField(_("location"),null=True,blank=True,  max_length=50)
     employees=models.ManyToManyField("Employee", verbose_name=_("employees"),blank=True)
     address=models.CharField(_("address"),null=True,blank=True, max_length=50)
@@ -432,7 +470,8 @@ class Contractor(models.Model):
         return f'{self.title}'
 
     def get_absolute_url(self):
-        return reverse("Contractor_detail", kwargs={"pk": self.pk})
+        # return reverse("Contractor_detail", kwargs={"pk": self.pk})
+        return self.profile.get_absolute_url()
 
 
 class MaterialRequest(ManagerPage):
@@ -442,8 +481,12 @@ class MaterialRequest(ManagerPage):
     employee=models.ForeignKey("Employee",null=True,blank=True,verbose_name="employee",on_delete=models.PROTECT)
     contractor=models.ForeignKey("Contractor",null=True,blank=True,verbose_name="contractor",on_delete=models.PROTECT)
     for_project=models.ForeignKey("Project",verbose_name="project",on_delete=models.PROTECT)
-    status=models.CharField(_("status"),choices=MaterialRequestStatus.choices,default=MaterialRequestStatus.INITIAL, max_length=50)
+    status=models.CharField(_("status"),choices=MaterialRequestStatusEnum.choices,default=MaterialRequestStatusEnum.INITIAL, max_length=50)
+    signatures=models.ManyToManyField("app.Signature",blank=True, verbose_name=_("signatures"))
     
+    def save(self):
+        self.child_class='materialrequest'
+        super(MaterialRequest,self).save()
     class Meta:
         verbose_name = _("MaterialRequest")
         verbose_name_plural = _("MaterialRequests")
@@ -452,7 +495,7 @@ class MaterialRequest(ManagerPage):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("MaterialRequest_detail", kwargs={"pk": self.pk})
+        return reverse("projectmanager:material_request", kwargs={"material_request_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialrequest/{self.pk}/change'
 

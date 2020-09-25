@@ -8,97 +8,70 @@
 
 
 <div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-12">
+  <div class="col-lg-12">
     <div class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
         <div class="card-icon">
-          <i class="material-icons">settings</i>
+          <i class="material-icons">search</i>
         </div>
-        <p class="card-category">لیست</p>
-        <h3 class="card-title">دسته بندی پروژه ها
+        <p class="card-category">جستجو</p>
+        <h3 class="card-title">{{search_for}}
 
         </h3>
       </div>
       <div class="card-body">
 
-        {% for project_category in project_categories %}
+<table class="table">
+  <thead>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </thead>
 
-        <p class="mt-3">
-          <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
-            <i class="material-icons">{{project_category.icon}}</i>
-            {{project_category.title}}</a>
+  <tbody>
+    {% for page in pages %}
 
-          {% for project in project_category.project_set.all %}
-          <a class="d-block mx-5 text-secondary" href="{{project.get_absolute_url}}">
-            <i class="material-icons">{{project_category.icon}}</i>
-            {{project.title}}</a>
-          {% endfor %}
-        </p>
-        {% endfor %}
+  <tr>
+    <td><a class="d-block mb-2 text-primary" href="{{page.get_absolute_url}}">
+      <i class="material-icons">engineering</i>
+      {{page.title}}</a></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+    
+      
+
+
+   
+        
+    {% endfor %}
+  </tbody>
+</table>
+
+      
       </div>
       <div class="card-footer">
         <div class="stats">
-          <i class="material-icons text-danger">link</i>
-          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a>
+          <!-- <i class="material-icons text-danger">link</i>
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a> -->
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-lg-6 col-md-6 col-sm-12">
-    <div class="card card-stats">
-      <div class="card-header card-header-info card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">home</i>
-        </div>
-        <p class="card-category">لیست</p>
-        <h3 class="card-title">قرارداد ها
-
-        </h3>
-      </div>
-      <div class="card-body">
-        <p class="mt-3">
-          {% for contract in contracts %}
-        <p>
-          {{contract.project.emplyer.name}}
-        </p>
-        <div class="mb-3">قرارداد :
-          <a class=" mb-2 text-{{contract.color}}" href="{{contract.get_absolute_url}}">
-            <i class="material-icons">{{contract.icon}}</i>
-            {{contract.title}}</a> </div>
-        <div>
-          <small> مبلغ : </small> {{contract.amount| to_price}}
-        </div>
-        <div>
-          <small> وضعیت : </small> <span class="badge badge-{{contract.status}}">{{contract.status}}</span>
-        </div>
-
-
-        <div><small>پروژه : </small>
-          <a class="mb-2 text-{{contract.project.color}}" href="{{contract.project.get_absolute_url}}">
-            <small> <i class="material-icons">{{contract.project.icon}}</i>
-              {{contract.project.title}}</small></a> </div>
-        <hr>
-        {% endfor %}</p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons text-danger">link</i>
-          <a href="{{ADMIN_URL}}manager/contract/add/">اضافه کردن قرارداد</a>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
 </div>
 
 
 {% endblock %}
 {% block scripts %}
 <script>
- 
+
   $(document).ready(function () {
     // Javascript method's body can be found in assets/js/demos.js
-  //  initDashboardPageCharts();
+    //  initDashboardPageCharts();
 
   });
 </script>
