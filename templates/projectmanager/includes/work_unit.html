@@ -1,22 +1,23 @@
 <h4 class="mt-4">
-    <a class="text-primary mb-2" href="{{work_unit.get_absolute_url}}">
-      <i class="material-icons">apartment</i>
-      {{work_unit.title}}</a>
-     {% if perms.projectmanager.change_workunit %}
-     <a class="btn btn-link btn-warning btn-sm" href="{{work_unit.get_edit_url}}">
-        <i class="fa fa-edit"></i>
-        </a>
-     {% endif %}
-  </h4>
-  {% for employee in work_unit.employees.all %}
-  <div class="">
-    <small>
-      <a class="d-inline mx-5 text-secondary" href="{{employee.profile.get_absolute_url}}">
-        <i class="fa fa-user"></i>
-        {{employee.profile.name}}</a>
+  <a class="text-primary mb-2" href="{{work_unit.get_absolute_url}}">
+    <i class="material-icons">apartment</i>
+    {{work_unit.title}}</a>
+  {% if perms.projectmanager.change_workunit %}
+  <a class="btn btn-link btn-warning btn-sm" href="{{work_unit.get_edit_url}}">
+    <i class="fa fa-edit"></i>
+  </a>
+  {% endif %}
+</h4>
+{% for employee in work_unit.employees.all %}
+<div class="">
+  <small>
+    <a class="d-inline mx-5 text-secondary" href="{{employee.profile.get_absolute_url}}">
+      <i class="fa fa-user"></i>
+      {{employee.profile.name}}</a>
 
-      <span class="badge badge-info">{{employee.role}}</span>
-    </small> </div>
-  {% endfor %}
-  </p>
-  <hr>
+    <span class="badge badge-info">{{employee.role}}</span>
+  </small>
+</div>
+{% endfor %}
+</p>
+<hr>
