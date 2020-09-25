@@ -34,9 +34,17 @@
                 <a class="" href={{material_request.requested_material.get_absolute_url}}>
                  
                     <h5 class="my-3 text-primary">
-                       <i class="fa fa-object-group mx-3"></i>    {{material_request.requested_material.title}}
+                       <i class="fa fa-object-group mx-3"></i>
+                       {{material_request.requested_material.title}}
+                       &nbsp;
+                       <span class="text-warning">
+                        {{material_request.quantity}}&nbsp;{{material_request.unit_name}}
+                    </span>
+
                     </h5>
                 </a>
+
+
                 <p>پروژه </p>
                 <a class="" href={{material_request.for_project.get_absolute_url}}>
                                
