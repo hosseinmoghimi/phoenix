@@ -156,6 +156,15 @@
 
             اضافه کردن پروژه</a>
           {% endif %}
+
+
+          {% if perms.projectmanager.add_projectcategory %}
+          <i class="material-icons text-danger ml-4">link</i>
+
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/projectcategory/add/">
+
+            اضافه کردن دسته جدید</a>
+          {% endif %}
         </div>
       </div>
     </div>
