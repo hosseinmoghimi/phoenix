@@ -23,7 +23,7 @@ class ManagerPageRepo:
         self.user=user
     def priority(self,base_class,direction,pk):
         if base_class=='project':
-            self.objects=ProjectRepo(user=self.user).objects
+            self.objects=ProjectRepo(user=self.user).objects.filter(parent=None)
         if direction=='down':
             self.go_down(pk)
         if direction=='up':
