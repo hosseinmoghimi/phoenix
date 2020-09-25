@@ -19,7 +19,7 @@
 <head>
     <meta charset="utf-8" />
 
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}" />
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'dashboard/img/apple-icon.png' %}">
     <!-- <link rel="icon" type="image/png" href="{% static 'dashboard/img/favicon.png' %}"> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -34,15 +34,18 @@
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard" />
 
     <!-- MetaData -->
-  
-	<meta name="description" content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
+
+    <meta name="description"
+        content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
 
 
 
-	<meta name="description" content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+    <meta name="description"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
 
 
-	<meta name="robots" content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+    <meta name="robots"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
 
 
     {% block head %}
@@ -50,12 +53,12 @@
     {% endblock %}
 
 
-	<meta name="theme-color" content="{{theme_color}}" />
+    <meta name="theme-color" content="{{theme_color}}" />
 
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/icons/css.css' %}" />
     <link rel="stylesheet" href="{% static 'dashboard/icons/font-awesome.min.css' %} ">
-	
+
 
     <link rel="stylesheet" href="{% static 'dashboard/fonts/fontawesome-webfont.woff2' %} ">
     <!-- Markazi Text font include just for persian demo purpose, don't include it in your project -->
@@ -72,9 +75,10 @@
     <!-- Style Just for persian demo purpose, don't include it in your project -->
     <style>
         .ps-scrollbar-y-rail,
-        .ps-scrollbar-x-rail{
+        .ps-scrollbar-x-rail {
             display: none !important;
         }
+
         span.ct-label.ct-horizontal.ct-end {
 
             direction: ltr !important;
@@ -135,8 +139,7 @@
                     <span class="text-secondary d-block text-center"
                         style="font-size: 0.75em;">{{app.pretitle.value}}</span>
 
-                    <span class="text-primary d-block text-center"
-                        style="font-size: 1.5em;">{{app.title.value}}</span>
+                    <span class="text-primary d-block text-center" style="font-size: 1.5em;">{{app.title.value}}</span>
 
                 </a>
             </div>
@@ -156,7 +159,7 @@
                 </div>
 
             </div>
-       {% include "dashboard/partials/footer.html" %}
+            {% include "dashboard/partials/footer.html" %}
         </div>
 
 
@@ -183,9 +186,9 @@
         <!-- Material Dashboard DEMO methods, don't include it in your project! -->
         <script src="{% static 'dashboard/leo/vue.js' %}"></script>
         <script>
-            let to_price =function(x,currency) {
-          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
-        }
+            let to_price = function (x, currency) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + currency
+            }
 
             var showNotification = function (from, align, icon, bgcolor, html) {
                 type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
@@ -229,27 +232,27 @@
 
         </script>
         {% if DEBUG %}
-          <script>
-              var logToConsole=true
-          </script>
-        {% else %}
-        
         <script>
-        var logToConsole=false
-          </script>
+            var logToConsole = true
+        </script>
+        {% else %}
+
+        <script>
+            var logToConsole = false
+        </script>
         {% endif %}
         {% if user.is_authenticated and PUSHER_IS_ENABLE%}
 
 
         <script>
-            my_channel_events =JSON.parse(`{{my_channel_events_s|escapejs}}`)
+            my_channel_events = JSON.parse(`{{my_channel_events_s|escapejs}}`)
 
 
             my_channel_events.forEach(my_channel_event => {
 
 
                 // Enable pusher logging - don't include this in production
-                Pusher.logToConsole =  logToConsole
+                Pusher.logToConsole = logToConsole
 
                 var pusher = new Pusher(my_channel_event.channel.key, {
                     cluster: my_channel_event.channel.cluster
