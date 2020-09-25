@@ -33,8 +33,8 @@ class PageLog(models.Model):
 
 class ManagerPage(models.Model):
     
-    pretitle=models.CharField(_("پیش عنوان"),null=True,blank=True, max_length=100)
     title=models.CharField(_("عنوان"), max_length=100)
+    pretitle=models.CharField(_("پیش عنوان"),null=True,blank=True, max_length=100)
     posttitle=models.CharField(_("پس عنوان"),null=True,blank=True, max_length=100)
 
 
