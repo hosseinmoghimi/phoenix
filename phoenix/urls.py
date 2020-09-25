@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('projectmanager.urls')),
 
 
+    path('pusher/', include('leopusher.urls')),
     path('projectmanager/', include('projectmanager.urls')),
     path('transport/', include('transport.urls')),
     path('phoenix_api/', include('phoenix_api.urls')),

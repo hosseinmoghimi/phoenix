@@ -38,6 +38,16 @@
 </li>
 
 {% endif %}
+{% if PUSHER_IS_ENABLE %}
+  
+<li class="nav-item " id="pusher-link">
+    <a class="nav-link" href="{% url 'pusher:home'%}">
+        <i class="fa fa-user"></i>
+         <p>پوشر</p>
+    </a>
+</li>
+
+{% endif %}
 <li class="nav-item " id="automation-link">
     <a class="nav-link" href="{% url 'automation:home' %}">
         <i class="material-icons">flash_auto</i>

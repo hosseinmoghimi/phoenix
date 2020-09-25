@@ -2,10 +2,10 @@ from django.views import View
 from django.shortcuts import render,redirect,reverse
 from .repo import PusherChannelEventRepo,PusherChannelRepo,ProfileChannelEventRepo
 
-from dashboard.views import getContext as dashboardContext 
+from app.views import getContext as dashboardContext 
 from .forms import *
 from django.http import JsonResponse
-from dashboard.enums import IconsEnum
+from app.enums import IconsEnum
 from .serializers import PusherChannelEventSerializer
 import json
 
