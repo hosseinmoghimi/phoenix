@@ -59,7 +59,7 @@ class ManagerPage(models.Model):
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
-    child_class=models.CharField(_("child_class"), max_length=50)
+    child_class=models.CharField(_("child_class"), max_length=50,null=True,blank=True)
     def save(self):
         if self.priority==0:
             super(ManagerPage,self).save()
