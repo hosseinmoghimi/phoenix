@@ -16,10 +16,19 @@
                 <div class="card-icon">
                     <i class="material-icons">build</i>
                 </div>
+                {% if project.parent %}
+                <p class="card-category">
+                    <a href="{{project.parent.get_absolute_url}}">
+                        {{project.parent.full_title}}
+                    </a>
+                </p>
+
+                {% endif %}
                 {% if page.pretitle %}
                 <p class="card-category">{{project.pretitle}}</p>
 
                 {% endif %}
+
                 <h3 class="card-title">{{project.title}}
                     {% if page.posttitle %}
                     <p class="card-category">{{project.posttitle}}</p>
@@ -89,6 +98,16 @@
 
                         ویرایش </a>
                     {% endif %}
+
+
+                    {% if perms.projectmanager.add_project %}
+                    <i class="mx-5 material-icons text-danger">link</i>
+
+                    <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">
+
+                        افزودن پروژه جدید </a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
@@ -278,7 +297,7 @@
     </div>
     <div class="cao-12">
 
-    
+
     </div>
 
 
@@ -288,10 +307,10 @@
 {% endblock %}
 {% block scripts %}
 <script>
-  
+
     $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
-       // initDashboardPageCharts();
+        // initDashboardPageCharts();
 
     });
 </script>

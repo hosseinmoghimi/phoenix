@@ -173,7 +173,10 @@ class Project(ManagerPage):
 
     def __str__(self):
         return str(self.priority)+' - '+self.title
-
+    def full_title(self):
+        if self.parent is not None:
+            return self.parent.full_title()+' : '+self.title
+        return self.title
     def get_absolute_url(self):
         return reverse("projectmanager:project", kwargs={"project_id": self.pk})
     def get_edit_url(self):
@@ -207,6 +210,7 @@ class WorkUnit(ManagerPage):
                 </div>
             """
         template+="""
+        <hr>
         <div class="ml-5">
         """
         for work_unit1 in work_unit.workunit_set.all():

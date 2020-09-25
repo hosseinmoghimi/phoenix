@@ -37,7 +37,7 @@
 <div class="ml-5">
                         {% for project in work_unit.project_set.all %}
                         
-                        <a href="{{project.get_absolute_url}}">{{project.title}}</a>
+                        <a href="{{project.get_absolute_url}}">{{project.full_title}}</a>
                         {% endfor %}
 </div>
                     </p>
