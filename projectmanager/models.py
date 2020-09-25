@@ -150,7 +150,12 @@ class Project(ManagerPage):
 
     status=models.CharField(_('status'),max_length=50,choices=ProjectStatusEnum.choices,default=ProjectStatusEnum.DEFAULT)
     amount=models.IntegerField(_('مبلغ'),default=0)
-
+    
+    def get_breadcrumb_link(self):
+        if self.parent is None:
+            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+        else:
+            return self.parent.get_breadcrumb_link()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     def childs(self):
         return Project.objects.filter(parent=self)
     def get_status_color(self):
@@ -186,7 +191,12 @@ class Project(ManagerPage):
 class WorkUnit(ManagerPage): 
 
     parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
-   
+    def get_breadcrumb_link(self):
+        if self.parent is None:
+            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+        else:
+            return self.parent.get_breadcrumb_link()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+    
     def get_template(self):
         work_unit=self
         template= f"""

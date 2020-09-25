@@ -15,32 +15,60 @@
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
-                <p class="card-category">
-                   
-                </p>
-                <p class="card-category">جزئیات واحد سازمانی</p>
+
+                {% if work_unit.parent %}
+                <div class="card-category">
+                    {{work_unit.parent.get_breadcrumb_link|safe}}
+
+                </div>
+
+                {% endif %}
+
+
                 <h3 class="card-title"> {{work_unit.title}}
 
                 </h3>
             </div>
             <div class="card-body">
                 <div>
-                    <p class="mt-3 text-secondary">
 
-                        {% if work_unit.description %}
-                        {{work_unit.description}}
 
-                        {% endif %}
-                        {% if work_unit.project_set.all %}
-                          <p>پروژه های مرتبط</p>
-                        {% endif %}
-<div class="ml-5">
-                        {% for project in work_unit.project_set.all %}
-                        
-                        <a href="{{project.get_absolute_url}}">{{project.full_title}}</a>
-                        {% endfor %}
-</div>
+                    {% if work_unit.description %}
+                    <p class="mt-3 text-secondary"> {{work_unit.description}}
                     </p>
+                    {% endif %}
+
+                    {% if work_unit.childs %}
+                    <p>زیر مجموعه ها</p>
+
+                    <div class="ml-5">
+                        {% for work_unit in work_unit.childs.all %}
+
+                        <a class="my-3 d-block" href="{{work_unit.get_absolute_url}}">
+                            <i class="material-icons">apartment</i>
+                            {{work_unit.title}}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if work_unit.project_set.all %}
+                    <p>پروژه های مرتبط</p>
+
+                    <div class="ml-5">
+                        {% for project in work_unit.project_set.all %}
+
+                        <a class="d-block my-3" href="{{project.get_absolute_url}}">
+                            <i class="material-icons">build</i>
+                            {{project.full_title}}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+
+
+                  
+
+
                 </div>
 
             </div>
@@ -149,50 +177,51 @@
 
 
                 <div>
-<form action="{% url 'automation:add_product_request' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">کالای درخواستی</label>
-                                <input type="number" class="form-control" name="product_id" v-model="product_id"
-                                    value="">
+                    <form action="{% url 'automation:add_product_request' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="work_unit_id" value="{{work_unit.id}}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">کالای درخواستی</label>
+                                    <input type="number" class="form-control" name="product_id" v-model="product_id"
+                                        value="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">تعداد</label>
+                                    <input v-model="quantity" type="number" name="quantity" class="form-control"
+                                        value="">
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">واحد</label>
+                                    <select v-model="product_unit" name="product_unit" class="form-control">
+                                        <option disabled>واحد شمارش کالا</option>
+
+                                        {% for unit_name in unit_names %}
+
+
+                                        <option value="{{unit_name}}">{{unit_name}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div>
+
+                                <button type="submit" class="btn btn-success">تایید</button>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">تعداد</label>
-                                <input v-model="quantity" type="number" name="quantity" class="form-control" value="">
-                            </div>
-                        </div>
 
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">واحد</label>
-                                <select v-model="product_unit" name="product_unit" class="form-control">
-                                    <option disabled>واحد شمارش کالا</option>
-
-                                    {% for unit_name in unit_names %}
-
-
-                                    <option value="{{unit_name}}">{{unit_name}}</option>
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-                        </div>
-                        <div>
-
-                            <button type="submit" class="btn btn-success">تایید</button>
-                        </div>
-                    </div>
-
-                  
-
-                </form>
+                    </form>
                 </div>
 
             </div>

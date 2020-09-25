@@ -17,11 +17,10 @@
                     <i class="material-icons">build</i>
                 </div>
                 {% if project.parent %}
-                <p class="card-category">
-                    <a href="{{project.parent.get_absolute_url}}">
-                        {{project.parent.full_title}}
-                    </a>
-                </p>
+                <div class="card-category">
+                    {{project.parent.get_breadcrumb_link|safe}}
+                       
+                </div>
 
                 {% endif %}
                 {% if page.pretitle %}
@@ -81,7 +80,7 @@
 
 
                     <h6 class="mt-4"> <a class="d-block mb-2 text-primary" href="{{work_unit.get_absolute_url}}">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">apartment</i>
                             {{work_unit.title}}</a>
                     </h6>
 
