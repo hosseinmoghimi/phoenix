@@ -16,6 +16,16 @@ SERVER_ON_PARS=True
 # SERVER_ON_LOCAL=True
 
 
+
+
+SERVER_KHAFONLI=False
+SERVER_MAJD=False
+SERVER_HAMES=False
+
+# SERVER_KHAFONLI=True
+SERVER_MAJD=True
+# SERVER_HAMES=True
+
 if '--no-color' in sys.argv or SERVER_ON_LOCAL:
     SERVER_ON_LOCAL=True  
     SERVER_ON_HEROKU=False
@@ -25,7 +35,12 @@ elif SERVER_ON_PARS:
     SERVER_ON_LOCAL=False  
     SERVER_ON_HEROKU=False
     SERVER_ON_PARS=True
-    from . import settings_khafonli as server_settings
+    if SERVER_HAMES:
+        from . import settings_hames as server_settings
+    if SERVER_MAJD:
+        from . import settings_majd as server_settings
+    if SERVER_KHAFONLI:
+        from . import settings_khafonli as server_settings
 
 
 elif SERVER_ON_HEROKU:
