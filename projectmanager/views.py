@@ -4,7 +4,7 @@ from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum
-from .repo import ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
@@ -72,6 +72,7 @@ class MaterialView(View):
         category=MaterialCategoryRepo(user=user).category(category_id=category_id)
         context['category']=category        
         return render(request,TEMPLATE_ROOT+'material-category.html',context)
+
 class MaterialRequestView(View):
     def material_request(self,request,material_request_id,*args, **kwargs):
         user=request.user
@@ -125,4 +126,11 @@ class ProjectView(View):
         context=getContext(request)
         context['project']=ProjectRepo(user=user).project(project_id=project_id)
         return render(request,TEMPLATE_ROOT+'project.html',context)
+
+
+    def issue(self,request,issue_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        context['issue']=IssueRepo(user=user).issue(issue_id=issue_id)
+        return render(request,TEMPLATE_ROOT+'issue.html',context)
 

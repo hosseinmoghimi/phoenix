@@ -10,9 +10,9 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
+            <div class="card-header card-header-{{category.color}} card-header-icon">
                 <div class="card-icon">
-                    <i class="material-icons">category</i>
+                    {{category.get_icon|safe}}
                 </div>
 
                 {% if category.parent %}
@@ -124,6 +124,71 @@
         </div>
     </div>
     {% endif %}
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">get_app</i>
+                </div>
+
+                <p class="card-category">
+
+                    {{material_category.title}}
+                </p>
+
+
+                <h3 class="card-title">
+                    فایل ها و لینک ها
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <h5 class="mt-4">
+                    فایل ها
+                </h5>
+                {% for document in material_category.documents.all %}
+                <a class="ml-3 mb-3 d-block" href="{{document.get_download_url}}">
+                    {{document.get_tag_icon|safe}}
+
+                    {{document.title}}
+                </a>
+                {% endfor %}
+
+                <h5 class="mt-5">
+                    لینک ها
+                </h5>
+
+                {% for link in material_category.links.all %}
+                <a target="_blank" class="ml-3 mb-3 d-block" href="{{link.url}}">
+                    {{link.get_tag_icon|safe}}
+
+                    {{link.title}}
+                </a>
+                {% endfor %}
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_project  and material_category.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{material_category.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
 
 </div>
 

@@ -3,13 +3,13 @@ from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from .apps import APP_NAME
 from app.settings import ADMIN_URL,MEDIA_URL,SITE_URL
-from app.enums import DegreeLevelEnum
+from app.enums import DegreeLevelEnum,ColorEnum,IconsEnum
 from app.models import OurWork
 from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from .enums import UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
+from .enums import IssyTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 class PageLog(models.Model):
@@ -20,7 +20,6 @@ class PageLog(models.Model):
     profile=models.ForeignKey("app.Profile",null=True,blank=True, verbose_name=_("ایجاد کننده"), on_delete=models.CASCADE)
     description=models.CharField(_("description"),null=True,blank=True ,max_length=500)
     action=models.CharField(_("action"),choices=LogActionEnum.choices,default=LogActionEnum.DEFAULT, max_length=50)
-    
     class Meta:
         verbose_name = _("PageLog")
         verbose_name_plural = _("PageLogs")
@@ -60,6 +59,16 @@ class ManagerPage(models.Model):
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
     child_class=models.CharField(_("child_class"), max_length=50,null=True,blank=True)
+    
+    color=models.CharField(_('رنگ'),max_length=50,choices=ColorEnum.choices,default=ColorEnum.PRIMARY)
+    icon=models.CharField(_('آیکون'),max_length=50,choices=IconsEnum.choices,default=IconsEnum.description)
+    def get_icon(self):
+        return f'<i class="material-icons">{self.icon}</i>'
+    def get_colored_icon(self):
+        return f'<i class="material-icons text-{self.color}">{self.icon}</i>'
+    
+    
+    
     def save(self):
         if self.child_class is None:
             self.child_class='managerpage'
@@ -516,7 +525,7 @@ class MaterialRequest(ManagerPage):
 class Issue(ManagerPage):
     issue_for=models.ForeignKey("ManagerPage",related_name='issueforwhat', verbose_name=_("issue_for"), on_delete=models.CASCADE)
     date_report=models.DateTimeField(_('date_report'),auto_now_add=False,auto_now=False)
-    issue_type=models.CharField(_("نوع مشکل"), max_length=50)
+    issue_type=models.CharField(_("نوع مشکل"),choices=IssyTypeEnum.choices,default=IssyTypeEnum.DEFAULT, max_length=50)
 
     def save(self):
         self.child_class='issue'
@@ -529,7 +538,7 @@ class Issue(ManagerPage):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("projectmanager:page", kwargs={"page_id": self.pk})
+        return reverse("projectmanager:issue", kwargs={"issue_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/issue/{self.pk}/change'
  

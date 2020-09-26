@@ -1,5 +1,5 @@
 
-from .models import MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from .models import Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
 from app.repo import ProfileRepo,SignatureRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
@@ -201,7 +201,21 @@ class ProjectRepo:
             up_object.save()
 
 
+             
               
+
+class IssueRepo:
+    def __init__(self,user=None):
+        self.objects=Issue.objects
+        self.user=user
+    def list(self):
+        return self.objects.order_by('-priority')
+    
+    def issue(self,issue_id):
+        try:
+            return self.objects.get(pk=issue_id)
+        except:
+            return None 
 
 class MaterialRepo:
     def __init__(self,user=None):
