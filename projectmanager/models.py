@@ -61,6 +61,8 @@ class ManagerPage(models.Model):
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
     child_class=models.CharField(_("child_class"), max_length=50,null=True,blank=True)
     def save(self):
+        if self.child_class is None:
+            self.child_class='managerpage'
         if self.priority==0:
             super(ManagerPage,self).save()
             self.priority=self.pk
@@ -73,6 +75,8 @@ class ManagerPage(models.Model):
         #         self.priority=self.pk
         return super(ManagerPage,self).save()
 
+    def issues(self):
+        return Issue.objects.filter(issue_for=self)
 
     def image_header(self):
         if self.image_header is None:
@@ -505,6 +509,26 @@ class MaterialRequest(ManagerPage):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialrequest/{self.pk}/change'
 
+
+class Issue(ManagerPage):
+    issue_for=models.ForeignKey("ManagerPage",related_name='issueforwhat', verbose_name=_("issue_for"), on_delete=models.CASCADE)
+    date_report=models.DateTimeField(_('date_report'),auto_now_add=False,auto_now=False)
+
+    def save(self):
+        self.child_class='issue'
+        return super(Issue,self).save()
+    class Meta:
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("projectmanager:page", kwargs={"page_id": self.pk})
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/issue/{self.pk}/change'
+ 
 
 
 

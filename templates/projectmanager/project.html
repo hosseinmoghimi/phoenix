@@ -214,6 +214,62 @@
 
     {% endif %}
 
+  
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">chat</i>
+                </div>
+
+                <p class="card-category">{{project.title}}</p>
+
+
+                <h3 class="card-title"> Issues
+
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+
+{% for issue in project.issues %}
+<h6 class="mb-3">
+    <a href="{{issue.get_absolute_url}}">
+        <i class="material-icons">build</i>
+
+        {{issue.title}}
+    </a></h6>
+{% endfor %}
+
+
+              
+                
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_project  and project.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{project.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
 
 
     <div class="col-12">

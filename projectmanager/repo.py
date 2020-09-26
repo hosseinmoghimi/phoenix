@@ -42,6 +42,11 @@ class ManagerPageRepo:
         if direction=='up':
             self.go_up(pk)
     
+    def page(self,page_id):
+        try:
+            return self.objects.get(pk=page_id)
+        except:
+            return None
     def get(self,pk):
         try:
             return self.objects.get(pk=pk)

@@ -15,6 +15,12 @@ def getContext(request):
     context['search_url']=reverse('projectmanager:search')
     return context
 class BasicView(View):
+    def page(self,request,page_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        page=ManagerPageRepo(user=user).page(page_id=page_id)
+        context['page']=page        
+        return render(request,TEMPLATE_ROOT+'page.html',context)
     def priority(self,request,*args, **kwargs):
         if request.method=='POST':
             priority_form=PriorityForm(request.POST)

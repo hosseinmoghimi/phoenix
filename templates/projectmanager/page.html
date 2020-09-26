@@ -28,29 +28,13 @@
             </div>
             <div class="card-body">
 
-                <div>
-                    <small> وضعیت : </small> <span class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
-                  </div>
-
-
-                {% for project_category in project_categories %}
-
-                <p class="mt-4">
-                <h4> <a class="d-block mb-2 text-primary" href="{{project_category.get_absolute_url}}">
-                        <i class="material-icons">{{project_category.icon}}</i>
-                        {{project_category.title}}</a>
-                </h4>
-                {% for project in project_category.project_set.all %}
-                <a class="d-block mx-5 text-primary" href="{{project.get_absolute_url}}">
-                    <i class="material-icons">{{project_category.icon}}</i>
-                    {{project.title}}</a>
-                {% endfor %}
-                </p>
-                {% endfor %}
+                
+               
+                
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and page.get_edit_url%}
+                    {% if perms.projectmanager.change_page  and page.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{page.get_edit_url}}">
@@ -68,24 +52,24 @@
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
-               
+
                 <p class="card-category">موقعیت</p>
 
-            
+
                 <h3 class="card-title">{{page.title}}
-                  
-                    
+
+
 
                 </h3>
             </div>
             <div class="card-body">
 
-      
-      
-      
-      
-      {{page.location|safe}}
-      
+
+
+
+
+                {{page.location|safe}}
+
             </div>
 
 
@@ -103,10 +87,10 @@
             </div>
         </div>
 
-        
+
 
     </div>
-{% endif %}
+    {% endif %}
 
 
 </div>
@@ -115,10 +99,10 @@
 {% endblock %}
 {% block scripts %}
 <script>
-  
+
     $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
-   //     initDashboardPageCharts();
+        //     initDashboardPageCharts();
 
     });
 </script>
