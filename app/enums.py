@@ -116,6 +116,7 @@ class ProfileStatusEnum(TextChoices):
     DISABLED='غیر فعال',_('غیر فعال')
 
 class ParametersEnum(TextChoices):
+    GOOGLE_SEARCH_CONSOLE_TAG='تگ سرچ گوگل',_('تگ سرچ گوگل')
     ABOUT_US_SHORT='درباره ما کوتاه',_('درباره ما کوتاه')
     ABOUT_US='درباره ما کامل',_('درباره ما کامل')
     MOBILE='موبایل',_('موبایل')

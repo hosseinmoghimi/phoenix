@@ -4,27 +4,32 @@
 <html lang="en">
 
 <head>
-	
+
 	<title> {{app.pretitle.value}} " {{app.title.value}} "</title>
 	<meta charset="utf-8">
 	<!-- MetaData -->
 
-	<meta name="description" content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
+	<meta name="description"
+		content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
+
+	{% if GOOGLE_SEARCH_CONSOLE_TAG %}
+	{{GOOGLE_SEARCH_CONSOLE_TAG|safe}}
+	{% endif %}
+
+	<meta name="description"
+		content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
 
 
-
-	<meta name="description" content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
-
-
-	<meta name="robots" content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+	<meta name="robots"
+		content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
 	{% if  app.favicon.image %}
-	  	<link rel="shortcut icon" type="image/x-icon" href="{{app.favicon.image}}">
+	<link rel="shortcut icon" type="image/x-icon" href="{{app.favicon.image}}">
 
 	{% else %}
-		<link rel="shortcut icon" type="image/x-icon" href="{% static 'avo/img/favicon.ico' %}">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'avo/img/favicon.ico' %}">
 
 	{% endif %}
-        
+
 	<meta name="theme-color" content="{{theme_color}}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" href="{% static 'dashboard/icons/css.css' %}" />
@@ -50,15 +55,16 @@
 	{% endblock %}
 	<!-- vue transition -->
 	<style>
-		.ftco-section{
+		.ftco-section {
 			padding-top: 6em !important;
 			padding-bottom: 6em !important;
 		}
+
 		[v-cloak] {
 			display: none;
 		}
 
-		.fade-enter-active{
+		.fade-enter-active {
 			transition: opacity 0s;
 		}
 
@@ -92,6 +98,7 @@
 			transform: translateY(20px);
 			opacity: 0;
 		}
+
 		/* .ftco-animate{
 			opacity: 100% !important;
 			visibility: visible !important;

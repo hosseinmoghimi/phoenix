@@ -53,6 +53,7 @@ def getContext(request):
     context['PUSHER_IS_ENABLE']=PUSHER_IS_ENABLE
     context['app']={
         'about_us_short':parameter_repo.get(ParametersEnum.ABOUT_US_SHORT),
+        'GOOGLE_SEARCH_CONSOLE_TAG':parameter_repo.get(ParametersEnum.GOOGLE_SEARCH_CONSOLE_TAG),
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
         'logo':main_pic_repo.get(name=MainPicEnum.LOGO),
         'favicon':main_pic_repo.get(name=MainPicEnum.FAVICON),
