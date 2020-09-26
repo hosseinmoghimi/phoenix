@@ -164,6 +164,14 @@
                 </a>
                 {% endfor %}
 
+                {% if add_document_form %}
+                <form action="{% url 'projectmanager:add_document' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="manager_page_id" value="{{material_category.id}}">
+                    <input placeholder="عنوان برای فایل جدید" type="text" name="title" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">تایید</button>
+                </form>
+                {% endif %}
                 <h5 class="mt-5">
                     لینک ها
                 </h5>
@@ -175,6 +183,20 @@
                     {{link.title}}
                 </a>
                 {% endfor %}
+
+
+
+
+                {% if add_link_form %}
+                <form action="{% url 'projectmanager:add_link' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="manager_page_id" value="{{material_category.id}}">
+                    <input placeholder="عنوان برای لینک جدید" type="text" name="title" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">تایید</button>
+                </form>
+                {% endif %}
+
+
 
             </div>
 

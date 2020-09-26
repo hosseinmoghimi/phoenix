@@ -123,62 +123,11 @@
                 </div>
             </div>
         </div>
-        {% if perms.projectmanager.view_pagelog %}
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
 
-                <p class="card-category">لاگ</p>
-
-
-                <h3 class="card-title">{{project.title}}
-
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                <div class="table-responsive">
-                    <table class="table">
-
-                        <thead>
-                            <td>پروفایل</td>
-                            <td>اکشن</td>
-                            <td>تاریخ</td>
-                        </thead>
-                        <tbody>
-                            {% for page_log in project.pagelog_set.all %}
-                            <tr>
-                                <td><a href="{{page_log.profile.get_absolute_url}}">{{page_log.profile.name}}</a></td>
-                                <td>{{page_log.action}}</td>
-                                <td>{{page_log.date_added|to_persian_date|safe}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-
-            </div>
-
-
-
-            <div class="card-footer">
-                <div class="stats">
-
-                </div>
-            </div>
-        </div>
-
-
-
-
-        {% endif %}
 
     </div>
+
+    <!-- location -->
     {% if project.location %}
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
@@ -226,6 +175,9 @@
 
 
     {% endif %}
+
+
+    <!-- docs & links -->
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -251,25 +203,58 @@
                     فایل ها
                 </h5>
                 {% for document in project.documents.all %}
-                <a class="ml-3 mb-3 d-block" href="{{document.get_download_url}}">
-                    {{document.get_tag_icon|safe}}
+                <div>
+                    <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
+                        {{document.get_tag_icon|safe}}
 
-                    {{document.title}}
-                </a>
+                        {{document.title}}
+                    </a>
+                    {% if perms.app.change_document %}
+                    <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    {% endif %}
+                </div>
                 {% endfor %}
+
+                {% if add_document_form %}
+                <form action="{% url 'projectmanager:add_document' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="manager_page_id" value="{{project.id}}">
+                    <input placeholder="عنوان برای فایل جدید" type="text" name="title" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">تایید</button>
+                </form>
+                {% endif %}
 
                 <h5 class="mt-5">
                     لینک ها
                 </h5>
 
                 {% for link in project.links.all %}
-                <a target="_blank" class="ml-3 mb-3 d-block" href="{{link.url}}">
-                    {{link.get_tag_icon|safe}}
+                <div>
+                    <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
+                        {{link.get_tag_icon|safe}}
 
-                    {{link.title}}
-                </a>
+                        {{link.title}}
+                    </a>
+                    {% if perms.app.change_link %}
+                    <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    {% endif %}
+                </div>
                 {% endfor %}
 
+
+                
+                {% if add_link_form %}
+                <form action="{% url 'projectmanager:add_link' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="manager_page_id" value="{{project.id}}">
+                    <input placeholder="عنوان برای لینک جدید" type="text" name="title" class="form-control" required>
+                    <button type="submit" class="btn btn-primary">تایید</button>
+                </form>
+                {% endif %}
             </div>
 
 
@@ -291,7 +276,7 @@
 
     </div>
 
-
+    <!-- issues -->
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-danger card-header-icon">
@@ -366,7 +351,7 @@
     </div>
 
 
-
+    <!-- project.description -->
     {% if project.description %}
     <div class="col-12">
         <div class="card card-stats">
@@ -412,7 +397,7 @@
 
 
 
-
+    <!-- material requests -->
     <div class="col-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -497,7 +482,63 @@
     </div>
 
 
+    <!-- page logs --> {% if perms.projectmanager.view_pagelog %}
 
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+
+                <p class="card-category">لاگ</p>
+
+
+                <h3 class="card-title">{{project.title}}
+
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                            <td>پروفایل</td>
+                            <td>اکشن</td>
+                            <td>تاریخ</td>
+                        </thead>
+                        <tbody>
+                            {% for page_log in project.pagelog_set.all %}
+                            <tr>
+                                <td><a href="{{page_log.profile.get_absolute_url}}">{{page_log.profile.name}}</a></td>
+                                <td>{{page_log.action}}</td>
+                                <td>{{page_log.date_added|to_persian_date|safe}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    {% endif %}
 </div>
 
 

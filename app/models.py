@@ -277,6 +277,8 @@ class Icon(models.Model):
 class Link(Icon):
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
+    profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
+    
     
     def to_link_tag(self):
         return """
@@ -922,13 +924,16 @@ class ProfileTransaction(models.Model):
 
 class Document(Icon):
     profile=models.ForeignKey("Profile", verbose_name=_("پروفایل"), on_delete=models.CASCADE)
-    file=models.FileField(_("فایل ضمیمه"), upload_to=APP_NAME+'/Document', max_length=100)
+    file=models.FileField(_("فایل ضمیمه"),null=True,blank=True, upload_to=APP_NAME+'/Document', max_length=100)
     
     class Meta:
         verbose_name = _("Document")
         verbose_name_plural = _("اسناد")
     def get_download_url(self):
-        return reverse('app:download',kwargs={'document_id':self.pk})
+        if self.file:
+            return reverse('app:download',kwargs={'document_id':self.pk})
+        else:
+            return ''
     def download(self):        
     #STATIC_ROOT2 = os.path.join(BASE_DIR, STATIC_ROOT)
         file_path = str(self.file.path)

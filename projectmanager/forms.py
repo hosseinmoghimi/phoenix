@@ -11,7 +11,15 @@ class AddMaterialRequestForm(forms.Form):
 class SearchForm(forms.Form):
     action=f'{SITE_URL}{APP_NAME}/search/'
     search_for=forms.CharField(max_length=50, required=True)
-    
+
+
+class AddLinkForm(forms.Form):
+    manager_page_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=50,required=True)
+
+class AddDocumentForm(forms.Form):
+    manager_page_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=50,required=True)
 
 class AddIssueForm(forms.Form):
     issue_for_id=forms.IntegerField(required=True)

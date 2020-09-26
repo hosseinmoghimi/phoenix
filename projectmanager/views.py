@@ -42,7 +42,7 @@ class BasicView(View):
         user=request.user
         context=getContext(request)        
         context['work_units']=WorkUnitRepo(user=user).get_roots()
-        return render(request,TEMPLATE_ROOT+'chart2.html',context)
+        return render(request,TEMPLATE_ROOT+'chart.html',context)
  
         
     def search(self,request,*args, **kwargs):
@@ -61,6 +61,11 @@ class MaterialView(View):
         user=request.user
         context=getContext(request)
         material=MaterialRepo(user=user).material(material_id=material_id)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
         context['material']=material
         context['projects']=ProjectRepo(user=user).my_projects()
         context['add_metrial_request_form']=AddMaterialRequestForm()
@@ -69,6 +74,11 @@ class MaterialView(View):
     def category(self,request,category_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
         category=MaterialCategoryRepo(user=user).category(category_id=category_id)
         context['category']=category        
         return render(request,TEMPLATE_ROOT+'material-category.html',context)
@@ -77,6 +87,12 @@ class MaterialRequestView(View):
     def material_request(self,request,material_request_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
+
         if user and user.is_authenticated:
             context['sign_material_request_form']=SignMaterialRequestForm()
             context['status_options']=list(x.value for x in MaterialRequestStatusEnum)
@@ -113,13 +129,45 @@ class MaterialRequestView(View):
                     return redirect(reverse('projectmanager:material',kwargs={'material_id':material_id}))
 
 
+class ManagerPageView(View):
+    def add_link(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_link_form=AddLinkForm(request.POST)
+            if add_link_form.is_valid():
+                title=add_link_form.cleaned_data['title']
+                manager_page_id=add_link_form.cleaned_data['manager_page_id']
+                added=ManagerPageRepo(user=request.user).add_link(title=title,manager_page_id=manager_page_id)
+                if added:
+                    page=ManagerPageRepo(user=request.user).get(pk=manager_page_id)
+                    return redirect(page.get_absolute_url())
+        return Http404      
+        
+    def add_document(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_document_form=AddDocumentForm(request.POST)
+            if add_document_form.is_valid():
+                title=add_document_form.cleaned_data['title']
+                manager_page_id=add_document_form.cleaned_data['manager_page_id']
+                added=ManagerPageRepo(user=request.user).add_document(title=title,manager_page_id=manager_page_id)
+                if added:                    
+                    page=ManagerPageRepo(user=request.user).get(pk=manager_page_id)
+                    return redirect(page.get_absolute_url())
+        return Http404      
+        
 
-class ProjectView(View):
+
+class WorkUnitView(View):
     def work_unit(self,request,work_unit_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work_unit.html',context)
+
+class ProjectView(View):
     def add_issue(self,request,*args, **kwargs):
         if request.method=='POST':
             add_issue_form=AddIssueForm(request.POST)
@@ -137,6 +185,10 @@ class ProjectView(View):
         user=request.user
         context=getContext(request)
         context['project']=ProjectRepo(user=user).project(project_id=project_id)
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
         if user and user.is_authenticated:
             context['add_issue_form']=AddIssueForm()
             context['issue_types']=list(x.value for x in IssueTypeEnum)
@@ -146,6 +198,10 @@ class ProjectView(View):
     def issue(self,request,issue_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
         context['issue']=IssueRepo(user=user).issue(issue_id=issue_id)
         return render(request,TEMPLATE_ROOT+'issue.html',context)
 

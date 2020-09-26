@@ -3,6 +3,8 @@ from .models import Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory
 from app.repo import ProfileRepo,SignatureRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
+from app.models import Link,Document
+from .apps import APP_NAME
 import datetime
 class EmployeeRepo:
     def __init__(self,user):
@@ -31,7 +33,28 @@ class ManagerPageRepo:
             Q(posttitle__contains=search_for)| 
             Q(description__contains=search_for)
             )
-    
+    def add_link(self,title,manager_page_id):
+        manager_page=self.page(page_id=manager_page_id)
+        if manager_page is not None and self.user and self.user.has_perm(APP_NAME+'.add_link'):
+            profile=ProfileRepo(user=self.user).me
+            if profile is not None:
+                link=Link(title=title,icon_material='link',profile=profile)
+                link.save()
+                manager_page.links.add(link)
+            return True 
+        return False
+    def add_document(self,title,manager_page_id):
+        manager_page=self.page(page_id=manager_page_id)
+        if manager_page is not None and self.user and self.user.has_perm(APP_NAME+'.add_link'):
+            profile=ProfileRepo(user=self.user).me
+            if profile is not None:
+                document=Document(title=title,icon_material='get_app',profile=profile)  
+                document.save()              
+                manager_page.documents.add(document) 
+            return True
+        return False
+
+                
     def __init__(self,user):
         self.objects=ManagerPage.objects
         self.user=user
