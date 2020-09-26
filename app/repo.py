@@ -83,6 +83,7 @@ class CommentRepo:
             except:
                 pass
     
+    
 class RegionRepo():
     def __init__(self,user=None):
         self.objects=Region.objects
@@ -158,6 +159,7 @@ class FAQRepo:
     def list(self):
         return self.objects.order_by('priority')
 
+
 class TagRepo:
     def __init__(self,user):
         self.user=user
@@ -178,6 +180,8 @@ class TagRepo:
             return self.objects.get(pk=tag_id)
         except:
             return None
+
+
 class ParameterRepo:
     
     def __init__(self,user=None):
@@ -268,6 +272,7 @@ class PageRepo:
     def search(self,search_for):
         pages=self.objects.filter(title__contains=search_for)
         return pages
+
 
 class NotificationRepo:
 
@@ -597,6 +602,7 @@ class ProfileRepo:
             return Permission.objects.all()
         return user.user_permissions.all() | Permission.objects.filter(group__user=user)
 
+
 class ProfileTransactionRepo:
     def __init__(self,user=None):
         self.objects=ProfileTransaction.objects.order_by('-date_added')
@@ -660,6 +666,7 @@ class ProfileTransactionRepo:
                 transaction.rest=transaction.rest(profile_id=profile_id)
                 transaction.direction=transaction.direction(profile_id)
             return transactions      
+
 
 class SignatureRepo:
     def __init__(self,user):
