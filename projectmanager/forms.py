@@ -13,6 +13,12 @@ class SearchForm(forms.Form):
     search_for=forms.CharField(max_length=50, required=True)
     
 
+class AddIssueForm(forms.Form):
+    issue_for_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=50,required=True)
+    issue_type=forms.CharField(max_length=50,required=True)
+    
+
 class SignMaterialRequestForm(forms.Form):
     material_request_id=forms.IntegerField(required=True)
     status=forms.CharField(max_length=50, required=True)

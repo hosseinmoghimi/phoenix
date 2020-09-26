@@ -8,7 +8,7 @@ class ProjectStatusEnum(TextChoices):
     DELIVERED='تحویل شده',_('تحویل شده')
     ANALYZING='درحال آنالیز',_('درحال آنالیز')
 
-class IssyTypeEnum(TextChoices):
+class IssueTypeEnum(TextChoices):
     DEFAULT='DEFAULT',_('DEFAULT')
     FORCE='FORCE',_('FORCE')
     DANGER='DANGER',_('DANGER')

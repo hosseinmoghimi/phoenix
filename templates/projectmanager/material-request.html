@@ -55,7 +55,12 @@
 
 
 
-
+                              {% if material_request.short_description %}
+                              <div class="text-secondary">
+                              {{material_request.short_description|safe}}
+                                </div>
+                              <hr>
+                              {% endif %}
 
                 {% if material_request.contractor %}
                 <p>پیمانکار درخواست کننده</p>
@@ -294,6 +299,50 @@
     </div>
     {% endif %}
 
+
+
+    
+    {% if material_request.description %}
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+               
+
+
+                <p class="card-category">{{material_request.title}}</p>
+
+
+
+                <h3 class="card-title">توضیحات کامل
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+
+
+                {{material_request.description|safe}}
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_materialrequest and material_request.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{material_request.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
 </div>
 

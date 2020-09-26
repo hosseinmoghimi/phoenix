@@ -3,6 +3,7 @@ from . import views
 app_name='projectmanager'
 urlpatterns = [
     path('',views.BasicView().home,name='home'),
+    path('add_issue/',views.ProjectView().add_issue,name='add_issue'),
     path('search/',views.BasicView().search,name='search'),
     path('projectcategory/<int:category_id>/',views.BasicView().home,name='project_category'),
     path('issue/<int:issue_id>/',views.ProjectView().issue,name='issue'),

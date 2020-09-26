@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from .enums import IssyTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
+from .enums import IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 class PageLog(models.Model):
@@ -525,7 +525,7 @@ class MaterialRequest(ManagerPage):
 class Issue(ManagerPage):
     issue_for=models.ForeignKey("ManagerPage",related_name='issueforwhat', verbose_name=_("issue_for"), on_delete=models.CASCADE)
     date_report=models.DateTimeField(_('date_report'),auto_now_add=False,auto_now=False)
-    issue_type=models.CharField(_("نوع مشکل"),choices=IssyTypeEnum.choices,default=IssyTypeEnum.DEFAULT, max_length=50)
+    issue_type=models.CharField(_("نوع مشکل"),choices=IssueTypeEnum.choices,default=IssueTypeEnum.DEFAULT, max_length=50)
 
     def save(self):
         self.child_class='issue'

@@ -3,7 +3,7 @@ from .forms import *
 from django.views import View
 from django.http import Http404
 from app.views import getContext as AppContext
-from .enums import MaterialRequestStatusEnum
+from .enums import MaterialRequestStatusEnum,IssueTypeEnum
 from .repo import IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 TEMPLATE_ROOT='projectmanager/'
@@ -120,11 +120,26 @@ class ProjectView(View):
         context=getContext(request)
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work_unit.html',context)
+    def add_issue(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_issue_form=AddIssueForm(request.POST)
+            if add_issue_form.is_valid():
+                issue_type=add_issue_form.cleaned_data['issue_type']
+                title=add_issue_form.cleaned_data['title']
+                issue_for_id=add_issue_form.cleaned_data['issue_for_id']
+                issue=IssueRepo(user=request.user).add(issue_type=issue_type,title=title,issue_for_id=issue_for_id)
+                if issue is not None:
+                    return redirect(issue.issue_for.get_absolute_url())
+        return Http404      
+        
 
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
         context['project']=ProjectRepo(user=user).project(project_id=project_id)
+        if user and user.is_authenticated:
+            context['add_issue_form']=AddIssueForm()
+            context['issue_types']=list(x.value for x in IssueTypeEnum)
         return render(request,TEMPLATE_ROOT+'project.html',context)
 
 
