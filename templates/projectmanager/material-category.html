@@ -157,11 +157,18 @@
                     فایل ها
                 </h5>
                 {% for document in material_category.documents.all %}
-                <a class="ml-3 mb-3 d-block" href="{{document.get_download_url}}">
-                    {{document.get_tag_icon|safe}}
+                <div>
+                    <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
+                        {{document.get_tag_icon|safe}}
 
-                    {{document.title}}
-                </a>
+                        {{document.title}}
+                    </a>
+                    {% if perms.app.change_document %}
+                    <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    {% endif %}
+                </div>
                 {% endfor %}
 
                 {% if add_document_form %}
@@ -177,11 +184,18 @@
                 </h5>
 
                 {% for link in material_category.links.all %}
-                <a target="_blank" class="ml-3 mb-3 d-block" href="{{link.url}}">
-                    {{link.get_tag_icon|safe}}
+                <div>
+                    <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
+                        {{link.get_tag_icon|safe}}
 
-                    {{link.title}}
-                </a>
+                        {{link.title}}
+                    </a>
+                    {% if perms.app.change_link %}
+                    <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    {% endif %}
+                </div>
                 {% endfor %}
 
 
