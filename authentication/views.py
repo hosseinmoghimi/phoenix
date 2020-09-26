@@ -45,7 +45,7 @@ class AuthView(View):
         return redirect(reverse('authentication:login'))
     def auth(self,request,back_url=None):
         if back_url is None:
-            back_url=reverse('projectmanager:home')
+            back_url=reverse('app:home')
         
         if request.method=='POST':
             login_form=LoginForm(request.POST)
