@@ -1,5 +1,5 @@
 from .models import ProfileChannelEvent,PusherChannel,PusherBeam,PusherChannelEvent,PusherBeamInterest
-from app.repo import ProfileRepo
+from app.repo import ProfileRepo,NotificationRepo
 class ProfileChannelEventRepo:
     def __init__(self,user):
         self.objects=ProfileChannelEvent.objects
@@ -13,6 +13,7 @@ class ProfileChannelEventRepo:
         profiles=[]
         for item in list1:
             profiles.append(ProfileRepo(user=self.user).get(profile_id=item.profile_id))
+        
         return profiles
 
 
@@ -49,6 +50,7 @@ class PusherBeamRepo:
 
 
 class PusherChannelEventRepo:
+     
     def add(self,channel_name,event_name):
         channel=PusherChannelRepo().get_by_name(channel_name=channel_name)
         if channel is not None:
@@ -58,12 +60,17 @@ class PusherChannelEventRepo:
                 channel_event.save()
                 if channel_event is not None:
                     return channel_event
-    def __init__(self,user=None):
+    def __init__(self,user):
         self.objects=PusherChannelEvent.objects
         self.user=user
         self.profile=ProfileRepo(user=user).me
     def list_all(self):
         return self.objects.all()
+      
+    def add_notification_to_profiles(self,channel_event,message):
+        profile_channel_event_repo=ProfileChannelEventRepo(user=self.user)
+        for profile in profile_channel_event_repo.get_profiles(channel_event_id=channel_event.id):
+            NotificationRepo(user=self.user).add(profile.id,title=message['title'],url=message['link'],color=message['color'],icon=message['icon'],body=message['body'])
 
     def get_by_names(self,channel_name,event_name):
         channel=PusherChannelRepo().get_by_name(channel_name=channel_name)
@@ -85,6 +92,7 @@ class PusherChannelEventRepo:
         channel_events=[]
         channel_events=self.objects.filter(id__in=ProfileChannelEvent.objects.filter(profile=self.profile).values('channel_event_id'))
         return channel_events
+
 class PusherBeamInterestRepo:
     def add(self,beam_name,interest):
         beam=PusherBeamRepo().get(beam_name=beam_name)

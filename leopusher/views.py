@@ -77,17 +77,20 @@ class ChannelView(View):
        
                 data={}
                 # MyPusherChannel(user=request.user).send(channel_name=channel_name,event_name=event_name,title=title,message=message,data=data)#.submit(order_id=order.id,total=order.total(),supplier_id=order.supplier.id)
-                
-                channel_event=PusherChannelEventRepo().get_by_names(channel_name=channel_name,event_name=event_name)
+                channel_event_repo=PusherChannelEventRepo(user=request.user)
+                channel_event=channel_event_repo.get_by_names(channel_name=channel_name,event_name=event_name)
                 
                 if channel_event is not None:
-                    channel_event.send_message(message={
+
+                    message={
                         'title': title,
                         'body': body,
                         'color': color,
                         'icon': icon,
                         'link': link,
-                        })
+                        }
+                    channel_event_repo.add_notification_to_profiles(channel_event=channel_event,message=message)
+                    channel_event.send_message(message=message)
                     return JsonResponse({'result':'SUCCESS'})
  
     def get(self,request):
