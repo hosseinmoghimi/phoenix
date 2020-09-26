@@ -142,6 +142,9 @@ class Image(models.Model):
     def get_absolute_url(self):
         return MEDIA_URL+str(self.image_origin)
 
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/image/{self.pk}/change'
+
 
 class ProjectCategory(ManagerPage):
      
@@ -182,7 +185,7 @@ class Project(ManagerPage):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
         else:
-            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     def childs(self):
         return Project.objects.filter(parent=self)
     def get_status_color(self):
@@ -225,7 +228,7 @@ class WorkUnit(ManagerPage):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
         else:
-            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def get_template(self):
         work_unit=self
@@ -347,7 +350,7 @@ class MaterialCategory(ManagerPage):
         if self.parent is None:
             return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
         else:
-            return self.parent.get_breadcrumb_url()+f"""&nbsp;/&nbsp;<div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def save(self):
         self.child_class='materialcategory'
@@ -513,6 +516,7 @@ class MaterialRequest(ManagerPage):
 class Issue(ManagerPage):
     issue_for=models.ForeignKey("ManagerPage",related_name='issueforwhat', verbose_name=_("issue_for"), on_delete=models.CASCADE)
     date_report=models.DateTimeField(_('date_report'),auto_now_add=False,auto_now=False)
+    issue_type=models.CharField(_("نوع مشکل"), max_length=50)
 
     def save(self):
         self.child_class='issue'

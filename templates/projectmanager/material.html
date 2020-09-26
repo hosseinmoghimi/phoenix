@@ -8,7 +8,7 @@
 
 
 <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
@@ -16,8 +16,14 @@
                 </div>
                 {% if material.category %}
                 <p class="card-category">
-                    <a href="{{material.category.get_absolute_url}}">
-                    {{material.category}}</a></p>
+                    {% if material.category.parent %}
+
+                    {{material.category.get_breadcrumb_url |safe}}
+                      
+                    {% endif %}
+                 
+                    
+                    </p>
 
                 {% endif %}
 
@@ -26,23 +32,34 @@
 
                 {% endif %}
                 <h3 class="card-title">{{material.title}}
-                    {% if material.posttitle %}
-                    <p class="card-category">{{material.posttitle}}</p>
-
-                    {% endif %}
-                    {% if material.model %}
-                    <p class="card-category">{{material.model}}</p>
-    
-                    {% endif %}
                 </h3>
+                {% if material.posttitle %}
+                <p class="card-category">{{material.posttitle}}</p>
+
+                {% endif %}
+                {% if material.model %}
+                <p class="card-category">{{material.model}}</p>
+
+                {% endif %}
             </div>
             <div class="card-body">
 
-                {% if material.description %}
-                <p class="">{{material.description|safe}}</p>
+                {% if material.brand %}
+                <p class="mb-4">
+                    برند : 
+                <a href="{{material.brand.get_absolute_url}}"> 
+                <i class="material-icons">dashboard</i>  {{material.brand.title}}
+                </a>   
+                </p>
 
                 {% endif %}
-               
+
+
+                {% if material.short_description %}
+                <p class="">{{material.short_description|safe}}</p>
+
+                {% endif %}
+
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -57,9 +74,128 @@
             </div>
         </div>
     </div>
+    {% if material.images.all %}
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
 
-   
-    
+
+
+                <p class="card-category">{{material.title}}</p>
+
+
+                <h3 class="card-title">تصاویر
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                    <div class="carousel-inner">
+                        {% for material_img in material.images.all %}
+                        <div class="carousel-item card">
+                            <img src="{{ material_img.image }}" class="w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h1 class="display-4">{{ material_img.name }}</h1>
+                                <p class="lead">
+                                    <a target="_blank" class="" href="{{ material_img.image }}"
+                                        role="button">
+                                        <i class="material-icons">home</i>
+                                    </a>
+                                </p>
+                                {% if perms.projectmanager.change_image %}
+                                   <p class="lead">
+                                    <a class="btn btn-warning btn-link btn-sm" href="{{ material_img.get_edit_url }}"
+                                        role="button">ویرایش تصویر</a>
+                                </p>
+                                {% endif %}
+                               
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+
+
+
+
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.add_image%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{ADMIN_URL}}{{APP_NAME}}/image/add/">
+
+                        افزودن تصویر </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if material.description %}
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+                {% if material.category %}
+                <p class="card-category">
+                    <a href="{{material.category.get_absolute_url}}">
+                        {{material.category}}</a></p>
+
+                {% endif %}
+
+
+                <p class="card-category">{{material.title}}</p>
+
+
+
+                <h3 class="card-title">توضیحات کامل
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+
+
+                {{material.description|safe}}
+
+
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_project  and material.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{material.get_edit_url}}">
+
+                        ویرایش </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
 
 </div>
 
@@ -67,16 +203,19 @@
 {% endblock %}
 {% block scripts %}
 <script>
-   
+
     $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
-    //  initDashboardPageCharts();
+        //  initDashboardPageCharts();
 
     });
 </script>
 <script>
     $("#project-manager-link").addClass("active");
 
+    $(".carousel-item:first").addClass("active");
+
+    $("#carouselExampleIndicators:first").addClass("active");
 
 
 

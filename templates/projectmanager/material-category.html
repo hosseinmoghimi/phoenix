@@ -61,6 +61,14 @@
 
                         ویرایش </a>
                     {% endif %}
+
+                    {% if perms.projectmanager.add_material %}
+                    <i class="material-icons text-danger">settings</i>
+
+                    <a href="{{ADMIN_URL}}{{APP_NAME}}/material/add/">
+
+                        افزودن متریال  </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

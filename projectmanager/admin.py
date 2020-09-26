@@ -1,7 +1,7 @@
 
 
 from django.contrib import admin
-from .models import Issue,MaterialRequest,Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import Image,Issue,MaterialRequest,Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 from app.repo import ProfileRepo
 from .enums import LogActionEnum
 class MaterialRequestAdmin(admin.ModelAdmin):
@@ -32,6 +32,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 admin.site.register(MaterialRequest,MaterialRequestAdmin)
 admin.site.register(Issue)
+admin.site.register(Image)
 admin.site.register(Contractor)
 admin.site.register(PageLog)
 admin.site.register(ProjectCategory)
