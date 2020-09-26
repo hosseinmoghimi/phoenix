@@ -12,8 +12,8 @@
 	<meta name="description"
 		content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
 
-	{% if GOOGLE_SEARCH_CONSOLE_TAG %}
-	{{GOOGLE_SEARCH_CONSOLE_TAG|safe}}
+	{% if app.GOOGLE_SEARCH_CONSOLE_TAG %}
+	{{app.GOOGLE_SEARCH_CONSOLE_TAG.value|safe}}
 	{% endif %}
 
 	<meta name="description"
