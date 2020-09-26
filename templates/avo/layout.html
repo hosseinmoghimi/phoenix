@@ -9,8 +9,6 @@
 	<meta charset="utf-8">
 	<!-- MetaData -->
 
-	<meta name="description"
-		content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
 
 	{% if app.GOOGLE_SEARCH_CONSOLE_TAG %}
 	{{app.GOOGLE_SEARCH_CONSOLE_TAG.value|safe}}
