@@ -1,9 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% load to_persian_date %}
-{% load to_material_request_status_color %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% load to_persian_date %} {% load to_material_request_status_color %} {% block contents %}
 
 
 
@@ -22,14 +17,12 @@
 
                 </div>
 
-                {% endif %}
-                {% if page.pretitle %}
+                {% endif %} {% if page.pretitle %}
                 <p class="card-category">{{project.pretitle}}</p>
 
                 {% endif %}
 
-                <h3 class="card-title">{{project.title}}
-                    {% if page.posttitle %}
+                <h3 class="card-title">{{project.title}} {% if page.posttitle %}
                     <p class="card-category">{{project.posttitle}}</p>
 
                     {% endif %}
@@ -39,22 +32,17 @@
             <div class="card-body">
 
                 <div>
-                    <small> وضعیت پروژه : </small> <span
-                        class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
+                    <small> وضعیت پروژه : </small> <span class="badge badge-{{project.get_status_color}}">{{project.status}}</span>
                 </div>
-                <hr>
-                {% if project.short_description %}
+                <hr> {% if project.short_description %}
                 <div class="text-secondary">
                     {{project.short_description|safe}}
                 </div>
-                <hr>
-                {% endif %}
-
-                {% if project.childs %}
+                <hr> {% endif %} {% if project.childs %}
                 <h4 class="mt-4"> پروژه های جزئی</h4>
 
                 <div class="ml-4 mb-3">
-                    {% for project in  project.childs %}
+                    {% for project in project.childs %}
                     <h6 class="mb-3">
                         <a href="{{project.get_absolute_url}}">
                             {{project.get_colored_icon|safe}}
@@ -63,25 +51,20 @@
                         </a></h6>
                     {% endfor %}
                 </div>
-                <hr>
-                {% endif %}
-                {% if project.contractors.all %}
+                <hr> {% endif %} {% if project.contractors.all %}
                 <h4 class="mt-4">پیمانکار ها</h4>
 
                 <div class="ml-4 mb-3">
-                    {% for contractor in  project.contractors.all %}
+                    {% for contractor in project.contractors.all %}
                     <h6 class="mt-4">
                         <a class="d-block mb-2 text-primary" href="{{contractor.get_absolute_url}}">
-                            <i class="material-icons">engineering</i>
-                            {{contractor.title}}
+                            <i class="material-icons">engineering</i> {{contractor.title}}
                         </a>
                     </h6>
 
                     {% endfor %}
                 </div>
-                <hr>
-                {% endif %}
-                {% if project.work_units.all %}
+                <hr> {% endif %} {% if project.work_units.all %}
                 <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
 
                 <div class="ml-4 mb-3">
@@ -89,36 +72,31 @@
                     {% for work_unit in project.work_units.all %}
 
 
-                    <h6 class="mt-4"> <a class="d-block mb-2 text-primary" href="{{work_unit.get_absolute_url}}">
-                            <i class="material-icons">apartment</i>
-                            {{work_unit.title}}</a>
+                    <h6 class="mt-4">
+                        <a class="d-block mb-2 text-primary" href="{{work_unit.get_absolute_url}}">
+                            <i class="material-icons">apartment</i> {{work_unit.title}}
+                        </a>
                     </h6>
 
 
                     {% endfor %}
                 </div>
 
-                <hr>
-                {% endif %}
+                <hr> {% endif %}
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and project.get_edit_url%}
+                    {% if perms.projectmanager.change_project and project.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{project.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
-
-
-                    {% if perms.projectmanager.add_project %}
+                        ویرایش </a> {% endif %} {% if perms.projectmanager.add_project %}
                     <i class="mx-5 material-icons text-danger">link</i>
 
                     <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">
 
-                        افزودن پروژه جدید </a>
-                    {% endif %}
+                        افزودن پروژه جدید </a> {% endif %}
 
                 </div>
             </div>
@@ -128,23 +106,21 @@
 
             <div class="card-body" id="tags-app">
                 <h5 class="my-3"> برچسب ها</h5>
-              {% for tag in project.tags.all %}
-              <a href="{{tag.get_absolute_url}}" class="btn btn-sm btn-light">
-                <span>{{tag.title}}</span>
-            </a>
-              {% endfor %}
+                {% for tag in project.tags.all %}
+                <a href="{{tag.get_absolute_url}}" class="btn btn-sm btn-light">
+                    <span>{{tag.title}}</span>
+                </a>
+                {% endfor %}
                 <template v-for="tag in tags">
                     <a v-if="tag.title" :href="tag.get_absolute_url" class="btn btn-sm btn-light">
                         <span v-text="tag.title"></span>
                     </a>
-                </template>
-                {% if perms.app.add_tag %}
+                </template> {% if perms.app.add_tag %}
 
 
 
                 <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
-                <button class="btn btn-primary" @click="add_tag">اضافه کن</button>
-                {% endif %}
+                <button class="btn btn-primary" @click="add_tag">اضافه کن</button> {% endif %}
             </div>
 
         </div>
@@ -184,13 +160,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and project.get_edit_url%}
+                    {% if perms.projectmanager.change_project and project.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{project.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -230,19 +205,16 @@
                 {% for document in project.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-                {% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{project.id}}">
@@ -258,21 +230,16 @@
                 {% for link in project.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-
-
-                {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{project.id}}">
@@ -286,13 +253,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and project.get_edit_url%}
+                    {% if perms.projectmanager.change_project and project.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{project.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -324,19 +290,13 @@
                 {% for issue in project.issues %}
                 <h6 class="mb-3">
                     <a href="{{issue.get_absolute_url}}">
-                        <i class="material-icons">build</i>
-
-                        {{issue.title}}
-                    </a></h6>
-                {% endfor %}
-
-
-
-                {% if add_issue_form %}
+                        <i class="material-icons">build</i> {{issue.title}}
+                    </a>
+                </h6>
+                {% endfor %} {% if add_issue_form %}
                 <div>
                     <form action="{% url 'projectmanager:add_issue' %}" method="POST">
-                        <input type="hidden" value="{{project.id}}" name="issue_for_id">
-                        {% csrf_token %}
+                        <input type="hidden" value="{{project.id}}" name="issue_for_id"> {% csrf_token %}
                         <div class="row">
                             <div class="col"><input type="text" name="title" required class="form-control"></div>
                             <div class="col">
@@ -366,8 +326,7 @@
 
                     <a href="{{ADMIN_URL}}{{APP_NAME}}/issue/add">
 
-                        افزودن مشکل جدید </a>
-                    {% endif %}
+                        افزودن مشکل جدید </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -411,8 +370,7 @@
 
                     <a href="{{project.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -460,17 +418,13 @@
                         <tbody>
                             {% for material_request in project.materialrequest_set.all %}
                             <tr>
-                                <td><a
-                                        href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
+                                <td><a href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
                                 </td>
-                                <td><a
-                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                <td><a href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
                                 </td>
-                                <td><a
-                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                <td><a href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
                                 </td>
-                                <td><span
-                                        class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                <td><span class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
                                 </td>
                                 <td><small>
                                         {{material_request.date_added|to_persian_date|safe}}
@@ -507,7 +461,7 @@
     </div>
 
     {% csrf_token %}
-    <!-- page logs --> {% if perms.projectmanager.view_pagelog %}
+    <!-- page logs -->{% if perms.projectmanager.view_pagelog %}
 
     <div class="col-12">
         <div class="card card-stats">
@@ -567,11 +521,9 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         // initDashboardPageCharts();
 
@@ -582,7 +534,7 @@
 
 
     let csrfmiddlewaretoken = ''
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
@@ -594,19 +546,21 @@
     let tags_app = new Vue({
         el: "#tags-app",
         data: {
-            tags: [{tt:'sss'}],
+            tags: [{
+                tt: 'sss'
+            }],
             new_tag: '',
 
         },
         methods: {
-            add_tag: function () {
+            add_tag: function() {
                 let url = add_tag_url
                 let posting = $.post(url, {
                     page_id: JSON.parse("{{project.id}}"),
                     tag_title: tags_app.new_tag,
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
-                posting.done(function (data) {
+                posting.done(function(data) {
                     // console.log(data.tag)
                     tags_app.new_tag = ''
                     if (data.result === 'SUCCEED') {
@@ -617,12 +571,5 @@
 
         },
     })
-
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}

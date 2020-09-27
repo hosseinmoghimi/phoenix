@@ -2,14 +2,11 @@
 <p class="mt-5">
     <img src="{{partial_page.image}}" alt="" class="img-fluid">
 </p>
-{% endif %}
-{% if partial_page.pretitle %}
+{% endif %} {% if partial_page.pretitle %}
 <h6 class="mb-3 leo-rtl text-right">{{partial_page.pretitle}}</h6>
-{% endif %}
-{% if partial_page.title %}
+{% endif %} {% if partial_page.title %}
 <h4 class="mb-3 leo-rtl text-right">{{partial_page.title}}</h4>
-{% endif %}
-{% if partial_page.posttitle %}
+{% endif %} {% if partial_page.posttitle %}
 <h6 class="mb-3 leo-rtl text-right">{{partial_page.posttitle}}</h6>
 {% endif %}
 
@@ -17,7 +14,7 @@
 
 {% if partial_page.links.all %}
 
-<div class="testimony-wrap pb-2 mb-4" >
+<div class="testimony-wrap pb-2 mb-4">
     <div class="">
         <span class="fa fa-link   text-info" style="position:inherit !important;"></span>
         <h5 class="mb-4 text-right">لینک ها</h5>
@@ -26,11 +23,10 @@
 
         <p>
             <a href="{{link.get_absolute_url}}">
-                {{link.get_tag_icon | safe}}&nbsp;&nbsp;
+                {{link.get_icon_tag | safe}}&nbsp;&nbsp;
                 {{link.title}}
 
-            </a>
-            {% if perms.app.change_link %}
+            </a> {% if perms.app.change_link %}
 
             <a class="btn btn-info" href="{{link.get_edit_url}}">
                 <span class="leo-farsi">
@@ -47,14 +43,9 @@
 </div>
 
 
-{% endif %}
+{% endif %} {% if partial_page.documents.all %}
 
-
-
-
-{% if partial_page.documents.all %}
-
-<div class="testimony-wrap pb-2 mb-4" >
+<div class="testimony-wrap pb-2 mb-4">
     <div class="">
         <span class="fa fa-download text-success  " style="position:inherit !important;"></span>
         <h5 class="mb-4 text-right">دانلود ها</h5>
@@ -62,11 +53,10 @@
         {% for document in partial_page.documents.all %}
         <p>
             <a href="{{document.get_download_url}}">
-                {{document.get_tag_icon | safe}}&nbsp;&nbsp;
+                {{document.get_icon_tag | safe}}&nbsp;&nbsp;
                 {{document.title}}
 
-            </a>
-            {% if perms.app.change_document %}
+            </a> {% if perms.app.change_document %}
 
             <a class="btn btn-info" href="{{document.get_edit_url}}">
                 <span class="leo-farsi">
@@ -83,16 +73,7 @@
 </div>
 
 
-{% endif %}
-
-
-
-
-
-
-
-
-{% if perms.app.change_blog %}
+{% endif %} {% if perms.app.change_blog %}
 <p>
     <a class="btn btn-info" href="{{partial_page.get_edit_url}}">
         <span class="leo-farsi">

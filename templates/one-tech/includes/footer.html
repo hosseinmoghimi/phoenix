@@ -8,15 +8,17 @@
             <div class="col-lg-4 offset-lg-1 footer_col">
                 <div class="footer_column footer_contact">
                     <div class="logo_container">
-                        <div class="logo text-center"><a href="{% url 'app:home' %}">
+                        <div class="logo text-center">
+                            <a href="{% url 'app:home' %}">
 
                                 <img src="{{app.logo.image}}" height="64px" alt="">
-                            </a></div>
+                            </a>
+                        </div>
                     </div>
                     <div class="footer_title text-center leo-farsi">{{app.pretitle.value}}
-               </div>
-                        <div class="footer_title text-center leo-farsi">
-                            {{app.title.value}}</div>
+                    </div>
+                    <div class="footer_title text-center leo-farsi">
+                        {{app.title.value}}</div>
 
                     <div class="footer_phone text-center">{{app.mobile.value}}</div>
                     <div class="footer_contact_text">
@@ -28,10 +30,10 @@
                         <ul>
                             {% for social_link in social_links %}
                             <li>
-                                <a href="{{social_link.url}}" title="{{social_link.title}}" >
-                                   <div style="margin-top: 5px;">
-                                    {{social_link.get_tag_icon|safe}}
-                                   </div>
+                                <a href="{{social_link.url}}" title="{{social_link.title}}">
+                                    <div style="margin-top: 5px;">
+                                        {{social_link.get_icon_tag|safe}}
+                                    </div>
                                 </a>
                             </li>
                             {% endfor %}
@@ -43,48 +45,47 @@
 
             <div class="col-lg-3 offset-lg-1">
                 <div class="footer_column">
-                    <div  class="text-right leo-farsi footer_title">سریعتر بیابید</div>
+                    <div class="text-right leo-farsi footer_title">سریعتر بیابید</div>
                     <ul class="footer_list">
                         <li class="text-right"><a class="leo-farsi" href="{% url 'app:home' %}">{{app.title.value}}</a></li>
                         <li class="text-right"><a class="leo-farsi" href="{% url 'market:home' %}">فروشگاه</a></li>
-                       {% if active_customer %}
-                       
-                       <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_cart_url}}">سبد خرید</a></li>
-                       <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_orders_url}}">سفارشات من</a></li>
-                       <li class="text-right"><a class="leo-farsi" href="{% url 'market:my_list' %}">لیست من</a></li>
-                       
+                        {% if active_customer %}
 
-                       {% endif %}
-                       <li class="text-right"><a class="leo-farsi" href="{% url 'app:about' %}">درباره ما</a></li>
-                       <li class="text-right"><a class="leo-farsi" href="{% url 'app:contact' %}">تماس با ما</a></li>
-                   
-                     
+                        <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_cart_url}}">سبد خرید</a></li>
+                        <li class="text-right"><a class="leo-farsi" href="{{active_customer.get_orders_url}}">سفارشات من</a></li>
+                        <li class="text-right"><a class="leo-farsi" href="{% url 'market:my_list' %}">لیست من</a></li>
+
+
+                        {% endif %}
+                        <li class="text-right"><a class="leo-farsi" href="{% url 'app:about' %}">درباره ما</a></li>
+                        <li class="text-right"><a class="leo-farsi" href="{% url 'app:contact' %}">تماس با ما</a></li>
+
+
                     </ul>
-                  
+
                 </div>
             </div>
 
             <div class="col-lg-3">
                 <div class="footer_column">
-                    <div  class="text-right leo-farsi footer_title">تبادل لینک</div>
-                 
+                    <div class="text-right leo-farsi footer_title">تبادل لینک</div>
+
                     <ul class="footer_list">
                         {% for link in links %}
-                           <li class="text-right" ><a class="leo-farsi"  href="{{link.url}}">{{link.title}}</a></li>
-                       
-                        {% endfor %}
-                        {% if perms.app.add_link %}
-                       
+                        <li class="text-right"><a class="leo-farsi" href="{{link.url}}">{{link.title}}</a></li>
+
+                        {% endfor %} {% if perms.app.add_link %}
+
                         <li class="text-right"><a class="leo-farsi" href="{{ADMIN_URL}}app/link/add/">افزودن لینک</a></li>
-                       
- 
+
+
                         {% endif %}
-                        
+
                     </ul>
                 </div>
             </div>
 
-            
+
         </div>
     </div>
 </footer>
@@ -96,23 +97,30 @@
         <div class="row leo-rtl">
             <div class="col">
 
-                <div
-                    class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
+                <div class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
                     <div class="copyright_content leo-rtl leo-farsi">
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         کپی رایت &copy;
-                        <script>document.write(new Date().getFullYear());</script> کلیه حقوق مادی و معنوی محفوظ می باشد | 
-                        طراحی و توسعه  <i class="fa fa-heart" aria-hidden="true"></i><a
-                            href="https://khafonline.com" class="mx-2" target="_blank">فونیکس</a> & <a
-                            href="https://Colorlib.com" class="mx-2" target="_blank">Colorlib</a> 
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> کلیه حقوق مادی و معنوی محفوظ می باشد | طراحی و توسعه <i class="fa fa-heart" aria-hidden="true"></i><a href="https://khafonline.com" class="mx-2" target="_blank">فونیکس</a> & <a href="https://Colorlib.com" class="mx-2"
+                            target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
                     <div class="logos mr-sm-auto">
                         <ul class="logos_list">
-                            <li><a href="#"><img src="{% static 'one-tech/images/logos_1.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'one-tech/images/logos_2.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'one-tech/images/logos_3.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'one-tech/images/logos_4.png' %}" alt=""></a></li>
+                            <li>
+                                <a href="#"><img src="{% static 'one-tech/images/logos_1.png' %}" alt=""></a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="{% static 'one-tech/images/logos_2.png' %}" alt=""></a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="{% static 'one-tech/images/logos_3.png' %}" alt=""></a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="{% static 'one-tech/images/logos_4.png' %}" alt=""></a>
+                            </li>
                         </ul>
                     </div>
                 </div>

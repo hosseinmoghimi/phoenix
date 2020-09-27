@@ -6,8 +6,7 @@
                     <div class="w100 text-center">
                         <a href="{% url 'app:home' %}"><img src="{{app.logo.image}}" height="64px" alt=""></a>
                         {% if perms.app.change_mainpic %}
-                        <p class="text-center"> <a class="btn btn-info text-light leo-farsi"
-                                href="{{app.logo.get_edit_url}}">ویرایش</a>
+                        <p class="text-center"> <a class="btn btn-info text-light leo-farsi" href="{{app.logo.get_edit_url}}">ویرایش</a>
                         </p> {% endif %}
                     </div>
 
@@ -20,9 +19,7 @@
                     </a>
                     {% if perms.app.change_parameter %}
                     <p> <a class="btn btn-info text-light leo-farsi" href="{{app.pretitle.get_edit_url}}">ویرایش</a>
-                    </p> {% endif %}
-
-                    {% endif %}
+                    </p> {% endif %} {% endif %}
 
 
 
@@ -51,10 +48,11 @@
 
 
                     <ul class="list-unstyled" style="padding-inline-start: 0px !important;">
-                        <li class="text-right"><a class="leo-farsi" href="{% url 'market:home' %}">
-                            <span
-                                    class="leo-rtl fa fa-chevron-left ml-2"></span>
-                                    فروشگاه</a></li>
+                        <li class="text-right">
+                            <a class="leo-farsi" href="{% url 'market:home' %}">
+                                <span class="leo-rtl fa fa-chevron-left ml-2"></span> فروشگاه
+                            </a>
+                        </li>
 
                         <li class="text-right"><a href="{% url 'app:about' %}#banners" class="leo-farsi"><span
                                     class="leo-rtl fa fa-chevron-left ml-2"></span>همکاران ما</a></li>
@@ -81,8 +79,7 @@
                                     class="fa fa-chevron-left ml-2"></span><span
                                     class="leo-farsi">{{link.title}}</span></a></li>
 
-                        {% endfor %}
-                        {% if perms.app.add_link %}
+                        {% endfor %} {% if perms.app.add_link %}
 
                         <li class="text-right"><a class="leo-rtl" href="{{ADMIN_URL}}app/link/add/"><span
                                     class="fa fa-chevron-left ml-2"></span><span class="leo-farsi">
@@ -127,28 +124,28 @@
                     {% for social_link in social_links %}
                     <li class="ftco-animate">
                         <a href="{{social_link.url}}" title="{{social_link.title}}">
-                            {{social_link.get_tag_icon | safe}}
+                            {{social_link.get_icon_tag | safe}}
 
                         </a></li>
 
-                    {% endfor %}
-                    {% if perms.app.add_sociallink %}
+                    {% endfor %} {% if perms.app.add_sociallink %}
                     <li class="ftco-animate">
                         <a href="{{ADMIN_URL}}app/sociallink/add/">
 
                             <span class="fa fa-plus text-info"></span>
 
-                        </a></li>
+                        </a>
+                    </li>
                     {% endif %}
 
                 </ul>
                 <p class="text-center">
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     کپی رایت &copy;
-                    <script>document.write(new Date().getFullYear());</script> کلیه حقوق مادی و معنوی محفوظ می باشد |
-                    طراحی و توسعه <i class="fa fa-heart" aria-hidden="true"></i><a
-                        href="https://khafonline.com/phoenix/" class="mx-2" target="_blank">فونیکس</a> & <a
-                        href="https://Colorlib.com" class="mx-2" target="_blank">Colorlib</a>
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script> کلیه حقوق مادی و معنوی محفوظ می باشد | طراحی و توسعه <i class="fa fa-heart" aria-hidden="true"></i><a href="https://khafonline.com/phoenix/" class="mx-2" target="_blank">فونیکس</a> & <a href="https://Colorlib.com" class="mx-2"
+                        target="_blank">Colorlib</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>

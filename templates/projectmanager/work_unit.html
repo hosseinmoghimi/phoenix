@@ -1,7 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
 
 
 
@@ -36,42 +33,34 @@
                     <div class="text-secondary">
                         {{work_unit.short_description|safe}}
                     </div>
-                    <hr>
-                    {% endif %}
-                    {% if work_unit.description %}
+                    <hr> {% endif %} {% if work_unit.description %}
                     <p class="mt-3 text-secondary"> {{work_unit.description}}
                     </p>
-                    {% endif %}
-
-                    {% if work_unit.childs %}
+                    {% endif %} {% if work_unit.childs %}
                     <p>زیر مجموعه ها</p>
 
                     <div class="ml-5">
                         {% for work_unit in work_unit.childs.all %}
 
                         <a class="my-3 d-block" href="{{work_unit.get_absolute_url}}">
-                            <i class="material-icons">apartment</i>
-                            {{work_unit.title}}</a>
+                            <i class="material-icons">apartment</i> {{work_unit.title}}
+                        </a>
                         {% endfor %}
                     </div>
 
-                    <hr>
-                    {% endif %}
-
-                    {% if work_unit.project_set.all %}
+                    <hr> {% endif %} {% if work_unit.project_set.all %}
                     <p>پروژه های مرتبط</p>
 
                     <div class="ml-5">
                         {% for project in work_unit.project_set.all %}
 
                         <a class="d-block my-3" href="{{project.get_absolute_url}}">
-                            <i class="material-icons">build</i>
-                            {{project.full_title}}</a>
+                            <i class="material-icons">build</i> {{project.full_title}}
+                        </a>
                         {% endfor %}
                     </div>
 
-                    <hr>
-                    {% endif %}
+                    <hr> {% endif %}
 
 
 
@@ -118,26 +107,24 @@
                 <h5 class="mt-4">
                     فایل ها
                 </h5>
-               
-                
+
+
 
 
 
                 {% for document in work_unit.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-                {% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{work_unit.id}}">
@@ -145,7 +132,7 @@
                     <button type="submit" class="btn btn-primary">تایید</button>
                 </form>
                 {% endif %}
-              
+
                 <h5 class="mt-5">
                     لینک ها
                 </h5>
@@ -153,18 +140,16 @@
                 {% for link in work_unit.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-  {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{work_unit.id}}">
@@ -178,13 +163,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and issue.get_edit_url%}
+                    {% if perms.projectmanager.change_project and issue.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{issue.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -221,15 +205,13 @@
 
                                     <small>جزئیات</small>
 
-                                </a> &nbsp;
-                                {{product_request.get_status_tag|safe}}
+                                </a> &nbsp; {{product_request.get_status_tag|safe}}
 
 
 
                             </td>
 
-                            <td><a class="btn btn-warning"
-                                    href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
+                            <td><a class="btn btn-warning" href="{{product_request.product.get_absolute_url}}">{{product_request.product.name}}</a>
                             </td>
                             <td>{{product_request.quantity}} {{product_request.product_unit}}</td>
                             <td>
@@ -262,10 +244,8 @@
                     {% if add_product_request_form %}
 
 
-                    <a class="text-primary" style="cursor: pointer;"
-                        @click="show_add_product_request=!show_add_product_request">
-                        <i class="material-icons text-danger">link</i>
-                        افزودن درخواست کالا</a>
+                    <a class="text-primary" style="cursor: pointer;" @click="show_add_product_request=!show_add_product_request">
+                        <i class="material-icons text-danger">link</i> افزودن درخواست کالا</a>
 
                     {% endif %}
                 </div>
@@ -290,16 +270,14 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">کالای درخواستی</label>
-                                    <input type="number" class="form-control" name="product_id" v-model="product_id"
-                                        value="">
+                                    <input type="number" class="form-control" name="product_id" v-model="product_id" value="">
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">تعداد</label>
-                                    <input v-model="quantity" type="number" name="quantity" class="form-control"
-                                        value="">
+                                    <input v-model="quantity" type="number" name="quantity" class="form-control" value="">
                                 </div>
                             </div>
 
@@ -337,8 +315,7 @@
 
 
                     <a class="text-primary">
-                        <i class="material-icons text-danger">link</i>
-                        افزودن درخواست کالا</a>
+                        <i class="material-icons text-danger">link</i> افزودن درخواست کالا</a>
 
                 </div>
             </div>
@@ -378,8 +355,8 @@
 
 
                                 <a class=" mb-2 text-{{work_unit.color}}" href="{{employee.profile.get_absolute_url}}">
-                                    <i class="material-icons">{{project.icon}}</i>
-                                    {{employee.profile.name}}</a>
+                                    <i class="material-icons">{{project.icon}}</i> {{employee.profile.name}}
+                                </a>
 
 
 
@@ -429,7 +406,7 @@
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
-               
+
 
 
                 <p class="card-category">{{work_unit.title}}</p>
@@ -456,8 +433,7 @@
 
                     <a href="{{work_unit.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -469,14 +445,13 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 
 <script>
     $("#project-manager-link").addClass("active");
 
     let csrfmiddlewaretoken = ''
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
     })
@@ -528,11 +503,5 @@
     //         },
     //     }
     // )
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}

@@ -1,7 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
 
 
 
@@ -18,8 +15,7 @@
                 <p class="card-category">{{issue.pretitle}}</p>
 
                 {% endif %}
-                <h3 class="card-title">{{issue.title}}
-                    {% if issue.posttitle %}
+                <h3 class="card-title">{{issue.title}} {% if issue.posttitle %}
                     <p class="card-category">{{issue.posttitle}}</p>
 
                     {% endif %}
@@ -34,8 +30,7 @@
 
                 <a href="{{issue.issue_for.get_absolute_url}}" class="mb-4">
                     <h5>
-                        {{issue.issue_for.get_colored_icon|safe}}
-                        {{issue.issue_for.title}}
+                        {{issue.issue_for.get_colored_icon|safe}} {{issue.issue_for.title}}
                     </h5>
                 </a>
                 {% if issue.short_description %}
@@ -47,13 +42,12 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_page  and issue.get_edit_url%}
+                    {% if perms.projectmanager.change_page and issue.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{issue.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -86,18 +80,16 @@
                 {% for document in issue.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-    {% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{issue.id}}">
@@ -105,27 +97,23 @@
                     <button type="submit" class="btn btn-primary">تایید</button>
                 </form>
                 {% endif %}
-<h5 class="mt-5">
-    لینک ها
-</h5>
+                <h5 class="mt-5">
+                    لینک ها
+                </h5>
 
                 {% for link in issue.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-            
-                {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{issue.id}}">
@@ -142,13 +130,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and issue.get_edit_url%}
+                    {% if perms.projectmanager.change_project and issue.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{issue.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -193,13 +180,12 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_issue  and issue.get_edit_url%}
+                    {% if perms.projectmanager.change_issue and issue.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{issue.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -209,11 +195,9 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         //     initDashboardPageCharts();
 
@@ -221,13 +205,5 @@
 </script>
 <script>
     $("#project-manager-link").addClass("active");
-
-
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}

@@ -1,27 +1,13 @@
 {% load static %}
 <div>
     {% if partial_page.image %}
-    <img src="{{partial_page.image}}" class="mb-3" alt="">
-    {% endif %}
-
-    {% if partial_page.pretitle %}
+    <img src="{{partial_page.image}}" class="mb-3" alt=""> {% endif %} {% if partial_page.pretitle %}
     <h5>{{partial_page.pretitle}}</h5>
-    {% endif %}
-
-
-
-    {% if partial_page.title %}
+    {% endif %} {% if partial_page.title %}
     <h3>{{partial_page.title}}</h3>
-    {% endif %}
-
-
-    {% if partial_page.posttitle %}
+    {% endif %} {% if partial_page.posttitle %}
     <h5>{{partial_page.posttitle}}</h5>
-    {% endif %}
-
-
-
-    {% if partial_page.description %}
+    {% endif %} {% if partial_page.description %}
     <p>{{partial_page.description|safe}}</p>
     {% endif %}
 
@@ -44,49 +30,38 @@
         {% endfor %}
     </div>
 </div>
-{% endfor %}
-{% if partial_page.documents.all %}
-  <div>
-   <h4>  Documents</h4>  
-  </div>
-{% endif %}
-
-{% for document in partial_page.documents.all %}
+{% endfor %} {% if partial_page.documents.all %}
 <div>
-    
-      
-            <a target="_blank" href="{{document.get_download_url}}">
-                {{document.get_tag_icon | safe}}&nbsp;
-               {{document.title}}</a>
-               {% if perms.engapp.change_document %}
-                 
-            <a class="btn btn-info"  href="{{document.get_edit_url}}">
-               
-            Edit</a>
-               {% endif %}
-      
-                
+    <h4> Documents</h4>
 </div>
-{% endfor %}
-
-{% if partial_page.links.all %}
-  <div>
-   <h4>  Links</h4>  
-  </div>
-{% endif %}
-{% for link in partial_page.links.all %}
+{% endif %} {% for document in partial_page.documents.all %}
 <div>
-    
-      
-            <a target="_blank" href="{{link.url}}">
-                {{link.get_tag_icon | safe}}&nbsp;
-               {{link.title}}</a>
-      
-               {% if perms.engapp.change_link %}
-                 
-               <a class="btn btn-info" href="{{link.get_edit_url}}">
+
+
+    <a target="_blank" href="{{document.get_download_url}}">
+                {{document.get_icon_tag | safe}}&nbsp;
+               {{document.title}}</a> {% if perms.engapp.change_document %}
+
+    <a class="btn btn-info" href="{{document.get_edit_url}}">
+               
+            Edit</a> {% endif %}
+
+
+</div>
+{% endfor %} {% if partial_page.links.all %}
+<div>
+    <h4> Links</h4>
+</div>
+{% endif %} {% for link in partial_page.links.all %}
+<div>
+
+
+    <a target="_blank" href="{{link.url}}">
+                {{link.get_icon_tag | safe}}&nbsp;
+               {{link.title}}</a> {% if perms.engapp.change_link %}
+
+    <a class="btn btn-info" href="{{link.get_edit_url}}">
                   
-               Edit</a>
-                  {% endif %}
+               Edit</a> {% endif %}
 </div>
 {% endfor %}

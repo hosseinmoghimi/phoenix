@@ -256,10 +256,10 @@ class Tag(models.Model):
         return """
         <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
              
-                {get_tag_icon}
+                {get_icon_tag}
             
               {title}</a>
-          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          """.format(get_absolute_url=tag.get_absolute_url(),get_icon_tag=tag.icon.get_icon_tag(),title=tag.title)    
           
     class Meta:
         verbose_name = _("Tag")
@@ -291,10 +291,10 @@ class OurWorkCategory(models.Model):
         return """
         <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
              
-                {get_tag_icon}
+                {get_icon_tag}
             
               {title}</a>
-          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          """.format(get_absolute_url=tag.get_absolute_url(),get_icon_tag=tag.icon.get_icon_tag(),title=tag.title)    
           
     class Meta:
         verbose_name = _("OurWorkCategory")
@@ -322,7 +322,7 @@ class Icon(models.Model):
     color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("Width"),default=128)
     height=models.IntegerField(_("Height"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -334,10 +334,10 @@ class Icon(models.Model):
         return ""
     def get_tag(self):
         if self.url:
-            icon=self.get_tag_icon()
+            icon=self.get_icon_tag()
             return f'<a title="{self.title}" href="{self.url}">{icon}</a>'
         else:
-            return self.get_tag_icon()
+            return self.get_icon_tag()
       
     class Meta:
         verbose_name = _("Icon")
@@ -703,7 +703,7 @@ class OurService(Page):
     color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("Width"),default=128)
     height=models.IntegerField(_("Height"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.thumbnail_origin is not None and self.thumbnail_origin:
             return f'<img src="{MEDIA_URL}{str(self.thumbnail_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -713,7 +713,7 @@ class OurService(Page):
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
-        icon=self.get_tag_icon()
+        icon=self.get_icon_tag()
         return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
       
     
@@ -807,7 +807,7 @@ class SocialLink(models.Model):
     color=models.CharField(_("Color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("Width"),default=128)
     height=models.IntegerField(_("Height"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -818,10 +818,10 @@ class SocialLink(models.Model):
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
         if self.url:
-            icon=self.get_tag_icon()
+            icon=self.get_icon_tag()
             return f'<a title="{self.title}" href="{self.url}">{icon}</a>'
         else:
-            return self.get_tag_icon()
+            return self.get_icon_tag()
    
    
     class Meta:

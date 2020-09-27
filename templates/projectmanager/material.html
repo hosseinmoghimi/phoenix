@@ -1,7 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
 
 
 
@@ -16,18 +13,12 @@
                 </div>
                 {% if material.category %}
                 <p class="card-category">
-                    {% if material.category.parent %}
+                    {% if material.category.parent %} {{material.category.get_breadcrumb_url |safe}} {% endif %}
 
-                    {{material.category.get_breadcrumb_url |safe}}
-                      
-                    {% endif %}
-                 
-                    
-                    </p>
 
-                {% endif %}
+                </p>
 
-                {% if material.pretitle %}
+                {% endif %} {% if material.pretitle %}
                 <p class="card-category">{{material.pretitle}}</p>
 
                 {% endif %}
@@ -36,8 +27,7 @@
                 {% if material.posttitle %}
                 <p class="card-category">{{material.posttitle}}</p>
 
-                {% endif %}
-                {% if material.model %}
+                {% endif %} {% if material.model %}
                 <p class="card-category">{{material.model}}</p>
 
                 {% endif %}
@@ -46,16 +36,13 @@
 
                 {% if material.brand %}
                 <p class="mb-4">
-                    برند : 
-                <a href="{{material.brand.get_absolute_url}}"> 
-                <i class="material-icons">dashboard</i>  {{material.brand.title}}
-                </a>   
+                    برند :
+                    <a href="{{material.brand.get_absolute_url}}">
+                        <i class="material-icons">dashboard</i> {{material.brand.title}}
+                    </a>
                 </p>
 
-                {% endif %}
-
-
-                {% if material.short_description %}
+                {% endif %} {% if material.short_description %}
                 <div class=" text-secondary">{{material.short_description|safe}}</div>
 
                 {% endif %}
@@ -63,18 +50,17 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and material.get_edit_url%}
+                    {% if perms.projectmanager.change_project and material.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{material.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
     </div>
-   
+
 
     {% if material.images.all %}
     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -104,18 +90,16 @@
                             <div class="carousel-caption d-none d-md-block">
                                 <h1 class="display-4">{{ material_img.name }}</h1>
                                 <p class="lead">
-                                    <a target="_blank" class="" href="{{ material_img.image }}"
-                                        role="button">
+                                    <a target="_blank" class="" href="{{ material_img.image }}" role="button">
                                         <i class="material-icons">home</i>
                                     </a>
                                 </p>
                                 {% if perms.projectmanager.change_image %}
-                                   <p class="lead">
-                                    <a class="btn btn-warning btn-link btn-sm" href="{{ material_img.get_edit_url }}"
-                                        role="button">ویرایش تصویر</a>
+                                <p class="lead">
+                                    <a class="btn btn-warning btn-link btn-sm" href="{{ material_img.get_edit_url }}" role="button">ویرایش تصویر</a>
                                 </p>
                                 {% endif %}
-                               
+
                             </div>
                         </div>
                         {% endfor %}
@@ -144,13 +128,12 @@
 
                     <a href="{{ADMIN_URL}}{{APP_NAME}}/image/add/">
 
-                        افزودن تصویر </a>
-                    {% endif %}
+                        افزودن تصویر </a> {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    {% endif %} 
+    {% endif %}
     <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -178,18 +161,16 @@
                 {% for document in material.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-  {% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{material.id}}">
@@ -204,24 +185,16 @@
                 {% for link in material.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-
-
-
-
-              
-                {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{material.id}}">
@@ -237,13 +210,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and material.get_edit_url%}
+                    {% if perms.projectmanager.change_project and material.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{material.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -285,13 +257,12 @@
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and material.get_edit_url%}
+                    {% if perms.projectmanager.change_project and material.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{material.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -302,11 +273,9 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         //  initDashboardPageCharts();
 
@@ -318,12 +287,5 @@
     $(".carousel-item:first").addClass("active");
 
     $("#carouselExampleIndicators:first").addClass("active");
-
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}

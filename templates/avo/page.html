@@ -1,24 +1,12 @@
-{% extends "avo/layout.html" %}
-{% load static %}
-{% load to_persian_date %}
-
-{% block head %}
+{% extends "avo/layout.html" %} {% load static %} {% load to_persian_date %} {% block head %}
 
 
 
-<meta name="description" content="{% for meta_data in page.meta_datas.all %}{{meta_data.content}} , {% endfor %}" />
+<meta name="description" content="{% for meta_data in page.meta_datas.all %}{{meta_data.content}} , {% endfor %}" /> {% endblock %} {% block contents %}
 
 
 
-
-{% endblock %}
-
-{% block contents %}
-
-
-
-<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{page.header_image}}');"
-    data-stellar-background-ratio="0.5">
+<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{page.header_image}}');" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row leo-rtl no-gutters slider-text js-fullheight align-items-end">
@@ -30,33 +18,27 @@
                 {% if page.pretitle %}
                 <h3 class="mb-3 bread text-right">{{page.pretitle}}</h3>
 
-                {% endif %}
-
-                {% if page.title %}
+                {% endif %} {% if page.title %}
                 <h1 class="mb-3 bread text-right">{{page.title}}</h1>
 
-                {% endif %}
-
-                {% if page.posttitle %}
+                {% endif %} {% if page.posttitle %}
                 <h3 class="mb-3 bread text-right">{{page.posttitle}}</h3>
 
-                {% endif %}
-
-                {% if page.action_text %}
+                {% endif %} {% if page.action_text %}
                 <p class="text-right">
                     <a href="{{page.action_url}}" class="btn btn-primary py-md-3 py-2 px-2 px-md-4">
                         <span>
-                            {{page.action_text}}</span></a></p>
+                            {{page.action_text}}</span></a>
+                </p>
 
-                {% endif %}
-
-                {% if perms.app.change_page %}
+                {% endif %} {% if perms.app.change_page %}
                 <p>
                     <a class="btn btn-info" href="{{page.get_edit_url}}">
                         <span class="leo-farsi">
                             ویرایش
                         </span>
-                    </a></p>
+                    </a>
+                </p>
                 {% endif %}
 
 
@@ -75,12 +57,10 @@
                 {% if page.pretitle %}
                 <h6 class="mb-3 leo-rtl text-right">{{page.pretitle}}</h6>
 
-                {% endif %}
-                {% if page.title %}
+                {% endif %} {% if page.title %}
                 <h4 class="mb-3 leo-rtl text-right">{{page.title}}</h4>
 
-                {% endif %}
-                {% if page.posttitle %}
+                {% endif %} {% if page.posttitle %}
                 <h6 class="mb-3 leo-rtl text-right">{{page.posttitle}}</h6>
 
                 {% endif %}
@@ -115,8 +95,7 @@
                 <div style="width:fit-content;margin:auto">
                     {% include "avo/partials/map.html" %}
                 </div>
-                {% endif %}
-                {% if page.links.all %}
+                {% endif %} {% if page.links.all %}
 
                 <div class="testimony-wrap pb-2 mb-4">
                     <div class="">
@@ -127,11 +106,10 @@
 
                         <p>
                             <a href="{{link.get_absolute_url}}">
-                                {{link.get_tag_icon | safe}}&nbsp;&nbsp;
+                                {{link.get_icon_tag | safe}}&nbsp;&nbsp;
                                 {{link.title}}
 
-                            </a>
-                            {% if perms.app.change_link %}
+                            </a> {% if perms.app.change_link %}
 
                             <a class="btn btn-info" href="{{link.get_edit_url}}">
                                 <span class="leo-farsi">
@@ -148,12 +126,7 @@
                 </div>
 
 
-                {% endif %}
-
-
-
-
-                {% if page.documents.all %}
+                {% endif %} {% if page.documents.all %}
 
                 <div class="testimony-wrap pb-2 mb-4">
                     <div class="">
@@ -163,11 +136,10 @@
                         {% for document in page.documents.all %}
                         <p class="mb-3">
                             <a href="{{document.get_download_url}}">
-                                {{document.get_tag_icon | safe}}&nbsp;&nbsp;
+                                {{document.get_icon_tag | safe}}&nbsp;&nbsp;
                                 {{document.title}}
 
-                            </a>
-                            {% if perms.app.change_document %}
+                            </a> {% if perms.app.change_document %}
 
                             <a class="btn btn-info" href="{{document.get_edit_url}}">
                                 <span class="leo-farsi">
@@ -188,22 +160,15 @@
                 </div>
 
 
-                {% endif %}
-
-                {% for partial_page in page.parts.all %}
-
-                {% include "avo/partials/partial-page.html" %}
-
-                {% endfor %}
+                {% endif %} {% for partial_page in page.parts.all %} {% include "avo/partials/partial-page.html" %} {% endfor %}
                 <div class="tag-widget post-tag-container mb-5 mt-5">
                     <div class="tagcloud leo-rtl text-right">
                         {% for tag in page.tags.all %}
                         <a href="{{tag.get_absolute_url}}" class="leo-farsi tag-cloud-link">
                             {% if tag.icon %}
-                            {{tag.icon.get_tag_icon | safe}}
+                            {{tag.icon.get_icon_tag | safe}}
                             {% endif %}
-                            {{tag.title}}</a>
-                        {% endfor %}
+                            {{tag.title}}</a> {% endfor %}
 
                     </div>
                 </div>
@@ -213,8 +178,7 @@
                 <div class="about-author d-flex p-4 mb-3">
                     <div class="bio ml-5">
                         <a href="{{page.profile.get_absolute_url}}">
-                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px"
-                                class="img-fluid mb-4 rounded-circle">
+                            <img src="{{page.profile.image}}" alt="Image placeholder" width="64px" class="img-fluid mb-4 rounded-circle">
                         </a>
                     </div>
                     <div class="desc">
@@ -252,12 +216,10 @@
 
                             <div class="form-group text-right">
                                 <label for="message" class="text-right">نظر خود را وارد کنید</label>
-                                <textarea name="" v-model="text" id="message" cols="30" rows="3"
-                                    class="form-control"></textarea>
+                                <textarea name="" v-model="text" id="message" cols="30" rows="3" class="form-control"></textarea>
                             </div>
                             <div class="form-group">
-                                <input v-if="text" @click="AddComment" value="ارسال نظر"
-                                    class="btn py-3 px-4 btn-primary">
+                                <input v-if="text" @click="AddComment" value="ارسال نظر" class="btn py-3 px-4 btn-primary">
                             </div>
 
                         </form>
@@ -271,7 +233,8 @@
                     {% endif %}
                 </div>
 
-            </div> <!-- .col-md-8 -->
+            </div>
+            <!-- .col-md-8 -->
             <div class="col-md-4 sidebar ftco-animate">
 
                 <div class=" sidebar-box">
@@ -302,17 +265,14 @@
                     <h3 class="text-center mb-3">مطالب مرتبط</h3>
                     {% for related in page.relateds.all %}
                     <div class="block-21 mb-4 d-flex">
-                        <a class="blog-img ml-4" href="{{related.get_absolute_url}}"
-                            style="background-image: url({{related.thumbnail}});"></a>
+                        <a class="blog-img ml-4" href="{{related.get_absolute_url}}" style="background-image: url({{related.thumbnail}});"></a>
                         <div class="text">
-                            <h4 class="heading leo-rtl text-right mb-0"><a
-                                    href="{{related.get_absolute_url}}">{{related.title}}</a></h4>
+                            <h4 class="heading leo-rtl text-right mb-0"><a href="{{related.get_absolute_url}}">{{related.title}}</a></h4>
                             <div class="meta text-right">
                                 <div class="leo-rtl text-right"><a href="#"><span
                                             class="icon-calendar"></span>{{related.date_added|to_persian_date|safe}}</a>
                                 </div>
-                                <div class="leo-rtl text-right d-block"><a class="leo-rtl text-right"
-                                        href="{{related.profile.get_absolute_url}}"><span
+                                <div class="leo-rtl text-right d-block"><a class="leo-rtl text-right" href="{{related.profile.get_absolute_url}}"><span
                                             class="fa fa-comment text-info"></span>
                                         <span class="leo-farsi">
                                             {{related.profile.name}}</span></a><a href="#"><span
@@ -335,19 +295,13 @@
                         {% for tag in page.tags.all %}
                         <a href="{{tag.get_absolute_url}}" class="leo-farsi tag-cloud-link">
                             {% if tag.icon %}
-                            {{tag.icon.get_tag_icon | safe}}
+                            {{tag.icon.get_icon_tag | safe}}
                             {% endif %}
-                            {{tag.title}}</a>
-
-                        {% endfor %}
-
-                        {% if perms.app.add_tag %}
-                        <a v-for="tag in tags" v-text="tag.title" :href="tag.get_absolute_url"
-                            class="leo-farsi tag-cloud-link">
+                            {{tag.title}}</a> {% endfor %} {% if perms.app.add_tag %}
+                        <a v-for="tag in tags" v-text="tag.title" :href="tag.get_absolute_url" class="leo-farsi tag-cloud-link">
                         </a>
                         <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
-                        <button class="btn btn-primary" @click="add_tag">اضافه کن</button>
-                        {% endif %}
+                        <button class="btn btn-primary" @click="add_tag">اضافه کن</button> {% endif %}
                     </div>
                 </div>
 
@@ -363,22 +317,22 @@
 
         </div>
     </div>
-</section> <!-- .section -->
+</section>
+<!-- .section -->
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 
 <script>
     // $("#our-works-link").addClass('active')
     let csrfmiddlewaretoken = ''
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
 
     })
-    let add_tag_url="{% url 'app:add_tag'%}"
+    let add_tag_url = "{% url 'app:add_tag'%}"
     let comments = JSON.parse(`{{comments_s|escapejs}}`)
     let my_like = JSON.parse("{% if my_like %}true{% else %}false{% endif %}")
     let page_id = JSON.parse("{{page.id}}")
@@ -391,7 +345,6 @@
 </script>
 <script src="{% static 'vendor/js/vue.js' %}"></script>
 <script>
-
     let tags_app = new Vue({
         el: "#tags-app",
         data: {
@@ -400,16 +353,16 @@
 
         },
         methods: {
-            add_tag: function () {
+            add_tag: function() {
                 let url = add_tag_url
                 let posting = $.post(url, {
                     page_id: object_id,
                     tag_title: tags_app.new_tag,
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
-                posting.done(function (data) {
-                    tags_app.new_tag=''
-                    if (data.result==='SUCCEED') {
+                posting.done(function(data) {
+                    tags_app.new_tag = ''
+                    if (data.result === 'SUCCEED') {
                         tags_app.tags.push(data.tag)
                     }
                 })
@@ -428,7 +381,7 @@
 
         },
         methods: {
-            toggle_like: function () {
+            toggle_like: function() {
                 let url = "{% url 'app:toggle_like' %}"
                 let posting = $.post(url, {
                     object_id: this.page_id,
@@ -436,7 +389,7 @@
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
 
-                posting.done(function (data) {
+                posting.done(function(data) {
                     like_app.my_like = data.my_like
 
                     like_app.likes_count = data.likes_count
@@ -447,53 +400,47 @@
 
         },
     })
-
-
-
-
-
-
 </script>
 <script src="{% static 'leo/js/comment-component.js' %}"></script>
 <script>
-    delete_comment = function (comment_id) {
+    delete_comment = function(comment_id) {
         comment_app.delete_comment(comment_id)
     }
-    var comment_app = new Vue(
-        {
-            el: "#comment-app",
-            data: {
-                comments: comments,
-                text: '',
-                profile_id: profile_id,
-            },
-            methods: {
-                delete_comment: function (comment_id) {
-                    this.comments = this.comments.filter(function (value, index, arr) { return value.id != comment_id; })
+    var comment_app = new Vue({
+        el: "#comment-app",
+        data: {
+            comments: comments,
+            text: '',
+            profile_id: profile_id,
+        },
+        methods: {
+            delete_comment: function(comment_id) {
+                this.comments = this.comments.filter(function(value, index, arr) {
+                    return value.id != comment_id;
+                })
 
-                },
-                AddComment: function () {
-                    if (comment_app.text === "")
-                        console.log('comment text must be filled')
-                    else {
-                        let url = add_comment_url
-                        let posting = $.post(url, {
-                            object_id: object_id,
-                            text: comment_app.text,
-                            object_type: "Page",
-                            csrfmiddlewaretoken: csrfmiddlewaretoken
-                        })
-                        posting.done(function (data) {
-                            this.confirm_delete_comment = false
-                            if (data.my_comment) {
-                                comment_app.comments.push(data.my_comment)
-                                comment_app.text = ""
-                            }
-                        })
-                    }
-                },
             },
-        }
-    )
+            AddComment: function() {
+                if (comment_app.text === "")
+                    console.log('comment text must be filled')
+                else {
+                    let url = add_comment_url
+                    let posting = $.post(url, {
+                        object_id: object_id,
+                        text: comment_app.text,
+                        object_type: "Page",
+                        csrfmiddlewaretoken: csrfmiddlewaretoken
+                    })
+                    posting.done(function(data) {
+                        this.confirm_delete_comment = false
+                        if (data.my_comment) {
+                            comment_app.comments.push(data.my_comment)
+                            comment_app.text = ""
+                        }
+                    })
+                }
+            },
+        },
+    })
 </script>
 {% endblock %}
