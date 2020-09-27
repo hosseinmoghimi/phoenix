@@ -1,6 +1,9 @@
 from django import forms
 from .models import ContactMessage
 
+class AddTagForm(forms.Form):
+    tag_title=forms.CharField(max_length=50,required=True)
+    page_id=forms.IntegerField(required=True)
 
 class AddCommentForm(forms.Form):
     reply_to=forms.IntegerField(required=False)

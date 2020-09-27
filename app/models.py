@@ -571,7 +571,24 @@ class Blog(Page):
     def get_absolute_url(self):
         return reverse("app:blog", kwargs={"blog_id": self.pk})
 
- 
+
+
+class Technology(Page):
+
+    
+    class Meta:
+        verbose_name = _("Technology")
+        verbose_name_plural = _("تکنولوژی")
+   
+    def __str__(self):
+        return self.title
+
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/technology/{self.pk}/change/'
+    def get_absolute_url(self):
+        return reverse("app:technology", kwargs={"technology_id": self.pk})
+
+
 
 class Comment(models.Model):
     profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.CASCADE)

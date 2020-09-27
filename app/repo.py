@@ -165,10 +165,17 @@ class TagRepo:
         self.user=user
         self.objects=Tag.objects
         self.profile=ProfileRepo(user=user).me
-    def add(self,question,answer,icon,color,priority):
-        faq=FAQ(question=question,answer=answer,priority=priority)
-        faq.save()
-        return faq
+    def add(self,page_id,tag_title):
+        try:
+            tag=Tag.objects.get(title=tag_title)
+        except:
+            tag=Tag(title=tag_title)
+            tag.save()
+        page=PageRepo(user=self.user).page(page_id=page_id)
+        if page is not None and tag is not None:
+            page.tags.add(tag)
+            return True
+        return False
     def list(self):
         return self.objects.order_by('priority')
     def list_top(self):
@@ -208,6 +215,29 @@ class ParameterRepo:
             self.set(name=name)            
             parameter=self.objects.get(name=name)
         return parameter
+
+class TechnologyRepo:
+    def __init__(self,user=None):
+        self.user=user
+        self.objects=Technology.objects.filter(archive=False)
+    def list(self):
+        return self.objects.filter(archive=False).order_by('priority')
+    def add(self,title,pretitle,icon,color,priority,short_desc,description):
+        profile=ProfileRepo(user=self.user).me
+        if self.user.has_perm(APP_NAME+'.add_blog'):
+            blog=Blog(profile=profile,title=title,pretitle=pretitle,icon=icon,color=color,priority=priority,short_desc=short_desc,description=description)
+            blog.save()
+            if blog is not None:
+                return blog
+    
+    def list_for_home(self):
+        return self.objects.filter(for_home=True).order_by('priority')            
+    def technology(self,technology_id):
+        try:
+            return self.objects.get(pk=technology_id)
+        except:
+            return None
+
 
 
 class BlogRepo:
