@@ -460,6 +460,9 @@ class LinkRepo:
         return self.objects.order_by('priority')
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
+    def get_nav_items(self):
+        return self.objects.filter(for_nav=True).order_by('priority')
+
 
 
 class DocumentRepo:

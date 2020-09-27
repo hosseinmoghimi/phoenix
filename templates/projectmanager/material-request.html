@@ -1,9 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% load to_persian_date %}
-{% load to_material_request_status_color %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% load to_persian_date %} {% load to_material_request_status_color %} {% block contents %}
 
 
 
@@ -27,17 +22,14 @@
                 {% endif %}
 
                 </h3>
-                <span
-                    class="badge badge-{{material_request.status|to_material_request_status_color}}">{{material_request.status}}</span>
+                <span class="badge badge-{{material_request.status|to_material_request_status_color}}">{{material_request.status}}</span>
             </div>
             <div class="card-body">
                 <a class="" href={{material_request.requested_material.get_absolute_url}}>
-                 
+
                     <h5 class="my-3 text-primary">
-                       <i class="fa fa-object-group mx-3"></i>
-                       {{material_request.requested_material.title}}
-                       &nbsp;
-                       <span class="text-warning">
+                        <i class="fa fa-object-group mx-3"></i> {{material_request.requested_material.title}} &nbsp;
+                        <span class="text-warning">
                         {{material_request.quantity}}&nbsp;{{material_request.unit_name}}
                     </span>
 
@@ -47,42 +39,37 @@
 
                 <p>پروژه </p>
                 <a class="" href={{material_request.for_project.get_absolute_url}}>
-                               
-                                  <h6 class="my-3 text-primary">
-                                      <i class="material-icons">build</i>   {{material_request.for_project.full_title}}
-                                  </h6>
-                              </a>
 
-
-
-                              {% if material_request.short_description %}
-                              <div class="text-secondary">
-                              {{material_request.short_description|safe}}
-                                </div>
-                              <hr>
-                              {% endif %}
-
-                {% if material_request.contractor %}
-                <p>پیمانکار درخواست کننده</p>
-                  <a class="" href={{material_request.contractor.get_absolute_url}}>
-                                 
-                                    <h6 class="my-3 text-primary">
-                                        <i class="material-icons">engineering</i>   {{material_request.contractor.title}}
-                                    </h6>
-                                </a>
-                {% endif %}
-
-                {% if material_request.employee %}
-<p>کارشناس درخواست کننده</p>
-  <a class="" href={{material_request.employee.get_absolute_url}}>
-                 
                     <h6 class="my-3 text-primary">
-                        <i class="material-icons">engineering</i>   {{material_request.employee.profile.name}}
+                        <i class="material-icons">build</i> {{material_request.for_project.full_title}}
                     </h6>
                 </a>
-{% endif %}
 
-                
+
+
+                {% if material_request.short_description %}
+                <div class="text-secondary">
+                    {{material_request.short_description|safe}}
+                </div>
+                <hr> {% endif %} {% if material_request.contractor %}
+                <p>پیمانکار درخواست کننده</p>
+                <a class="" href={{material_request.contractor.get_absolute_url}}>
+
+                    <h6 class="my-3 text-primary">
+                        <i class="material-icons">engineering</i> {{material_request.contractor.title}}
+                    </h6>
+                </a>
+                {% endif %} {% if material_request.employee %}
+                <p>کارشناس درخواست کننده</p>
+                <a class="" href={{material_request.employee.get_absolute_url}}>
+
+                    <h6 class="my-3 text-primary">
+                        <i class="material-icons">engineering</i> {{material_request.employee.profile.name}}
+                    </h6>
+                </a>
+                {% endif %}
+
+
 
 
                 <p>{{material_request.description}}</p>
@@ -97,8 +84,7 @@
 
                     <a href="{{material_request.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -112,8 +98,7 @@
                 <p class="card-category">{{material_request.pretitle}}</p>
 
                 {% endif %}
-                <h3 class="card-title">امضا شده توسط
-                    {% if material_request.posttitle %}
+                <h3 class="card-title">امضا شده توسط {% if material_request.posttitle %}
                     <p class="card-category">{{material_request.posttitle}}</p>
 
                     {% endif %}
@@ -144,8 +129,8 @@
                             <small>
 
                                 {{signature.date_added|to_persian_date|safe}}
-                            </small>
-                            &nbsp;&nbsp;<span class="badge badge-{{signature.status|to_material_request_status_color}}">
+                            </small> &nbsp;&nbsp;
+                            <span class="badge badge-{{signature.status|to_material_request_status_color}}">
                                 {{signature.status|safe}}
                             </span>
 
@@ -203,19 +188,16 @@
                 {% for document in material_request.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-                {% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{material_request.id}}">
@@ -230,21 +212,16 @@
                 {% for link in material_request.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-
-
-                {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{material_request.id}}">
@@ -260,13 +237,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and material_request.get_edit_url%}
+                    {% if perms.projectmanager.change_project and material_request.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{material_request.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -274,7 +250,7 @@
 
 
     </div>
-    
+
     {% if sign_material_request_form %}
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
@@ -297,8 +273,7 @@
 
                 <form action="{% url 'projectmanager:sign_material_request' %}" method="POST">
                     {% csrf_token %}
-                    <input type="hidden" name="material_request_id" value="{{material_request.id}}">
-                    وضعیت :
+                    <input type="hidden" name="material_request_id" value="{{material_request.id}}"> وضعیت :
                     <select class="form-control" name="status" id="">
                         {% for status_option in  status_options %}
 
@@ -317,13 +292,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and page.get_edit_url%}
+                    {% if perms.projectmanager.change_project and page.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{page.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -331,19 +305,14 @@
 
 
     </div>
-    {% endif %}
-
-
-
-    
-    {% if material_request.description %}
+    {% endif %} {% if material_request.description %}
     <div class="col-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
-               
+
 
 
                 <p class="card-category">{{material_request.title}}</p>
@@ -370,8 +339,7 @@
 
                     <a href="{{material_request.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -381,12 +349,9 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         // initDashboardPageCharts();
 
@@ -394,13 +359,5 @@
 </script>
 <script>
     $("#project-manager-link").addClass("active");
-
-
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}

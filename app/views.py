@@ -48,12 +48,15 @@ def getContext(request):
         context['my_channel_events_s']='[]'
         context['notifications_s']='[]'
     main_pic_repo=MainPicRepo()
+    link_repo=LinkRepo()
     parameter_repo=ParameterRepo(user=user)
     context['theme_color']=parameter_repo.get(ParametersEnum.THEME_COLOR).value
     context['PUSHER_IS_ENABLE']=PUSHER_IS_ENABLE
     context['app']={
+        'nav_items':link_repo.get_nav_items(),
         'about_us_short':parameter_repo.get(ParametersEnum.ABOUT_US_SHORT),
         'GOOGLE_SEARCH_CONSOLE_TAG':parameter_repo.get(ParametersEnum.GOOGLE_SEARCH_CONSOLE_TAG),
+        'NAV_TEXT_COLOR':parameter_repo.get(ParametersEnum.NAV_TEXT_COLOR),
         'slogan':parameter_repo.get(ParametersEnum.SLOGAN),
         'logo':main_pic_repo.get(name=MainPicEnum.LOGO),
         'favicon':main_pic_repo.get(name=MainPicEnum.FAVICON),

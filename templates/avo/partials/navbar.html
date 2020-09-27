@@ -3,26 +3,23 @@
         <a class="navbar-brand" href="{% url 'app:home' %}">
             <img src="{{app.logo.image}}" alt="" class="rounded-circle1" height="36px">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-            aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> منو
         </button>
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto leo-rtl">
-                <li class="nav-item"  id="home-link"><a href="{% url 'app:home' %}" class="nav-link">خانه</a></li>
-                {% if perms.app.change_blog %}
-                <!-- <li class="nav-item" id="admin-link"><a href="{{ADMIN_URL}}" class="nav-link text-info">
-                    <span class="text-info">
-                    مدیریت</span></a></li>
-                 -->
-                {% endif %}
-                <!-- <li class="nav-item" id="market-link"><a href="{% url 'market:home' %}" class="nav-link">فروشگاه</a></li> -->
-                <li class="nav-item" id="blogs-link"><a href="{% url 'engapp:home' %}" class="nav-link">en</a></li>
-                <li class="nav-item" id="our-works-link"><a href="{% url 'app:our_works' %}" class="nav-link">پروژه ها</a></li>
-                <li class="nav-item" id="about-us-link"><a href="{% url 'app:about' %}" class="nav-link">درباره ما</a></li>
-                <li class="nav-item" id="contact-us-link"><a href="{% url 'app:contact' %}" class="nav-link">ارتباط با ما</a></li>
-           {% if profile %}
+
+                {% for nav_item in app.nav_items %}
+                <li class="nav-item" id="our-works-link">
+                    <a href="{{nav_item.url}}" class="nav-link">
+
+                        <span class="nav-text">
+                            {{nav_item.title}}
+                        </span>
+                    </a>
+                </li>
+                {% endfor %} {% if profile %}
                 <li class="nav-item" id="contact-us-link"><a href="{{profile.get_absolute_url}}" class="nav-link">
                 {{profile.name}}
                 </a></li>
@@ -34,7 +31,7 @@
                    ورود
                     </a></li>
                 {% endif %}
-               
+
             </ul>
         </div>
     </div>

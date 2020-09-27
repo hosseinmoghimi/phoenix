@@ -116,6 +116,7 @@ class ProfileStatusEnum(TextChoices):
     DISABLED='غیر فعال',_('غیر فعال')
 
 class ParametersEnum(TextChoices):
+    NAV_TEXT_COLOR='رنگ متن منوی سایت',_('رنگ متن منوی سایت')
     GOOGLE_SEARCH_CONSOLE_TAG='تگ سرچ گوگل',_('تگ سرچ گوگل')
     ABOUT_US_SHORT='درباره ما کوتاه',_('درباره ما کوتاه')
     ABOUT_US='درباره ما کامل',_('درباره ما کامل')

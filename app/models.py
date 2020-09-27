@@ -212,10 +212,10 @@ class Tag(models.Model):
         return """
         <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
              
-                {get_tag_icon}
+                {get_icon_tag}
             
               {title}</a>
-          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          """.format(get_absolute_url=tag.get_absolute_url(),get_icon_tag=tag.icon.get_icon_tag(),title=tag.title)    
           
     class Meta:
         verbose_name = _("Tag")
@@ -234,14 +234,13 @@ class Tag(models.Model):
 class Icon(models.Model):
     title=models.CharField(_("عنوان"), max_length=50)    
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
-    url=models.CharField(_("لینک"), max_length=2000,null=True,blank=True)    
     icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
     icon_material=models.CharField(_("آیکون متریال"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
     icon_svg=models.TextField(_("آیکون svg"),null=True,blank=True)
     color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("عرض"),default=128)
     height=models.IntegerField(_("ارتفاع"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -252,10 +251,10 @@ class Icon(models.Model):
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
         if self.url:
-            icon=self.get_tag_icon()
+            icon=self.get_icon_tag()
             return f'<a title="{self.title}" href="{self.url}">{icon}</a>'
         else:
-            return self.get_tag_icon()
+            return self.get_icon_tag()
       
     class Meta:
         verbose_name = _("Icon")
@@ -279,10 +278,18 @@ class Icon(models.Model):
 
 
 class Link(Icon):
-    for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
+    for_home=models.BooleanField(_("نمایش در پایین صفحه سایت"),default=False)
+    for_nav=models.BooleanField(_("نمایش در منوی بالای سایت"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
     profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
+    url=models.CharField(_("لینک"), max_length=2000,default="#")    
     
+    def get_link_icon_tag(self):
+        if self.url:
+            icon=self.get_icon_tag()
+            return f'<a title="{self.title}" href="{self.url}">{icon}</a>'
+        else:
+            return self.get_icon_tag()
     
     def to_link_tag(self):
         return """
@@ -656,10 +663,10 @@ class OurWorkCategory(models.Model):
         return """
         <a href="{get_absolute_url}" class="leo-farsi tag-cloud-link">
              
-                {get_tag_icon}
+                {get_icon_tag}
             
               {title}</a>
-          """.format(get_absolute_url=tag.get_absolute_url(),get_tag_icon=tag.icon.get_tag_icon(),title=tag.title)    
+          """.format(get_absolute_url=tag.get_absolute_url(),get_icon_tag=tag.icon.get_icon_tag(),title=tag.title)    
           
     class Meta:
         verbose_name = _("دسته بندی  پروژه")
@@ -721,7 +728,7 @@ class OurService(Page):
     color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("عرض"),default=128)
     height=models.IntegerField(_("ارتفاع"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.thumbnail_origin is not None and self.thumbnail_origin:
             return f'<img src="{MEDIA_URL}{str(self.thumbnail_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -731,7 +738,7 @@ class OurService(Page):
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
-        icon=self.get_tag_icon()
+        icon=self.get_icon_tag()
         return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
       
     
@@ -767,7 +774,7 @@ class SocialLink(models.Model):
     color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("عرض"),default=128)
     height=models.IntegerField(_("ارتفاع"),default=128)
-    def get_tag_icon(self):
+    def get_icon_tag(self):
         if self.image_origin is not None and self.image_origin:
             return f'<img src="{MEDIA_URL}{str(self.image_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
         if self.icon_material is not None and len(self.icon_material)>0:
@@ -778,10 +785,10 @@ class SocialLink(models.Model):
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
     def get_tag(self):
         if self.url:
-            icon=self.get_tag_icon()
+            icon=self.get_icon_tag()
             return f'<a title="{self.title}" href="{self.url}">{icon}</a>'
         else:
-            return self.get_tag_icon()
+            return self.get_icon_tag()
    
    
     class Meta:

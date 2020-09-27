@@ -1,7 +1,4 @@
-{% extends "dashboard/layout.html" %}
-{% load static %}
-{% load to_price %}
-{% block contents %}
+{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
 
 
 
@@ -18,8 +15,7 @@
                 <p class="card-category">{{page.pretitle}}</p>
 
                 {% endif %}
-                <h3 class="card-title">{{page.title}}
-                    {% if page.posttitle %}
+                <h3 class="card-title">{{page.title}} {% if page.posttitle %}
                     <p class="card-category">{{page.posttitle}}</p>
 
                     {% endif %}
@@ -29,28 +25,26 @@
             <div class="card-body">
 
                 {% if page.short_description %}
-<div class="text-secondary">
-{{page.short_description|safe}}
-  </div>
-<hr>
-{% endif %}
-               
-                
+                <div class="text-secondary">
+                    {{page.short_description|safe}}
+                </div>
+                <hr> {% endif %}
+
+
             </div>
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_page  and page.get_edit_url%}
+                    {% if perms.projectmanager.change_page and page.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{page.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
     </div>
-  
+
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -78,18 +72,16 @@
                 {% for document in page.documents.all %}
                 <div>
                     <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_tag_icon|safe}}
+                        {{document.get_icon_tag|safe}}
 
                         {{document.title}}
-                    </a>
-                    {% if perms.app.change_document %}
+                    </a> {% if perms.app.change_document %}
                     <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-{% if add_document_form %}
+                {% endfor %} {% if add_document_form %}
                 <form action="{% url 'projectmanager:add_document' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{page.id}}">
@@ -104,22 +96,16 @@
                 {% for link in page.links.all %}
                 <div>
                     <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_tag_icon|safe}}
+                        {{link.get_icon_tag|safe}}
 
                         {{link.title}}
-                    </a>
-                    {% if perms.app.change_link %}
+                    </a> {% if perms.app.change_link %}
                     <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                         <i class="fa fa-edit"></i>
                     </a>
                     {% endif %}
                 </div>
-                {% endfor %}
-
-
-
-                
-                {% if add_link_form %}
+                {% endfor %} {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="manager_page_id" value="{{page.id}}">
@@ -133,13 +119,12 @@
 
             <div class="card-footer">
                 <div class="stats">
-                    {% if perms.projectmanager.change_project  and page.get_edit_url%}
+                    {% if perms.projectmanager.change_project and page.get_edit_url%}
                     <i class="material-icons text-danger">link</i>
 
                     <a href="{{page.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -155,7 +140,7 @@
                 <div class="card-icon">
                     <i class="material-icons">settings</i>
                 </div>
-               
+
 
 
                 <p class="card-category">{{page.title}}</p>
@@ -182,8 +167,7 @@
 
                     <a href="{{page.get_edit_url}}">
 
-                        ویرایش </a>
-                    {% endif %}
+                        ویرایش </a> {% endif %}
                 </div>
             </div>
         </div>
@@ -193,11 +177,9 @@
 </div>
 
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         //     initDashboardPageCharts();
 
@@ -205,13 +187,5 @@
 </script>
 <script>
     $("#project-manager-link").addClass("active");
-
-
-
-
-
 </script>
-{% endblock %}
-{% block styles %}
-
-{% endblock %}
+{% endblock %} {% block styles %} {% endblock %}
