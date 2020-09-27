@@ -9,9 +9,7 @@ from django.conf.urls import url
 from .settings import SERVER_ON_HEROKU
 
 urlpatterns = [
-    path('', include('app.urls')),
-
-
+    path('', include('projectmanager.urls')),
     path('pusher/', include('leopusher.urls')),
     path('projectmanager/', include('projectmanager.urls')),
     path('transport/', include('transport.urls')),
