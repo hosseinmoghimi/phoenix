@@ -7,7 +7,7 @@ secret/
 .vscode/
 media/
 secret_key.py
-
+_run.bat
 *.cnf
 # connection parameters for  MY SQL,... 
 
