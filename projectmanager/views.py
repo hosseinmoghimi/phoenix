@@ -143,7 +143,10 @@ class ManagerPageView(View):
                 page_id=add_tag_form.cleaned_data['page_id']     
                 tag=ManagerPageRepo(user=request.user).add_tag(tag_title=tag_title,page_id=page_id)
                 if tag is not None:
+                    page=ManagerPageRepo(user=request.user).page(page_id=page_id)
+                    tags=page.tags.all()
                     return JsonResponse({'result':SUCCEED,'tag':TagSerializer(tag).data}) 
+                    # return JsonResponse({'result':SUCCEED,'tags':TagSerializer(tags,many=True).data}) 
             return JsonResponse({'result':FAILED})
     def add_link(self,request,*args, **kwargs):
         if request.method=='POST':

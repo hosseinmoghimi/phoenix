@@ -128,9 +128,13 @@
 
             <div class="card-body" id="tags-app">
                 <h5 class="my-3"> برچسب ها</h5>
-              
+              {% for tag in project.tags.all %}
+              <a href="{{tag.get_absolute_url}}" class="btn btn-sm btn-light">
+                <span>{{tag.title}}</span>
+            </a>
+              {% endfor %}
                 <template v-for="tag in tags">
-                    <a :href="tag.get_absolute_url" class="btn btn-light">
+                    <a v-if="tag.title" :href="tag.get_absolute_url" class="btn btn-sm btn-light">
                         <span v-text="tag.title"></span>
                     </a>
                 </template>
@@ -590,7 +594,7 @@
     let tags_app = new Vue({
         el: "#tags-app",
         data: {
-            tags: JSON.parse(`{{tags_s|safe}}`),
+            tags: [{tt:'sss'}],
             new_tag: '',
 
         },
@@ -603,7 +607,7 @@
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
                 posting.done(function (data) {
-                    console.log(data.tag)
+                    // console.log(data.tag)
                     tags_app.new_tag = ''
                     if (data.result === 'SUCCEED') {
                         tags_app.tags.push(data.tag)
