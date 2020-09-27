@@ -581,7 +581,10 @@ class Technology(Page):
         verbose_name_plural = _("تکنولوژی")
    
     def __str__(self):
-        return self.title
+        if self.title:
+            return self.title
+        else:
+            return str(self.pk)
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/technology/{self.pk}/change/'
