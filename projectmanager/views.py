@@ -9,6 +9,7 @@ from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
 from .repo import IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
+import json
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
     user=request.user
@@ -198,6 +199,7 @@ class ProjectView(View):
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        page=ProjectRepo(user=user).project(project_id=project_id)
         context['project']=ProjectRepo(user=user).project(project_id=project_id)
         if user.has_perm(APP_NAME+'.add_document'):
             context['add_document_form']=AddDocumentForm()
@@ -206,6 +208,7 @@ class ProjectView(View):
         if user and user.is_authenticated:
             context['add_issue_form']=AddIssueForm()
             context['issue_types']=list(x.value for x in IssueTypeEnum)
+        context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'project.html',context)
 
 
