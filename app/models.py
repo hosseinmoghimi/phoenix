@@ -143,7 +143,9 @@ class Page(Jumbotron):
     def __str__(self):
         if self.title:
             return self.title
-        return str(self.pk)
+        if self.pk:
+            return str(self.pk)
+        return '-'
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/page/{self.pk}/change/'
