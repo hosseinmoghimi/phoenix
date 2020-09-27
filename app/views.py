@@ -4,8 +4,8 @@ from app.enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
-from app.repo import LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, ProfileTransactionRepo, LinkRepo, ProfileTransactionRepo, ProfileRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
-from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer
+from app.repo import TechnologyRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, ProfileTransactionRepo, LinkRepo, ProfileTransactionRepo, ProfileRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
+from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer,TagSerializer
 from django.shortcuts import render,redirect,reverse
 from django.views import View
 from django.http import Http404,JsonResponse
@@ -73,9 +73,11 @@ def getContext(request):
     context['MEDIA_URL']=settings.MEDIA_URL
     context['ADMIN_URL']=settings.ADMIN_URL
     context['DEBUG']=settings.DEBUG
+    context['APP_NAME']=APP_NAME
     
     # context['current_profile']=ProfileRepo.get_by_user()
 
+    context['add_tag_form']=AddTagForm()
     #leoData
     context['search_form']=SearchForm()
     return context
@@ -89,7 +91,9 @@ def csrf_failure(request, reason=""):
         return render(request,TEMPLATE_ROOT+'login.html',context)
 
 
-class BlogView(View):
+class PageView(View):
+    
+
     def add_blog(self,request,*args, **kwargs):
         if request.method=='POST':
             add_blog_form=AddBlogForm(request.POST,request.FILES)
@@ -108,7 +112,7 @@ class BlogView(View):
                 if blog is not None:
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
-    def list(self,request,page=1,*args, **kwargs):
+    def blogs(self,request,page=1,*args, **kwargs):
         user=request.user
         main_pic_repo=MainPicRepo(user=user)
 
@@ -161,10 +165,7 @@ class BlogView(View):
 
         context=getContext(request=request)
         context['blog_header_image']=main_pic_repo.get(name=MainPicEnum.BLOG_HEADER)
-        if user.has_perm(APP_NAME+'.add_blog'):
-            context['add_blog_form']=AddBlogForm()
-            icons=list(IconsEnum)
-            context['icons_s']=json.dumps(icons)
+        
         context['pages_pre_title']=f'برچسب '
         tag=TagRepo(user=user).get(tag_id=tag_id)        
         context['pages_title']=tag.title
@@ -174,10 +175,20 @@ class BlogView(View):
             context['pages_header_image']=main_pic_repo.get(name=MainPicEnum.TAG_HEADER)
 
         
-        context['blogs']=TagRepo(user=request.user).pages(tag_id=tag_id)
+        context['pages']=PageRepo(user=request.user).list_by_tag(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'pages.html',context)
 
-class OurWorkView(View):
+    def add_tag(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_tag_form=AddTagForm(request.POST,request.FILES)
+            if add_tag_form.is_valid():  
+                tag_title=add_tag_form.cleaned_data['tag_title']
+                page_id=add_tag_form.cleaned_data['page_id']     
+                tag=TagRepo(user=request.user).add(tag_title=tag_title,page_id=page_id)
+                if tag is not None:
+                    return JsonResponse({'result':SUCCEED,'tag':TagSerializer(tag).data}) 
+            return JsonResponse({'result':FAILED})
+    
     def add_blog(self,request,*args, **kwargs):
         if request.method=='POST':
             add_blog_form=AddBlogForm(request.POST,request.FILES)
@@ -197,7 +208,7 @@ class OurWorkView(View):
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
     
-    def list(self,request,category_id=None,*args, **kwargs):
+    def our_works(self,request,category_id=None,*args, **kwargs):
         user=request.user
         context=getContext(request=request)
         if user.has_perm(APP_NAME+'.add_blog'):
@@ -240,6 +251,26 @@ class OurWorkView(View):
         context['my_like']=LikeRepo(user=request.user,object_type='Page').my_like(object_id=page_id)
         return render(request,TEMPLATE_ROOT+'page.html',context)
 
+    def technology(self,request,technology_id,*args, **kwargs):
+        context=getContext(request=request)
+        page=TechnologyRepo(user=request.user).technology(technology_id=technology_id)
+        
+        context['page']=page
+        page_id=technology_id
+        if page is None:
+            raise Http404
+        tags=TagRepo(user=request.user).list_top()
+        context['tags']=tags
+        
+        context['add_like_form']=AddLikeForm()
+        context['get_edit_url']=page.get_edit_url()
+        context['add_comment_form']=AddCommentForm()
+        context['delete_comment_form']=DeleteCommentForm()
+        comments_s=json.dumps(CommentSerializer(page.comments,many=True).data)
+        context['comments_s']=comments_s
+        context['my_like']=LikeRepo(user=request.user,object_type='Page').my_like(object_id=page_id)
+        return render(request,TEMPLATE_ROOT+'page.html',context)
+
 
 class BasicView(View):
     def download(self,request,document_id):
@@ -270,6 +301,7 @@ class BasicView(View):
         context['our_services']=OurServiceRepo(user=user).list()
         context['testimonials']=TestimonialRepo(user=request.user).list()
         context['banners']=BannerRepo(user=request.user).list()
+        context['technologies']=TechnologyRepo(user=request.user).list()
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)
         
         about_header_image=main_pic_repo.get(MainPicEnum.ABOUT_HEADER)
@@ -321,7 +353,7 @@ class BasicView(View):
                 context['pages_pre_title']=f'جست و جو برای '
                 context['pages_title']=search_for
                 context['pages_header_image']=MainPicRepo().get(name=MainPicEnum.SEARCH)
-                context['blogs']=PageRepo(user=request.user).search(search_for=search_for)           
+                context['pages']=PageRepo(user=request.user).search(search_for=search_for)           
                 return render(request,TEMPLATE_ROOT+'pages.html',context)
 
     def home(self,request):

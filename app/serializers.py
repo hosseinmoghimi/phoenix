@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from .models import Comment,Blog,Profile,Link,Notification
+from .models import Comment,Blog,Profile,Link,Notification,Tag
 
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model=Blog
         fields=['id','pretitle','icon','color','title','short_desc','description','image','persian_date_added','get_absolute_url']
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Tag
+        fields=['id','title','get_absolute_url']
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -330,9 +330,9 @@
 
                 <div class="sidebar-box ftco-animate">
                     <h3 class="text-center mb-3">برچسب ها</h3>
-                    <div class="tagcloud leo-rtl text-right">
+                    <div class="tagcloud leo-rtl text-right" id="tags-app">
 
-                        {% for tag in tags %}
+                        {% for tag in page.tags.all %}
                         <a href="{{tag.get_absolute_url}}" class="leo-farsi tag-cloud-link">
                             {% if tag.icon %}
                             {{tag.icon.get_tag_icon | safe}}
@@ -340,6 +340,14 @@
                             {{tag.title}}</a>
 
                         {% endfor %}
+
+                        {% if perms.app.add_tag %}
+                        <a v-for="tag in tags" v-text="tag.title" :href="tag.get_absolute_url"
+                            class="leo-farsi tag-cloud-link">
+                        </a>
+                        <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
+                        <button class="btn btn-primary" @click="add_tag">اضافه کن</button>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -370,6 +378,7 @@
 
 
     })
+    let add_tag_url="{% url 'app:add_tag'%}"
     let comments = JSON.parse(`{{comments_s|escapejs}}`)
     let my_like = JSON.parse("{% if my_like %}true{% else %}false{% endif %}")
     let page_id = JSON.parse("{{page.id}}")
@@ -383,6 +392,31 @@
 <script src="{% static 'vendor/js/vue.js' %}"></script>
 <script>
 
+    let tags_app = new Vue({
+        el: "#tags-app",
+        data: {
+            tags: [],
+            new_tag: '',
+
+        },
+        methods: {
+            add_tag: function () {
+                let url = add_tag_url
+                let posting = $.post(url, {
+                    page_id: object_id,
+                    tag_title: tags_app.new_tag,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                })
+                posting.done(function (data) {
+                    tags_app.new_tag=''
+                    if (data.result==='SUCCEED') {
+                        tags_app.tags.push(data.tag)
+                    }
+                })
+            },
+
+        },
+    })
 
     let like_app = new Vue({
         el: "#like-app",

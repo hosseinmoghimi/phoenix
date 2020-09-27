@@ -3,7 +3,7 @@ from .models import Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory
 from app.repo import ProfileRepo,SignatureRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
-from app.models import Link,Document
+from app.models import Link,Document,Tag
 from .apps import APP_NAME
 import datetime
 class EmployeeRepo:
@@ -26,6 +26,21 @@ class EmployeeRepo:
 
 
 class ManagerPageRepo:
+    def add_tag(self,tag_title,page_id):
+        page=self.page(page_id=page_id)
+        if tag_title in list(tag.title for tag in page.tags.all()):
+            return None
+        tag=None
+        try:
+            tag=Tag.objects.get(title=tag_title)
+        except:
+            tag=Tag(title=tag_title)
+            tag.save()
+        if page is not None and tag is not None:
+            page.tags.add(tag)
+            return tag
+        return tag
+                
     def search(self,search_for):
         return self.objects.filter(
             Q(title__contains=search_for) | 

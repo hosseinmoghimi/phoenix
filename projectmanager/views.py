@@ -1,7 +1,10 @@
 from django.shortcuts import render,redirect
 from .forms import *
+from app.forms import AddTagForm
+from app.serializers import TagSerializer
 from django.views import View
-from django.http import Http404
+from app.constants import SUCCEED,FAILED
+from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
 from .repo import IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
@@ -12,6 +15,7 @@ def getContext(request):
     context=AppContext(request)
     context['APP_NAME']=APP_NAME
     context['search_form']=SearchForm()
+    context['add_tag_form']=AddTagForm()
     context['search_url']=reverse('projectmanager:search')
     return context
 class BasicView(View):
@@ -130,6 +134,16 @@ class MaterialRequestView(View):
 
 
 class ManagerPageView(View):
+    def add_tag(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_tag_form=AddTagForm(request.POST,request.FILES)
+            if add_tag_form.is_valid():  
+                tag_title=add_tag_form.cleaned_data['tag_title']
+                page_id=add_tag_form.cleaned_data['page_id']     
+                tag=ManagerPageRepo(user=request.user).add_tag(tag_title=tag_title,page_id=page_id)
+                if tag is not None:
+                    return JsonResponse({'result':SUCCEED,'tag':TagSerializer(tag).data}) 
+            return JsonResponse({'result':FAILED})
     def add_link(self,request,*args, **kwargs):
         if request.method=='POST':
             add_link_form=AddLinkForm(request.POST)

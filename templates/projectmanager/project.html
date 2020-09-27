@@ -123,6 +123,31 @@
                 </div>
             </div>
         </div>
+        <div class="card card-stats">
+
+
+            <div class="card-body" id="tags-app">
+               <h5 class="my-3"> برچسب ها</h5>
+                {% for tag in project.tags.all %}
+<a href="{{tag.get_absolute_url}}" class="btn btn-light">
+                    {{tag.title}}
+                </a>
+
+                {% endfor %}
+                <temmplate v-for="tag in tags">
+                <a   v-text="tag.title" :href="tag.get_absolute_url" class="btn btn-light">
+                   
+                </a> </temmplate>
+                {% if perms.app.add_tag %}
+              
+                
+
+                <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
+                <button class="btn btn-primary" @click="add_tag">اضافه کن</button>
+                {% endif %}
+            </div>
+
+        </div>
 
 
     </div>
@@ -246,7 +271,7 @@
                 {% endfor %}
 
 
-                
+
                 {% if add_link_form %}
                 <form action="{% url 'projectmanager:add_link' %}" method="POST">
                     {% csrf_token %}
@@ -481,7 +506,7 @@
 
     </div>
 
-
+{% csrf_token %}
     <!-- page logs --> {% if perms.projectmanager.view_pagelog %}
 
     <div class="col-12">
@@ -554,7 +579,44 @@
 </script>
 <script>
     $("#project-manager-link").addClass("active");
+    
 
+    let csrfmiddlewaretoken = ''
+    $(document).ready(function () {
+        // Javascript method's body can be found in assets/js/demos.js
+        csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+
+
+    })
+
+    let add_tag_url="{% url 'projectmanager:add_tag'%}"
+
+    let tags_app = new Vue({
+        el: "#tags-app",
+        data: {
+            tags: [],
+            new_tag: '',
+
+        },
+        methods: {
+            add_tag: function () {
+                let url = add_tag_url
+                let posting = $.post(url, {
+                    page_id:JSON.parse("{{project.id}}"),
+                    tag_title: tags_app.new_tag,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                })
+                posting.done(function (data) {
+                    console.log(data)
+                    tags_app.new_tag=''
+                    if (data.result==='SUCCEED') {
+                        tags_app.tags.push(data.tag)
+                    }
+                })
+            },
+
+        },
+    })
 
 
 

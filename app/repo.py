@@ -166,16 +166,19 @@ class TagRepo:
         self.objects=Tag.objects
         self.profile=ProfileRepo(user=user).me
     def add(self,page_id,tag_title):
+        page=PageRepo(user=self.user).page(page_id=page_id)
+        if page.tags.all() and tag_title in list(tag.title for tag in page.tags.all()):
+            return None
+        tag=None
         try:
             tag=Tag.objects.get(title=tag_title)
         except:
             tag=Tag(title=tag_title)
             tag.save()
-        page=PageRepo(user=self.user).page(page_id=page_id)
         if page is not None and tag is not None:
             page.tags.add(tag)
-            return True
-        return False
+            return tag
+        return tag
     def list(self):
         return self.objects.order_by('priority')
     def list_top(self):
@@ -188,7 +191,8 @@ class TagRepo:
         except:
             return None
 
-
+    def tag(self,tag_id):
+        return self.get(tag_id)
 class ParameterRepo:
     
     def __init__(self,user=None):
@@ -283,6 +287,13 @@ class OurWorkRepo:
 
 
 class PageRepo:
+    def list_by_tag(self,tag_id):
+        tag=TagRepo(user=self.user).tag(tag_id=tag_id)
+        if tag is not None:
+            # print(tag)
+            pages= tag.page_set.all()
+            # pages= self.objects.filter(tags__pk=tag_id)
+            return pages
     def __init__(self,user=None):
         self.user=user
         self.objects=Page.objects.filter(archive=False)

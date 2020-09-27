@@ -6,6 +6,7 @@ urlpatterns = [
     path('add_issue/',views.ProjectView().add_issue,name='add_issue'),
     path('add_link/',views.ManagerPageView().add_link,name='add_link'),
     path('add_document/',views.ManagerPageView().add_document,name='add_document'),
+    path('add_tag/',views.ManagerPageView().add_tag,name='add_tag'),
     path('search/',views.BasicView().search,name='search'),
     path('projectcategory/<int:category_id>/',views.BasicView().home,name='project_category'),
     path('issue/<int:issue_id>/',views.ProjectView().issue,name='issue'),

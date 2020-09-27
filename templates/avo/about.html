@@ -3,33 +3,35 @@
 {% load to_persian_date %}
 
 {% block head %}
-  
+
 {% endblock %}
 {% if perms.app.change_blog %}
-  
+
 {% endif %}
 {% block contents %}
-  
 
-<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{about_header_image.image}}');" data-stellar-background-ratio="0.5">
+
+<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{about_header_image.image}}');"
+	data-stellar-background-ratio="0.5">
 	<div class="overlay"></div>
 	<div class="container">
 		<div class="row no-gutters slider-text js-fullheight align-items-end">
 			<div class="col-md-9 ftco-animate pb-5 mb-5">
-				<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'app:home' %}"><i class="fa fa-chevron-left"></i> بازگشت به خانه </a></span> </p>
+				<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'app:home' %}"><i
+								class="fa fa-chevron-left"></i> بازگشت به خانه </a></span> </p>
 				<h1 class="mb-3 bread text-right">{{about_us_title.value}}</h1>
 				{% if perms.app.change_parameter %}
 				<p class="text-center leo-rtl text-right">
-					<a href="{{about_us_title.get_edit_url}}"
-						class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش عنوان درباره ما
+					<a href="{{about_us_title.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+						عنوان درباره ما
 					</a>
 				</p>
 				{% endif %}
 
 				{% if perms.app.change_mainpic %}
 				<p class="text-center leo-rtl text-right">
-					<a href="{{about_header_image.get_edit_url}}"
-						class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
+					<a href="{{about_header_image.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+						تصویر
 					</a>
 				</p>
 				{% endif %}
@@ -47,8 +49,8 @@
 				<h2 class="mb-2">درباره ما</h2>
 			</div>
 		</div>
-	
-		
+
+
 		<div class="row wrap-about my-5 leo-rtl">
 			<div class="col-md-8">
 				<div class="row leo-rtl">
@@ -69,20 +71,22 @@
 						<div class="text text-md-right">
 							<h3 class="leo-rtl text-right">{{about_us_title.value}}</h3>
 							{% if perms.app.change_parameter %}
-								<p class="text-center leo-rtl text-right">
-									<a href="{{about_us_title.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-									</a>
-								</p>
-								{% endif %}
+							<p class="text-center leo-rtl text-right">
+								<a href="{{about_us_title.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+								</a>
+							</p>
+							{% endif %}
 							<p class="leo-rtl text-right">
 
 								{{about_us_short.value|safe}}
 								{% if perms.app.change_parameter %}
-								<p class="text-center leo-rtl text-right">
-									<a href="{{about_us_short.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-									</a>
-								</p>
-								{% endif %}
+							<p class="text-center leo-rtl text-right">
+								<a href="{{about_us_short.get_edit_url}}"
+									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+								</a>
+							</p>
+							{% endif %}
 							</p>
 						</div>
 					</div>
@@ -93,13 +97,13 @@
 					<p>
 						{{app.slogan.value|safe}}
 						{% if perms.app.change_parameter %}
-								<p class="text-center leo-rtl text-right">
-									<a href="{{app.slogan.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-									</a>
-								</p>
-								{% endif %}
+					<p class="text-center leo-rtl text-right">
+						<a href="{{app.slogan.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+						</a>
 					</p>
-					
+					{% endif %}
+					</p>
+
 				</div>
 			</div>
 		</div>
@@ -108,12 +112,12 @@
 
 
 <!-- our services -->
-<section class="ftco-section ftco-portfolio bg-light">	<a id="our_services"></a>
+<section class="ftco-section ftco-portfolio bg-light"> <a id="our_services"></a>
 	<div class="container">
 		<div class="row justify-content-center no-gutters">
-			
-				<div class="col-md-12 heading-section text-center ftco-animate mb-5">
-		
+
+			<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+
 				<h2 class="mb-2">سرویس ها و خدمات ما</h2>
 				{% if perms.app.add_ourservice %}
 
@@ -141,7 +145,7 @@
 
 				<div class="services-2 d-flex ftco-animate">
 					<span>0{{forloop.counter}}</span>
-					<div class="text mx-2">					
+					<div class="text mx-2">
 						<a class="mb-0" href="{{our_service.get_absolute_url}}">
 							<h4 class="leo-rtl text-right">{{our_service.title}}</h4>
 
@@ -195,17 +199,17 @@
 						<span class="ftco-animate text-right leo-rtl leo-farsi">{{banner.pretitle}}</span>
 						{% endif %}
 						{% if banner.title %}
-					  <h2 class="ftco-animate">{{banner.title}}</h2>
+						<h2 class="ftco-animate">{{banner.title}}</h2>
 						{% endif %}
-						
+
 						{% if banner.posttitle %}
 						<p>{{banner.posttitle}}</p>
 						{% endif %}
-						
+
 						{% if banner.action_url %}
 						<p class="ftco-animate"><a href="{{banner.action_url}}" class="btn btn-primary">
-							<span class="text-right leo-rtl text-light">{{banner.action_text}}</span>
-						</a></p>
+								<span class="text-right leo-rtl text-light">{{banner.action_text}}</span>
+							</a></p>
 						{% endif %}
 
 						{% if perms.app.edit_banner %}
@@ -223,8 +227,8 @@
 			{% endfor %}
 
 		</div>
-	
-		
+
+
 	</div>
 	<div class="degree-left"></div>
 </section>
@@ -247,24 +251,26 @@
 		</div>
 		<div class="row leo-rtl">
 			{% for our_team in our_teams %}
-			  <div class="col-sm-6 col-md-6 col-lg-3 ftco-animate">
+			<div class="col-sm-6 col-md-6 col-lg-3 ftco-animate">
 				<div class="staff">
 					<div class="img-wrap d-flex align-items-stretch justify-content-end">
 						<div class="img align-self-stretch" style="background-image: url({{our_team.image}});">
 							<ul class="ftco-social">
 								{% for social_link in our_team.social_links.all %}
-								  <li class="ftco-animate d-flex"><a href="{{social_link.url}}" class="d-flex align-items-center justify-content-center">
-									{{social_link.icon.get_tag_icon | safe}}</a></li>
-								
+								<li class="ftco-animate d-flex"><a href="{{social_link.url}}"
+										class="d-flex align-items-center justify-content-center">
+										{{social_link.icon.get_tag_icon | safe}}</a></li>
+
 								{% endfor %}
 								{% if perms.app.change_ourteam %}
-								<li class="ftco-animate d-flex"><a title="ویرایش" href="{{our_team.get_edit_url}}" class="d-flex align-items-center justify-content-center">
-									<span class="fa fa-edit"></span></a></li>
+								<li class="ftco-animate d-flex"><a title="ویرایش" href="{{our_team.get_edit_url}}"
+										class="d-flex align-items-center justify-content-center">
+										<span class="fa fa-edit"></span></a></li>
 
-       
-		{% endif %}
-		
-								
+
+								{% endif %}
+
+
 							</ul>
 						</div>
 					</div>
@@ -279,8 +285,8 @@
 				</div>
 			</div>
 			{% endfor %}
-			
-		
+
+
 		</div>
 	</div>
 	<div class="degree-left"></div>
@@ -334,15 +340,85 @@
 			</div>
 		</div>
 
-	
+
+	</div>
+</section>
+
+<!-- technology -->
+<section class="ftco-section technology-section">
+	<a id="technology"></a>
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-md-8 text-center heading-section ftco-animate">
+				<h2 class="mb-3">تکنولوژی های مورد استفاده ما</h2>
+				{% if perms.app.add_technology %}
+
+				<p class="text-center">
+					<a href="{{ADMIN_URL}}{{APP_NAME}}/technology/add/">
+						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
+				</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row ftco-animate mb-4">
+			<div class="col-md-12">
+				<div class="carousel-testimony owl-carousel">
+					<div class="row">
+						{% for technology in technologies %}
+						<a href="{{technology.get_absolute_url}}">
+						<div class="col-12" >
+							<div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl"
+								style="background-image: url({{technology.thumbnail}});">
+								<div class="col-md-6  text-right">
+									{% if technology.pretitle %}
+									<span
+										class="ftco-animate text-right leo-rtl leo-farsi">{{technology.pretitle}}</span>
+									{% endif %}
+									{% if technology.title %}
+									<h2 class="ftco-animate">{{technology.title}}</h2>
+									{% endif %}
+
+									{% if technology.posttitle %}
+									<p>{{technology.posttitle}}</p>
+									{% endif %}
+
+									{% if technology.action_url %}
+									<p class="ftco-animate"><a href="{{technology.action_url}}" class="btn btn-primary">
+											<span
+												class="text-right leo-rtl text-light">{{technology.action_text}}</span>
+										</a></p>
+									{% endif %}
+
+									{% if perms.app.change_technology %}
+
+
+									<p class="ftco-animate"><a href="{{technology.get_edit_url}}"
+											class="btn btn-link btn-info">
+											<span class="text-right leo-rtl text-light">
+												<i class="fa fa-edit"></i>
+											</span>
+										</a></p>
+
+
+									{% endif %}
+								</div>
+							</div>
+						</div></a>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 </section>
 
 
 {% endblock %}
 {% block scripts %}
-  
+
 <script>
 	$("#about-us-link").addClass('active')
-  </script>
+</script>
 {% endblock %}

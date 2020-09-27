@@ -5,7 +5,7 @@
 {% block head %}
 
 {% endblock %}
-{% if perms.app.change_blog %}
+{% if perms.app.change_page %}
 
 {% endif %}
 {% block contents %}
@@ -51,45 +51,45 @@
   <div class="container">
 
     <div class="row leo-rtl d-flex">
-      {% for blog in blogs %}
+      {% for page in pages %}
 			<div class="col-md-3 d-flex ftco-animate">
-				<div class="blog-entry justify-content-end">
+				<div class="page-entry justify-content-end">
 					<div class="text">
-						<a href="{{blog.get_absolute_url}}" class="block-20 img"
-							style="background-image: url('{{blog.thumbnail}}');">
+						<a href="{{page.get_absolute_url}}" class="block-20 img"
+							style="background-image: url('{{page.thumbnail}}');">
 						</a>
 						<h3 class="heading mb-3 leo-rtl text-right">
-							<a href="{{blog.get_absolute_url}}" class=" leo-rtl text-right">
-								<span class="leo-font-farsi">{{blog.title}}</span>
+							<a href="{{page.get_absolute_url}}" class=" leo-rtl text-right">
+								<span class="leo-font-farsi">{{page.title}}</span>
 
 							</a></h3>
 
 						<div class="meta mb-3  text-right">
 							<div class="leo-rtl text-right">
-								{{ blog.to_persian_date_tag | safe }}</div>
+								{{ page.to_persian_date_tag | safe }}</div>
 							<div class="leo-rtl text-right">
-								<a href="{{blog.profile.get_absolute_url}}"><span
-										class="leo-font-farsi leo-rtl text-right">{{blog.profile.name}}</span></a></div>
+								<a href="{{page.profile.get_absolute_url}}"><span
+										class="leo-font-farsi leo-rtl text-right">{{page.profile.name}}</span></a></div>
 							<div>
-								<a href="#" class="meta-chat text-info">{{blog.likes.all | length}} <span
+								<a href="#" class="meta-chat text-info">{{page.likes.all | length}} <span
 										class="fa fa-thumbs-up  text-info"></span></a>
 										&nbsp;
-								<a href="#" class="meta-chat text-danger">{{blog.comments.all | length}} <span
+								<a href="#" class="meta-chat text-danger">{{page.comments.all | length}} <span
 										class="fa fa-comment text-danger"></span></a></div>
 						</div>
 						<p>
 							<small>
-								{{blog.short_desc}}
+								{{page.short_desc}}
 							</small>
 						</p>
 						<p style="text-align:right !important;">
-							<a href="{{blog.get_absolute_url}}" class="btn btn-dark custom-btn">
+							<a href="{{page.get_absolute_url}}" class="btn btn-dark custom-btn">
 								<span class="fa fa-info-circle ml-2"></span>
 								ادامه
 								مطلب</a>
-							{% if perms.app.edit_blog %}
+							{% if perms.app.edit_page %}
 
-							<a href="{{blog.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
+							<a href="{{page.get_edit_url}}" class="btn btn-info">ویرایش مطلب</a>
 
 							{% endif %}
 						</p>
@@ -122,6 +122,6 @@
 {% block scripts %}
 
 <script>
-	$("#blogs-link").addClass('active')
+	$("#pages-link").addClass('active')
   </script>
 {% endblock %}
