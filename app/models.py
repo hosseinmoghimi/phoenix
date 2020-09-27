@@ -141,7 +141,9 @@ class Page(Jumbotron):
             return None
         return MEDIA_URL+str(self.image_origin)
     def __str__(self):
-        return self.title
+        if self.title:
+            return self.title
+        return str(self.pk)
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/page/{self.pk}/change/'
