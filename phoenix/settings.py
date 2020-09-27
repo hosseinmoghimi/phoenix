@@ -74,6 +74,7 @@ if not SERVER_ON_HEROKU:
 # Application definition
 
 INSTALLED_APPS = [
+    'tutorial',
     'leopusher',
     'projectmanager',
     'transport',
