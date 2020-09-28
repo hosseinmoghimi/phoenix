@@ -12,23 +12,23 @@ ALLOWED_HOSTS = ['www.khafonline.com','khafonline.com']
 MYSQL=False
 
 
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'OPTIONS': {
-                'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_khafonli_my_sql.cnf'),
-
-            },
-        }
-    }
-
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db_local_2.sqlite3'),
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'OPTIONS': {
+#                 'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_khafonli_my_sql.cnf'),
+
+#             },
+#         }
 #     }
-# }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db_local_2.sqlite3'),
+    }
+}
 
 TIME_ZONE = 'Asia/Tehran'
 
