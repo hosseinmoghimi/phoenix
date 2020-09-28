@@ -1,1 +1,0 @@
-from phoenix.wsgi import application
