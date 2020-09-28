@@ -21,5 +21,5 @@ class BasicView(View):
         context=getContext(request)
         context['page']=LessonRepo(user=request.user).lesson(lesson_id)
         
-        return render(request,TEMPLATE_ROOT+'lesson.html',context)
+        return render(request,'dashboard/page.html',context)
 
