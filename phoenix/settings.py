@@ -74,7 +74,7 @@ if not SERVER_ON_HEROKU:
 # Application definition
 
 INSTALLED_APPS = [
-    'tutorial',
+    # 'tutorial',
     'leopusher',
     'projectmanager',
     'transport',
@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'automation',
     'engapp',
     'market',
-    'authentication',    
+    'authentication',
     'django_cleanup',
     'rest_framework',
     'djecrety',
