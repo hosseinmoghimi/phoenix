@@ -16,18 +16,15 @@
       <div class="card-icon">
         <i class="material-icons">contact_phone</i>
       </div>
-      <h3 class="card-title">{{lesson}}</h3>
+      <h3 class="card-title">{{lesson.title}}</h3>
     </div>
     <div class="card-body">
      
-      <p>
-      {% for detail in entry.details.all %}
-                <span>{{detail.entry_name}} : {{detail.entry_value}}</span><br>
-                {% endfor %}</p>
+      
     </div>
     <div class="card-footer">
       <div class="stats">
-        <a href="{{entry.get_absolute_url}}">
+        <a href="{{lesson.get_absolute_url}}">
           <i class="material-icons">date_range</i>
           جزییات</a>
         

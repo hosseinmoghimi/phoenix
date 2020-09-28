@@ -164,7 +164,9 @@ class PartialPage(models.Model):
     date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
-  
+
+    album=models.ForeignKey("GalleryAlbum", verbose_name=_("آلبوم تصاویر"), null=True,blank=True, on_delete=models.CASCADE)
+
     class Meta:
         verbose_name = _("PartialPage")
         verbose_name_plural = _("صفحات جزئی")
@@ -182,7 +184,6 @@ class PartialPage(models.Model):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/partialpage/{self.pk}/change/'
-   
 
 class Signature(models.Model):
     profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
@@ -230,7 +231,6 @@ class Tag(models.Model):
         return f'{ADMIN_URL}app/tag/{self.pk}/change/'
 
 
-
 class Icon(models.Model):
     title=models.CharField(_("عنوان"), max_length=50)    
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
@@ -276,7 +276,6 @@ class Icon(models.Model):
     #     return reverse("OurService_detail", kwargs={"pk": self.pk})
 
 
-
 class Link(Icon):
     for_home=models.BooleanField(_("نمایش در پایین صفحه سایت"),default=False)
     for_nav=models.BooleanField(_("نمایش در منوی بالای سایت"),default=False)
@@ -310,7 +309,6 @@ class Link(Icon):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/link/{self.pk}/change/'
-   
 
 
 class HomeSlider(Jumbotron):
@@ -583,7 +581,6 @@ class Blog(Page):
         return reverse("app:blog", kwargs={"blog_id": self.pk})
 
 
-
 class Technology(Page):
 
     
@@ -599,7 +596,6 @@ class Technology(Page):
         return f'{ADMIN_URL}{APP_NAME}/technology/{self.pk}/change/'
     def get_absolute_url(self):
         return reverse("app:technology", kwargs={"technology_id": self.pk})
-
 
 
 class Comment(models.Model):
@@ -720,6 +716,7 @@ class Testimonial(models.Model):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/testimonial/{self.pk}/change/'
+
 
 class OurService(Page):
     icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
@@ -856,7 +853,7 @@ class GalleryAlbum(Jumbotron):
         return self.title
     
     def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/ourservice/{self.pk}/change/'
+        return f'{ADMIN_URL}{APP_NAME}/galleryalbum/{self.pk}/change/'
    
    
     def __unicode__(self):
@@ -1002,6 +999,7 @@ class ResumeCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse("ResumeCategory_detail", kwargs={"pk": self.pk})
+
 
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))
