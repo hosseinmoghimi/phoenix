@@ -32,17 +32,17 @@ DATABASES = {
 
 TIME_ZONE = 'Asia/Tehran'
 
-SITE_URL='/phoenix2/'
+SITE_URL='/'
 
 
 ADMIN_URL=SITE_URL+'admin/'
 STATIC_URL = SITE_URL+'static/'
 
-STATIC_ROOT = '/home/khafonli/public_html/phoenix2/staticfiles/'
+STATIC_ROOT = '/home/khafonli/public_html/phoenix/staticfiles/'
 
 MEDIA_URL =  SITE_URL+'media/'
-MEDIA_ROOT = '/home/khafonli/public_html/phoenix2/media/'
-STATICFILES_DIRS=['/home/khafonli/phoenix2/static/']
+MEDIA_ROOT = '/home/khafonli/public_html/phoenix/media/'
+STATICFILES_DIRS=['/home/khafonli/phoenix/static/']
 PUSHER_IS_ENABLE=True
 REMOTE_MEDIA=False
 COMING_SOON=False
