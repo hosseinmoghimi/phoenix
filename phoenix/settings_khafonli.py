@@ -1,15 +1,15 @@
-
+#source /home/khafonli/virtualenv/phoenix/3.7/bin/activate && cd /home/khafonli/phoenix && git pull && python manage.py migrate && python manage.py collectstatic --no-input
 from pathlib import Path
 import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-DEBUG =True
+DEBUG =False
 
 
 ALLOWED_HOSTS = ['www.khafonline.com','khafonline.com']
 
-MYSQL=False
+MYSQL=True
 
 
 DATABASES = {
@@ -29,6 +29,7 @@ DATABASES = {
 #         'NAME': os.path.join(BASE_DIR, 'db_local_2.sqlite3'),
 #     }
 # }
+
 
 TIME_ZONE = 'Asia/Tehran'
 
