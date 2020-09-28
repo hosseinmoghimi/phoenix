@@ -10,6 +10,7 @@ from .apps import APP_NAME
 class Lesson(Page):
 
     def save(self):
+        self.app_name=APP_NAME
         self.child_class='lesson'
         super(Lesson,self).save()
 

@@ -573,7 +573,7 @@ class Blog(Page):
 
     def save(self):
         self.child_class='blog'
-        self.app_name='app'
+        self.app_name=APP_NAME
         super(Blog,self).save()
 
     class Meta:
@@ -593,7 +593,7 @@ class Technology(Page):
 
     def save(self):
         self.child_class='blog'
-        self.app_name='app'
+        self.app_name=APP_NAME
         super(Technology,self).save()
 
     
@@ -694,7 +694,7 @@ class OurWork(Page):
 
     def save(self):
         self.child_class='blog'
-        self.app_name='app'
+        self.app_name=APP_NAME
         super(OurWork,self).save()
     category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
     
@@ -747,7 +747,7 @@ class OurService(Page):
 
     def save(self):
         self.child_class='blog'
-        self.app_name='app'
+        self.app_name=APP_NAME
         super(OurService,self).save()
     
     def get_icon_tag(self):
