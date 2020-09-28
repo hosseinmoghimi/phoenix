@@ -22,6 +22,7 @@ class BasicView(View):
         
         return render(request,TEMPLATE_ROOT+'index.html',context)
     def lesson(self,request,lesson_id,*args, **kwargs):
+        
         context=getContext(request)
         page=LessonRepo(user=request.user).lesson(lesson_id)
         context['page']=page

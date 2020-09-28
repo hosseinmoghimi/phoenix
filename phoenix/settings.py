@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'automation',
     'engapp',
     'market',
-    'authentication',    
+    'authentication',
     'django_cleanup',
     'rest_framework',
     'djecrety',
