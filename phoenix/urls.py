@@ -10,6 +10,8 @@ from .settings import SERVER_ON_HEROKU
 
 urlpatterns = [
     path('', include('app.urls')),
+    path('phoenix_v1/', include('app.urls')),
+    
     path('pusher/', include('leopusher.urls')),
     path('tutorial/', include('tutorial.urls')),
     path('projectmanager/', include('projectmanager.urls')),
