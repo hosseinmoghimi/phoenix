@@ -325,23 +325,23 @@
 
 <script>
     // $("#our-works-link").addClass('active')
-    let csrfmiddlewaretoken = ''
+    var csrfmiddlewaretoken = ''
     $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
 
     })
-    let add_tag_url = "{% url 'app:add_tag'%}"
-    let comments = JSON.parse(`{{comments_s|escapejs}}`)
-    let my_like = JSON.parse("{% if my_like %}true{% else %}false{% endif %}")
-    let page_id = JSON.parse("{{page.id}}")
-    let likes_count = JSON.parse("{{page.likes.all|length}}")
-    let object_id = JSON.parse("{{page.id}}")
-    let add_comment_url = "{% url 'app:add_comment' %}"
-    let delete_comment_url = "{% url 'app:delete_comment' %}"
-    let comment_template = `{% include 'avo/partials/comment.html' %}`
-    let profile_id = JSON.parse("{% if profile %}{{profile.id}}{% else %}0{% endif %}")
+    var add_tag_url = "{% url 'app:add_tag'%}"
+    var comments = JSON.parse(`{{comments_s|escapejs}}`)
+    var my_like = JSON.parse("{% if my_like %}true{% else %}false{% endif %}")
+    var page_id = JSON.parse("{{page.id}}")
+    var likes_count = JSON.parse("{{page.likes.all|length}}")
+    var object_id = JSON.parse("{{page.id}}")
+    var add_comment_url = "{% url 'app:add_comment' %}"
+    var delete_comment_url = "{% url 'app:delete_comment' %}"
+    var comment_template = `{% include 'avo/partials/comment.html' %}`
+    var profile_id = JSON.parse("{% if profile %}{{profile.id}}{% else %}0{% endif %}")
 </script>
 <script src="{% static 'vendor/js/vue.js' %}"></script>
 <script>
