@@ -4,6 +4,7 @@ staticfiles/
 *.sqlite3
 venv/
 secret/
+secret_key_khafonli.cnf
 .vscode/
 media/
 secret_key.py

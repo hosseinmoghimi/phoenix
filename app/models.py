@@ -115,6 +115,10 @@ class Page(Jumbotron):
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
     count_down_items=models.ManyToManyField("CountDownItem", verbose_name=_("شمارنده ها"),blank=True)
     
+    app_name=models.CharField(_('app_name'),max_length=50)
+    child_class=models.CharField(_('child_class'),max_length=50)
+
+
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("صفحات")
@@ -148,9 +152,9 @@ class Page(Jumbotron):
         return '-'
 
     def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/page/{self.pk}/change/'
+        return f'{ADMIN_URL}{self.app_name}/{self.child_class}/{self.pk}/change/'
     def get_absolute_url(self):
-        return reverse("app:page", kwargs={"page_id": self.pk})
+        return reverse(f"{self.app_name}:{self.child_class}", kwargs={f"{self.child_class}_id": self.pk})
 
 
 class PartialPage(models.Model):
@@ -567,7 +571,11 @@ class FAQ(models.Model):
 
 class Blog(Page):
 
-    
+    def save(self):
+        self.child_class='blog'
+        self.app_name='app'
+        super(Blog,self).save()
+
     class Meta:
         verbose_name = _("Blog")
         verbose_name_plural = _("مقالات")
@@ -582,6 +590,11 @@ class Blog(Page):
 
 
 class Technology(Page):
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name='app'
+        super(Technology,self).save()
 
     
     class Meta:
@@ -678,6 +691,11 @@ class OurWorkCategory(models.Model):
 
 
 class OurWork(Page):
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name='app'
+        super(OurWork,self).save()
     category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
     
     location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
@@ -725,6 +743,13 @@ class OurService(Page):
     color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("عرض"),default=128)
     height=models.IntegerField(_("ارتفاع"),default=128)
+    
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name='app'
+        super(OurService,self).save()
+    
     def get_icon_tag(self):
         if self.thumbnail_origin is not None and self.thumbnail_origin:
             return f'<img src="{MEDIA_URL}{str(self.thumbnail_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
