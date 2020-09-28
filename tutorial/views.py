@@ -6,6 +6,8 @@ from django.views import View
 from .repo import LessonRepo
 from app.repo import TagRepo,LikeRepo
 from app.forms import AddLikeForm,AddCommentForm,DeleteCommentForm
+import json
+from app.serializers import CommentSerializer,TagSerializer
 
 TEMPLATE_ROOT='tutorial/'
 def getContext(request):
