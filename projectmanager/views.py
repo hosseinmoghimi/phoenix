@@ -36,7 +36,7 @@ class BasicView(View):
         context['priority_form']=PriorityForm()
         context['project_categories']=ProjectCategoryRepo(user=user).list()
         context['material_categories']=MaterialCategoryRepo(user=user).list_root()
-        context['projects']=ProjectRepo(user=user).get_roots()
+        # context['projects']=ProjectRepo(user=user).get_roots()
         return render(request,TEMPLATE_ROOT+'index.html',context)
     
     def chart(self,request,*args, **kwargs):
