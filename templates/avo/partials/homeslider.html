@@ -13,7 +13,7 @@
                 </div>
                 {% else %}
 
-                <div class="" style="margin-top: 350px;position:inherit;">
+                <div class="" style="margin-top: 300px;position:inherit;">
                    
                     
                 </div>
@@ -21,23 +21,23 @@
 
 
                 <div class="text" style="float:right;width:90%">
-
+                   
                     {% if home_slider.pretitle %}
-                    <h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.pretitle}}</h4>
+                <h4 class="mb-4 leo-rtl text-right" style="color:{{home_slider.text_color}};">{{home_slider.pretitle}}</h4>
                     {% endif %}
 
 
                     {% if home_slider.title %}
-                    <h1 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.title}}</h1>
+                    <h1 class="mb-4 leo-rtl text-right" style="color:{{home_slider.text_color}};">{{home_slider.title}}</h1>
                     {% endif %}
 
 
                     {% if home_slider.posttitle %}
-                    <h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.posttitle}}</h4>
+                    <h4 class="mb-4 leo-rtl text-right" style="color:{{home_slider.text_color}};">{{home_slider.posttitle}}</h4>
                     {% endif %}
 
                     {% if home_slider.short_description %}
-                    <div class="mb-4 leo-rtl text-right" style="color:white">
+                    <div class="mb-4 leo-rtl text-right" style="color:{{home_slider.text_color}};">
                         {{home_slider.short_description|safe}}</div>
                     {% endif %}
 
