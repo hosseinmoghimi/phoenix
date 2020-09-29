@@ -11,7 +11,14 @@
                     <h4 class="number" data-number="{{home_slider.tag_number}}">0</h4>
                     <p class="text-left">{{home_slider.tag_text}}</p>
                 </div>
+                {% else %}
+
+                <div class="" style="margin-top: 350px;position:inherit;">
+                   
+                    
+                </div>
                 {% endif %}
+
 
                 <div class="text" style="float:right;width:90%">
 
@@ -28,6 +35,12 @@
                     {% if home_slider.posttitle %}
                     <h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.posttitle}}</h4>
                     {% endif %}
+
+                    {% if home_slider.short_description %}
+                    <div class="mb-4 leo-rtl text-right" style="color:white">
+                        {{home_slider.short_description|safe}}</div>
+                    {% endif %}
+
 
                     {% if home_slider.action_text %}
                     <p> <a href="{{home_slider.action_url}}"
