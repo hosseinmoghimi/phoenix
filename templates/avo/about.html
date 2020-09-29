@@ -234,7 +234,7 @@
                             <ul class="ftco-social">
                                 {% for social_link in our_team.social_links.all %}
                                 <li class="ftco-animate d-flex"><a href="{{social_link.url}}" class="d-flex align-items-center justify-content-center">
-										{{social_link.icon.get_icon_tag | safe}}</a></li>
+										{{social_link.get_icon_tag | safe}}</a></li>
 
                                 {% endfor %} {% if perms.app.change_ourteam %}
                                 <li class="ftco-animate d-flex">
