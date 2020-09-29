@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 DEBUG =False
 
 
+
 ALLOWED_HOSTS = ['www.khafonline.com','khafonline.com']
 
 MYSQL=True
