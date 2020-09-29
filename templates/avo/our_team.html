@@ -58,7 +58,8 @@
             </div>
 
             {% for resume_category in resume_categories %}
-            <div class="col-12 px-5">
+           <div class="col-lg-2 col-md-1"></div>
+            <div class="col-lg-8 col-md-10">
                 <div class="card bg-dark mb-2">
                     <h4 class="text-center text-light mx-4 my-2 ">
                         {{resume_category.title}}
@@ -69,22 +70,29 @@
                 {% for resume in resume_category.resumes.all %}
                 <div class="card w-100 px-4 py-4 mb-2">
                     <p class="text-dark"> {{resume.title}}</p>
+                    {% if perms.app.change_resume %}
+
+                    <p class="text-secondary">
+                        
+                        <a title="ویرایش" href="{{resume.get_edit_url}}">
+                      <i class="material-icons">settings</i></a></p>
+                    {% endif %}
                     <p class="text-secondary"> {{resume.subtitle}}</p>
                     <p class="text-secondary"> {{resume.description}}</p>
-                  
 
 
 
 
 
-                  {% if resume.album %}
+
+                    {% if resume.album %}
                     {{resume.album.get_tag|safe}}
-                    
-                  {% endif %}
-                  
-                  {% if resume.links.all %}
+
+                    {% endif %}
+
+                    {% if resume.links.all %}
                     <h4 class="text-right">لینک ها</h4>
-                  {% endif %}
+                    {% endif %}
                     {% for link in resume.links.all %}
                     <p> {{link.get_icon_tag|safe}}<a href="{{link.url}}">
 
@@ -101,7 +109,7 @@
                     {% endfor %}
                     {% if resume.documents.all %}
                     <h4 class="text-right">ضمیمه ها</h4>
-                  {% endif %}
+                    {% endif %}
                     {% for doc in resume.documents.all %}
                     <p> {{doc.get_icon_tag|safe}} <a href="{{doc.get_download_url}}">
                             {{doc.title}}</a>
@@ -119,6 +127,8 @@
 
                 {% endfor %}
             </div>
+            
+           <div class="col-lg-2 col-md-1"></div>
             {% endfor %}
 
 

@@ -1046,6 +1046,7 @@ class Resume(models.Model):
     subtitle=models.CharField(_("subtitle"), max_length=50)
     description=models.CharField(_("description"), max_length=500)
     date=models.DateTimeField(_("date"), auto_now=False, auto_now_add=False)
+    duration=models.CharField(_("مدت زمان"),max_length=50,null=True,blank=True)
     links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("documents"),blank=True)
     album=models.ForeignKey("GalleryAlbum",null=True,blank=True, verbose_name=_("آلبوم"), on_delete=models.CASCADE)
@@ -1062,4 +1063,5 @@ class Resume(models.Model):
         return reverse("Resume_detail", kwargs={"pk": self.pk})
 
 
-
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/resume/{self.pk}/change/'
