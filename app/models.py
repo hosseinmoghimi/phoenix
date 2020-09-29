@@ -1043,8 +1043,8 @@ class ResumeCategory(models.Model):
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))
     title=models.CharField(_("title"), max_length=50)
-    subtitle=models.CharField(_("subtitle"), max_length=50)
-    description=models.CharField(_("description"), max_length=500)
+    subtitle=models.CharField(_("subtitle"),null=True,blank=True, max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     date=models.DateTimeField(_("date"), auto_now=False, auto_now_add=False)
     duration=models.CharField(_("مدت زمان"),max_length=50,null=True,blank=True)
     links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
