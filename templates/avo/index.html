@@ -12,68 +12,8 @@
 
 
 
-		{% for home_slider in home_sliders %}
-		<div class="slider-item js-fullheight" style="background-image:url({{home_slider.image}});">
-			<div class="overlay"></div>
-			<div class="container">
-				<div class="row no-gutters slider-text js-fullheight align-items-center">
-					<div class="col-md-12 ftco-animate">
-						{% if home_slider.tag_text %}
-						<div class="absolute" style="margin-top: 200px;position:inherit;">
-							<h4 class="number" data-number="{{home_slider.tag_number}}">0</h4>
-							<p class="text-left">{{home_slider.tag_text}}</p>
-						</div>
-						{% endif %}
-
-						<div class="text" style="float:right;width:90%">
-
-							{% if home_slider.pretitle %}
-							<h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.pretitle}}</h4>
-							{% endif %}
-
-
-							{% if home_slider.title %}
-							<h1 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.title}}</h1>
-							{% endif %}
-
-
-							{% if home_slider.posttitle %}
-							<h4 class="mb-4 leo-rtl text-right" style="color:white">{{home_slider.posttitle}}</h4>
-							{% endif %}
-
-							{% if home_slider.action_text %}
-							<p> <a href="{{home_slider.action_url}}"
-									class="btn btn-primary py-md-3 py-2 px-2 px-md-4">{{home_slider.action_text}}</a>
-							</p>
-
-							{% endif %}
-							{% if perms.app.change_homeslider %}
-							<p>
-								<a href="{{home_slider.get_edit_url}}"
-									class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش اسلایدر</a>
-						
-								<a href="{{ADMIN_URL}}" class="btn btn-primary py-md-3 py-2 px-2 px-md-4">پنل مدیریتی
-									سایت </a>
-								<a href="{{ADMIN_URL}}app/homeslider/add/"
-									class="btn btn-info py-md-3 py-2 px-2 px-md-4">افزودن اسلایدر</a>
-							</p>
-							{% endif %}
-
-
-						</div>
-					</div>
-					{% if home_slider.video_link %}
-					<a href="{{home_slider.video_link}}"
-						class="img-video popup-vimeo d-flex align-items-center justify-content-center">
-						<span class="fa fa-play"></span>
-					</a>
-					{% endif %}
-
-				</div>
-			</div>
-		</div>
-		{% endfor %}
-
+		{% include "avo/partials/homeslider.html" %}
+	
 
 	</div>
 </section>
