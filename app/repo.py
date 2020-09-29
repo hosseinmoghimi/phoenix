@@ -435,7 +435,12 @@ class OurTeamRepo:
     
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
-
+    def our_team(self,our_team_id):
+        try:
+            return self.objects.get(pk=our_team_id)
+        except:
+            return None
+    
 
 class LinkRepo:
     def __init__(self,user=None):

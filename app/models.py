@@ -832,6 +832,8 @@ class OurTeam(models.Model):
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurTeam/', height_field=None, width_field=None, max_length=None)
     social_links=models.ManyToManyField("SocialLink", verbose_name=_("social_links"),blank=True)
     resume_categories=models.ManyToManyField("ResumeCategory", verbose_name=_("ResumeCategories"),blank=True)
+    header_image_origin=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'OurTeam/Header/', height_field=None, width_field=None, max_length=None)
+    
     def __str__(self):
         return self.name
     def get_resume_url(self):
@@ -841,10 +843,16 @@ class OurTeam(models.Model):
             return MEDIA_URL+str(self.image_origin)
         else:
             return STATIC_URL+'dashboard/img/default_avatar.png'
+    def header_image(self):
+        if self.image_origin:
+            return MEDIA_URL+str(self.header_image_origin)
+        else:
+            return ''
     
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/ourteam/{self.pk}/change/'
-    
+    def get_absolute_url(self):
+        return reverse('app:our_team',kwargs={'our_team_id':self.pk})
 
     def __unicode__(self):
         return self.name
@@ -863,8 +871,14 @@ class GalleryAlbum(Jumbotron):
     thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Album/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     
     photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("Photos"),blank=True)
-    
-    
+    def get_tag(self):
+        s= """<div class="row leo-rtl mb-3">"""
+        for pic in self.photos.all():
+            s+=f"""<div class="col-lg-3">
+            <a target="_blank" href="{pic.image()}"><img src="{pic.image()}" width="100%"></a>
+            </div>"""
+        s+="</div>"
+        return s
     def image(self):
         return MEDIA_URL+str(self.image_origin)
     def thumbnail(self):
@@ -1034,6 +1048,7 @@ class Resume(models.Model):
     date=models.DateTimeField(_("date"), auto_now=False, auto_now_add=False)
     links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("documents"),blank=True)
+    album=models.ForeignKey("GalleryAlbum",null=True,blank=True, verbose_name=_("آلبوم"), on_delete=models.CASCADE)
     
 
     class Meta:
