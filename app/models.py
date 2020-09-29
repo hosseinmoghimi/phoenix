@@ -17,6 +17,7 @@ from datetime import datetime
 from PIL import Image
 import sys
 import os
+from tinymce import models as tinymce_models
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
@@ -25,8 +26,9 @@ class Jumbotron(models.Model):
     pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
     posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
-    short_description=models.TextField(_("شرح کوتاه"),blank=True,null=True)
-    description=models.TextField(_("شرح کامل"),blank=True,null=True)
+    short_description=tinymce_models.HTMLField(_("شرح کوتاه"),max_length=1000,blank=True,null=True)
+    # description=models.TextField(_("شرح کامل"),blank=True,null=True)
+    description=tinymce_models.HTMLField(_("شرح کامل"),max_length=2000,null=True,blank=True)
     action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
     action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
     video_text=models.CharField(_("متن ویدیو"), max_length=100,blank=True,null=True)
@@ -115,8 +117,8 @@ class Page(Jumbotron):
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
     count_down_items=models.ManyToManyField("CountDownItem", verbose_name=_("شمارنده ها"),blank=True)
     
-    app_name=models.CharField(_('app_name'),max_length=50)
-    child_class=models.CharField(_('child_class'),max_length=50)
+    app_name=models.CharField(_('app_name'),default=APP_NAME,max_length=50)
+    child_class=models.CharField(_('child_class'),default="page",max_length=50)
 
 
     class Meta:
@@ -188,6 +190,7 @@ class PartialPage(models.Model):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/partialpage/{self.pk}/change/'
+
 
 class Signature(models.Model):
     profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
@@ -330,7 +333,7 @@ class HomeSlider(Jumbotron):
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
-        return str(self.priority)+'  '+str(self.title)
+        return str(self.priority)
 
     def get_absolute_url(self):
         return reverse("HomeSlider_detail", kwargs={"pk": self.pk})
@@ -602,7 +605,9 @@ class Technology(Page):
         verbose_name_plural = _("تکنولوژی")
    
     def __str__(self):
-        return self.title
+        if self.title:
+            return self.title
+        return str(self.priority)
         
 
     def get_edit_url(self):
@@ -832,6 +837,8 @@ class OurTeam(models.Model):
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurTeam/', height_field=None, width_field=None, max_length=None)
     social_links=models.ManyToManyField("SocialLink", verbose_name=_("social_links"),blank=True)
     resume_categories=models.ManyToManyField("ResumeCategory", verbose_name=_("ResumeCategories"),blank=True)
+    header_image_origin=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'OurTeam/Header/', height_field=None, width_field=None, max_length=None)
+    
     def __str__(self):
         return self.name
     def get_resume_url(self):
@@ -841,10 +848,16 @@ class OurTeam(models.Model):
             return MEDIA_URL+str(self.image_origin)
         else:
             return STATIC_URL+'dashboard/img/default_avatar.png'
+    def header_image(self):
+        if self.image_origin:
+            return MEDIA_URL+str(self.header_image_origin)
+        else:
+            return ''
     
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/ourteam/{self.pk}/change/'
-    
+    def get_absolute_url(self):
+        return reverse('app:our_team',kwargs={'our_team_id':self.pk})
 
     def __unicode__(self):
         return self.name
@@ -863,8 +876,14 @@ class GalleryAlbum(Jumbotron):
     thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Album/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     
     photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("Photos"),blank=True)
-    
-    
+    def get_tag(self):
+        s= """<div class="row leo-rtl mb-3">"""
+        for pic in self.photos.all():
+            s+=f"""<div class="col-lg-3">
+            <a target="_blank" href="{pic.image()}"><img src="{pic.image()}" width="100%"></a>
+            </div>"""
+        s+="</div>"
+        return s
     def image(self):
         return MEDIA_URL+str(self.image_origin)
     def thumbnail(self):
@@ -1029,11 +1048,13 @@ class ResumeCategory(models.Model):
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))
     title=models.CharField(_("title"), max_length=50)
-    subtitle=models.CharField(_("subtitle"), max_length=50)
-    description=models.CharField(_("description"), max_length=500)
+    subtitle=models.CharField(_("subtitle"),null=True,blank=True, max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     date=models.DateTimeField(_("date"), auto_now=False, auto_now_add=False)
+    duration=models.CharField(_("مدت زمان"),max_length=50,null=True,blank=True)
     links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("documents"),blank=True)
+    album=models.ForeignKey("GalleryAlbum",null=True,blank=True, verbose_name=_("آلبوم"), on_delete=models.CASCADE)
     
 
     class Meta:
@@ -1047,4 +1068,5 @@ class Resume(models.Model):
         return reverse("Resume_detail", kwargs={"pk": self.pk})
 
 
-
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/resume/{self.pk}/change/'

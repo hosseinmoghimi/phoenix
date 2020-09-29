@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'rest_framework',
     'djecrety',
+    'tinymce',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

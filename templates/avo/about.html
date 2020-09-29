@@ -1,25 +1,27 @@
-{% extends "avo/layout.html" %} {% load static %} {% load to_persian_date %} {% block head %} {% endblock %} {% if perms.app.change_blog %} {% endif %} {% block contents %}
+{% extends "avo/layout.html" %} {% load static %} {% load to_persian_date %} {% block head %} {% endblock %}
+{% if perms.app.change_blog %} {% endif %} {% block contents %}
 
 
-<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{about_header_image.image}}');" data-stellar-background-ratio="0.5">
+<section class="hero-wrap hero-wrap-2 degree-right" style="background-image: url('{{about_header_image.image}}');"
+    data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end">
             <div class="col-md-9 ftco-animate pb-5 mb-5">
                 <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'app:home' %}"><i
-								class="fa fa-chevron-left"></i> بازگشت به خانه </a></span> </p>
+                                class="fa fa-chevron-left"></i> بازگشت به خانه </a></span> </p>
                 <h1 class="mb-3 bread text-right">{{about_us_title.value}}</h1>
                 {% if perms.app.change_parameter %}
                 <p class="text-center leo-rtl text-right">
                     <a href="{{about_us_title.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-						عنوان درباره ما
-					</a>
+                        عنوان درباره ما
+                    </a>
                 </p>
                 {% endif %} {% if perms.app.change_mainpic %}
                 <p class="text-center leo-rtl text-right">
                     <a href="{{about_header_image.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-						تصویر
-					</a>
+                        تصویر
+                    </a>
                 </p>
                 {% endif %}
 
@@ -45,8 +47,9 @@
                         <div class="img w-100">
                             <img src="{{about_pic.image}}" width="100%" alt=""> {% if perms.app.change_parameter %}
                             <p class="text-center leo-rtl text-right">
-                                <a href="{{about_pic.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
-								</a>
+                                <a href="{{about_pic.get_edit_url}}"
+                                    class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش تصویر
+                                </a>
                             </p>
                             {% endif %}
 
@@ -57,18 +60,20 @@
                             <h3 class="leo-rtl text-right">{{about_us_title.value}}</h3>
                             {% if perms.app.change_parameter %}
                             <p class="text-center leo-rtl text-right">
-                                <a href="{{about_us_title.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-								</a>
+                                <a href="{{about_us_title.get_edit_url}}"
+                                    class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+                                </a>
                             </p>
                             {% endif %}
                             <p class="leo-rtl text-right">
 
                                 {{about_us_short.value|safe}} {% if perms.app.change_parameter %}
-                                <p class="text-center leo-rtl text-right">
-                                    <a href="{{about_us_short.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-								</a>
-                                </p>
-                                {% endif %}
+                            <p class="text-center leo-rtl text-right">
+                                <a href="{{about_us_short.get_edit_url}}"
+                                    class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+                                </a>
+                            </p>
+                            {% endif %}
                             </p>
                         </div>
                     </div>
@@ -78,11 +83,11 @@
                 <div class="text">
                     <p>
                         {{app.slogan.value|safe}} {% if perms.app.change_parameter %}
-                        <p class="text-center leo-rtl text-right">
-                            <a href="{{app.slogan.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-						</a>
-                        </p>
-                        {% endif %}
+                    <p class="text-center leo-rtl text-right">
+                        <a href="{{app.slogan.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
+                        </a>
+                    </p>
+                    {% endif %}
                     </p>
 
                 </div>
@@ -135,12 +140,12 @@
                         {% if our_service.short_desc %}
                         <p class="leo-rtl text-right">
                             <small>
-								{{our_service.short_desc}}</small></p>
+                                {{our_service.short_desc}}</small></p>
 
                         {% endif %} {% if perms.app.change_ourservice %}
                         <p class="text-center leo-rtl text-right">
                             <a href="{{our_service.get_edit_url}}" class="btn btn-info py-md-3 py-2 px-2 px-md-4">ویرایش
-								خدمات</a>
+                                خدمات</a>
                         </p>
                         {% endif %}
 
@@ -173,10 +178,12 @@
         <div class="row">
             {% for banner in banners %}
             <div class="col-md-12 mb-5 mt-5">
-                <div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl" style="background-image: url({{banner.image}});">
+                <div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl"
+                    style="background-image: url({{banner.image}});">
                     <div class="col-md-6  text-right">
                         {% if banner.pretitle %}
-                        <span class="ftco-animate text-right leo-rtl leo-farsi">{{banner.pretitle}}</span> {% endif %} {% if banner.title %}
+                        <span class="ftco-animate text-right leo-rtl leo-farsi">{{banner.pretitle}}</span> {% endif %}
+                        {% if banner.title %}
                         <h2 class="ftco-animate">{{banner.title}}</h2>
                         {% endif %} {% if banner.posttitle %}
                         <p>{{banner.posttitle}}</p>
@@ -233,12 +240,14 @@
                         <div class="img align-self-stretch" style="background-image: url({{our_team.image}});">
                             <ul class="ftco-social">
                                 {% for social_link in our_team.social_links.all %}
-                                <li class="ftco-animate d-flex"><a href="{{social_link.url}}" class="d-flex align-items-center justify-content-center">
-										{{social_link.icon.get_icon_tag | safe}}</a></li>
+                                <li class="ftco-animate d-flex"><a href="{{social_link.url}}"
+                                        class="d-flex align-items-center justify-content-center">
+                                        {{social_link.get_icon_tag | safe}}</a></li>
 
                                 {% endfor %} {% if perms.app.change_ourteam %}
                                 <li class="ftco-animate d-flex">
-                                    <a title="ویرایش" href="{{our_team.get_edit_url}}" class="d-flex align-items-center justify-content-center">
+                                    <a title="ویرایش" href="{{our_team.get_edit_url}}"
+                                        class="d-flex align-items-center justify-content-center">
                                         <span class="fa fa-edit"></span></a>
                                 </li>
 
@@ -252,7 +261,7 @@
                     <div class="text d-flex align-items-center pt-3">
                         <div class="desc">
                             <h3 class="mb-2 leo-rtl text-center">
-                                {{our_team.name}}
+                                <a href="{{our_team.get_absolute_url}}"> {{our_team.name}}</a>
                             </h3>
                             <span class="position mb-4 leo-rtl text-center leo-farsi">{{our_team.job}}</span>
                         </div>
@@ -297,10 +306,11 @@
                                     </div>
                                     <div class="pl-3">
                                         <p class="name">{{testimonial.profile.name}}</p>
-                                        <span class="position leo-farsi">{{testimonial.footer}}</span> {% if perms.app.change_testimonial %}
+                                        <span class="position leo-farsi">{{testimonial.footer}}</span>
+                                        {% if perms.app.change_testimonial %}
                                         <p>
                                             <a class="btn btn-info" href="{{testimonial.get_edit_url}}">ویرایش نقل
-												قول</a>
+                                                قول</a>
                                         </p>
                                         {% endif %}
                                     </div>
@@ -341,17 +351,21 @@
                         {% for technology in technologies %}
                         <a href="{{technology.get_absolute_url}}">
                             <div class="col-12">
-                                <div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl" style="background-image: url({{technology.thumbnail}});">
+                                <div class="intro p-md-4 py-md-5 p-2 rounded img leo-rtl"
+                                    style="background-image: url({{technology.thumbnail}});">
                                     <div class="col-md-6  text-right">
                                         {% if technology.pretitle %}
-                                        <span class="ftco-animate text-right leo-rtl leo-farsi">{{technology.pretitle}}</span> {% endif %} {% if technology.title %}
+                                        <span
+                                            class="ftco-animate text-right leo-rtl leo-farsi">{{technology.pretitle}}</span>
+                                        {% endif %} {% if technology.title %}
                                         <h2 class="ftco-animate">{{technology.title}}</h2>
                                         {% endif %} {% if technology.posttitle %}
                                         <p>{{technology.posttitle}}</p>
                                         {% endif %} {% if technology.action_url %}
                                         <p class="ftco-animate">
                                             <a href="{{technology.action_url}}" class="btn btn-primary">
-                                                <span class="text-right leo-rtl text-light">{{technology.action_text}}</span>
+                                                <span
+                                                    class="text-right leo-rtl text-light">{{technology.action_text}}</span>
                                             </a>
                                         </p>
                                         {% endif %} {% if perms.app.change_technology %}
@@ -360,8 +374,8 @@
                                         <p class="ftco-animate">
                                             <a href="{{technology.get_edit_url}}" class="btn btn-link btn-info">
                                                 <span class="text-right leo-rtl text-light">
-												<i class="fa fa-edit"></i>
-											</span>
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
                                             </a>
                                         </p>
 
