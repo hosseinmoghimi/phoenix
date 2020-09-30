@@ -454,10 +454,16 @@ class ProfileView(View):
         # input(active_profile)
         if profile_id==0:
             selected_profile=ProfileRepo(user=user).me
+        else:
+            selected_profile=ProfileRepo(user=user).get(profile_id=profile_id)
             # input(selected_profile)
         if selected_profile is None:                
             raise Http404
         context['my_permissions']=ProfileRepo(user=request.user).my_permissions()
+        
+        
+        
+        
         context['selected_profile']=selected_profile
         if (selected_profile is not None and selected_profile.user==request.user) or request.user.has_perm(f'{APP_NAME}.change_profile'):
             context['regions']=RegionRepo(user=user).list().exclude(pk=selected_profile.region_id)

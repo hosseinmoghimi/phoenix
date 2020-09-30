@@ -70,7 +70,50 @@
 
 
 
+
   </div>
+
+  {% if selected_profile.emp.all %}
+  <div class="col-md-4">
+
+
+    <div class="card" id="34">
+
+
+      <div class="card-body">
+
+
+
+        <table class="table">
+          <tbody>
+            {% for employee in selected_profile.emp.all %}
+
+            <tr>
+              <td><a href="{{employee.work_unit.get_absolute_url}}">
+                  <i class="material-icons">apartment</i>{{employee.work_unit.title}}</a>
+              </td>
+
+              <td>
+                {{employee.role}}
+              </td>
+
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+  {% endif %}
+
   <div class="col-md-8">
 
     {% if edit_profile_form %}
@@ -177,7 +220,7 @@
 
 
 
-    
+
 
     {% if edit_profile_form %}
     <div class="card d-none">
