@@ -1,4 +1,8 @@
-{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
+{% extends "dashboard/layout.html" %}{% load to_material_request_status_color %}
+
+{% load to_persian_date %}
+
+{% load static %} {% load to_price %} {% block contents %}
 
 
 
@@ -11,6 +15,15 @@
                 <div class="card-icon">
                     {{page.get_icon|safe}}
                 </div>
+
+                {% if page.parent %}
+                <div class="card-category">
+                    {{page.parent.get_breadcrumb_url|safe}}
+
+                </div>
+
+                {% endif %}
+
                 {% if page.pretitle %}
                 <p class="card-category">{{page.pretitle}}</p>
 
@@ -23,6 +36,17 @@
                 </h3>
             </div>
             <div class="card-body">
+                {% if page.status %}
+                <div>
+                    <small> وضعیت : </small> <span class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
+                </div>
+                {% endif %}
+
+
+
+
+
+
 
                 {% if page.short_description %}
                 <div class="text-secondary">
@@ -30,6 +54,75 @@
                 </div>
                 <hr> {% endif %}
 
+
+
+
+
+
+                {% if project_projects %}
+                <h4 class="mt-4"> پروژه های جزئی</h4>
+
+                <div class="ml-4 mb-3">
+                    {% for project1 in project_projects %}
+                    <h6 class="mb-3">
+                        <a href="{{project1.get_absolute_url}}">
+                            {{project1.get_colored_icon|safe}}
+
+                            {{project1.title}}
+                        </a></h6>
+                    {% endfor %}
+                </div>
+                <hr> {% endif %}
+
+
+
+                {% if workunit_workunits %}
+
+                <h4>واحد های زیرمجموعه</h4>
+                <div class="ml-4 mb-3">
+                    {% for workunit in workunit_workunits %}
+                    <a class="d-block my-3" href="{{workunit.get_absolute_url}}">
+                        <i class="material-icons">apartment</i> {{workunit.title}}
+                    </a>
+                    {% endfor %}
+                </div>
+
+                {% endif %}
+                {% if page.contractors.all %}
+                <h4 class="mt-4">پیمانکار ها</h4>
+
+                <div class="ml-4 mb-3">
+                    {% for contractor in page.contractors.all %}
+                    <h6 class="mt-4">
+                        <a class="d-block mb-2 text-primary" href="{{contractor.get_absolute_url}}">
+                            <i class="material-icons">engineering</i> {{contractor.title}}
+                        </a>
+                    </h6>
+
+                    {% endfor %}
+                </div>
+                <hr> {% endif %}
+
+
+                {% if page.work_units.all %}
+                <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
+
+                <div class="ml-4 mb-3">
+
+                    {% for work_unit in page.work_units.all %}
+
+
+                    <h6 class="mt-4">
+                        <a class="d-block mb-2 text-primary" href="{{work_unit.get_absolute_url}}">
+                            <i class="material-icons">apartment</i> {{work_unit.title}}
+                        </a>
+                    </h6>
+
+
+                    {% endfor %}
+                </div>
+                <hr>
+                {% endif %}
 
             </div>
             <div class="card-footer">
@@ -198,15 +291,101 @@
         </div>
     </div>
     {% endif %}
-{% csrf_token %}
+
+    {% if page.materialrequest_set.all %}
+    <!-- material requests -->
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+
+
+                <p class="card-category">{{project.title}}</p>
+
+
+
+
+                <h3 class="card-title">
+
+                    درخواست متریال
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                            <td>متریال</td>
+                            <td>پرسنل</td>
+                            <td>پیمانکار</td>
+                            <td>وضعیت</td>
+                            <td>تاریخ</td>
+                            <td>تعداد</td>
+                            <td></td>
+                        </thead>
+                        <tbody>
+                            {% for material_request in page.materialrequest_set.all %}
+                            <tr>
+                                <td><a
+                                        href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                </td>
+                                <td><span
+                                        class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                </td>
+                                <td><small>
+                                        {{material_request.date_added|to_persian_date|safe}}
+                                    </small>
+                                </td>
+                                <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+                                <td>
+                                    <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+    {% csrf_token %}
 </div>
 
 
 {% endblock %} {% block scripts %}
 <script>
-   
-   let csrfmiddlewaretoken = ''
-    $(document).ready(function() {
+
+    let csrfmiddlewaretoken = ''
+    $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
@@ -225,14 +404,14 @@
 
         },
         methods: {
-            add_tag: function() {
+            add_tag: function () {
                 let url = add_tag_url
                 let posting = $.post(url, {
                     page_id: JSON.parse("{{page.id}}"),
                     tag_title: tags_app.new_tag,
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
-                posting.done(function(data) {
+                posting.done(function (data) {
                     // console.log(data.tag)
                     tags_app.new_tag = ''
                     if (data.result === 'SUCCEED') {

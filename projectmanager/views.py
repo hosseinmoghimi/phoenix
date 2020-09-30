@@ -185,8 +185,13 @@ class ManagerPageView(View):
             context['add_document_form']=AddDocumentForm()
         if user.has_perm(APP_NAME+'.add_link'):
             context['add_link_form']=AddLinkForm()
+        work_unit=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
+        page=work_unit
+        context['page']=page
+        context['workunit_workunits']=work_unit.childs()
+        context['work_unit_projects']=work_unit.project_set.all()
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
-        return render(request,TEMPLATE_ROOT+'work_unit.html',context)
+        return render(request,TEMPLATE_ROOT+'page.html',context)
 
     def add_issue(self,request,*args, **kwargs):
         if request.method=='POST':
@@ -204,7 +209,10 @@ class ManagerPageView(View):
         user=request.user
         context=getContext(request)
         page=ProjectRepo(user=user).project(project_id=project_id)
-        context['project']=ProjectRepo(user=user).project(project_id=project_id)
+        project=ProjectRepo(user=user).project(project_id=project_id)
+        context['page']=project
+        context['project_projects']=project.childs()
+        context['project']=project
         if user.has_perm(APP_NAME+'.add_document'):
             context['add_document_form']=AddDocumentForm()
         if user.has_perm(APP_NAME+'.add_link'):
@@ -212,8 +220,9 @@ class ManagerPageView(View):
         if user and user.is_authenticated:
             context['add_issue_form']=AddIssueForm()
             context['issue_types']=list(x.value for x in IssueTypeEnum)
+        # context['contractors']=project.contractors.all()
         context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
-        return render(request,TEMPLATE_ROOT+'project.html',context)
+        return render(request,TEMPLATE_ROOT+'page.html',context)
 
     def issue(self,request,issue_id,*args, **kwargs):
         user=request.user
