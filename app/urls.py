@@ -6,6 +6,7 @@ app_name="app"
 urlpatterns = [
     path('',views.BasicView().home,name='home'),
     path('api/',include('app.api')),
+    path('my_profile/',views.ProfileView().profile,name='my_profile'),
     path('profile/<int:profile_id>/',views.ProfileView().profile,name='profile'),
     path('transactions/<int:profile_id>/',views.TransactionView().transactions,name='transactions'),    
     path('about/',views.BasicView().about,name='about'),

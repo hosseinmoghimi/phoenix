@@ -1,7 +1,7 @@
 
 
 from django.contrib import admin
-from .models import Image,Issue,MaterialRequest,Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import Assignment,Image,Issue,MaterialRequest,Contractor,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 from app.repo import ProfileRepo
 from .enums import LogActionEnum
 class MaterialRequestAdmin(admin.ModelAdmin):
@@ -29,8 +29,10 @@ class ProjectAdmin(admin.ModelAdmin):
         log=PageLog(page=obj,manager_page_id=obj.pk,name=obj.title,profile=profile,action=LogActionEnum.DELETE)
         log.save()
         super().delete_model(request, obj)
-
+class AssignmentAdmin(admin.ModelAdmin):
+    list_display=('assign_to','title','date_added')
 admin.site.register(MaterialRequest,MaterialRequestAdmin)
+admin.site.register(Assignment,AssignmentAdmin)
 admin.site.register(Issue)
 admin.site.register(Image)
 admin.site.register(Contractor)

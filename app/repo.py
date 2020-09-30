@@ -603,9 +603,12 @@ class ProfileRepo:
                                
     def get(self,profile_id):
         user=self.user
-        profile=self.objects.get(pk=profile_id)
-        return profile
-        
+        try:
+
+            profile=self.objects.get(pk=profile_id)
+            return profile
+        except:
+            return None
         
         current_profile=self.get_by_user(user)
         if current_profile is None:

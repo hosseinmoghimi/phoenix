@@ -451,8 +451,10 @@ class ProfileView(View):
         if not user.is_authenticated:
             return redirect(reverse("authentication:login"))
         active_profile=ProfileRepo(user=user).me
-    
-        selected_profile=ProfileRepo(user=user).get(profile_id=profile_id)
+        # input(active_profile)
+        if profile_id==0:
+            selected_profile=ProfileRepo(user=user).me
+            # input(selected_profile)
         if selected_profile is None:                
             raise Http404
         context['my_permissions']=ProfileRepo(user=request.user).my_permissions()

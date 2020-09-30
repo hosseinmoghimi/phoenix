@@ -12,6 +12,8 @@ from django.contrib.contenttypes.models import ContentType
 from .enums import IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
+
+
 class PageLog(models.Model):
     name=models.CharField(_("name"), max_length=50)
     manager_page_id=models.IntegerField(_("manager_page_id"), default=0)
@@ -59,6 +61,7 @@ class ManagerPage(models.Model):
     date_updated=models.DateTimeField(_("date_updated"), auto_now_add=False, auto_now=True)
     related_pages=models.ManyToManyField("ManagerPage", verbose_name=_("related_pages"),blank=True)    
     child_class=models.CharField(_("child_class"), max_length=50,null=True,blank=True)
+    app_name=models.CharField(_("app_name"), max_length=50,default=APP_NAME)
     
     color=models.CharField(_('رنگ'),max_length=50,choices=ColorEnum.choices,default=ColorEnum.PRIMARY)
     icon=models.CharField(_('آیکون'),max_length=50,choices=IconsEnum.choices,default=IconsEnum.description)
@@ -126,11 +129,28 @@ class ManagerPage(models.Model):
         #     if self.child_class==child_class:
         #         return f'{ADMIN_URL}{APP_NAME}/{child_class}/{self.pk}/change/'
         
-        return f'{SITE_URL}{APP_NAME}/{self.child_class}/{self.pk}/'
+        return f'{SITE_URL}{self.app_name}/{self.child_class}/{self.pk}/'
     
     def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/{self.child_class}/{self.pk}/change/'
+        return f'{ADMIN_URL}{self.app_name}/{self.child_class}/{self.pk}/change/'
 
+
+
+class Assignment(ManagerPage):
+    assign_to=models.ForeignKey("Employee",verbose_name="کاربر مربوط",on_delete=models.PROTECT)
+
+    def save(self):
+        self.child_class='assignment'
+        self.app_name=APP_NAME
+        super(Assignment,self).save()
+    class Meta:
+        verbose_name = _("Assignment")
+        verbose_name_plural = _("Assignments")
+
+    def __str__(self):
+        return f'{self.title} - {self.assign_to.profile.name()}'
+
+ 
 
 class Image(models.Model):
     name=models.CharField(_("name"), max_length=50)

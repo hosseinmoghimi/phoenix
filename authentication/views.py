@@ -43,17 +43,17 @@ class AuthView(View):
     def logout(self,request):
         ProfileRepo().logout(request)
         return redirect(reverse('authentication:login'))
-    def auth(self,request,back_url=None):
-        if back_url is None:
-            back_url=reverse('app:home')
-        
+    def auth(self,request,back_url=None,next1=None):
+        back_url=request.GET.get('next1', '')
+        if back_url is None or not back_url:
+            back_url=reverse('app:my_profile')
         if request.method=='POST':
             login_form=LoginForm(request.POST)
             if login_form.is_valid():
                 username=login_form.cleaned_data['username']
                 password=login_form.cleaned_data['password']                
                 request1=ProfileRepo().login(request=request,username=username,password=password)
-                if request1 is not None and request1.user is not None and request1.user.is_authenticated:
+                if request1 is not None and request1.user is not None and request1.user.is_authenticated :
                     return redirect(back_url)
                 else:   
                     context=getContext(request=request)         

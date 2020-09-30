@@ -58,14 +58,15 @@ class BasicView(View):
                 return render(request,TEMPLATE_ROOT+'search.html',context)
 
 class ManagerPageView(View):
+    def assignment(self,request,assignment_id,*args,**kwargs):
+        return self.page(request=request,page_id=assignment_id)
     
     def page(self,request,page_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
         page=ManagerPageRepo(user=user).page(page_id=page_id)
         context['page']=page        
-        return render(request,TEMPLATE_ROOT+'page.html',context)
-    
+        return render(request,TEMPLATE_ROOT+'page.html',context) 
 
     def sign(self,request,*args, **kwargs):
         if request.method=='POST':

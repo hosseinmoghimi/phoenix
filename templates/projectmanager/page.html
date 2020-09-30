@@ -43,6 +43,31 @@
                 </div>
             </div>
         </div>
+
+        <div class="card card-stats">
+
+
+            <div class="card-body" id="tags-app">
+                <h5 class="my-3"> برچسب ها</h5>
+                {% for tag in page.tags.all %}
+                <a href="{{tag.get_absolute_url}}" class="btn btn-sm btn-light">
+                    <span>{{tag.title}}</span>
+                </a>
+                {% endfor %}
+                <template v-for="tag in tags">
+                    <a v-if="tag.title" :href="tag.get_absolute_url" class="btn btn-sm btn-light">
+                        <span v-text="tag.title"></span>
+                    </a>
+                </template> {% if perms.app.add_tag %}
+
+
+
+                <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
+                <button class="btn btn-primary" @click="add_tag">اضافه کن</button> {% endif %}
+            </div>
+
+        </div>
+
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -173,17 +198,52 @@
         </div>
     </div>
     {% endif %}
-
+{% csrf_token %}
 </div>
 
 
 {% endblock %} {% block scripts %}
 <script>
+   
+   let csrfmiddlewaretoken = ''
     $(document).ready(function() {
         // Javascript method's body can be found in assets/js/demos.js
-        //     initDashboardPageCharts();
+        csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
-    });
+
+    })
+
+    let add_tag_url = "{% url 'projectmanager:add_tag'%}"
+
+    let tags_app = new Vue({
+        el: "#tags-app",
+        data: {
+            tags: [{
+                tt: 'sss'
+            }],
+            new_tag: '',
+
+        },
+        methods: {
+            add_tag: function() {
+                let url = add_tag_url
+                let posting = $.post(url, {
+                    page_id: JSON.parse("{{page.id}}"),
+                    tag_title: tags_app.new_tag,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                })
+                posting.done(function(data) {
+                    // console.log(data.tag)
+                    tags_app.new_tag = ''
+                    if (data.result === 'SUCCEED') {
+                        tags_app.tags.push(data.tag)
+                    }
+                })
+            },
+
+        },
+    })
+
 </script>
 <script>
     $("#project-manager-link").addClass("active");
