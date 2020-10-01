@@ -8,6 +8,13 @@ class ProjectStatusEnum(TextChoices):
     DELIVERED='تحویل شده',_('تحویل شده')
     ANALYZING='درحال آنالیز',_('درحال آنالیز')
 
+class AssignmentStatusEnum(TextChoices):
+    DEFAULT='DEFAULT',_('DEFAULT')
+    IN_PROGRESS='در جریان',_('در جریان')
+    DONE='انجام شده',_('انجام شده')
+    STOPEED='متوقف شده',_('متوقف شده')
+    DENIED='رد شده',_('رد شده')
+    
 class IssueTypeEnum(TextChoices):
     DEFAULT='DEFAULT',_('DEFAULT')
     FORCE='FORCE',_('FORCE')

@@ -1,11 +1,23 @@
 
-from .models import Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from .models import Assignment,Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
 from app.repo import ProfileRepo,SignatureRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from app.models import Link,Document,Tag
 from .apps import APP_NAME
 import datetime
+
+class AssignmentRepo:
+    def __init__(self,user):
+        self.user=user
+        self.objects=Assignment.objects
+    def assignment(self,assignment_id):
+        try:
+            return self.objects.get(pk=assignment_id)
+        except:
+            return None
+            
+
 class EmployeeRepo:
     def __init__(self,user):
         self.objects=Employee.objects

@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('projectcategory/<int:category_id>/',views.BasicView().home,name='project_category'),
     path('issue/<int:issue_id>/',views.ManagerPageView().issue,name='issue'),
+    path('assignment/<int:assignment_id>/',views.ManagerPageView().assignment,name='assignment'),
     path('page/<int:page_id>/',views.ManagerPageView().page,name='page'),
     path('assignment/<int:assignment_id>/',views.ManagerPageView().assignment,name='assignment'),
     path('project/<int:project_id>/',views.ManagerPageView().project,name='project'),

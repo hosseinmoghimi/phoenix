@@ -7,7 +7,7 @@ from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
-from .repo import IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 import json
 TEMPLATE_ROOT='projectmanager/'
@@ -58,14 +58,18 @@ class BasicView(View):
                 return render(request,TEMPLATE_ROOT+'search.html',context)
 
 class ManagerPageView(View):
-    def assignment(self,request,assignment_id,*args,**kwargs):
-        return self.page(request=request,page_id=assignment_id)
     
     def page(self,request,page_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
         page=ManagerPageRepo(user=user).page(page_id=page_id)
         context['page']=page        
+        return render(request,TEMPLATE_ROOT+'page.html',context) 
+    def assignment(self,request,assignment_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        assignment=AssignmentRepo(user=user).assignment(assignment_id=assignment_id)
+        context['page']=assignment        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
 
     def sign(self,request,*args, **kwargs):

@@ -8,8 +8,9 @@ from app.models import OurWork
 from django.contrib.auth.models import Group
 from app.get_username import get_username
 from django.contrib.auth.models import User
+from tinymce import models as tinymce_models
 from django.contrib.contenttypes.models import ContentType
-from .enums import IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
+from .enums import AssignmentStatusEnum,IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
@@ -40,8 +41,8 @@ class ManagerPage(models.Model):
     posttitle=models.CharField(_("پس عنوان"),null=True,blank=True, max_length=100)
 
 
-    short_description=models.TextField(_("شرح کوتاه"),blank=True,null=True)
-    description=models.TextField(_("شرح کامل"),blank=True,null=True)
+    short_description=tinymce_models.HTMLField(_("شرح کوتاه"),blank=True,null=True)
+    description=tinymce_models.HTMLField(_("شرح کامل"),blank=True,null=True)
     action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
     action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
     video_text=models.CharField(_("متن ویدیو"), max_length=100,blank=True,null=True)
@@ -138,7 +139,8 @@ class ManagerPage(models.Model):
 
 class Assignment(ManagerPage):
     assign_to=models.ForeignKey("Employee",verbose_name="کاربر مربوط",on_delete=models.PROTECT)
-
+    status=models.CharField(_('status'),max_length=50,choices=AssignmentStatusEnum.choices,default=AssignmentStatusEnum.DEFAULT)
+    
     def save(self):
         self.child_class='assignment'
         self.app_name=APP_NAME
@@ -323,6 +325,10 @@ class Employee(models.Model):
     def __str__(self):
         return self.profile.name()
     
+
+    def my_assignments(self):
+        return Assignment.objects.filter(assign_to=self)
+
     def save(self):
         group_name=self.role+' '+self.work_unit.title
         try:
