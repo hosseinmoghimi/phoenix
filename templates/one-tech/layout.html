@@ -3,6 +3,25 @@
 <html lang="en">
 
 <head>
+
+
+	<!-- MetaData -->
+
+    <meta name="description"
+        content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
+
+
+
+    <meta name="description"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+
+
+    <meta name="robots"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+
+
+
+		
 	<title> {{app.pretitle.value}} " {{app.title.value}} "</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
