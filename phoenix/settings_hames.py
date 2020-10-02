@@ -2,6 +2,8 @@
 from pathlib import Path
 import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+# source /home2/imenyarc/virtualenv/phoenix/3.7/bin/activate && cd /home2/imenyarc/phoenix && git pull && python manage.py migrate && python manage.py collectstatic --no-input
+
 
 
 DEBUG =False
