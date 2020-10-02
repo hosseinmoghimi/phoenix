@@ -295,6 +295,8 @@ class Product(models.Model):
     related=models.ManyToManyField("Product", verbose_name=_("related"),blank=True)
     comments=models.ManyToManyField("app.Comment", verbose_name=_("نظرات کاربرات"),blank=True)
     tags=models.ManyToManyField("app.Tag", verbose_name=_("برچسب ها"),blank=True)
+    metadatas=models.ManyToManyField("app.MetaData", verbose_name=_("کلمات کلیدی سئو"),blank=True)
+    
     def share_mail(self):
         obj={
             'title':self.name+' در فروشگاه '+ParameterRepo().title(),

@@ -450,6 +450,7 @@ class ProductView(View):
         context['unit_names_s']=json.dumps(unit_names_s)
         product=ProductRepo(user=request.user).get(product_id)
         context['product']=product
+        context['metadatas']=product.metadatas.all()
         product_relateds=ProductRepo(user=user).related(product_id=product_id)
         context['product_relateds']=product_relateds
         context['product_s']=json.dumps(ProductSerializer(product).data)

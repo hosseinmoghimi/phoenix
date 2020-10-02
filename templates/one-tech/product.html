@@ -27,6 +27,11 @@
 	}
 </style>
 
+<!-- MetaData -->
+
+<meta name="description"
+content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" />
+
 {% endblock %}
 {% block contents %}
 
