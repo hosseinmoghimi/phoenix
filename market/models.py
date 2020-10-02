@@ -67,7 +67,7 @@ class Category(models.Model):
     def get_nav_li(self):
         template=f"""
         <li>
-            <a href="#" class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+            <a href="{self.get_absolute_url()}" class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
         """
         if self.childs():
             template+="""<ul style="left: -100px;position: absolute;">"""
