@@ -20,7 +20,15 @@ import os
 from tinymce import models as tinymce_models
 IMAGE_FOLDER=APP_NAME+'/images/'
 
-
+class Color(models.Model):
+    name=models.CharField(_('نام رنگ'),max_length=50)
+    color=models.CharField(_('کد رنگ'),max_length=50)
+    class Meta:
+        verbose_name = _("Color")
+        verbose_name_plural = _("رنگ ها")
+        
+    def __str__(self):
+        return self.name    
 
 class Jumbotron(models.Model):
     pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)

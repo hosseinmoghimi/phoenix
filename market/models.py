@@ -15,6 +15,7 @@ from app.repo import ParameterRepo
 from app.models import Profile
 from app.settings import ADMIN_URL,MEDIA_URL,STATIC_URL
 from PIL import Image
+from tinymce import models as tinymce_models
 import re
 import sys
 IMAGE_FOLDER=APP_NAME+'/images/'
@@ -269,6 +270,7 @@ class ProductInStock(models.Model):
 
 class Product(models.Model):
     price=0
+    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"))
     for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
     discount=models.IntegerField(_("درصد تخفیف"),null=True,blank=True)
     is_new=models.BooleanField(_("جدید است؟"),default=False)
@@ -283,9 +285,9 @@ class Product(models.Model):
     barcode=models.CharField(_("بارکد"), max_length=1000,null=True,blank=True)
     rate=models.IntegerField(_("امتیاز"),default=0)
     priority=models.IntegerField(_("ترتیب"),default=1000)
-    origin_price=models.IntegerField(_("قیمت بدون تخفیف"),default=0)
-    short_description=models.CharField(_("شرح کوتاه"), max_length=500,blank=True,null=True)
-    description=models.CharField(_("شرح کامل"), max_length=5000,default='',blank=True,null=True)
+    origin_price=models.IntegerField(_("قیمت بدون تخفیف"),null=True,blank=True)
+    short_description=tinymce_models.HTMLField(_("شرح کوتاه"), max_length=500,blank=True,null=True)
+    description=tinymce_models.HTMLField(_("شرح کامل"), max_length=5000,default='',blank=True,null=True)
     adder=models.ForeignKey("app.Profile",on_delete=models.SET_NULL,null=True,blank=True)
     time_added=models.DateTimeField(_("تاریخ ایجاد"), auto_now=False, auto_now_add=True)
     time_updated=models.DateTimeField(_("تاریخ اصلاح"), auto_now=True, auto_now_add=False)

@@ -1,5 +1,6 @@
 {% extends "one-tech/layout.html" %}
 {% load static %}
+{% load to_price %}
 
 {% block header %}
 
@@ -59,12 +60,9 @@
 					<!-- Images -->
 					<div class="col-lg-3 order-lg-1 order-2">
 						<ul class="image_list leo-ltr">
-							<li data-image="{{product.get_image}}"><img
-									src="{{product.get_image}}" alt=""></li>
-							<li data-image="{{product.get_image2}}"><img
-									src="{{product.get_image2}}" alt=""></li>
-							<li data-image="{{product.get_image3}}"><img
-									src="{{product.get_image3}}" alt=""></li>
+							<li data-image="{{product.get_image}}"><img src="{{product.get_image}}" alt=""></li>
+							<li data-image="{{product.get_image2}}"><img src="{{product.get_image2}}" alt=""></li>
+							<li data-image="{{product.get_image3}}"><img src="{{product.get_image3}}" alt=""></li>
 						</ul>
 					</div>
 
@@ -110,19 +108,24 @@
 
 					<div class="rating_r rating_r_{{product.rate}} product_rating text-right leo-rtl">
 						<i></i><i></i><i></i><i></i><i></i>
-					
-			
 
-							<span title="این کالا در لیست شما موجود است" v-show="is_liked" @click="toggle_like" 
-							class="mx-2 fa fa-heart text-danger"
-								style="font-size:2.5em;cursor: pointer;"> </span>
 
-							<span title="این کالا را به لیست من اضافه کن" v-show="!is_liked" @click="toggle_like" 
-							class="mx-2 fa fa-heart text-light"
-								style="font-size:2.5em;cursor: pointer;"> </span>
 
-					
+						<span title="این کالا در لیست شما موجود است" v-show="is_liked" @click="toggle_like"
+							class="mx-2 fa fa-heart text-danger" style="font-size:2.5em;cursor: pointer;"> </span>
+
+						<span title="این کالا را به لیست من اضافه کن" v-show="!is_liked" @click="toggle_like"
+							class="mx-2 fa fa-heart text-light" style="font-size:2.5em;cursor: pointer;"> </span>
+
+
 					</div>
+					{% if product.origin_price %}
+					<h4 class="text-primary">قیمت :
+						<strong>
+							{{product.origin_price|to_price}}
+						</strong>
+					</h4>
+					{% endif %}
 					{% if product.discount %}
 					<p> {{product.discount}} درصد تخفیف</p>
 					{% endif %}
@@ -146,34 +149,37 @@
 											</div>
 										</div>
 									</div>
+									{% if product.colors.all %}
 									<div class="col-6 text-right">
 										<div class="">
 											<!-- Product Color -->
 											<ul class="product_color mt-0">
 												<li>
-													<span class="leo-farsi">مدل </span>
+													<span class="leo-farsi">رنگ </span>
 													<div class="color_mark_container">
-														<div id="selected_color" class="color_mark"></div>
+														<div id="selected_color" style="border:1px #000 solid;" class="color_mark"></div>
 													</div>
 													<div class="color_dropdown_button"><i
 															class="fas fa-chevron-down"></i>
 													</div>
 
 													<ul class="color_list">
+														{% for color in product.colors.all %}
 														<li>
-															<div class="color_mark" style="background: #999999;"></div>
+															<div class="color_mark" title="{{color.name}}"
+																style="background: {{color.color}};border:1px #000 solid;">
+															</div>
 														</li>
-														<li>
-															<div class="color_mark" style="background: #b19c83;"></div>
-														</li>
-														<li>
-															<div class="color_mark" style="background: #000000;"></div>
-														</li>
+														{% endfor %}
+
+
 													</ul>
 												</li>
 											</ul>
 										</div>
 									</div>
+									{% endif %}
+
 								</div>
 
 
@@ -240,7 +246,9 @@
 									</div>
 									<div class="button_container mt-2 leo-farsi text-right">
 										<button @click="add_to_basket(shop.id)" type="button"
-											class="button cart_button">افزودن به
+											class="button cart_button">
+									<i class="fa fa-shopping-basket mx-3"></i>
+											افزودن به
 											سبد خرید</button>
 										<div class="product_fav mx-2"><i class="fas fa-heart"></i></div>
 
@@ -259,7 +267,7 @@
 												ابتدا واحد فروش خود را انتخاب کنید
 											</small></small>
 											<template v-for="unit_name in unit_names">
-												<span class="mx-2 my-2 btn btn-secondary"
+												<span class="d-block mx-2 my-2 btn btn-secondary"
 													@click="selectUnitName(unit_name.name)">
 
 
@@ -366,6 +374,8 @@
 	</div>
 </div>
 
+{% if product.related.all %}
+  
 <!-- Recently Viewed -->
 
 <div class="viewed">
@@ -425,6 +435,8 @@
 		</div>
 	</div>
 </div>
+
+{% endif %}
 
 
 
@@ -602,7 +614,7 @@
 					}
 				},
 
-				
+
 				selectUnitName: function (unit_name) {
 					this.selected_unit_name = unit_name
 					console.log(unit_name)

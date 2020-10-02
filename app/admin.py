@@ -7,6 +7,7 @@ class TechnologyAdmin(admin.ModelAdmin):
 admin.site.register(Technology,TechnologyAdmin)
 admin.site.register(CountDownItem)
 admin.site.register(Page)
+admin.site.register(Color)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)
 
