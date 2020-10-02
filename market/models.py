@@ -63,7 +63,30 @@ class Category(models.Model):
     priority=models.IntegerField(_("ترتیب"),default=1000)
     def image(self):
         return self.image_origin
-    
+    def get_nav_li(self):
+        template=f"""
+        <li>
+            <a href="#" class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+        """
+        if self.childs():
+            template+="""<ul style="left: -100px;position: absolute;">"""
+            for category in self.childs():
+                template+=category.get_nav_li()
+            template+="</ul>"
+        template+="</li>"
+        return template
+    def get_nav_li2(self):
+        template=f"""
+        <li>
+            <a href="#"  class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+        """
+        if self.childs():
+            template+="""<ul>"""
+            for category in self.childs():
+                template+=category.get_nav_li2()
+            template+="</ul>"
+        template+="</li>"
+        return template
     # def top_products(self):
     #     category_id=self.pk
     #     # products=Product.objects.filter(category_id=category_id)
@@ -76,7 +99,8 @@ class Category(models.Model):
     #     for child in category_repo.list(parent_id=category_id):
     #         products+=(self.top_products(child.id))
     #     return products
-
+    def childs(self):
+        return Category.objects.filter(parent=self)
     def save(self):
         if not self.image_origin:
             super(Category,self).save()             

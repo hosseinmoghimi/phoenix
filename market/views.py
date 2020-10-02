@@ -72,7 +72,9 @@ def getContext(request):
     my_channels_s=[]
     context['my_channels_s']=json.dumps(my_channels_s)
     
-    #context['search_form']=SearchForm()
+    context['search_form']=SearchForm()
+    parent_categories=CategoryRepo(user=user).list_master()
+    context['parent_categories']=parent_categories
     return context
 
 
