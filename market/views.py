@@ -287,8 +287,21 @@ class ShopView(View):
                 product=ProductRepo(user=request.user).add(name=name,unit_name=unit_name,category_id=category_id)
                 return redirect(reverse('market:list',kwargs={'parent_id':category_id}))
     def brand(self,request,brand_id,*args, **kwargs):
-        return JsonResponse({'brand_id':brand_id})
+        user=request.user
+        
+        context=getContext(request=request)
+        
+        product_repo=ProductRepo(user=user)
+        products=product_repo.list_by_brand(brand_id=brand_id)
 
+        context['products']=products
+        brands=BrandRepo(user=user).list()
+        context['brands']=brands
+        brand=BrandRepo(user=user).brand(brand_id=brand_id)
+        
+        context['parent']=brand
+        return render(request=request,template_name='one-tech/shop.html',context=context)
+    
 
 class DownloadView(View):
     def get(self,request,*args,**kwargs):

@@ -817,6 +817,9 @@ class ProductRepo:
         user=self.user
         return self.objects.filter(for_home=True).order_by('priority')
 
+    def list_by_brand(self,brand_id):
+        return self.objects.filter(brand_id=brand_id)
+        
     def list(self,category_id=0):
         user=self.user
         region=None

@@ -78,7 +78,7 @@ class Category(models.Model):
     def get_nav_li2(self):
         template=f"""
         <li>
-            <a href="#"  class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+            <a href="{self.get_absolute_url()}"  class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
         """
         if self.childs():
             template+="""<ul>"""
@@ -200,8 +200,8 @@ class Brand(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # return reverse("market:brand", kwargs={"brand_id": self.pk})
-        return self.url
+        return reverse("market:brand", kwargs={"brand_id": self.pk})
+        # return self.url
     def get_edit_url(self):
         return ADMIN_URL+APP_NAME+'/brand/'+str(self.pk)+'/change/'
     

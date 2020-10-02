@@ -63,8 +63,10 @@
 
 		{% endblock  %}
 
-	
-		{% include "one-tech/includes/brands.html" %}
+	{% if brands %}
+	  
+	{% include "one-tech/includes/brands.html" %}
+	{% endif %}
 		{% include "one-tech/includes/newsletter.html" %}
 		{% include "one-tech/includes/footer.html" %}
 	</div>
