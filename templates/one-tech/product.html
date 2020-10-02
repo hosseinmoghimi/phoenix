@@ -29,8 +29,7 @@
 
 <!-- MetaData -->
 
-<meta name="description"
-content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" />
+<meta name="description" content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" />
 
 {% endblock %}
 {% block contents %}
@@ -131,12 +130,16 @@ content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" /
 						</strong>
 					</h4>
 					{% endif %}
+
 					{% if product.discount %}
 					<p> {{product.discount}} درصد تخفیف</p>
 					{% endif %}
+					{% if product.short_description %}
 					<div class="product_text">
-						<p>{{product.short_desc}}</p>
+						{{product.short_description|safe}}
 					</div>
+					{% endif %}
+
 					<div class="order_info d-flex flex-row">
 						<form action="#" class="text-right">
 							<div class="clearfix" style="z-index: 1000;">
@@ -162,7 +165,8 @@ content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" /
 												<li>
 													<span class="leo-farsi">رنگ </span>
 													<div class="color_mark_container">
-														<div id="selected_color" style="border:1px #000 solid;" class="color_mark"></div>
+														<div id="selected_color" style="border:1px #000 solid;"
+															class="color_mark"></div>
 													</div>
 													<div class="color_dropdown_button"><i
 															class="fas fa-chevron-down"></i>
@@ -252,7 +256,7 @@ content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" /
 									<div class="button_container mt-2 leo-farsi text-right">
 										<button @click="add_to_basket(shop.id)" type="button"
 											class="button cart_button">
-									<i class="fa fa-shopping-basket mx-3"></i>
+											<i class="fa fa-shopping-basket mx-3"></i>
 											افزودن به
 											سبد خرید</button>
 										<div class="product_fav mx-2"><i class="fas fa-heart"></i></div>
@@ -380,7 +384,7 @@ content="{% for meta_data in metadatas %}{{meta_data.content}} , {% endfor %}" /
 </div>
 
 {% if product.related.all %}
-  
+
 <!-- Recently Viewed -->
 
 <div class="viewed">
