@@ -81,7 +81,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
         fields = ['id','get_edit_url', 'name', 'image', 'thumbnail', 'priority',
-                  'price', 'short_description', 'category_id','get_absolute_url']
+                  'get_price','price', 'short_description', 'category_id','get_absolute_url']
 
 class ProductBriefSerialize(serializers.ModelSerializer):
     class Meta:

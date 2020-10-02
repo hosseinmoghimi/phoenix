@@ -296,7 +296,10 @@ class Product(models.Model):
     comments=models.ManyToManyField("app.Comment", verbose_name=_("نظرات کاربرات"),blank=True)
     tags=models.ManyToManyField("app.Tag", verbose_name=_("برچسب ها"),blank=True)
     metadatas=models.ManyToManyField("app.MetaData", verbose_name=_("کلمات کلیدی سئو"),blank=True)
-    
+    def get_price(self):
+        if self.origin_price:
+            return self.origin_price
+        return 0
     def share_mail(self):
         obj={
             'title':self.name+' در فروشگاه '+ParameterRepo().title(),
