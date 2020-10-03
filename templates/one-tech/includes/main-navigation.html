@@ -113,6 +113,20 @@
                                 {% endfor %}
                             </ul>
                         </li>
+{% if active_customer %}
+<li class="page_menu_item">
+    <a href="{{active_customer.get_cart_url}}" class="leo-farsi">سبد خرید من<i class="fa fa-angle-down px-2"></i></a>
+  
+</li>
+
+<li class="page_menu_item">
+    <a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات من<i class="fa fa-angle-down px-2"></i></a>
+  
+</li>
+
+
+{% endif %}
+                    
                      
                     </ul>
 
