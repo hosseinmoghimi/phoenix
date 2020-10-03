@@ -4,7 +4,7 @@ import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # source /home2/nskmajdc/virtualenv/phoenix/3.7/bin/activate && cd /home2/nskmajdc/phoenix && git pull origin master && python manage.py collectstatic --no-input && python manage.py migrate
 
-DEBUG =True
+DEBUG =False
 
 
 ALLOWED_HOSTS = ['www.nsk-majd.com','nsk-majd.com']
