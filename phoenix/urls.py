@@ -7,6 +7,7 @@ from .settings import MEDIA_URL,MEDIA_ROOT,STATIC_URL,STATIC_ROOT,DEBUG
 from django.views.static import serve 
 from django.conf.urls import url
 from .settings import SERVER_ON_HEROKU
+from app.feeder import LatestEntriesFeed,SiteMapFeeder
 
 urlpatterns = [
     path('', include('app.urls')),
@@ -24,7 +25,9 @@ urlpatterns = [
     path('market/', include('market.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('authentication.urls')),
-    path('', include('authentication.urls')),
+    path('', include('authentication.urls')),    
+    path('feed/', LatestEntriesFeed(),name='feeder'),
+    path('sitemap/', SiteMapFeeder(),name='sitemap'),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}),
       

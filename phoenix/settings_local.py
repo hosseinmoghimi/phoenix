@@ -4,7 +4,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.100.198','192.168.1.21','192.168.1.7','127.0.0.1','localhost']
 
