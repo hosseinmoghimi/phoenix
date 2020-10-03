@@ -9,6 +9,7 @@ from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
 from .repo import AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
+from app.repo import TagRepo
 import json
 TEMPLATE_ROOT='projectmanager/'
 def getContext(request):
@@ -65,6 +66,7 @@ class ManagerPageView(View):
         page=ManagerPageRepo(user=user).page(page_id=page_id)
         context['page']=page        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
+    
     def assignment(self,request,assignment_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
@@ -238,3 +240,14 @@ class ManagerPageView(View):
         context['issue']=IssueRepo(user=user).issue(issue_id=issue_id)
         return render(request,TEMPLATE_ROOT+'issue.html',context)
 
+    def tag(self,request,tag_id,*args,**kwargs):
+        user=request.user
+
+        context=getContext(request=request)
+        
+        tag=TagRepo(user=user).get(tag_id=tag_id)    
+        
+        
+        
+        context['pages']=ManagerPageRepo(user=request.user).list_by_tag(tag_id=tag_id)
+        return render(request,TEMPLATE_ROOT+'search.html',context)

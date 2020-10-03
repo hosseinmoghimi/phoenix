@@ -1,6 +1,6 @@
 
 from .models import Assignment,Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
-from app.repo import ProfileRepo,SignatureRepo
+from app.repo import ProfileRepo,SignatureRepo,TagRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from app.models import Link,Document,Tag
@@ -143,7 +143,10 @@ class ManagerPageRepo:
                 # print('down_object')
                 # print(down_object)
 
-
+    def list_by_tag(self,tag_id):
+        tag=TagRepo(user=self.user).tag(tag_id=tag_id)
+        if tag is not None:
+            return tag.managerpage_set.all()
 
 class MaterialRequestRepo:
     def __init__(self,user):

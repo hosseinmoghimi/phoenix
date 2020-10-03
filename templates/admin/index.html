@@ -20,9 +20,9 @@
 {% block sidebar %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
-        <h3>آخرین عملیات انجام شده</h3>
+        <h3 style="margin-top: 1em;text-align: center;">آخرین عملیات انجام شده</h3>
         
-        <h3>توسط شما</h3>
+        <h4 style="margin-top: 1em;text-align: center;">توسط شما</h4>
             {% load log %}
             {% get_admin_log 10 as admin_log for_user user %}
             {% if not admin_log %}

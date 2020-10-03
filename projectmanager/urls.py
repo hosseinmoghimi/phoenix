@@ -7,6 +7,7 @@ urlpatterns = [
     path('',login_required(views.BasicView().home),name='home'),
     path('add_issue/',views.ManagerPageView().add_issue,name='add_issue'),
     # path('add_link/',login_required(views.ManagerPageView().add_link),name='add_link'),
+    path('tag/<int:tag_id>/',views.ManagerPageView().tag,name='tag'),
     
     path('add_link/', permission_required(app_name+'.add_link')(views.ManagerPageView().add_link),name='add_link'),
     

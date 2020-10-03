@@ -143,12 +143,12 @@
             <div class="card-body" id="tags-app">
                 <h5 class="my-3"> برچسب ها</h5>
                 {% for tag in page.tags.all %}
-                <a href="{{tag.get_absolute_url}}" class="btn btn-sm btn-light">
+                <a href="{{tag.get_manager_tag_url}}" class="btn btn-sm btn-light">
                     <span>{{tag.title}}</span>
                 </a>
                 {% endfor %}
                 <template v-for="tag in tags">
-                    <a v-if="tag.title" :href="tag.get_absolute_url" class="btn btn-sm btn-light">
+                    <a v-if="tag.title" :href="tag.get_manager_tag_url" class="btn btn-sm btn-light">
                         <span v-text="tag.title"></span>
                     </a>
                 </template> {% if perms.app.add_tag %}

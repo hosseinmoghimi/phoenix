@@ -242,6 +242,8 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('app:tag',kwargs={'tag_id':self.pk})
+    def get_manager_tag_url(self):
+        return reverse('projectmanager:tag',kwargs={'tag_id':self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}app/tag/{self.pk}/change/'
 
