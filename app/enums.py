@@ -74,8 +74,10 @@ class TextDirectionEnum(TextChoices):
     Ltr='ltr',_('ltr')
 
 class IconsEnum(TextChoices):
+    engineering='engineering',_('engineering')
     account_circle='account_circle',_('account_circle')
     add_shopping_cart='add_shopping_cart',_('add_shopping_cart')
+    apartment='apartment',_('apartment')
     alarm='alarm',_('alarm')
     attach_file='attach_file',_('attach_file')
     attach_money='attach_money',_('attach_money')

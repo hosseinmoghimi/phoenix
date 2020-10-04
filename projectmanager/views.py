@@ -3,11 +3,12 @@ from .forms import *
 from app.forms import AddTagForm
 from app.serializers import TagSerializer
 from django.views import View
+from app.repo import ProfileRepo
 from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
-from .repo import AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 from app.repo import TagRepo
 import json
@@ -56,6 +57,10 @@ class BasicView(View):
                 context=getContext(request)
                 context['pages']=ManagerPageRepo(user=user).search(search_for=search_for)
                 context['search_for']=search_for
+                cont_repo=ContractorRepo(user=user)
+                context['contractors']=cont_repo.search(search_for=search_for)
+                context['profiles']=ProfileRepo(user=user).search(search_for=search_for)
+                
                 return render(request,TEMPLATE_ROOT+'search.html',context)
 
 class ManagerPageView(View):
@@ -134,6 +139,18 @@ class ManagerPageView(View):
         context['unit_names']=['عدد','کیلو','دستگاه']
         return render(request,TEMPLATE_ROOT+'material.html',context)
     
+    def materialwarehouse(self,request,materialwarehouse_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        material_warehouse=MaterialWareHouseRepo(user=user).materialwarehouse(materialwarehouse_id=materialwarehouse_id)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
+        context['page']=material_warehouse
+        return render(request,TEMPLATE_ROOT+'page.html',context)
+    
     def category(self,request,category_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
@@ -195,7 +212,7 @@ class ManagerPageView(View):
         page=work_unit
         context['page']=page
         context['workunit_workunits']=work_unit.childs()
-        context['work_unit_projects']=work_unit.project_set.all()
+        context['workunit_projects']=work_unit.project_set.all()
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'page.html',context)
 

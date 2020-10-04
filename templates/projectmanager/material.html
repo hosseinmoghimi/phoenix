@@ -1,4 +1,9 @@
-{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
+{% extends "dashboard/layout.html" %} 
+{% load static %} 
+{% load to_price %} 
+{% load to_persian_date %} 
+{% load to_material_request_status_color %} 
+{% block contents %}
 
 
 
@@ -266,6 +271,93 @@
                 </div>
             </div>
         </div>
+    </div>
+    {% endif %}
+
+
+    {% if material.materialobject_set.all %}
+    <!-- material objects  -->
+    <div class="col-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+
+
+                <p class="card-category">{{material.title}}</p>
+
+
+
+
+                <h3 class="card-title">
+
+                    درخواست متریال
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                            <td>متریال</td>
+                            <td>پرسنل</td>
+                            <td>پیمانکار</td>
+                            <td>وضعیت</td>
+                            <td>تاریخ</td>
+                            <td>تعداد</td>
+                            <td></td>
+                        </thead>
+                        <tbody>
+                            {% for material_object in material.materialobject_set.all %}
+                            <tr>
+                                <td><a
+                                        href="{{material_object.material.get_absolute_url}}">{{material_object.material.title}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                </td>
+                                <td><a
+                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                </td>
+                                <td><span
+                                        class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                </td>
+                                <td><small>
+                                        {{material_request.date_added|to_persian_date|safe}}
+                                    </small>
+                                </td>
+                                <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+                                <td>
+                                    <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="card-footer">
+                <div class="stats">
+
+                </div>
+            </div>
+        </div>
+
     </div>
     {% endif %}
 

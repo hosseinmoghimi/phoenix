@@ -24,6 +24,7 @@ urlpatterns = [
     path('workunit/<int:work_unit_id>/',views.ManagerPageView().work_unit,name='work_unit'),
     path('material_category/<int:category_id>/',views.ManagerPageView().category,name='material_category'),
     path('materialrequest/<int:material_request_id>/',views.ManagerPageView().material_request,name='material_request'),
+    path('materialwarehouse/<int:materialwarehouse_id>/',views.ManagerPageView().materialwarehouse,name='materialwarehouse'),
     path('material/<int:material_id>/',views.ManagerPageView().material,name='material'),
     path('priority/',views.BasicView().priority,name='priority'),
     path('add_material_request/',views.ManagerPageView().add_material_request,name='add_material_request'),

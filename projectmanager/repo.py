@@ -1,11 +1,28 @@
 
-from .models import Assignment,Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from .models import Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
 from app.repo import ProfileRepo,SignatureRepo,TagRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from app.models import Link,Document,Tag
 from .apps import APP_NAME
 import datetime
+
+class ContractorRepo:
+    def __init__(self,user=None):
+        self.objects=Contractor.objects   
+        self.user=user
+        self.profile=ProfileRepo(user=user).me
+        self.me=None
+        try:
+            if self.profile is not None:
+                self.me=self.objects.get(profile=self.profile)
+        except:
+            pass
+       
+
+
+    def search(self,search_for):
+        return self.objects.filter(title__contains=search_for)
 
 class AssignmentRepo:
     def __init__(self,user):
@@ -36,6 +53,9 @@ class EmployeeRepo:
                 self.me=None
     
 
+    def search(self,search_for):
+        profiles = ProfileRepo(user=self.user).search(search_for=search_for)
+        return profiles
 
 class ManagerPageRepo:
     def add_tag(self,tag_title,page_id):
@@ -184,19 +204,6 @@ class MaterialRequestRepo:
 
                       
 
-class ContractorRepo:
-    def __init__(self,user):
-        self.objects=Contractor.objects   
-        self.user=user
-        self.profile=ProfileRepo(user=user).me
-        self.me=None
-        try:
-            if self.profile is not None:
-                self.me=self.objects.get(profile=self.profile)
-        except:
-            pass
-       
-
 class ProjectRepo:
     def __init__(self,user=None):
         self.objects=Project.objects
@@ -300,6 +307,25 @@ class MaterialRepo:
     
               
 
+class MaterialWareHouseRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialWareHouse.objects
+        self.user=user
+    def list(self):
+        return self.objects.order_by('-priority')
+    
+    def materialwarehouse(self,materialwarehouse_id):
+        try:
+            return self.objects.get(pk=materialwarehouse_id)
+        except:
+            return None
+    def get(self,pk):
+        try:
+            return self.objects.get(pk=pk)
+        except:
+            return None
+    
+    
 class MaterialCategoryRepo:
     def __init__(self,user=None):
         self.objects=MaterialCategory.objects

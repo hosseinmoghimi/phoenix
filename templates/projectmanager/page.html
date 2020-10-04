@@ -65,11 +65,7 @@
                 <div class="ml-4 mb-3">
                     {% for project1 in project_projects %}
                     <h6 class="mb-3">
-                        <a href="{{project1.get_absolute_url}}">
-                            {{project1.get_colored_icon|safe}}
-
-                            {{project1.title}}
-                        </a></h6>
+                        {{project1.get_link|safe}}</h6>
                     {% endfor %}
                 </div>
                 <hr> {% endif %}
@@ -81,9 +77,8 @@
                 <h4>واحد های زیرمجموعه</h4>
                 <div class="ml-4 mb-3">
                     {% for workunit in workunit_workunits %}
-                    <a class="d-block my-3" href="{{workunit.get_absolute_url}}">
-                        <i class="material-icons">apartment</i> {{workunit.title}}
-                    </a>
+                    
+                    {{workunit.get_link|safe}}
                     {% endfor %}
                 </div>
 
@@ -94,9 +89,9 @@
                 <div class="ml-4 mb-3">
                     {% for contractor in page.contractors.all %}
                     <h6 class="mt-4">
-                        <a class="d-block mb-2 text-primary" href="{{contractor.get_absolute_url}}">
-                            <i class="material-icons">engineering</i> {{contractor.title}}
-                        </a>
+                      
+                        {{contractor.get_link|safe}}
+
                     </h6>
 
                     {% endfor %}
@@ -113,9 +108,8 @@
 
 
                     <h6 class="mt-4">
-                        <a class="d-block mb-2 text-primary" href="{{work_unit.get_absolute_url}}">
-                            <i class="material-icons">apartment</i> {{work_unit.title}}
-                        </a>
+                        {{work_unit.get_link|safe}}
+                        
                     </h6>
 
 
@@ -123,6 +117,21 @@
                 </div>
                 <hr>
                 {% endif %}
+
+
+                {% if workunit_projects %}
+                    <p>پروژه های مرتبط</p>
+
+                    <div class="ml-5">
+                        {% for project in workunit_projects %}
+
+                       
+                        {{project.get_link|safe}}
+
+                        {% endfor %}
+                    </div>
+
+                    <hr> {% endif %}
 
             </div>
             <div class="card-footer">
@@ -162,6 +171,57 @@
         </div>
 
     </div>
+
+       <!-- location -->
+       {% if page.location %}
+       <div class="col-lg-6 col-md-6 col-sm-12">
+           <div class="card card-stats">
+               <div class="card-header card-header-info card-header-icon">
+                   <div class="card-icon">
+                       <i class="material-icons">settings</i>
+                   </div>
+   
+                   <p class="card-category">{{page.title}}</p>
+   
+   
+                   <h3 class="card-title">موقعیت
+   
+   
+   
+                   </h3>
+               </div>
+               <div class="card-body">
+   
+   
+   
+   
+   
+                   {{page.location|safe}}
+   
+               </div>
+   
+   
+   
+               <div class="card-footer">
+                   <div class="stats">
+                       {% if perms.projectmanager.change_page and page.get_edit_url%}
+                       <i class="material-icons text-danger">link</i>
+   
+                       <a href="{{page.get_edit_url}}">
+   
+                           ویرایش </a> {% endif %}
+                   </div>
+               </div>
+           </div>
+   
+   
+       </div>
+   
+   
+       {% endif %}
+
+       
+
 
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
@@ -377,6 +437,14 @@
 
     </div>
     {% endif %}
+
+
+    
+   
+
+
+
+
     {% csrf_token %}
 </div>
 

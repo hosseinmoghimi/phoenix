@@ -270,7 +270,7 @@ class ProductInStock(models.Model):
 
 class Product(models.Model):
     price=0
-    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"),null=True,blank=True)
+    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"),blank=True)
     for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
     discount=models.IntegerField(_("درصد تخفیف"),null=True,blank=True)
     is_new=models.BooleanField(_("جدید است؟"),default=False)

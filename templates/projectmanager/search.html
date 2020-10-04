@@ -8,13 +8,15 @@
 
 
 <div class="row">
-  <div class="col-lg-12">
+  {% if pages %}
+    
+  <div class="col-lg-4">
     <div class="card card-stats">
       <div class="card-header card-header-info card-header-icon">
         <div class="card-icon">
           <i class="material-icons">search</i>
         </div>
-        <p class="card-category">جستجو</p>
+        <p class="card-category">جستجو برای</p>
         <h3 class="card-title">{{search_for}}
 
         </h3>
@@ -33,9 +35,9 @@
     {% for page in pages %}
 
   <tr>
-    <td><a class="d-block mb-2 text-primary" href="{{page.get_absolute_url}}">
-      <i class="material-icons">engineering</i>
-      {{page.title}}</a></td>
+    <td>
+      {{page.get_link|safe}}
+    </td>
     <td></td>
     <td></td>
     <td></td>
@@ -61,7 +63,117 @@
     </div>
   </div>
 
- 
+  {% endif %}
+  {% if contractors %}
+  <div class="col-lg-4">
+   <div class="card card-stats">
+     <div class="card-header card-header-warning card-header-icon">
+       <div class="card-icon">
+         <i class="material-icons">engineering</i>
+       </div>
+       <p class="card-category">جستجو برای</p>
+       <h3 class="card-title">{{search_for}}
+
+       </h3>
+     </div>
+     <div class="card-body">
+
+<table class="table">
+ <thead>
+   <td></td>
+   <td></td>
+   <td></td>
+   <td></td>
+ </thead>
+
+ <tbody>
+   {% for contractor in contractors %}
+
+ <tr>
+   <td>
+     {{contractor.get_link|safe}}
+   </td>
+   <td></td>
+   <td></td>
+   <td></td>
+ </tr>
+   
+     
+
+
+  
+       
+   {% endfor %}
+ </tbody>
+</table>
+
+     
+     </div>
+     <div class="card-footer">
+       <div class="stats">
+         <!-- <i class="material-icons text-danger">link</i>
+         <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a> -->
+       </div>
+     </div>
+   </div>
+  </div>
+{% endif %}
+
+{% if profiles %}
+   <div class="col-lg-4">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <i class="fa fa-user"></i>
+        </div>
+        <p class="card-category">جستجو برای</p>
+        <h3 class="card-title">{{search_for}}
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+<table class="table">
+  <thead>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </thead>
+
+  <tbody>
+    {% for profile in profiles %}
+
+  <tr>
+    <td>
+      {{profile.get_link|safe}}
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+    
+      
+
+
+   
+        
+    {% endfor %}
+  </tbody>
+</table>
+
+      
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <!-- <i class="material-icons text-danger">link</i>
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a> -->
+        </div>
+      </div>
+    </div>
+   </div>
+ {% endif %}
+
 </div>
 
 

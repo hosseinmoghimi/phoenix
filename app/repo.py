@@ -484,7 +484,9 @@ class DocumentRepo:
 
 
 class ProfileRepo:    
-    
+    def search(self,search_for):
+        return self.objects.filter(Q(first_name__contains=search_for) | Q(last_name__contains=search_for))
+
     def __init__(self,user=None):
         if user is not None and user and user.is_authenticated:
 

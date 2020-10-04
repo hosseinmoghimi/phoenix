@@ -421,7 +421,13 @@ class Profile(models.Model):
             
         super(Profile,self).save()
         
-
+    def get_link(self):
+        return f"""
+        <a href="{self.get_absolute_url()}">
+        <i class="fa fa-user"></i>
+        {self.name()}
+        </a>
+        """
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("پروفایل ها")

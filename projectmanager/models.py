@@ -25,7 +25,7 @@ class PageLog(models.Model):
     action=models.CharField(_("action"),choices=LogActionEnum.choices,default=LogActionEnum.DEFAULT, max_length=50)
     class Meta:
         verbose_name = _("PageLog")
-        verbose_name_plural = _("PageLogs")
+        verbose_name_plural = _("PageLogs - لاگ های صفحات")
 
     def __str__(self):
         return f'{self.manager_page_id} - {self.page if self.page else ""} - {self.action} - {self.name} - {self.profile.name() if self.profile else ""}'
@@ -72,7 +72,12 @@ class ManagerPage(models.Model):
         return f'<i class="material-icons text-{self.color}">{self.icon}</i>'
     
     
-    
+    def get_link(self):
+        return f"""
+        <a class="d-block mb-2 text-{self.color}" href="{self.get_absolute_url()}">
+    {self.get_colored_icon()}
+      {self.title}</a>
+        """
     def save(self):
         if self.child_class is None:
             self.child_class='managerpage'
@@ -122,8 +127,8 @@ class ManagerPage(models.Model):
         return ContentType.objects.get_for_model(type(self))
 
     class Meta:
-        verbose_name = _("Page")
-        verbose_name_plural = _("Pages")
+        verbose_name = _("ManagerPage")
+        verbose_name_plural = _("ManagerPages - صفحات")
     def get_absolute_url(self):
         # child_classes=['project','work_unit','materialrequest']
         # for child_class in child_classes:
@@ -147,7 +152,7 @@ class Assignment(ManagerPage):
         super(Assignment,self).save()
     class Meta:
         verbose_name = _("Assignment")
-        verbose_name_plural = _("Assignments")
+        verbose_name_plural = _("Assignments - تکلیف ها")
 
     def __str__(self):
         return f'{self.title} - {self.assign_to.profile.name()}'
@@ -165,7 +170,7 @@ class Image(models.Model):
 
     class Meta:
         verbose_name = _("Image")
-        verbose_name_plural = _("Images")
+        verbose_name_plural = _("Images - تصویر ها")
 
     def __str__(self):
         return self.name
@@ -186,7 +191,7 @@ class ProjectCategory(ManagerPage):
     
     class Meta:
         verbose_name = _("ProjectCategory")
-        verbose_name_plural = _("ProjectCategories")
+        verbose_name_plural = _("ProjectCategories - دسته بندی پروژه ها")
 
 
     def get_absolute_url(self):
@@ -235,7 +240,7 @@ class Project(ManagerPage):
     class Meta:
         
         verbose_name = _("Project")
-        verbose_name_plural = _("Projects")
+        verbose_name_plural = _("Projects - پروژه ها")
 
     def __str__(self):
         return str(self.priority)+' - '+self.title
@@ -266,8 +271,8 @@ class WorkUnit(ManagerPage):
         template= f"""
         <div>
         <h4 class="mt-4">
-            <a class="text-primary mb-2" href="{work_unit.get_absolute_url()}">
-                <i class="material-icons">apartment</i>
+            <a class="text-{self.color} mb-2" href="{work_unit.get_absolute_url()}">
+               {self.get_colored_icon()}
                 {work_unit.title}</a>  
          </h4>
         """
@@ -302,7 +307,7 @@ class WorkUnit(ManagerPage):
         return WorkUnit.objects.filter(parent=self)
     class Meta:
         verbose_name = _("WorkUnit")
-        verbose_name_plural = _("WorkUnits")
+        verbose_name_plural = _("WorkUnits - واحد های سازمانی")
 
     def __str__(self):
         return self.title
@@ -350,7 +355,7 @@ class Employee(models.Model):
         return f'{self.role}'
     class Meta:
         verbose_name = _("Employee")
-        verbose_name_plural = _("Employees")
+        verbose_name_plural = _("Employees - کارکنان")
     
     def get_absolute_url(self):
         return reverse('app:profile',kwargs={'profile_id':self.profile.pk})
@@ -370,7 +375,7 @@ class MaterialBrand(ManagerPage):
 
     class Meta:
         verbose_name = _("Brand")
-        verbose_name_plural = _("Brands")
+        verbose_name_plural = _("Brands - برند های متریال")
 
  
     def get_absolute_url(self):
@@ -399,7 +404,7 @@ class MaterialCategory(ManagerPage):
    
     class Meta:
         verbose_name = _("MaterialCategory")
-        verbose_name_plural = _("MaterialCategories")
+        verbose_name_plural = _("MaterialCategories - دسته بندی های متریال")
 
 
     def get_absolute_url(self):
@@ -422,7 +427,7 @@ class Material(ManagerPage):
 
     class Meta:
         verbose_name = _("Material")
-        verbose_name_plural = _("Materials")
+        verbose_name_plural = _("Materials -  متریال ها")
 
 
     def get_absolute_url(self):
@@ -432,18 +437,19 @@ class Material(ManagerPage):
 class MaterialWareHouse(ManagerPage):
     
     def save(self):
-        self.child_class='materilawarehouse'
+        if self.location:
+            self.location=self.location.replace('width="600"','width="100%"')
+            self.location=self.location.replace('height="450"','height="400"')
+        
+        self.child_class='materialwarehouse'
         super(MaterialWareHouse,self).save()
-    location=models.CharField(_("location"),null=True,blank=True,  max_length=50)
-    employees=models.ManyToManyField("Employee", verbose_name=_("employees"),blank=True)
-    address=models.CharField(_("address"),null=True,blank=True, max_length=50)
+    location=models.CharField(_("موقعیت"),null=True,blank=True,  max_length=500)
+    employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
+    address=models.CharField(_("آدرس"),null=True,blank=True, max_length=50)
     class Meta:
         verbose_name = _("MaterialWareHouse")
-        verbose_name_plural = _("MaterialWareHouses")
+        verbose_name_plural = _("MaterialWareHouses - انبار های متریال")
 
-
-    def get_absolute_url(self):
-        return reverse("MaterialWareHouse_detail", kwargs={"pk": self.pk})
 
 
 class MaterialObject(models.Model):
@@ -458,10 +464,10 @@ class MaterialObject(models.Model):
 
     class Meta:
         verbose_name = _("MaterialObject")
-        verbose_name_plural = _("MaterialObjects")
+        verbose_name_plural = _("MaterialObjects- متریال های موجود")
 
     def __str__(self):
-        return f'{self.material.name} {self.serial_no if self.serial_no else "با شناسه"+str(self.pk)}'
+        return f'{self.material.title} {self.serial_no if self.serial_no else "با شناسه"+str(self.pk)}'
 
     def get_absolute_url(self):
         return reverse("MaterialObject_detail", kwargs={"pk": self.pk})
@@ -475,7 +481,7 @@ class MaterialPackage(models.Model):
 
     class Meta:
         verbose_name = _("MaterialPackage")
-        verbose_name_plural = _("MaterialPackages")
+        verbose_name_plural = _("MaterialPackages - پکیج های متریال")
 
     def __str__(self):
         return f'{self.pack_no} {self.name}'
@@ -483,7 +489,18 @@ class MaterialPackage(models.Model):
     def get_absolute_url(self):
         return reverse("MaterialPackage_detail", kwargs={"pk": self.pk})
 
+class MaterialInStock(models.Model):
+    material_object=models.ForeignKey("MaterialObject", verbose_name=_("متریال"), on_delete=models.CASCADE)
+    warehouse=models.ForeignKey("MaterialWareHouse", verbose_name=_("انبار متریال"), on_delete=models.CASCADE)
+    row=models.IntegerField(_('قفسه'))
+    col=models.IntegerField(_('ردیف'))
 
+    class Meta:
+        verbose_name = _("MaterialInStock")
+        verbose_name_plural = _("MaterialInStocks- متریال های موجود در انبار")
+
+    def __str__(self):
+        return str(self.pk)
 class MaterialLog(models.Model):
     priority=models.CharField(_("priority"), max_length=50)
     log_type=models.CharField(_("log_type"), max_length=50)
@@ -495,8 +512,8 @@ class MaterialLog(models.Model):
     
 
     class Meta:
-        verbose_name = _("MaterialPackage")
-        verbose_name_plural = _("MaterialPackages")
+        verbose_name = _("MaterialLog")
+        verbose_name_plural = _("MaterialLogs- لاگ های متریال")
 
     def __str__(self):
         return f'{self.title}'
@@ -506,28 +523,41 @@ class MaterialLog(models.Model):
 
 
 class Contractor(models.Model):
-    title=models.CharField(_("title"), max_length=50)
-    profile=models.ForeignKey("app.Profile", verbose_name=_("profile"), on_delete=models.CASCADE)
+    title=models.CharField(_('عنوان'),max_length=100)
+    color=models.CharField(_('رنگ'),max_length=50,choices=ColorEnum.choices,default=ColorEnum.PRIMARY)
+    icon=models.CharField(_('آیکون'),max_length=50,choices=IconsEnum.choices,default=IconsEnum.engineering)
     
+    profile=models.ForeignKey("app.Profile", verbose_name=_("profile"), on_delete=models.CASCADE)
+    def get_icon(self):
+        return f'<i class="material-icons">{self.icon}</i>'
+    def get_colored_icon(self):
+        return f'<i class="material-icons text-{self.color}">{self.icon}</i>'
+    
+    
+    def get_link(self):
+        return f"""
+        <a class="d-block mb-2 text-{self.color}" href="{self.get_absolute_url()}">
+    {self.get_colored_icon()}
+      {self.title}</a>
+        """
 
     class Meta:
         verbose_name = _("Contractor")
-        verbose_name_plural = _("Contractors")
+        verbose_name_plural = _("Contractors - پیمانکار ها")
 
     def __str__(self):
         return f'{self.title}'
-
+    def save(self):
+        self.child_class='contractor1'
+        super(Contractor,self).save()
     def get_absolute_url(self):
-        # return reverse("Contractor_detail", kwargs={"pk": self.pk})
         return self.profile.get_absolute_url()
-
-
 class MaterialRequest(ManagerPage):
     requested_material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
     quantity=models.IntegerField(_('تعداد'))
     unit_name=models.CharField(_('واحد'),max_length=50)
     employee=models.ForeignKey("Employee",null=True,blank=True,verbose_name="employee",on_delete=models.PROTECT)
-    contractor=models.ForeignKey("Contractor",null=True,blank=True,verbose_name="contractor",on_delete=models.PROTECT)
+    contractor=models.ForeignKey("Contractor",related_name='contractorrequest',null=True,blank=True,verbose_name="contractor",on_delete=models.PROTECT)
     for_project=models.ForeignKey("Project",verbose_name="project",on_delete=models.PROTECT)
     status=models.CharField(_("status"),choices=MaterialRequestStatusEnum.choices,default=MaterialRequestStatusEnum.INITIAL, max_length=50)
     signatures=models.ManyToManyField("app.Signature",blank=True, verbose_name=_("signatures"))
@@ -537,7 +567,7 @@ class MaterialRequest(ManagerPage):
         super(MaterialRequest,self).save()
     class Meta:
         verbose_name = _("MaterialRequest")
-        verbose_name_plural = _("MaterialRequests")
+        verbose_name_plural = _("MaterialRequests - درخواست های متریال")
 
     def __str__(self):
         return self.title
@@ -558,7 +588,7 @@ class Issue(ManagerPage):
         return super(Issue,self).save()
     class Meta:
         verbose_name = _("Issue")
-        verbose_name_plural = _("Issues")
+        verbose_name_plural = _("Issues - مشکلات پیش آمده")
 
     def __str__(self):
         return self.title
