@@ -7,52 +7,115 @@
 
 
 
-
 <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-{{page.color}} card-header-icon">
-                <div class="card-icon">
-                    {{page.get_icon|safe}}
+    <div class="col-lg-8 col-md-6 col-sm-12">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card card-stats">
+                    <div class="card-header card-header-{{page.color}} card-header-icon">
+                        <div class="card-icon">
+                            {{page.get_icon|safe}}
+                        </div>
+
+                        {% if page.parent %}
+                        <div class="card-category">
+                            {{page.parent.get_breadcrumb_url|safe}}
+
+                        </div>
+
+                        {% endif %}
+
+                        {% if page.pretitle %}
+                        <p class="card-category">{{page.pretitle}}</p>
+
+                        {% endif %}
+                        <h3 class="card-title">{{page.title}} {% if page.posttitle %}
+                            <p class="card-category">{{page.posttitle}}</p>
+
+                            {% endif %}
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        {% if page.status %}
+                        <div class="mb-3">
+                            <small> وضعیت : </small> <span
+                                class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
+                        </div>
+                        {% endif %}
+
+
+
+
+
+
+
+                        {% if page.short_description %}
+                        <div class="text-secondary">
+                            {{page.short_description|safe}}
+                        </div>
+                        <hr> {% endif %}
+
+
+
+
+
+
+
+
+
+
+                       
+                        {% if page.contractors.all %}
+                        <h4 class="mt-4">پیمانکار ها</h4>
+
+                        <div class="ml-4 mb-3">
+                            {% for contractor in page.contractors.all %}
+                            <h6 class="mt-4">
+
+                                {{contractor.get_link|safe}}
+
+                            </h6>
+
+                            {% endfor %}
+                        </div>
+                        <hr> {% endif %}
+
+
+                        {% if page.work_units.all %}
+                        <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
+
+                        <div class="ml-4 mb-3">
+
+                            {% for work_unit in page.work_units.all %}
+
+
+                            <h6 class="mt-4">
+                                {{work_unit.get_link|safe}}
+
+                            </h6>
+
+
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        {% endif %}
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
                 </div>
-
-                {% if page.parent %}
-                <div class="card-category">
-                    {{page.parent.get_breadcrumb_url|safe}}
-
-                </div>
-
-                {% endif %}
-
-                {% if page.pretitle %}
-                <p class="card-category">{{page.pretitle}}</p>
-
-                {% endif %}
-                <h3 class="card-title">{{page.title}} {% if page.posttitle %}
-                    <p class="card-category">{{page.posttitle}}</p>
-
-                    {% endif %}
-
-                </h3>
-            </div>
-            <div class="card-body">
-                {% if page.status %}
-                <div class="mb-3">
-                    <small> وضعیت : </small> <span class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
-                </div>
-                {% endif %}
-
-
-
-
-
-
-
-                {% if page.short_description %}
-                <div class="text-secondary">
-                    {{page.short_description|safe}}
-                </div>
-                <hr> {% endif %}
 
 
 
@@ -60,92 +123,242 @@
 
 
                 {% if project_projects %}
-                <h4 class="mt-4"> پروژه های جزئی</h4>
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
 
-                <div class="ml-4 mb-3">
-                    {% for project1 in project_projects %}
-                    <h6 class="mb-3">
-                        {{project1.get_link|safe}}</h6>
-                    {% endfor %}
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+
+                        <h3 class="card-title">پروژه های جزئی
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+
+                        <div class="ml-4 mb-3">
+                            {% for project1 in project_projects %}
+                            <h6 class="mb-3">
+                                {{project1.get_link|safe}}</h6>
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
                 </div>
-                <hr> {% endif %}
-
-
-
-                {% if workunit_workunits %}
-
-                <h4>واحد های زیرمجموعه</h4>
-                <div class="ml-4 mb-3">
-                    {% for workunit in workunit_workunits %}
-                    
-                    {{workunit.get_link|safe}}
-                    {% endfor %}
-                </div>
-
                 {% endif %}
-                {% if page.contractors.all %}
-                <h4 class="mt-4">پیمانکار ها</h4>
-
-                <div class="ml-4 mb-3">
-                    {% for contractor in page.contractors.all %}
-                    <h6 class="mt-4">
-                      
-                        {{contractor.get_link|safe}}
-
-                    </h6>
-
-                    {% endfor %}
-                </div>
-                <hr> {% endif %}
 
 
-                {% if page.work_units.all %}
-                <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
-
-                <div class="ml-4 mb-3">
-
-                    {% for work_unit in page.work_units.all %}
 
 
-                    <h6 class="mt-4">
-                        {{work_unit.get_link|safe}}
-                        
-                    </h6>
 
 
-                    {% endfor %}
-                </div>
-                <hr>
-                {% endif %}
+
+
+
+
 
 
                 {% if workunit_projects %}
-                    <p>پروژه های مرتبط</p>
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
 
-                    <div class="ml-5">
-                        {% for project in workunit_projects %}
 
-                       
-                        {{project.get_link|safe}}
 
-                        {% endfor %}
+                        <p class="card-category">{{page.title}}</p>
+
+
+
+                        <h3 class="card-title">پروژه های مرتبط
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+
+                        <div class="ml-4 mb-3">
+
+                            {% for project in workunit_projects %}
+
+
+                            {{project.get_link|safe}}
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+
+
+
+
+                
+
+                {% if workunit_workunits %}
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+
+                        <h3 class="card-title">واحد های زیرمجموعه
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+
+                        <div class="ml-4 mb-3">
+
+                            {% for workunit in workunit_workunits %}
+
+                    {{workunit.get_link|safe}}
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+            </div>
+
+            <!-- location -->
+            {% if page.location %}
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+                        <h3 class="card-title">موقعیت
+
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+                        {{page.location|safe}}
+
                     </div>
 
-                    <hr> {% endif %}
 
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_page and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
 
-                    <a href="{{page.get_edit_url}}">
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
 
-                        ویرایش </a> {% endif %}
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
+
+
+            {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {% csrf_token %}
         </div>
 
+    </div>
+    <!--  فایل ها و لینک ها , برچسب -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <!-- برچسب -->
         <div class="card card-stats">
 
 
@@ -170,60 +383,7 @@
 
         </div>
 
-    </div>
 
-       <!-- location -->
-       {% if page.location %}
-       <div class="col-lg-6 col-md-6 col-sm-12">
-           <div class="card card-stats">
-               <div class="card-header card-header-info card-header-icon">
-                   <div class="card-icon">
-                       <i class="material-icons">settings</i>
-                   </div>
-   
-                   <p class="card-category">{{page.title}}</p>
-   
-   
-                   <h3 class="card-title">موقعیت
-   
-   
-   
-                   </h3>
-               </div>
-               <div class="card-body">
-   
-   
-   
-   
-   
-                   {{page.location|safe}}
-   
-               </div>
-   
-   
-   
-               <div class="card-footer">
-                   <div class="stats">
-                       {% if perms.projectmanager.change_page and page.get_edit_url%}
-                       <i class="material-icons text-danger">link</i>
-   
-                       <a href="{{page.get_edit_url}}">
-   
-                           ویرایش </a> {% endif %}
-                   </div>
-               </div>
-           </div>
-   
-   
-       </div>
-   
-   
-       {% endif %}
-
-       
-
-
-    <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
@@ -310,7 +470,6 @@
 
 
     </div>
-
     {% if page.description %}
     <div class="col-12">
         <div class="card card-stats">
@@ -437,15 +596,6 @@
 
     </div>
     {% endif %}
-
-
-    
-   
-
-
-
-
-    {% csrf_token %}
 </div>
 
 
