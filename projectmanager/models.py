@@ -501,6 +501,7 @@ class MaterialInStock(models.Model):
 
     def __str__(self):
         return str(self.pk)
+        
 class MaterialLog(models.Model):
     priority=models.CharField(_("priority"), max_length=50)
     log_type=models.CharField(_("log_type"), max_length=50)

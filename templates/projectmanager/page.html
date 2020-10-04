@@ -54,7 +54,7 @@
                         <div class="text-secondary">
                             {{page.short_description|safe}}
                         </div>
-                         {% endif %}
+                        {% endif %}
 
 
 
@@ -65,10 +65,10 @@
 
 
 
-                
 
 
-                       
+
+
 
 
 
@@ -89,7 +89,7 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">build</i>
                         </div>
 
 
@@ -133,12 +133,12 @@
                 </div>
                 {% endif %}
 
-    
+
                 {% if page.contractors.all %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">engineering</i>
                         </div>
 
 
@@ -147,7 +147,7 @@
 
 
 
-                        <h3 class="card-title">پیمانکاران 
+                        <h3 class="card-title">پیمانکاران
 
 
                         </h3>
@@ -163,7 +163,7 @@
 
                             {% for contractor in page.contractors.all %}
 
-                    {{contractor.get_link|safe}}
+                            {{contractor.get_link|safe}}
                             {% endfor %}
                         </div>
 
@@ -182,12 +182,12 @@
                     </div>
                 </div>
                 {% endif %}
-                
+
                 {% if page.work_units.all %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">apartment</i>
                         </div>
 
 
@@ -196,7 +196,7 @@
 
 
 
-                        <h3 class="card-title">واحد های مرتبط 
+                        <h3 class="card-title">واحد های مرتبط
 
 
                         </h3>
@@ -212,7 +212,7 @@
 
                             {% for workunit in page.work_units.all %}
 
-                    {{workunit.get_link|safe}}
+                            {{workunit.get_link|safe}}
                             {% endfor %}
                         </div>
 
@@ -238,7 +238,7 @@
 
 
 
-              
+
 
 
 
@@ -254,7 +254,7 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">build</i>
                         </div>
 
 
@@ -306,13 +306,13 @@
 
 
 
-                
+
 
                 {% if workunit_workunits %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">settings</i>
+                            <i class="material-icons">apartment</i>
                         </div>
 
 
@@ -337,7 +337,7 @@
 
                             {% for workunit in workunit_workunits %}
 
-                    {{workunit.get_link|safe}}
+                            {{workunit.get_link|safe}}
                             {% endfor %}
                         </div>
 
@@ -360,9 +360,11 @@
 
             </div>
 
-            <!-- location -->
-            {% if page.location %}
+
+
             <div class="col-lg-6 col-md-6 col-sm-12">
+                <!-- location -->
+                {% if page.location %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -402,11 +404,71 @@
                     </div>
                 </div>
 
+                {% endif %}
+
+
+                <!-- employees -->
+                {% if page.employee_set.all %}
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">engineering</i>
+                        </div>
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+                        <h3 class="card-title">کارکنان
+
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+<table class="table">
+    <tbody>
+        {% for employee in page.employee_set.all %}
+          <tr>
+              <td>
+                <i class="fa fa-user mr-2"></i> 
+                {{employee.profile.name}}<span class="mx-3 badge badge-secondary">
+                {{employee.role}}
+              </span>
+              </td>
+              
+          </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+                       
+                        
+
+                    </div>
+
+
+
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
 
             </div>
 
 
-            {% endif %}
+
 
 
 
