@@ -54,7 +54,7 @@
                         <div class="text-secondary">
                             {{page.short_description|safe}}
                         </div>
-                        <hr> {% endif %}
+                         {% endif %}
 
 
 
@@ -63,43 +63,12 @@
 
 
 
+
+
+                
 
 
                        
-                        {% if page.contractors.all %}
-                        <h4 class="mt-4">پیمانکار ها</h4>
-
-                        <div class="ml-4 mb-3">
-                            {% for contractor in page.contractors.all %}
-                            <h6 class="mt-4">
-
-                                {{contractor.get_link|safe}}
-
-                            </h6>
-
-                            {% endfor %}
-                        </div>
-                        <hr> {% endif %}
-
-
-                        {% if page.work_units.all %}
-                        <h4 class="mt-4">واحد های مرتبط با این پروژه</h4>
-
-                        <div class="ml-4 mb-3">
-
-                            {% for work_unit in page.work_units.all %}
-
-
-                            <h6 class="mt-4">
-                                {{work_unit.get_link|safe}}
-
-                            </h6>
-
-
-                            {% endfor %}
-                        </div>
-                        <hr>
-                        {% endif %}
 
 
 
@@ -116,12 +85,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
                 {% if project_projects %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
@@ -170,6 +133,112 @@
                 </div>
                 {% endif %}
 
+    
+                {% if page.contractors.all %}
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+
+                        <h3 class="card-title">پیمانکاران 
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+
+                        <div class="ml-4 mb-3">
+
+                            {% for contractor in page.contractors.all %}
+
+                    {{contractor.get_link|safe}}
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if page.work_units.all %}
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+
+
+                        <h3 class="card-title">واحد های مرتبط 
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+
+
+
+
+
+                        <div class="ml-4 mb-3">
+
+                            {% for workunit in page.work_units.all %}
+
+                    {{workunit.get_link|safe}}
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+
+
+
+
+              
 
 
 
