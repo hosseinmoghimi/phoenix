@@ -443,7 +443,6 @@ class ProfileView(View):
             actived=change_profile_form.cleaned_data['actived']
             profile=ProfileRepo(user=request.user).change_profile(user=request.user,actived=actived) 
         return redirect(reverse('app:home'))
-        
 
     def profile(self,request,profile_id=0):
         user=request.user
