@@ -8,10 +8,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SERVER_ON_PARS=False
 SERVER_ON_HEROKU=False
 SERVER_ON_LOCAL=False
+SERVER_ON_AZURE=False
 
 
 
-SERVER_ON_PARS=True
+# SERVER_ON_PARS=True
+SERVER_ON_AZURE=True
 # SERVER_ON_HEROKU=True
 # SERVER_ON_LOCAL=True
 
@@ -30,7 +32,16 @@ if '--no-color' in sys.argv or SERVER_ON_LOCAL:
     SERVER_ON_LOCAL=True  
     SERVER_ON_HEROKU=False
     SERVER_ON_PARS=False
+    SERVER_ON_AZURE=False
     from . import settings_local as server_settings
+elif SERVER_ON_AZURE:
+    SERVER_ON_AZURE=True  
+    SERVER_ON_HEROKU=False
+    SERVER_ON_PARS=False
+    SERVER_ON_LOCAL=False
+    from . import settings_azure as server_settings
+    SECRET_KEY = server_settings.SECRET_KEY
+    
 elif SERVER_ON_PARS:
     SERVER_ON_LOCAL=False  
     SERVER_ON_HEROKU=False
