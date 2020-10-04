@@ -434,7 +434,9 @@
           <tr>
               <td>
                 <i class="fa fa-user mr-2"></i> 
-                {{employee.profile.name}}<span class="mx-3 badge badge-secondary">
+                <a href="{{employee.profile.get_absolute_url}}">{{employee.profile.name}}</a>
+                
+                <span class="mx-3 badge badge-secondary">
                 {{employee.role}}
               </span>
               </td>
