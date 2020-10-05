@@ -1,5 +1,5 @@
 
-from .models import Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from .models import MaterialBrand,MaterialObject,Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
 from app.repo import ProfileRepo,SignatureRepo,TagRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
@@ -366,6 +366,34 @@ class WorkUnitRepo:
             return None
     def get(self,work_unit_id):
             return self.project(work_unit_id=work_unit_id)
+
+class MaterialObjectRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialObject.objects
+        self.user=user
+    def list(self):
+        return self.objects.all()
+    def get(self,materialobject_id):
+            try:
+                return self.objects.get(pk=materialobject_id)
+            except:
+                return None
+    def materialobject(self,materialobject_id):
+            return self.get(materialobject_id=materialobject_id)
+
+class MaterialBrandRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialBrand.objects
+        self.user=user
+    def list(self):
+        return self.objects.all()
+    def get(self,materialbrand_id):
+            try:
+                return self.objects.get(pk=materialbrand_id)
+            except:
+                return None
+    def materialbrand(self,materialbrand_id):
+            return self.get(materialbrand_id=materialbrand_id)
 
 
 class ProjectCategoryRepo:

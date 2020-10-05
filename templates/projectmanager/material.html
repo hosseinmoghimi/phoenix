@@ -320,7 +320,8 @@
                                         href="{{material_in_stock.material_object.material.get_absolute_url}}">{{material_in_stock.material_object.material.title}}</a>
                                 </td>
                                 <td>
-                                    {{material_in_stock.material_object.serial_no}}
+                                    <a href="{{material_in_stock.material_object.get_absolute_url}}">
+                                    {{material_in_stock.material_object.serial_no}}</a>
                                 </td>
                                 <td><a
                                         href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
@@ -370,6 +371,9 @@
 
 </div>
 
+{% block content %}
+  
+{% endblock %}
 
 {% endblock %} {% block scripts %}
 <script>

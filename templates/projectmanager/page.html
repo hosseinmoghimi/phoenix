@@ -730,11 +730,11 @@
     </div>
     {% endif %}
 
-    {% block content %}
+   
+</div>
+ {% block content %}
       
     {% endblock %}
-</div>
-
 
 {% endblock %} {% block scripts %}
 <script>
@@ -782,4 +782,9 @@
 <script>
     $("#project-manager-link").addClass("active");
 </script>
+
+{% block script %}
+  
+{% endblock  %}
+
 {% endblock %} {% block styles %} {% endblock %}

@@ -5,7 +5,7 @@
 
 
 
-{% if page.materialinstock_set.all %}
+{% if materials %}
 <!-- material objects  -->
 <div class="col-12">
     <div class="card card-stats">
@@ -15,7 +15,7 @@
             </div>
 
 
-            <p class="card-category">{{material.title}}</p>
+            <p class="card-category">{{page.title}}</p>
 
 
 
@@ -42,7 +42,7 @@
                         <td></td>
                     </thead>
                     <tbody>
-                        {% for material_in_stock in page.materialinstock_set.all %}
+                        {% for material_in_stock in materials %}
                         <tr>
                             <td><a
                                     href="{{material_in_stock.material_object.material.get_absolute_url}}">{{material_in_stock.material_object.material.title}}</a>
@@ -66,7 +66,7 @@
                                 <span class="badge badge-warning">&nbsp;ردیف {{material_in_stock.row}}&nbsp;</span>
                             </td>
                             <td>
-                             
+
                                 <a class="btn btn-link btn-warning" href="{{material_in_stock.get_edit_url}}">
                                     <i class="fa fa-edit"></i>
                                 </a>
@@ -93,4 +93,14 @@
 
 </div>
 {% endif %}
+
+
+
+
+
 {% endblock %}
+
+
+{% block script %}
+  
+{% endblock  %}

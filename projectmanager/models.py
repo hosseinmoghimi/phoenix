@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from tinymce import models as tinymce_models
 from django.contrib.contenttypes.models import ContentType
 from .enums import AssignmentStatusEnum,IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
+from django.db.models import Count
+
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
@@ -448,7 +450,11 @@ class MaterialWareHouse(ManagerPage):
         verbose_name = _("MaterialWareHouse")
         verbose_name_plural = _("MaterialWareHouses - انبار های متریال")
 
-
+    def materials(self):
+        materialinstock_set=self.materialinstock_set.all()
+        # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))
+        # materials=materialobject_set.all()
+        return materialinstock_set.order_by('material_object')
 
 class MaterialObject(models.Model):
     material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
@@ -468,9 +474,7 @@ class MaterialObject(models.Model):
         return f'{self.material.title} {self.serial_no if self.serial_no else "با شناسه"+str(self.pk)}'
 
     def get_absolute_url(self):
-        return reverse("MaterialObject_detail", kwargs={"pk": self.pk})
-
-
+        return reverse('projectmanager:materialobject',kwargs={'materialobject_id':self.pk})
 class MaterialPackage(models.Model):
     
     pack_no=models.CharField(_("pack_no"), max_length=50)

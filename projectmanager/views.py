@@ -8,7 +8,7 @@ from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
 from .enums import MaterialRequestStatusEnum,IssueTypeEnum
-from .repo import MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import MaterialBrandRepo,MaterialObjectRepo,MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 from app.repo import TagRepo
 import json
@@ -139,6 +139,31 @@ class ManagerPageView(View):
         context['unit_names']=['عدد','کیلو','دستگاه']
         return render(request,TEMPLATE_ROOT+'material.html',context)
     
+    def materialbrand(self,request,materialbrand_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        materialbrand=MaterialBrandRepo(user=user).materialbrand(materialbrand_id=materialbrand_id)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
+        context['page']=materialbrand
+        context['materialbrand']=materialbrand
+        return render(request,TEMPLATE_ROOT+'materialbrand.html',context)
+    def materialobject(self,request,materialobject_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        materialobject=MaterialObjectRepo(user=user).materialobject(materialobject_id=materialobject_id)
+        
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
+        context['materialobject']=materialobject
+        context['material']=materialobject.material
+        return render(request,TEMPLATE_ROOT+'materialobject.html',context)
+    
     def materialwarehouse(self,request,materialwarehouse_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
@@ -148,7 +173,12 @@ class ManagerPageView(View):
             context['add_document_form']=AddDocumentForm()
         if user.has_perm(APP_NAME+'.add_link'):
             context['add_link_form']=AddLinkForm()
+        
+        materials=[]
         context['page']=material_warehouse
+
+        context['materials']=material_warehouse.materials()
+        # print(materials)
         return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     
     def category(self,request,category_id,*args, **kwargs):
