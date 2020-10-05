@@ -60,6 +60,7 @@ class MaterialRequestStatusEnum(TextChoices):
     IN_PROGRESS='در حال بررسی',_('در حال بررسی')
     DENIED='رد شده',_('رد شده')
     CANCELED='لغو شده',_('لغو شده')
+    DELIVERED='تحویل شده',_('تحویل شده')
 
 class AgentRoleEnum(TextChoices):
     DEFAULT='پیش فرض',_('پیش فرض')

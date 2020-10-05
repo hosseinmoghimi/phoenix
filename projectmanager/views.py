@@ -149,7 +149,7 @@ class ManagerPageView(View):
         if user.has_perm(APP_NAME+'.add_link'):
             context['add_link_form']=AddLinkForm()
         context['page']=material_warehouse
-        return render(request,TEMPLATE_ROOT+'page.html',context)
+        return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     
     def category(self,request,category_id,*args, **kwargs):
         user=request.user

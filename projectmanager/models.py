@@ -494,6 +494,7 @@ class MaterialInStock(models.Model):
     warehouse=models.ForeignKey("MaterialWareHouse", verbose_name=_("انبار متریال"), on_delete=models.CASCADE)
     row=models.IntegerField(_('قفسه'))
     col=models.IntegerField(_('ردیف'))
+    date_added=models.DateTimeField(_('تاریخ ثبت') , auto_now_add=True,auto_now=False)
 
     class Meta:
         verbose_name = _("MaterialInStock")
@@ -501,7 +502,8 @@ class MaterialInStock(models.Model):
 
     def __str__(self):
         return str(self.pk)
-        
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/materialinstock/{self.pk}/change'    
 class MaterialLog(models.Model):
     priority=models.CharField(_("priority"), max_length=50)
     log_type=models.CharField(_("log_type"), max_length=50)

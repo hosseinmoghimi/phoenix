@@ -1,8 +1,8 @@
-{% extends "dashboard/layout.html" %} 
-{% load static %} 
-{% load to_price %} 
-{% load to_persian_date %} 
-{% load to_material_request_status_color %} 
+{% extends "dashboard/layout.html" %}
+{% load static %}
+{% load to_price %}
+{% load to_persian_date %}
+{% load to_material_request_status_color %}
 {% block contents %}
 
 
@@ -101,7 +101,8 @@
                                 </p>
                                 {% if perms.projectmanager.change_image %}
                                 <p class="lead">
-                                    <a class="btn btn-warning btn-link btn-sm" href="{{ material_img.get_edit_url }}" role="button">ویرایش تصویر</a>
+                                    <a class="btn btn-warning btn-link btn-sm" href="{{ material_img.get_edit_url }}"
+                                        role="button">ویرایش تصویر</a>
                                 </p>
                                 {% endif %}
 
@@ -292,7 +293,7 @@
 
                 <h3 class="card-title">
 
-                    درخواست متریال
+                    متریال موجود در انبار
 
 
                 </h3>
@@ -304,43 +305,48 @@
 
                         <thead>
                             <td>متریال</td>
-                            <td>پرسنل</td>
-                            <td>پیمانکار</td>
+                            <td>سریال</td>
+                            <td>انبار</td>
                             <td>وضعیت</td>
                             <td>تاریخ</td>
-                            <td>تعداد</td>
+                            <td>قفسه و ردیف</td>
                             <td></td>
                         </thead>
                         <tbody>
                             {% for material_object in material.materialobject_set.all %}
+                            {% for material_in_stock in material_object.materialinstock_set.all %}
                             <tr>
                                 <td><a
-                                        href="{{material_object.material.get_absolute_url}}">{{material_object.material.title}}</a>
+                                        href="{{material_in_stock.material_object.material.get_absolute_url}}">{{material_in_stock.material_object.material.title}}</a>
+                                </td>
+                                <td>
+                                    {{material_in_stock.material_object.serial_no}}
                                 </td>
                                 <td><a
-                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
-                                </td>
-                                <td><a
-                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
+                                        href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
                                 </td>
                                 <td><span
                                         class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
                                 </td>
                                 <td><small>
-                                        {{material_request.date_added|to_persian_date|safe}}
+                                        {{material_in_stock.date_added|to_persian_date|safe}}
                                     </small>
                                 </td>
-                                <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
                                 <td>
-                                    <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
-                                        <i class="fa fa-user"></i>
-                                    </a>
-                                    <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+
+                                    <span class="badge badge-info">&nbsp;قفسه {{material_in_stock.col}}&nbsp;</span>
+                                    <span class="badge badge-warning">&nbsp;ردیف {{material_in_stock.row}}&nbsp;</span>
+                                </td>
+                                <td>
+
+                                    <a class="btn btn-link btn-warning" href="{{material_in_stock.get_edit_url}}">
                                         <i class="fa fa-edit"></i>
                                     </a>
 
                                 </td>
                             </tr>
+                            {% endfor %}
+
                             {% endfor %}
                         </tbody>
                     </table>
@@ -367,7 +373,7 @@
 
 {% endblock %} {% block scripts %}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
         //  initDashboardPageCharts();
 
