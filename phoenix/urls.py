@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('authentication.urls')),
     path('', include('authentication.urls')),    
-    path('feed/', LatestEntriesFeed(),name='feeder'),
+    path('rss/', LatestEntriesFeed(),name='feeder'),
     path('sitemap/', SiteMapFeeder(),name='sitemap'),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': STATIC_ROOT}),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': MEDIA_ROOT}),
