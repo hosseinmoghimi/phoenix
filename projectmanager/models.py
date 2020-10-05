@@ -12,7 +12,7 @@ from tinymce import models as tinymce_models
 from django.contrib.contenttypes.models import ContentType
 from .enums import AssignmentStatusEnum,IssueTypeEnum,UnitNameEnum,EmployeeEnum,ProjectStatusEnum,LogActionEnum,MaterialRequestStatusEnum
 from django.db.models import Count
-
+from django.db.models import Subquery
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
@@ -456,6 +456,27 @@ class MaterialWareHouse(ManagerPage):
         # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))
         # materials=materialobject_set.all()
         return materialinstock_set.order_by('material_object')
+    def materials2(self):
+        materialinstock_set=self.materialinstock_set.all()
+        # materialobject_set=MaterialObject.objects.filter(id__in=list(materialinstock_set.values('material_object_id')))
+        # material_set=materialobject_set.only('material')
+        # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))
+        # materials=materialobject_set.all()
+        materialobjects = MaterialObject.objects.filter(
+            id__in=materialinstock_set.values('material_object_id')
+        )
+
+        materials=Material.objects.all().annotate(
+        most_benevolent_hero=Subquery(
+                materialobjects.values('material')[:1]
+            )
+        )
+
+        materials=materialobjects.annotate(
+        most_benevolent_hero=Count('material')
+        )
+
+        return materials
 
 
 class MaterialObject(models.Model):

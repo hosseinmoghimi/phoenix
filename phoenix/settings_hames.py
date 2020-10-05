@@ -19,7 +19,6 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'OPTIONS': {
                 'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_hames_my_sql.cnf'),
-
             },
         }
     }

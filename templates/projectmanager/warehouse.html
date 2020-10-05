@@ -8,7 +8,7 @@
     <div class="card card-stats">
         <div class="card-header card-header-success card-header-icon">
             <div class="card-icon">
-                
+
                 <i class="fa fa-user"></i>
             </div>
             {% if warehouse.title %}
@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
 
-           
+
             <table class="table">
                 <thead>
                     <td>نام</td>
@@ -29,13 +29,13 @@
                 </thead>
                 <tbody>
                     {% for employee in warehouse.employees.all %}
-                      <tr>
-                          <td>
-                              <a href="{{employee.get_absolute_url}}">{{employee.profile.name}}</a>
-                          </td>
-                          <td>{{employee.role}}</td>
-                          <td></td>
-                      </tr>
+                    <tr>
+                        <td>
+                            <a href="{{employee.get_absolute_url}}">{{employee.profile.name}}</a>
+                        </td>
+                        <td>{{employee.role}}</td>
+                        <td></td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -93,11 +93,107 @@
                     <tbody>
                         {% for material_in_stock in materials %}
                         <tr>
-                            <td><a
-                                    href="{{material_in_stock.material_object.material.get_absolute_url}}">{{material_in_stock.material_object.material.title}}</a>
+                            <td>
+                                <a href="{{material_in_stock.material_object.material.get_absolute_url}}">
+                                    {{material_in_stock.material_object.material.title}}
+                                </a>
+
                             </td>
                             <td>
-                                {{material_in_stock.material_object.serial_no}}
+                                <a href="{{material_in_stock.material_object.get_absolute_url}}">
+                                    {{material_in_stock.material_object.serial_no}}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
+                            </td>
+                            <td><span
+                                    class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                            </td>
+                            <td><small>
+                                    {{material_in_stock.date_added|to_persian_date|safe}}
+                                </small>
+                            </td>
+                            <td>
+
+                                <span class="badge badge-info">&nbsp;قفسه {{material_in_stock.col}}&nbsp;</span>
+                                <span class="badge badge-warning">&nbsp;ردیف {{material_in_stock.row}}&nbsp;</span>
+                            </td>
+                            <td>
+
+                                <a class="btn btn-link btn-warning" href="{{material_in_stock.get_edit_url}}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="card-footer">
+            <div class="stats">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+{% if materials2 %}
+<!-- material objects  -->
+<div class="col-12">
+    <div class="card card-stats">
+        <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+                <i class="material-icons">settings</i>
+            </div>
+
+
+            <p class="card-category">{{page.title}}</p>
+
+
+
+
+            <h3 class="card-title">
+
+                متریال موجود در انبار
+
+
+            </h3>
+        </div>
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table">
+
+                    <thead>
+                        <td>متریال</td>
+                        <td>سریال</td>
+                        <td>انبار</td>
+                        <td>وضعیت</td>
+                        <td>تاریخ</td>
+                        <td>قفسه</td>
+                        <td></td>
+                    </thead>
+                    <tbody>
+                        {% for material_object in materials2 %}
+                        <tr>
+                            <td><a href="{{material_object.material.get_absolute_url}}">
+                                    {{material_object.most_benevolent_hero}}
+                                    {{material_object.material.title}}
+                                    <!-- {{material_object.material_object.material.title}} -->
+                                </a>
+                            </td>
+                            <td>
+                                {{materialinstock.material_object.serial_no}}
                             </td>
                             <td><a
                                     href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
@@ -151,5 +247,5 @@
 
 
 {% block script %}
-  
+
 {% endblock  %}

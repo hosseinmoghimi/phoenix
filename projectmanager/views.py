@@ -180,6 +180,7 @@ class ManagerPageView(View):
         context['warehouse']=material_warehouse
 
         context['materials']=material_warehouse.materials()
+        # context['materials2']=material_warehouse.materials2()
         # print(materials)
         return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     
