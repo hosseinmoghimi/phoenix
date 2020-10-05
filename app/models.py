@@ -347,7 +347,7 @@ class HomeSlider(Jumbotron):
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
-        return str(self.priority)
+        return str(self.pk)
 
     def get_absolute_url(self):
         return reverse("HomeSlider_detail", kwargs={"pk": self.pk})
