@@ -16,7 +16,6 @@ from django.db.models import Count
 IMAGE_FOLDER=APP_NAME+'/images/'
 
 
-
 class PageLog(models.Model):
     name=models.CharField(_("name"), max_length=50)
     manager_page_id=models.IntegerField(_("manager_page_id"), default=0)
@@ -143,7 +142,6 @@ class ManagerPage(models.Model):
         return f'{ADMIN_URL}{self.app_name}/{self.child_class}/{self.pk}/change/'
 
 
-
 class Assignment(ManagerPage):
     assign_to=models.ForeignKey("Employee",verbose_name="کاربر مربوط",on_delete=models.PROTECT)
     status=models.CharField(_('status'),max_length=50,choices=AssignmentStatusEnum.choices,default=AssignmentStatusEnum.DEFAULT)
@@ -159,7 +157,6 @@ class Assignment(ManagerPage):
     def __str__(self):
         return f'{self.title} - {self.assign_to.profile.name()}'
 
- 
 
 class Image(models.Model):
     name=models.CharField(_("name"), max_length=50)
@@ -254,7 +251,7 @@ class Project(ManagerPage):
         return reverse("projectmanager:project", kwargs={"project_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/project/{self.pk}/change/'
-        
+
 
 class WorkUnit(ManagerPage): 
     
@@ -460,6 +457,7 @@ class MaterialWareHouse(ManagerPage):
         # materials=materialobject_set.all()
         return materialinstock_set.order_by('material_object')
 
+
 class MaterialObject(models.Model):
     material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
     serial_no=models.CharField(_('serial_no'),null=True,blank=True,max_length=200)
@@ -483,6 +481,7 @@ class MaterialObject(models.Model):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialobject/{self.pk}/change/'
 
+
 class MaterialPackage(models.Model):
     
     pack_no=models.CharField(_("pack_no"), max_length=50)
@@ -499,6 +498,7 @@ class MaterialPackage(models.Model):
     def get_absolute_url(self):
         return reverse("MaterialPackage_detail", kwargs={"pk": self.pk})
 
+
 class MaterialInStock(models.Model):
     material_object=models.ForeignKey("MaterialObject", verbose_name=_("متریال"), on_delete=models.CASCADE)
     warehouse=models.ForeignKey("MaterialWareHouse", verbose_name=_("انبار متریال"), on_delete=models.CASCADE)
@@ -514,6 +514,7 @@ class MaterialInStock(models.Model):
         return str(self.pk)
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialinstock/{self.pk}/change'    
+
 
 class MaterialLog(models.Model):
     priority=models.CharField(_("priority"), max_length=50)
@@ -567,6 +568,7 @@ class Contractor(models.Model):
     def get_absolute_url(self):
         return self.profile.get_absolute_url()
 
+
 class MaterialRequest(ManagerPage):
     requested_material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
     quantity=models.IntegerField(_('تعداد'))
@@ -612,7 +614,4 @@ class Issue(ManagerPage):
         return reverse("projectmanager:issue", kwargs={"issue_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/issue/{self.pk}/change'
- 
-
-
 
