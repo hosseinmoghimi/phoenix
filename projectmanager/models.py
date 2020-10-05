@@ -337,7 +337,10 @@ class Employee(models.Model):
         return Assignment.objects.filter(assign_to=self)
 
     def save(self):
-        if self.work_unit:
+        if self.profile.user:
+            # self.profile.user.groups.delete()
+            pass
+        if self.work_unit and self.profile.user:
             group_name=self.role+' '+self.work_unit.title
             try:
                 origin_group=Group.objects.get(name=group_name)
