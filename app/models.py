@@ -79,7 +79,6 @@ class CountDownItem(models.Model):
         return f'{ADMIN_URL}{APP_NAME}/coundownitem/{self.pk}/change/'
 
 
-
 class Banner(Jumbotron):
     image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
@@ -98,7 +97,6 @@ class Banner(Jumbotron):
         return self.action_url
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/banner/{self.pk}/change/'
-
 
 
 class Page(Jumbotron):
@@ -246,6 +244,8 @@ class Tag(models.Model):
         return reverse('projectmanager:tag',kwargs={'tag_id':self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}app/tag/{self.pk}/change/'
+
+
 class Icon(models.Model):
     title=models.CharField(_("عنوان"), max_length=50)    
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurService/', height_field=None,null=True,blank=True, width_field=None, max_length=None)
@@ -329,6 +329,7 @@ class Link(Icon):
 class SiteMap(Link):
     active=models.BooleanField(_('نقشه سایت فعال'),default=False)
     parent=models.ForeignKey("SiteMap",verbose_name='نود والد',null=True,blank=True,on_delete=models.SET_NULL)
+
 
 class HomeSlider(Jumbotron):
     image_banner=models.ImageField(_("تصویر اسلایدر  1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
@@ -806,8 +807,6 @@ class OurService(Page):
         return reverse("app:page", kwargs={"page_id": self.pk})
 
 
-
-
 class SocialLink(models.Model):
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
@@ -950,7 +949,6 @@ class GalleryPhoto(Jumbotron):
         return reverse("app:home")
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/galleryphoto/{self.pk}/change/'
-    
 
 
 class ProfileTransaction(models.Model):
@@ -1046,7 +1044,7 @@ class Document(Icon):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/document/{self.pk}/change/'
-   
+
 
 class ResumeCategory(models.Model):
     our_team=models.ForeignKey("OurTeam", verbose_name=_("our_team"), on_delete=models.CASCADE)
