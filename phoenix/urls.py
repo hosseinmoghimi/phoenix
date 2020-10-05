@@ -11,7 +11,7 @@ from app.feeder import LatestEntriesFeed,SiteMapFeeder
 
 urlpatterns = [
     path('', include('app.urls')),
-    path('phoenix_v1/', include('app.urls')),
+    path('phoenix_app/', include('app.urls')),
     
     path('pusher/', include('leopusher.urls')),
     path('tutorial/', include('tutorial.urls')),
