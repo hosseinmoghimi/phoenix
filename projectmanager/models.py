@@ -475,6 +475,9 @@ class MaterialObject(models.Model):
 
     def get_absolute_url(self):
         return reverse('projectmanager:materialobject',kwargs={'materialobject_id':self.pk})
+
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/materialobject/{self.pk}/change/'
 class MaterialPackage(models.Model):
     
     pack_no=models.CharField(_("pack_no"), max_length=50)

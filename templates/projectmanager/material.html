@@ -35,6 +35,18 @@
                 {% endif %} {% if material.model %}
                 <p class="card-category">{{material.model}}</p>
 
+                {% endif %}     
+                  {% if materialobject.serial_no %}
+                <p class="card-category leo-rtl text-right text-success"> سریال {{materialobject.serial_no}}</p>
+
+                {% endif %}
+                {% if materialobject.package_no %}
+                <p class="card-category leo-rtl text-right text-primary">#  {{materialobject.package_no}}</p>
+
+                {% endif %}
+                {% if materialobject.package_name %}
+                <p class="card-category leo-ltr text-right text-info"> {{materialobject.package_name}}</p>
+
                 {% endif %}
             </div>
             <div class="card-body">

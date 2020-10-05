@@ -151,6 +151,7 @@ class ManagerPageView(View):
         context['page']=materialbrand
         context['materialbrand']=materialbrand
         return render(request,TEMPLATE_ROOT+'materialbrand.html',context)
+    
     def materialobject(self,request,materialobject_id,*args, **kwargs):
         user=request.user
         context=getContext(request)
