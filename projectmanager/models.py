@@ -330,23 +330,24 @@ class Employee(models.Model):
     major=models.CharField(_("رشته تحصیلی"),null=True,blank=True, max_length=50)
     introducer=models.CharField(_("معرف"),null=True,blank=True, max_length=50)
     def __str__(self):
-        return self.profile.name()
+        return self.profile.name()+' '+self.role+((' '+self.work_unit.title) if self.work_unit else '')
     
 
     def my_assignments(self):
         return Assignment.objects.filter(assign_to=self)
 
     def save(self):
-        group_name=self.role+' '+self.work_unit.title
-        try:
-            origin_group=Group.objects.get(name=group_name)
-        except:
-            Group.objects.filter(name=group_name).delete()
-            origin_group = None
-        if  origin_group is None:
-            origin_group=Group(name=group_name)
-            origin_group.save()
-        if origin_group is not None:
+        if self.work_unit:
+            group_name=self.role+' '+self.work_unit.title
+            try:
+                origin_group=Group.objects.get(name=group_name)
+            except:
+                Group.objects.filter(name=group_name).delete()
+                origin_group = None
+            if  origin_group is None:
+                origin_group=Group(name=group_name)
+                origin_group.save()
+            if origin_group is not None:
                 if self.profile.user is not None:
                     self.profile.user.groups.add(origin_group)
         super(Employee,self).save()
@@ -478,6 +479,7 @@ class MaterialObject(models.Model):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialobject/{self.pk}/change/'
+
 class MaterialPackage(models.Model):
     
     pack_no=models.CharField(_("pack_no"), max_length=50)
