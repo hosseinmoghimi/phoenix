@@ -64,6 +64,65 @@
   </div>
 
   {% endif %}
+  {% if materialobjects %}
+    
+  <div class="col-lg-4">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">search</i>
+        </div>
+        <p class="card-category">جستجو برای</p>
+        <h3 class="card-title">{{search_for}}
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+<table class="table">
+  <thead>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </thead>
+
+  <tbody>
+    {% for page in materialobjects %}
+
+  <tr>
+    <td>
+     
+      <a href="{{page.material.get_absolute_url}}">{{page.material.title}}</a>
+    </td>
+    <td>    <a href="{{page.get_absolute_url}}">{{page.serial_no}}</a>
+       </td>
+    <td></td>
+    <td></td>
+  </tr>
+    
+      
+
+
+   
+        
+    {% endfor %}
+  </tbody>
+</table>
+
+      
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <!-- <i class="material-icons text-danger">link</i>
+          <a href="{{ADMIN_URL}}{{APP_NAME}}/project/add/">اضافه کردن پروژه</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
   {% if contractors %}
   <div class="col-lg-4">
    <div class="card card-stats">

@@ -60,6 +60,7 @@ class BasicView(View):
                 cont_repo=ContractorRepo(user=user)
                 context['contractors']=cont_repo.search(search_for=search_for)
                 context['profiles']=ProfileRepo(user=user).search(search_for=search_for)
+                context['materialobjects']=MaterialObjectRepo(user=user).search(search_for=search_for)
                 
                 return render(request,TEMPLATE_ROOT+'search.html',context)
 
@@ -180,7 +181,7 @@ class ManagerPageView(View):
         context['warehouse']=material_warehouse
 
         context['materials']=material_warehouse.materials()
-        # context['materials2']=material_warehouse.materials2()
+        context['materials2']=material_warehouse.materials2()
         # print(materials)
         return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     

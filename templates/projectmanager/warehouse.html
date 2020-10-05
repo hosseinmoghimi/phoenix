@@ -176,40 +176,26 @@
 
                     <thead>
                         <td>متریال</td>
-                        <td>سریال</td>
-                        <td>انبار</td>
-                        <td>وضعیت</td>
-                        <td>تاریخ</td>
-                        <td>قفسه</td>
+                        <td>تعداد</td>
+                       
                         <td></td>
                     </thead>
                     <tbody>
                         {% for material_object in materials2 %}
                         <tr>
                             <td><a href="{{material_object.material.get_absolute_url}}">
-                                    {{material_object.most_benevolent_hero}}
+                                    
                                     {{material_object.material.title}}
                                     <!-- {{material_object.material_object.material.title}} -->
                                 </a>
                             </td>
                             <td>
-                                {{materialinstock.material_object.serial_no}}
+                                {{material_object.count1}}
+                                {{material_object.material.unit_name}}
                             </td>
-                            <td><a
-                                    href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
-                            </td>
-                            <td><span
-                                    class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
-                            </td>
-                            <td><small>
-                                    {{material_in_stock.date_added|to_persian_date|safe}}
-                                </small>
-                            </td>
-                            <td>
-
-                                <span class="badge badge-info">&nbsp;قفسه {{material_in_stock.col}}&nbsp;</span>
-                                <span class="badge badge-warning">&nbsp;ردیف {{material_in_stock.row}}&nbsp;</span>
-                            </td>
+                            
+                        
+                          
                             <td>
 
                                 <a class="btn btn-link btn-warning" href="{{material_in_stock.get_edit_url}}">

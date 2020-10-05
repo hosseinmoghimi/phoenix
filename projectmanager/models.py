@@ -423,6 +423,7 @@ class Material(ManagerPage):
     brand=models.ForeignKey("MaterialBrand", verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"), max_length=50)
     category=models.ForeignKey("MaterialCategory",related_name='material_category',on_delete=models.PROTECT)
+    unit_name=models.CharField(_('واحد'),max_length=50)
     
      
 
@@ -456,7 +457,7 @@ class MaterialWareHouse(ManagerPage):
         # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))
         # materials=materialobject_set.all()
         return materialinstock_set.order_by('material_object')
-    def materials2(self):
+    def materials3(self):
         materialinstock_set=self.materialinstock_set.all()
         # materialobject_set=MaterialObject.objects.filter(id__in=list(materialinstock_set.values('material_object_id')))
         # material_set=materialobject_set.only('material')
@@ -473,6 +474,27 @@ class MaterialWareHouse(ManagerPage):
         )
 
         materials=materialobjects.annotate(
+        most_benevolent_hero=Count('material')
+        )
+
+        return materials
+    def materials2(self):
+        materialinstock_set=self.materialinstock_set.all()
+        # materialobject_set=MaterialObject.objects.filter(id__in=list(materialinstock_set.values('material_object_id')))
+        # material_set=materialobject_set.only('material')
+        # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))
+        # materials=materialobject_set.all()
+        materialobjects = MaterialObject.objects.filter(
+            id__in=materialinstock_set.values('material_object_id')
+        )
+        materials=materialobjects.raw('SELECT COUNT(*) AS count1,id,material_id FROM projectmanager_materialobject GROUP BY material_id')
+        materials1=Material.objects.all().annotate(
+        most_benevolent_hero=Subquery(
+                materialobjects.values('material')[:1]
+            )
+        )
+
+        materials1=materialobjects.annotate(
         most_benevolent_hero=Count('material')
         )
 

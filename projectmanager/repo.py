@@ -380,6 +380,8 @@ class MaterialObjectRepo:
                 return None
     def materialobject(self,materialobject_id):
             return self.get(materialobject_id=materialobject_id)
+    def search(self,search_for):
+        return self.objects.filter(serial_no__contains=search_for)
 
 class MaterialBrandRepo:
     def __init__(self,user=None):
