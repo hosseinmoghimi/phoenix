@@ -47,7 +47,7 @@ class Jumbotron(models.Model):
         verbose_name_plural = _("جامبوترون ها")
         
     def __str__(self):
-        return self.title
+        return str(self.pk)
 
     def get_absolute_url(self):
         return self.action_url
