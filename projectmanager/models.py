@@ -378,9 +378,7 @@ class MaterialBrand(ManagerPage):
         verbose_name_plural = _("Brands - برند های متریال")
 
  
-    def get_absolute_url(self):
-        # return reverse("market:brand", kwargs={"brand_id": self.pk})
-        return self.url
+
     def get_edit_url(self):
         return ADMIN_URL+APP_NAME+'/brand/'+str(self.pk)+'/change/'
 
@@ -504,6 +502,7 @@ class MaterialInStock(models.Model):
         return str(self.pk)
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialinstock/{self.pk}/change'    
+
 class MaterialLog(models.Model):
     priority=models.CharField(_("priority"), max_length=50)
     log_type=models.CharField(_("log_type"), max_length=50)
@@ -555,6 +554,7 @@ class Contractor(models.Model):
         super(Contractor,self).save()
     def get_absolute_url(self):
         return self.profile.get_absolute_url()
+
 class MaterialRequest(ManagerPage):
     requested_material=models.ForeignKey("Material", verbose_name=_("material"), on_delete=models.CASCADE)
     quantity=models.IntegerField(_('تعداد'))
