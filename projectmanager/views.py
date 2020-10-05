@@ -177,6 +177,7 @@ class ManagerPageView(View):
         
         materials=[]
         context['page']=material_warehouse
+        context['warehouse']=material_warehouse
 
         context['materials']=material_warehouse.materials()
         # print(materials)

@@ -4,6 +4,55 @@
 {% block content %}
 
 
+<div class="col-lg-4 col-md-6">
+    <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+                
+                <i class="fa fa-user"></i>
+            </div>
+            {% if warehouse.title %}
+            <p class="card-category">{{warehouse.title}}</p>
+
+            {% endif %}
+            <h3 class="card-title">پرسنل
+            </h3>
+        </div>
+        <div class="card-body">
+
+           
+            <table class="table">
+                <thead>
+                    <td>نام</td>
+                    <td>سمت</td>
+                    <td></td>
+                </thead>
+                <tbody>
+                    {% for employee in warehouse.employees.all %}
+                      <tr>
+                          <td>
+                              <a href="{{employee.get_absolute_url}}">{{employee.profile.name}}</a>
+                          </td>
+                          <td>{{employee.role}}</td>
+                          <td></td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer">
+            <div class="stats">
+                {% if perms.projectmanager.change_project and material.get_edit_url%}
+                <i class="material-icons text-danger">link</i>
+
+                <a href="{{material.get_edit_url}}">
+
+                    ویرایش </a> {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% if materials %}
 <!-- material objects  -->
