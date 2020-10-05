@@ -49,3 +49,4 @@ PUSHER_IS_ENABLE=True
 REMOTE_MEDIA=False
 COMING_SOON=False
 DOWNLOAD_ROOT=os.path.join(BASE_DIR,'download')
+SITE_DOMAIN='http://khafonline.com/'

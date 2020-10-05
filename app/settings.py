@@ -20,7 +20,7 @@ DOWNLOAD_ROOT=settings.DOWNLOAD_ROOT
 PUSHER_IS_ENABLE=settings.PUSHER_IS_ENABLE
 
 CSRF_FAILURE_VIEW = 'app.views.csrf_failure'
-SITE_DOMAIN='http://www.imenyar.com'
+SITE_DOMAIN=setting.SITE_DOMAIN
 
 
 

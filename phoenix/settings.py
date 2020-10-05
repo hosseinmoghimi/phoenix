@@ -214,6 +214,7 @@ STATIC_ROOT = server_settings.STATIC_ROOT
 STATIC_URL = server_settings.STATIC_URL
 STATICFILES_DIRS=server_settings.STATICFILES_DIRS
 TIME_ZONE = server_settings.TIME_ZONE
+SITE_DOMAIN = server_settings.SITE_DOMAIN
 if SERVER_ON_HEROKU:    
     import django_heroku
     django_heroku.settings(locals())
