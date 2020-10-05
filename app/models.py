@@ -31,8 +31,8 @@ class Color(models.Model):
         return self.name    
 
 class Jumbotron(models.Model):
-    pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
+    pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
     short_description=tinymce_models.HTMLField(_("شرح کوتاه"),max_length=1000,blank=True,null=True)
     # description=models.TextField(_("شرح کامل"),blank=True,null=True)
