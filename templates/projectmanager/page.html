@@ -2,7 +2,18 @@
 
 {% load to_persian_date %}
 
-{% load static %} {% load to_price %} {% block contents %}
+{% load static %} {% load to_price %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'vendor/js/owl/owl.carousel.min.css' %}">
+<style>
+    .related-card-body-p{
+    }
+    .related-card-body{
+        min-height: 15em !important;
+    }
+</style>
+{% endblock %}
+{% block contents %}
 
 
 
@@ -82,6 +93,12 @@
                             <a href="{{page.get_edit_url}}">
 
                                 ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
                         </div>
                     </div>
                 </div>
@@ -426,26 +443,26 @@
 
 
 
-<table class="table">
-    <tbody>
-        {% for employee in page.employee_set.all %}
-          <tr>
-              <td>
-                <i class="fa fa-user mr-2"></i> 
-                <a href="{{employee.profile.get_absolute_url}}">{{employee.profile.name}}</a>
-                
-                <span class="mx-3 badge badge-secondary">
-                {{employee.role}}
-              </span>
-              </td>
-              
-          </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                        <table class="table">
+                            <tbody>
+                                {% for employee in page.employee_set.all %}
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-user mr-2"></i>
+                                        <a href="{{employee.profile.get_absolute_url}}">{{employee.profile.name}}</a>
 
-                       
-                        
+                                        <span class="mx-3 badge badge-secondary">
+                                            {{employee.role}}
+                                        </span>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+
+
 
                     </div>
 
@@ -644,6 +661,75 @@
     </div>
     {% endif %}
 
+    {% if page.related_pages.all %}
+    <div class="col-12 text-center">
+        <h3 class="h3 text-center">صفحات مرتبط</h3>
+    </div>
+
+
+
+    <div class="owl-carousel owl-theme">
+        {% for related_page in page.related_pages.all %}
+        <div class="item pt-1 px-3">
+
+            <div class="card card-profile">
+                {% if related_page.image %}
+                <div class="card-avatar">
+                    <a href="{{related_page.get_absolute_url}}">
+
+                        <img src="{{ MEDIA_URL }}{{related_page.image}}" width="75px" style="border-radius: 75px;"
+                            alt="">
+
+                    </a>
+                </div>
+                {% endif %}
+
+                <div class="card-header card-header-{{related_page.color}} card-header-icon">
+                    {% if not related_page.image %}
+                    <div class="card-icon">
+                        <i class="material-icons">{{related_page.icon}}</i>
+                    </div>
+                    {% endif %}
+
+
+
+                    <a href="{{related_page.get_absolute_url}}">
+                        <h4 class="card-title text-primary text-center">
+                            {{related_page.title}}
+                        </h4>
+                    </a>
+                </div>
+                <div class="card-body related-card-body">
+                    {% if related_page.short_description %}
+                    <div  class="related-card-body-p">{{related_page.short_description|safe}}</div>
+                    {% endif %}
+
+
+                 
+
+
+                </div>
+                <div class="card-footer">
+                    <!-- <div class="stats">
+                        <i class="material-icons">local_offer</i>
+
+                        {{related_page.title}}
+
+
+                    </div> -->
+                </div>
+            </div>
+
+
+
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+
     {% if page.materialrequest_set.all %}
     <!-- material requests -->
     <div class="col-12">
@@ -730,13 +816,14 @@
     </div>
     {% endif %}
 
-   
+
 </div>
- {% block content %}
-      
-    {% endblock %}
+{% block content %}
+
+{% endblock %}
 
 {% endblock %} {% block scripts %}
+<script src="{% static 'vendor/js/owl/owl.carousel.min.js' %}"></script>
 <script>
 
     let csrfmiddlewaretoken = ''
@@ -745,7 +832,30 @@
         csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
 
 
-    })
+        $('.owl-carousel').owlCarousel({
+            rtl: true,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 2
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        })
+
+
+
+
+    });
 
     let add_tag_url = "{% url 'projectmanager:add_tag'%}"
 
@@ -784,7 +894,7 @@
 </script>
 
 {% block script %}
-  
+
 {% endblock  %}
 
 {% endblock %} {% block styles %} {% endblock %}

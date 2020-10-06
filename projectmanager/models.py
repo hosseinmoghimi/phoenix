@@ -251,7 +251,9 @@ class Project(ManagerPage):
         return reverse("projectmanager:project", kwargs={"project_id": self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/project/{self.pk}/change/'
-
+    def get_avo_url(self):
+        return reverse("projectmanager:project_avo", kwargs={"project_id": self.pk})
+    
 
 class WorkUnit(ManagerPage): 
     

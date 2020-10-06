@@ -47,7 +47,11 @@ class BasicView(View):
         context['work_units']=WorkUnitRepo(user=user).get_roots()
         return render(request,TEMPLATE_ROOT+'chart.html',context)
  
-        
+
+    def resume(self,request):
+        context=getContext(request)
+        context['count']=[{},{},{}]
+        return render(request,TEMPLATE_ROOT+'resume.html',context)  
     def search(self,request,*args, **kwargs):
         user=request.user
         if request.method=='POST':
@@ -280,6 +284,25 @@ class ManagerPageView(View):
         # context['contractors']=project.contractors.all()
         context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'page.html',context)
+    
+    def project_avo(self,request,project_id,*args, **kwargs):
+        user=request.user
+        context=getContext(request)
+        page=ProjectRepo(user=user).project(project_id=project_id)
+        project=ProjectRepo(user=user).project(project_id=project_id)
+        context['page']=project
+        context['project_projects']=project.childs()
+        context['project']=project
+        if user.has_perm(APP_NAME+'.add_document'):
+            context['add_document_form']=AddDocumentForm()
+        if user.has_perm(APP_NAME+'.add_link'):
+            context['add_link_form']=AddLinkForm()
+        if user and user.is_authenticated:
+            context['add_issue_form']=AddIssueForm()
+            context['issue_types']=list(x.value for x in IssueTypeEnum)
+        # context['contractors']=project.contractors.all()
+        context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
+        return render(request,'avo/page.html',context)
 
     def issue(self,request,issue_id,*args, **kwargs):
         user=request.user

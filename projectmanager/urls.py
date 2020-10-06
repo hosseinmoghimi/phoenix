@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 app_name='projectmanager'
 urlpatterns = [
     path('',login_required(views.BasicView().home),name='home'),
+    path('resume/',views.BasicView().resume,name='resume'),
     path('add_issue/',views.ManagerPageView().add_issue,name='add_issue'),
     # path('add_link/',login_required(views.ManagerPageView().add_link),name='add_link'),
     path('tag/<int:tag_id>/',views.ManagerPageView().tag,name='tag'),
@@ -21,6 +22,7 @@ urlpatterns = [
     path('page/<int:page_id>/',views.ManagerPageView().page,name='page'),
     path('assignment/<int:assignment_id>/',views.ManagerPageView().assignment,name='assignment'),
     path('project/<int:project_id>/',views.ManagerPageView().project,name='project'),
+    path('project_avo/<int:project_id>/',views.ManagerPageView().project_avo,name='project_avo'),
     path('workunit/<int:work_unit_id>/',views.ManagerPageView().work_unit,name='work_unit'),
     path('material_category/<int:category_id>/',views.ManagerPageView().category,name='material_category'),
     path('materialrequest/<int:material_request_id>/',views.ManagerPageView().material_request,name='material_request'),
