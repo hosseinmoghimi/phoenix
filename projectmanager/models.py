@@ -423,9 +423,9 @@ class Material(ManagerPage):
         self.child_class='material'
         super(Material,self).save()
     brand=models.ForeignKey("MaterialBrand",null=True,blank=True,verbose_name=_("brand"), on_delete=models.CASCADE)
-    model=models.CharField(_("model"), max_length=50)
+    model=models.CharField(_("model"),null=True,blank=True, max_length=50)
     category=models.ForeignKey("MaterialCategory",related_name='material_category',on_delete=models.PROTECT)
-    unit_name=models.CharField(_('واحد'),max_length=50)
+    unit_name=models.CharField(_('واحد'),null=True,blank=True,max_length=50)
     
      
 
