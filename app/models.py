@@ -785,10 +785,12 @@ class OurService(Page):
             return f'<span class="text-{self.color} {self.icon_fa}"></span>'
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
-        return ''
+        return None
     def get_tag(self):
         icon=self.get_icon_tag()
-        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{self.get_icon_tag()}</a>'
+        if icon is None:
+            return None
+        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
       
     
     class Meta:
