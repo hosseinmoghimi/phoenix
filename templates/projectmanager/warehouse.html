@@ -106,23 +106,24 @@
                                 </a>
                             </td>
                             <td>
-                                <a href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
+                                <a
+                                    href="{{material_in_stock.warehouse.get_absolute_url}}">{{material_in_stock.warehouse.title}}</a>
                             </td>
                             <td><span
                                     class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
                             </td>
                             <td><small>
-                                {{material_in_stock.date_added|to_persian_date|safe}}
-                            </small>
-                        </td>
+                                    {{material_in_stock.date_added|to_persian_date|safe}}
+                                </small>
+                            </td>
 
-                        <td><small>
-                            {% if material_in_stock.date_opi %}
-                              
-                            {{material_in_stock.date_opi|to_persian_date|safe}}
-                            {% endif %}
-                        </small>
-                    </td>
+                            <td><small>
+                                    {% if material_in_stock.date_opi %}
+
+                                    {{material_in_stock.date_opi|to_persian_date|safe}}
+                                    {% endif %}
+                                </small>
+                            </td>
 
                             <td>
 
@@ -187,14 +188,14 @@
                     <thead>
                         <td>متریال</td>
                         <td>تعداد</td>
-                       
+
                         <td></td>
                     </thead>
                     <tbody>
                         {% for material_object in materials2 %}
                         <tr>
                             <td><a href="{{material_object.material.get_absolute_url}}">
-                                    
+
                                     {{material_object.material.title}}
                                     <!-- {{material_object.material_object.material.title}} -->
                                 </a>
@@ -203,9 +204,9 @@
                                 {{material_object.count1}}
                                 {{material_object.material.unit_name}}
                             </td>
-                            
-                        
-                          
+
+
+
                             <td>
 
                                 <a class="btn btn-link btn-warning" href="{{material_in_stock.get_edit_url}}">

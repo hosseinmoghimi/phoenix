@@ -304,7 +304,14 @@ class MaterialRepo:
         except:
             return None
     
-    
+    def add(self,title,category_id):
+        if self.user.has_perm(APP_NAME+'.add_material'):
+            category=MaterialCategoryRepo(user=self.user).material_category(material_category_id=category_id)
+            if category is None:
+                return None
+            material=Material(title=title,category=category)
+            material.save()
+            return material
               
 
 class MaterialWareHouseRepo:
@@ -335,6 +342,11 @@ class MaterialCategoryRepo:
     def list_root(self):
         return self.objects.filter(parent=None).order_by('-priority')
     
+    def material_category(self,material_category_id):
+        try:
+            return self.objects.get(pk=material_category_id)
+        except:
+            return None
     def category(self,category_id):
         try:
             return self.objects.get(pk=category_id)
@@ -346,7 +358,14 @@ class MaterialCategoryRepo:
         except:
             return None
     
-    
+    def add(self,title,parent_id):
+        if self.user.has_perm(APP_NAME+'.add_material'):
+            parent=MaterialCategoryRepo(user=self.user).material_category(material_category_id=parent_id)
+            if parent is None:
+                return None
+            material_category=MaterialCategory(title=title,parent=parent)
+            material_category.save()
+            return material_category
 
 
 

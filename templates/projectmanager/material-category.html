@@ -1,4 +1,7 @@
-{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
+{% extends "dashboard/layout.html" %} 
+{% load static %} 
+{% load to_price %} 
+{% block contents %}
 
 
 
@@ -42,7 +45,18 @@
                         </i> {{material_category.title}}
                     </h5>
                 </a>
-                {% endfor %} {% endif %} {% if category.short_description %}
+                {% endfor %}
+               
+               {% endif %}  {% if add_material_category_form %}
+                <div>
+                    <form action="{% url 'projectmanager:add_material_category' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="parent_id" value="{{category.id}}">
+                        <input placeholder="نام دسته جدید" type="text" name="title" class="form-control" id="">
+                        <button class="btn btn-success" type="submit">افزودن</button>
+                    </form>
+                </div>
+              {% endif %}{% if category.short_description %}
                 <p>
                     {{category.short_description |safe}}
                 </p>
@@ -65,7 +79,7 @@
             </div>
         </div>
     </div>
-    {% if category.materials %}
+   
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
@@ -85,8 +99,8 @@
             </div>
             <div class="card-body">
 
-
-
+{% if category.materials %}
+  
 
                 {% for material in category.materials %}
                 <a href="{{material.get_absolute_url}}">
@@ -97,7 +111,18 @@
                 </a>
                 {% endfor %}
 
+                {% endif %}
 
+                {% if add_material_form %}
+                <div>
+                    <form action="{% url 'projectmanager:add_material' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="category_id" value="{{category.id}}">
+                        <input placeholder="نام متریال جدید" type="text" name="title" class="form-control" id="">
+                        <button class="btn btn-success" type="submit">افزودن</button>
+                    </form>
+                </div>
+              {% endif %}
 
             </div>
             <div class="card-footer">
@@ -112,7 +137,7 @@
             </div>
         </div>
     </div>
-    {% endif %}
+    
 
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card card-stats">

@@ -83,7 +83,28 @@ class ManagerPageView(View):
         assignment=AssignmentRepo(user=user).assignment(assignment_id=assignment_id)
         context['page']=assignment        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
+    
+    def add_material(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_material_form=AddMaterialForm(request.POST)
+            if add_material_form.is_valid():
+                # print(ssssssssss)
+                title=add_material_form.cleaned_data['title']
+                category_id=add_material_form.cleaned_data['category_id']
+                material=MaterialRepo(user=request.user).add(title=title,category_id=category_id)
+                if material is not None:
+                    return redirect(material.category.get_absolute_url())
+    def add_material_category(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_material_category_form=AddMaterialCategoryForm(request.POST)
+            if add_material_category_form.is_valid():
+                title=add_material_category_form.cleaned_data['title']
+                parent_id=add_material_category_form.cleaned_data['parent_id']
+                material_category=MaterialCategoryRepo(user=request.user).add(title=title,parent_id=parent_id)
+                if material_category is not None:
+                    return redirect(material_category.parent.get_absolute_url())
 
+               
     def sign(self,request,*args, **kwargs):
         if request.method=='POST':
             sign_material_request_form=SignMaterialRequestForm(request.POST)
@@ -198,7 +219,11 @@ class ManagerPageView(View):
         if user.has_perm(APP_NAME+'.add_link'):
             context['add_link_form']=AddLinkForm()
         category=MaterialCategoryRepo(user=user).category(category_id=category_id)
-        context['category']=category        
+        context['category']=category   
+        if user.has_perm(APP_NAME+'.add_material'):
+            context['add_material_form']=AddMaterialForm()
+        if user.has_perm(APP_NAME+'.add_materialcategory'):
+            context['add_material_category_form']=AddMaterialCategoryForm()
         return render(request,TEMPLATE_ROOT+'material-category.html',context)
 
     def add_tag(self,request,*args, **kwargs):

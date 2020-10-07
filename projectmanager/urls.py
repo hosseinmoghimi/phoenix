@@ -11,6 +11,8 @@ urlpatterns = [
     path('tag/<int:tag_id>/',views.ManagerPageView().tag,name='tag'),
     
     path('add_link/', permission_required(app_name+'.add_link')(views.ManagerPageView().add_link),name='add_link'),
+    path('add_material/',views.ManagerPageView().add_material,name='add_material'),
+    path('add_material_category/',views.ManagerPageView().add_material_category,name='add_material_category'),
     
     path('add_document/',views.ManagerPageView().add_document,name='add_document'),
     path('add_tag/',views.ManagerPageView().add_tag,name='add_tag'),
