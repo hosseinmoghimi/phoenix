@@ -788,9 +788,10 @@ class OurService(Page):
         return None
     def get_tag(self):
         icon=self.get_icon_tag()
-        if icon is None:
-            return None
-        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
+        if icon and icon is not None:
+            return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
+        return None
+        
       
     
     class Meta:
