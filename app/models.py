@@ -788,7 +788,7 @@ class OurService(Page):
         return ''
     def get_tag(self):
         icon=self.get_icon_tag()
-        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
+        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{self.get_icon_tag()}</a>'
       
     
     class Meta:
