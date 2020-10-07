@@ -86,7 +86,8 @@
                         <td>سریال</td>
                         <td>انبار</td>
                         <td>وضعیت</td>
-                        <td>تاریخ</td>
+                        <td>تاریخ ورود</td>
+                        <td>تاریخ OPI</td>
                         <td>قفسه</td>
                         <td></td>
                     </thead>
@@ -111,9 +112,18 @@
                                     class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
                             </td>
                             <td><small>
-                                    {{material_in_stock.date_added|to_persian_date|safe}}
-                                </small>
-                            </td>
+                                {{material_in_stock.date_added|to_persian_date|safe}}
+                            </small>
+                        </td>
+
+                        <td><small>
+                            {% if material_in_stock.date_opi %}
+                              
+                            {{material_in_stock.date_opi|to_persian_date|safe}}
+                            {% endif %}
+                        </small>
+                    </td>
+
                             <td>
 
                                 <span class="badge badge-info">&nbsp;قفسه {{material_in_stock.col}}&nbsp;</span>

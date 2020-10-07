@@ -550,6 +550,7 @@ class MaterialInStock(models.Model):
     row=models.IntegerField(_('قفسه'))
     col=models.IntegerField(_('ردیف'))
     date_added=models.DateTimeField(_('تاریخ ثبت') , auto_now_add=True,auto_now=False)
+    date_opi=models.DateTimeField(_('تاریخ opi') , auto_now_add=False,auto_now=False,null=True,blank=True)
 
     class Meta:
         verbose_name = _("MaterialInStock")
