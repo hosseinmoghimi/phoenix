@@ -332,7 +332,9 @@ class ManagerPageView(View):
         user=request.user
         context=self.get_page_context(request)
         
-        context['page']=IssueRepo(user=user).issue(issue_id=issue_id)
+        issue=IssueRepo(user=user).issue(issue_id=issue_id)
+        context['page']=issue
+        context['issue']=issue
         return render(request,TEMPLATE_ROOT+'issue.html',context)
 
     def tag(self,request,tag_id,*args,**kwargs):

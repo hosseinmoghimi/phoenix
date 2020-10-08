@@ -157,6 +157,55 @@
                 </div>
                 {% endif %}
 
+
+
+                 <!-- issue -->
+                 {% if issue %}
+                 <div class="card card-stats">
+                     <div class="card-header card-header-info card-header-icon">
+                         <div class="card-icon">
+                             <i class="material-icons">build</i>
+                         </div>
+ 
+ 
+ 
+                         <p class="card-category">{{page.title}}</p>
+ 
+ 
+ 
+                         <h3 class="card-title">مشکل مربوط به 
+ 
+ 
+                         </h3>
+                     </div>
+                     <div class="card-body">
+ 
+ 
+ 
+ 
+ 
+ 
+                         <h6 class="mb-3">
+                             {{issue.page.get_link|safe}}</h6>
+                        
+ 
+ 
+ 
+                     </div>
+                     <div class="card-footer">
+                         <div class="stats">
+                             {% if perms.projectmanager.change_page and page.get_edit_url%}
+                             <i class="material-icons text-danger">link</i>
+ 
+                             <a href="{{page.get_edit_url}}">
+ 
+                                 ویرایش </a> {% endif %}
+                         </div>
+                     </div>
+                 </div>
+                 {% endif %}
+
+                 
                 <!-- contractors -->
                 {% if page.contractors.all %}
                 <div class="card card-stats">
@@ -665,11 +714,12 @@
                 <div class="mb-3">
 
                     {{issue.get_colored_icon|safe}}
-                    <a href="{{issue.profile.get_absolute_url}}">{{issue.title}}</a>
+                    <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
                     {{issue.get_issue_type|safe}}
                 </div>
 
-
+                {% empty %}
+                <p>مشکلی ثبت نشده است.</p>
                 {% endfor %}
 
                 {% if add_issue_form %}
