@@ -212,6 +212,7 @@ class ManagerPageView(View):
         
         category=MaterialCategoryRepo(user=user).category(category_id=category_id)
         context['category']=category   
+        context['page']=category   
         if user.has_perm(APP_NAME+'.add_material'):
             context['add_material_form']=AddMaterialForm()
         if user.has_perm(APP_NAME+'.add_materialcategory'):

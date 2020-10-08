@@ -437,12 +437,12 @@ class MaterialWareHouse(ManagerPage):
         
         self.child_class='materialwarehouse'
         super(MaterialWareHouse,self).save()
-    employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
     address=models.CharField(_("آدرس"),null=True,blank=True, max_length=50)
     class Meta:
         verbose_name = _("MaterialWareHouse")
         verbose_name_plural = _("MaterialWareHouses - انبار های متریال")
-
+    def employees(self):
+        return []
     def materials(self):
         materialinstock_set=self.materialinstock_set.all()
         # MaterialObject.objects.filter(id__in=self.materialinstock_set.values('material_object_id'))

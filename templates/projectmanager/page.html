@@ -22,86 +22,11 @@
     <div class="col-lg-8 col-md-6 col-sm-12">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="card card-stats">
-                    <div class="card-header card-header-{{page.color}} card-header-icon">
-                        <div class="card-icon">
-                            {{page.get_icon|safe}}
-                        </div>
+                {% block first %}
+                  
+                {% endblock %}
 
-                        <!-- {% if page.parent %}
-                        <div class="card-category">
-                            {{page.parent.get_breadcrumb_url|safe}}
-
-                        </div>
-
-                        {% endif %} -->
-
-                        {% if page.pretitle %}
-                        <p class="card-category">{{page.pretitle}}</p>
-
-                        {% endif %}
-                        <h3 class="card-title">{{page.title}} {% if page.posttitle %}
-                            <p class="card-category">{{page.posttitle}}</p>
-
-                            {% endif %}
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        {% if page.status %}
-                        <div class="mb-3">
-                            <small> وضعیت : </small> <span
-                                class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
-                        </div>
-                        {% endif %}
-
-
-
-
-
-
-
-                        {% if page.short_description %}
-                        <div class="text-secondary">
-                            {{page.short_description|safe}}
-                        </div>
-                        {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-
-                            <i class="ml-4 material-icons text-danger">link</i>
-
-                            <a href="{{page.get_avo_url}}">
-
-                                جزئیات </a>
-                        </div>
-                    </div>
-                </div>
+             
                 <!-- project_projects -->
                 {% if project %}
                 <div class="card card-stats">
@@ -445,6 +370,90 @@
 
 
             <div class="col-lg-6 col-md-6 col-sm-12">
+                {% block middle %}
+                  
+                {% endblock %}
+                <div class="card card-stats">
+                    <div class="card-header card-header-{{page.color}} card-header-icon">
+                        <div class="card-icon">
+                            {{page.get_icon|safe}}
+                        </div>
+
+                        <!-- {% if page.parent %}
+                        <div class="card-category">
+                            {{page.parent.get_breadcrumb_url|safe}}
+
+                        </div>
+
+                        {% endif %} -->
+
+                        {% if page.pretitle %}
+                        <p class="card-category">{{page.pretitle}}</p>
+
+                        {% endif %}
+                        <h3 class="card-title">{{page.title}} {% if page.posttitle %}
+                            <p class="card-category">{{page.posttitle}}</p>
+
+                            {% endif %}
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        {% if page.status %}
+                        <div class="mb-3">
+                            <small> وضعیت : </small> <span
+                                class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
+                        </div>
+                        {% endif %}
+
+
+
+
+
+
+
+                        {% if page.short_description %}
+                        <div class="text-secondary">
+                            {{page.short_description|safe}}
+                        </div>
+                        {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- location -->
                 {% if page.location %}
                 <div class="card card-stats">
