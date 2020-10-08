@@ -35,6 +35,8 @@ class BasicView(View):
         user=request.user
         context=getContext(request)
         context['priority_form']=PriorityForm()
+        
+        context['material_warehouses']=MaterialWareHouseRepo(user=user).list()
         context['project_categories']=ProjectCategoryRepo(user=user).list()
         context['material_categories']=MaterialCategoryRepo(user=user).list_root()
         # context['projects']=ProjectRepo(user=user).get_roots()
@@ -201,6 +203,7 @@ class ManagerPageView(View):
         context['materials']=material_warehouse.materials()
         context['materials2']=material_warehouse.materials2()
         # print(materials)
+        context['employees']=material_warehouse.employees()
         return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     
     def category(self,request,category_id,*args, **kwargs):
@@ -264,6 +267,8 @@ class ManagerPageView(View):
         context['workunit_projects']=work_unit.project_set.all()
         if user.has_perm(APP_NAME+'.add_workunit'):
             context['add_workunit_form']=AddWorkUnitForm()
+        
+        context['employees']=work_unit.employees()
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         return render(request,TEMPLATE_ROOT+'work-unit.html',context)
 

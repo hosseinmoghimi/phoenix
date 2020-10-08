@@ -107,7 +107,7 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">build</i>
+                            <i class="material-icons">construction</i>
                         </div>
 
 
@@ -488,7 +488,7 @@
 
                 {% endif %}
                 <!-- employees -->
-                {% if page.employee_set.all %}
+                {% if employees %}
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -510,7 +510,7 @@
 
                         <table class="table">
                             <tbody>
-                                {% for employee in page.employee_set.all %}
+                                {% for employee in employees %}
                                 <tr>
                                     <td>
                                         <i class="fa fa-user mr-2"></i>
@@ -544,10 +544,13 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 {% endif %}
+
+
+
+
+
+
 
 
             </div>
