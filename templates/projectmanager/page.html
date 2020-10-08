@@ -6,9 +6,9 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'vendor/js/owl/owl.carousel.min.css' %}">
 <style>
-    .related-card-body-p{
-    }
-    .related-card-body{
+    .related-card-body-p {}
+
+    .related-card-body {
         min-height: 15em !important;
     }
 </style>
@@ -484,6 +484,7 @@
 
                 {% endif %}
 
+
             </div>
 
 
@@ -533,7 +534,7 @@
 
         </div>
 
-
+        <!-- docs -->
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
@@ -617,7 +618,75 @@
             </div>
         </div>
 
+        <!-- issues -->
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
 
+                <p class="card-category">{{page.title}}</p>
+
+
+                <h3 class="card-title">Issues
+
+
+
+                </h3>
+            </div>
+            <div class="card-body">
+
+
+
+
+                {% for issue in page.issues %}
+                <div>
+                    <small>
+
+                        {{issue.date_report|to_persian_date|safe}}
+                    </small>
+                </div>
+                <div class="mb-3">
+
+                    {{issue.get_colored_icon|safe}}
+                    <a href="{{issue.profile.get_absolute_url}}">{{issue.title}}</a>
+                    {{issue.get_issue_type|safe}}
+                </div>
+
+
+                {% endfor %}
+
+                {% if add_issue_form %}
+                <form action="{% url 'projectmanager:add_issue' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="page_id" value="{{page.id}}">
+                    <input placeholder="مشکل جدید" type="text" name="title" class="form-control">
+                    <select name="issue_type" class="form-control">
+                        {% for issue_type in issue_types %}
+                        <option value="{{issue_type}}">{{issue_type}}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-danger" type="submit">افزودن</button>
+                </form>
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- issues -->
+            <div class="card-footer">
+                <div class="stats">
+                    {% if perms.projectmanager.change_page and page.get_edit_url%}
+                    <i class="material-icons text-danger">link</i>
+
+                    <a href="{{page.get_edit_url}}">
+
+                        ویرایش </a> {% endif %}
+                </div>
+            </div>
+
+        </div>
 
     </div>
     {% if page.description %}
@@ -701,11 +770,11 @@
                 </div>
                 <div class="card-body related-card-body">
                     {% if related_page.short_description %}
-                    <div  class="related-card-body-p">{{related_page.short_description|safe}}</div>
+                    <div class="related-card-body-p">{{related_page.short_description|safe}}</div>
                     {% endif %}
 
 
-                 
+
 
 
                 </div>

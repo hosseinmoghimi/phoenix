@@ -36,7 +36,7 @@ class PageLog(models.Model):
 
 
 class ManagerPage(models.Model):
-    
+    # parent=
     title=models.CharField(_("عنوان"), max_length=100)
     pretitle=models.CharField(_("پیش عنوان"),null=True,blank=True, max_length=100)
     posttitle=models.CharField(_("پس عنوان"),null=True,blank=True, max_length=100)
@@ -95,7 +95,7 @@ class ManagerPage(models.Model):
         return super(ManagerPage,self).save()
 
     def issues(self):
-        return Issue.objects.filter(issue_for=self)
+        return Issue.objects.filter(page=self)
 
     def image_header(self):
         if self.image_header is None:
@@ -642,10 +642,24 @@ class MaterialRequest(ManagerPage):
 
 
 class Issue(ManagerPage):
-    issue_for=models.ForeignKey("ManagerPage",related_name='issueforwhat', verbose_name=_("issue_for"), on_delete=models.CASCADE)
+    page=models.ForeignKey("ManagerPage",related_name='issueforwhatpage', verbose_name=_("issue_for"), on_delete=models.CASCADE)
     date_report=models.DateTimeField(_('date_report'),auto_now_add=False,auto_now=False)
     issue_type=models.CharField(_("نوع مشکل"),choices=IssueTypeEnum.choices,default=IssueTypeEnum.DEFAULT, max_length=50)
-
+    def issue_type_badge_color(self):
+        if self.issue_type==IssueTypeEnum.DEFAULT:
+            return 'primary'
+        if self.issue_type==IssueTypeEnum.EVENT:
+            return 'success'
+        if self.issue_type==IssueTypeEnum.DANGER:
+            return 'danger'
+        if self.issue_type==IssueTypeEnum.WARNING:
+            return 'warning'
+        if self.issue_type==IssueTypeEnum.FORCE:
+            return 'info'
+    def get_issue_type(self):
+        return f"""
+        <span class="badge badge-{self.issue_type_badge_color()}">{self.issue_type}</span>
+        """
     def save(self):
         self.child_class='issue'
         return super(Issue,self).save()

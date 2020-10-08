@@ -269,9 +269,9 @@ class IssueRepo:
     def __init__(self,user=None):
         self.objects=Issue.objects
         self.user=user
-    def add(self,issue_type,title,issue_for_id):
+    def add(self,issue_type,title,page_id):
         date_report=datetime.datetime.now()
-        issue=Issue(date_report=date_report,issue_for_id=issue_for_id,title=title,issue_type=issue_type)
+        issue=Issue(date_report=date_report,color='danger',page_id=page_id,icon='report_problem',title=title,issue_type=issue_type)
         issue.save()
         if issue is not None:
             return issue

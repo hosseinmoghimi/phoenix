@@ -269,10 +269,10 @@ class ManagerPageView(View):
             if add_issue_form.is_valid():
                 issue_type=add_issue_form.cleaned_data['issue_type']
                 title=add_issue_form.cleaned_data['title']
-                issue_for_id=add_issue_form.cleaned_data['issue_for_id']
-                issue=IssueRepo(user=request.user).add(issue_type=issue_type,title=title,issue_for_id=issue_for_id)
+                page_id=add_issue_form.cleaned_data['page_id']
+                issue=IssueRepo(user=request.user).add(issue_type=issue_type,title=title,page_id=page_id)
                 if issue is not None:
-                    return redirect(issue.issue_for.get_absolute_url())
+                    return redirect(issue.page.get_absolute_url())
         return Http404      
 
     def project(self,request,project_id,*args, **kwargs):
@@ -304,7 +304,7 @@ class ManagerPageView(View):
         user=request.user
         context=self.get_page_context(request)
         
-        context['issue']=IssueRepo(user=user).issue(issue_id=issue_id)
+        context['page']=IssueRepo(user=user).issue(issue_id=issue_id)
         return render(request,TEMPLATE_ROOT+'issue.html',context)
 
     def tag(self,request,tag_id,*args,**kwargs):

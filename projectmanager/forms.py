@@ -28,8 +28,8 @@ class AddDocumentForm(forms.Form):
     title=forms.CharField(max_length=50,required=True)
 
 class AddIssueForm(forms.Form):
-    issue_for_id=forms.IntegerField(required=True)
-    title=forms.CharField(max_length=50,required=True)
+    page_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100,required=True)
     issue_type=forms.CharField(max_length=50,required=True)
     
 
