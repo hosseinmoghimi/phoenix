@@ -36,7 +36,10 @@ class PageLog(models.Model):
 
 
 class ManagerPage(models.Model):
-    # parent=
+    parent=models.ForeignKey("ManagerPage",related_name='parent_page',null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
+   
+    location=models.CharField(_('موقعیت در نقشه گوگل'),max_length=500,null=True,blank=True)    
+    
     title=models.CharField(_("عنوان"), max_length=100)
     pretitle=models.CharField(_("پیش عنوان"),null=True,blank=True, max_length=100)
     posttitle=models.CharField(_("پس عنوان"),null=True,blank=True, max_length=100)
@@ -72,6 +75,8 @@ class ManagerPage(models.Model):
     def get_colored_icon(self):
         return f'<i class="material-icons text-{self.color}">{self.icon}</i>'
     
+    def childs(self):
+        return ManagerPage.objects.filter(parent=self)
     
     def get_link(self):
         return f"""
@@ -101,7 +106,12 @@ class ManagerPage(models.Model):
         if self.image_header is None:
             return None
         return MEDIA_URL+str(self.image_header_origin)
-
+    def get_breadcrumb_url(self):
+        if self.parent is None:
+            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+        else:
+            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
+    
     # def save(self):
     #     super(ManagerPage,self).save()
     #     username=get_username()
@@ -201,9 +211,6 @@ class ProjectCategory(ManagerPage):
 
 class Project(ManagerPage):
     category=models.ForeignKey("ProjectCategory",null=True,blank=True, verbose_name=_("category"), on_delete=models.SET_NULL)
-    parent=models.ForeignKey("Project",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
-   
-    location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
     
     
     work_units=models.ManyToManyField("WorkUnit", verbose_name=_("work_units"),blank=True)
@@ -216,11 +223,6 @@ class Project(ManagerPage):
     def save(self):
         self.child_class='project'
         super(Project,self).save()
-    def get_breadcrumb_url(self):
-        if self.parent is None:
-            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
-        else:
-            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     def childs(self):
         return Project.objects.filter(parent=self)
     def get_status_color(self):
@@ -260,12 +262,6 @@ class WorkUnit(ManagerPage):
     def save(self):
         self.child_class='workunit'
         super(WorkUnit,self).save()
-    parent=models.ForeignKey("WorkUnit",null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
-    def get_breadcrumb_url(self):
-        if self.parent is None:
-            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
-        else:
-            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def get_template(self):
         work_unit=self
@@ -293,7 +289,7 @@ class WorkUnit(ManagerPage):
         <hr>
         <div class="ml-5">
         """
-        for work_unit1 in work_unit.workunit_set.all():
+        for work_unit1 in work_unit.childs():
             template+=work_unit1.get_template()
         template+="""
         </div>
@@ -389,16 +385,10 @@ class MaterialBrand(ManagerPage):
 
 
 class MaterialCategory(ManagerPage):
-    def get_breadcrumb_url(self):
-        if self.parent is None:
-            return f"""<div class="d-inline"><a href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
-        else:
-            return self.parent.get_breadcrumb_url()+f"""<span class="text-secondary">&nbsp;/&nbsp;</span><div class="d-inline"><a  href="{self.get_absolute_url()}">&nbsp;{self.title}&nbsp;</a></div>"""
     
     def save(self):
         self.child_class='materialcategory'
         super(MaterialCategory,self).save()
-    parent=models.ForeignKey("MaterialCategory", verbose_name=_("دسته بندی بالاتر"),on_delete=models.PROTECT,blank=True,null=True)
     
     rate=models.IntegerField(_("امتیاز"),default=0)
     def materials(self):
@@ -447,7 +437,6 @@ class MaterialWareHouse(ManagerPage):
         
         self.child_class='materialwarehouse'
         super(MaterialWareHouse,self).save()
-    location=models.CharField(_("موقعیت"),null=True,blank=True,  max_length=500)
     employees=models.ManyToManyField("Employee", verbose_name=_("کارکنان"),blank=True)
     address=models.CharField(_("آدرس"),null=True,blank=True, max_length=50)
     class Meta:

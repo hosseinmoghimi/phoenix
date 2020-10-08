@@ -7,6 +7,8 @@ urlpatterns = [
     path('',login_required(views.BasicView().home),name='home'),
     path('resume/',views.BasicView().resume,name='resume'),
     path('add_issue/',views.ManagerPageView().add_issue,name='add_issue'),
+    path('add_project/',views.ManagerPageView().add_project,name='add_project'),
+    path('add_workunit/',views.ManagerPageView().add_workunit,name='add_workunit'),
     # path('add_link/',login_required(views.ManagerPageView().add_link),name='add_link'),
     path('tag/<int:tag_id>/',views.ManagerPageView().tag,name='tag'),
     

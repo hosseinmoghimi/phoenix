@@ -107,6 +107,7 @@ class ManagerPageView(View):
                 material=MaterialRepo(user=request.user).add(title=title,category_id=category_id)
                 if material is not None:
                     return redirect(material.category.get_absolute_url())
+    
     def add_material_category(self,request,*args, **kwargs):
         if request.method=='POST':
             add_material_category_form=AddMaterialCategoryForm(request.POST)
@@ -258,10 +259,13 @@ class ManagerPageView(View):
         work_unit=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
         page=work_unit
         context['page']=page
+        context['workunit']=work_unit
         context['workunit_workunits']=work_unit.childs()
         context['workunit_projects']=work_unit.project_set.all()
+        if user.has_perm(APP_NAME+'.add_workunit'):
+            context['add_workunit_form']=AddWorkUnitForm()
         context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
-        return render(request,TEMPLATE_ROOT+'page.html',context)
+        return render(request,TEMPLATE_ROOT+'work-unit.html',context)
 
     def add_issue(self,request,*args, **kwargs):
         if request.method=='POST':
@@ -275,6 +279,29 @@ class ManagerPageView(View):
                     return redirect(issue.page.get_absolute_url())
         return Http404      
 
+    def add_project(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_project_form=AddProjectForm(request.POST)
+            if add_project_form.is_valid():
+                # print(aaaaa)
+                title=add_project_form.cleaned_data['title']
+                parent_id=add_project_form.cleaned_data['parent_id']
+                project=ProjectRepo(user=request.user).add(title=title,parent_id=parent_id)
+                if project is not None:
+                    return redirect(project.parent.get_absolute_url())
+        return Http404   
+
+    def add_workunit(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_workunit_form=AddWorkUnitForm(request.POST)
+            if add_workunit_form.is_valid():
+                title=add_workunit_form.cleaned_data['title']
+                parent_id=add_workunit_form.cleaned_data['parent_id']
+                workunit=WorkUnitRepo(user=request.user).add(title=title,parent_id=parent_id)
+                if workunit is not None:
+                    return redirect(workunit.parent.get_absolute_url())
+        return Http404      
+
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=self.get_page_context(request)
@@ -283,7 +310,8 @@ class ManagerPageView(View):
         context['page']=project
         context['project_projects']=project.childs()
         context['project']=project
-        
+        if user.has_perm(APP_NAME+'.add_project'):
+            context['add_project_form']=AddProjectForm()
         # context['contractors']=project.contractors.all()
         context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'page.html',context)

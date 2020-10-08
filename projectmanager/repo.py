@@ -261,7 +261,12 @@ class ProjectRepo:
             up_object.priority=up_object.priority+1
             up_object.save()
 
-
+    def add(self,title,parent_id):
+        parent=self.project(project_id=parent_id)
+        project=Project(color='primary',parent=parent,icon='construction',title=title)
+        project.save()
+        if project is not None:
+            return project
              
               
 
@@ -382,7 +387,12 @@ class WorkUnitRepo:
             return None
     def get(self,work_unit_id):
             return self.project(work_unit_id=work_unit_id)
-
+    def add(self,title,parent_id):
+        parent=self.work_unit(work_unit_id=parent_id)
+        work_unit=WorkUnit(color='primary',parent=parent,icon='apartment',title=title)
+        work_unit.save()
+        if work_unit is not None:
+            return work_unit
 class MaterialObjectRepo:
     def __init__(self,user=None):
         self.objects=MaterialObject.objects
