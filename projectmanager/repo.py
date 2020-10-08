@@ -363,12 +363,9 @@ class MaterialCategoryRepo:
             parent=MaterialCategoryRepo(user=self.user).material_category(material_category_id=parent_id)
             if parent is None:
                 return None
-            material_category=MaterialCategory(title=title,parent=parent)
+            material_category=MaterialCategory_(title=title,parent=parent)
             material_category.save()
             return material_category
-
-
-
 
 class WorkUnitRepo:
     def __init__(self,user=None):
