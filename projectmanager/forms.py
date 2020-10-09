@@ -27,6 +27,9 @@ class AddProjectForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=100,required=True)
 
+class AddLocationForm(forms.Form):
+    page_id=forms.IntegerField(required=True)
+    location=forms.CharField(max_length=500,required=True)
 class AddWorkUnitForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=50,required=True)

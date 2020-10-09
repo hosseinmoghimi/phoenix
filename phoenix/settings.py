@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     'market',
     'authentication',
     'django_cleanup',
+    'django_social_share',
     'rest_framework',
     'djecrety',
     'tinymce',
@@ -140,11 +141,13 @@ if SERVER_ON_HEROKU and False:
 
 ROOT_URLCONF = 'phoenix.urls'
 
+
+
 TEMPLATES = [
     
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

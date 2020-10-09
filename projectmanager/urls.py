@@ -6,6 +6,7 @@ app_name='projectmanager'
 urlpatterns = [
     path('',login_required(views.BasicView().home),name='home'),
     path('resume/',views.BasicView().resume,name='resume'),
+    path('add_location/',views.ManagerPageView().add_location,name='add_location'),
     path('add_issue/',views.ManagerPageView().add_issue,name='add_issue'),
     path('add_project/',views.ManagerPageView().add_project,name='add_project'),
     path('add_workunit/',views.ManagerPageView().add_workunit,name='add_workunit'),

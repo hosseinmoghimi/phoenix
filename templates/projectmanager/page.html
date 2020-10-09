@@ -1,978 +1,217 @@
-{% extends "dashboard/layout.html" %}{% load to_material_request_status_color %}
-
+{% extends "dashboard/layout.html" %}
+{% load social_share %}
 {% load to_persian_date %}
-
-{% load static %} {% load to_price %}
-{% block head %}
-<link rel="stylesheet" href="{% static 'vendor/js/owl/owl.carousel.min.css' %}">
-<style>
-    .related-card-body-p {}
-
-    .related-card-body {
-        min-height: 15em !important;
-    }
-</style>
-{% endblock %}
 {% block contents %}
+<div id="main-app">
+    <div>
+        {{page.parent.get_breadcrumb_url|safe}}
+        <h2>
 
+            {{page.get_colored_icon|safe}}
 
+            {{page.title}}
+        </h2>
+    </div><hr>
+    <p class="mx-2 mb-0">
+       
+        <button @click="show_all_page_panel" :class="show_all_page?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">description</i>
+            بیشتر
+        </button>
+        <button  @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">extension</i>
+            اطلاعات مرتبط
+        </button>
+       
 
-{{page.parent.get_breadcrumb_url|safe}}
-<div class="row">
-    <div class="col-lg-8 col-md-6 col-sm-12">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                {% block first %}
-                  
-                {% endblock %}
+        {% if page.location or perms.projectmanager.change_managerpage%}
 
-             
-                <!-- project_projects -->
-                {% if project %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">construction</i>
-                        </div>
+        <button   @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">place</i>
+            لوکیشن
+        </button>
+        {% endif %}
 
-
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-
-                        <h3 class="card-title">پروژه های جزئی
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
+        {% post_to_whatsapp page.get_absolute_url "Share via WhatsApp" %}
 
 
 
 
-                        {% for project1 in project_projects %}
-                        <h6 class="mb-3">
-                            {{project1.get_link|safe}}</h6>
-                        {% endfor %}
-                        {% if add_project_form %}
-                        <form action="{% url 'projectmanager:add_project' %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="parent_id" value="{{page.id}}">
-                            <input required placeholder="پروژه جدید" type="text" name="title" class="form-control">
-                            <button class="btn btn-primary" type="submit">افزودن</button>
-                        </form>
-                        {% endif %}
 
 
 
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-
-
-                 <!-- issue -->
-                 {% if issue %}
-                 <div class="card card-stats">
-                     <div class="card-header card-header-info card-header-icon">
-                         <div class="card-icon">
-                             <i class="material-icons">build</i>
-                         </div>
+        {% if perms.projectmanager.change_page %}
+        <a href="{{page.get_edit_url}}" class="btn btn-warning btn-link">
+            <i class="fa fa-edit"></i>
+            ویرایش
+        </a>
+        {% endif %}
+    </p>
  
- 
- 
-                         <p class="card-category">{{page.title}}</p>
- 
- 
- 
-                         <h3 class="card-title">مشکل مربوط به 
- 
- 
-                         </h3>
-                     </div>
-                     <div class="card-body">
- 
- 
- 
- 
- 
- 
-                         <h6 class="mb-3">
-                             {{issue.page.get_link|safe}}</h6>
-                        
- 
- 
- 
-                     </div>
-                     <div class="card-footer">
-                         <div class="stats">
-                             {% if perms.projectmanager.change_page and page.get_edit_url%}
-                             <i class="material-icons text-danger">link</i>
- 
-                             <a href="{{page.get_edit_url}}">
- 
-                                 ویرایش </a> {% endif %}
-                         </div>
-                     </div>
-                 </div>
-                 {% endif %}
-
-                 
-                <!-- contractors -->
-                {% if page.contractors.all %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">engineering</i>
-                        </div>
-
-
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-
-                        <h3 class="card-title">پیمانکاران
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-
-
-
-                        <div class="ml-4 mb-3">
-
-                            {% for contractor in page.contractors.all %}
-
-                            {{contractor.get_link|safe}}
-                            {% endfor %}
-                        </div>
-
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                <!-- work_units -->
-                {% if page.work_units.all %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">apartment</i>
-                        </div>
-
-
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-
-                        <h3 class="card-title">واحد های مرتبط
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-
-
-
-
-
-                        {% for workunit in page.work_units.all %}
-                        <div>
-                            {{workunit.get_link|safe}}
-                        </div> 
-                        {% endfor %}
-
-
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {% if workunit_projects %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">build</i>
-                        </div>
-
-
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-
-                        <h3 class="card-title">پروژه های مرتبط
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-
-
-
-                        <div class="ml-4 mb-3">
-
-                            {% for project in workunit_projects %}
-
-
-                            {{project.get_link|safe}}
-                            {% endfor %}
-                        </div>
-
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-
-
-
-
-
-
-
-
-                {% if workunit %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">apartment</i>
-                        </div>
-
-
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-
-                        <h3 class="card-title">واحد های زیرمجموعه
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-
-
-
-                   
-
-                            {% for workunit in workunit_workunits %}
-     <div class="">
-                            {{workunit.get_link|safe}}
-                            </div>  
-                             {% endfor %}
-                     
-{% if add_workunit_form %}
-<form action="{% url 'projectmanager:add_workunit' %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="parent_id" value="{{page.id}}">
-    <input required placeholder="واحد سازمانی جدید" type="text" name="title" class="form-control">
-    <button class="btn btn-primary" type="submit">افزودن</button>
-</form>
-{% endif %}
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
+    <div class="row">
+
+        <div class="col-lg-8 col-md-6">
+            <div v-if="show_all_page">
+                {% include "projectmanager/includes/managerpage.html" %}
 
             </div>
-
-
-
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                {% block middle %}
-                  
-                {% endblock %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-{{page.color}} card-header-icon">
-                        <div class="card-icon">
-                            {{page.get_icon|safe}}
-                        </div>
-
-                        <!-- {% if page.parent %}
-                        <div class="card-category">
-                            {{page.parent.get_breadcrumb_url|safe}}
-
-                        </div>
-
-                        {% endif %} -->
-
-                        {% if page.pretitle %}
-                        <p class="card-category">{{page.pretitle}}</p>
-
-                        {% endif %}
-                        <h3 class="card-title">{{page.title}} {% if page.posttitle %}
-                            <p class="card-category">{{page.posttitle}}</p>
-
-                            {% endif %}
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        {% if page.status %}
-                        <div class="mb-3">
-                            <small> وضعیت : </small> <span
-                                class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
-                        </div>
-                        {% endif %}
-
-
-
-
-
-
-
-                        {% if page.short_description %}
-                        <div class="text-secondary">
-                            {{page.short_description|safe}}
-                        </div>
-                        {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-
-                            <i class="ml-4 material-icons text-danger">link</i>
-
-                            <a href="{{page.get_avo_url}}">
-
-                                جزئیات </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- location -->
-                {% if page.location %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">settings</i>
-                        </div>
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-                        <h3 class="card-title">موقعیت
-
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-
-
-                        {{page.location|safe}}
-
-                    </div>
-
-
-
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                {% endif %}
-                <!-- employees -->
-                {% if employees %}
-                <div class="card card-stats">
-                    <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="material-icons">engineering</i>
-                        </div>
-
-                        <p class="card-category">{{page.title}}</p>
-
-
-                        <h3 class="card-title">کارکنان
-
-
-
-                        </h3>
-                    </div>
-                    <div class="card-body">
-
-
-
-                        <table class="table">
-                            <tbody>
-                                {% for employee in employees %}
-                                <tr>
-                                    <td>
-                                        <i class="fa fa-user mr-2"></i>
-                                        <a href="{{employee.profile.get_absolute_url}}">{{employee.profile.name}}</a>
-
-                                        <span class="mx-3 badge badge-secondary">
-                                            {{employee.role}}
-                                        </span>
-                                    </td>
-
-                                </tr>
+            <div v-if="show_childs">
+                <div class="card">
+                    <div class="m-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    {% if project %}
+                                    <h4>پروژه های جزئی</h4>
+                                    {% endif %}
+
+                                    {% if workunit %}
+                                    <h4>واحد های زیر مجموعه</h4>
+                                    {% endif %}
+                                    {% for child in page.childs %}
+                                    <div>
+
+                                        {{child.get_link|safe}}
+                                    </div>
+                                    {% endfor %}
+                                    {% if add_workunit_form %}
+                                    <form action="{% url 'projectmanager:add_workunit' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+                                        <input required placeholder="واحد سازمانی جدید" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+
+                                    {% if add_project_form %}
+                                    <form action="{% url 'projectmanager:add_project' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+                                        <input required placeholder="پروژه جدید" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- workunit_projects -->
+                                {% if workunit_projects %}
+                                <h4>پروژه های مرتبط</h4>
+                                {% endif %}
+                                {% for project in workunit_projects %}
+
+                                <div>
+                                    {{project.get_link|safe}}
+                                </div>
                                 {% endfor %}
-                            </tbody>
-                        </table>
-
-
-
-
-                    </div>
-
-
-
-                    <div class="card-footer">
-                        <div class="stats">
-                            {% if perms.projectmanager.change_page and page.get_edit_url%}
-                            <i class="material-icons text-danger">link</i>
-
-                            <a href="{{page.get_edit_url}}">
-
-                                ویرایش </a> {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-
-
-
-
-
-
-
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {% csrf_token %}
-        </div>
-
-    </div>
-    <!--  فایل ها و لینک ها , برچسب -->
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <!-- برچسب -->
-        <div class="card card-stats">
-
-
-            <div class="card-body" id="tags-app">
-                <h5 class="my-3"> برچسب ها</h5>
-                {% for tag in page.tags.all %}
-                <a href="{{tag.get_manager_tag_url}}" class="btn btn-sm btn-light">
-                    <span>{{tag.title}}</span>
-                </a>
-                {% endfor %}
-                <template v-for="tag in tags">
-                    <a v-if="tag.title" :href="tag.get_manager_tag_url" class="btn btn-sm btn-light">
-                        <span v-text="tag.title"></span>
-                    </a>
-                </template> {% if perms.app.add_tag %}
-
-
-
-                <input type="text" v-model="new_tag" placeholder="تگ جدید" class="form-control">
-                <button class="btn btn-primary" @click="add_tag">اضافه کن</button> {% endif %}
-            </div>
-
-        </div>
-
-        <!-- docs -->
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">get_app</i>
-                </div>
-
-                <p class="card-category">
-
-                    {{page.title}}
-                </p>
-
-
-                <h3 class="card-title">
-                    فایل ها و لینک ها
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                <h5 class="mt-4">
-                    فایل ها
-                </h5>
-                {% for document in page.documents.all %}
-                <div>
-                    <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_icon_tag|safe}}
-
-                        {{document.title}}
-                    </a> {% if perms.app.change_document %}
-                    <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_document_form %}
-                <form action="{% url 'projectmanager:add_document' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{page.id}}">
-                    <input placeholder="عنوان برای فایل جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
-                <h5 class="mt-5">
-                    لینک ها
-                </h5>
-
-                {% for link in page.links.all %}
-                <div>
-                    <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_icon_tag|safe}}
-
-                        {{link.title}}
-                    </a> {% if perms.app.change_link %}
-                    <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_link_form %}
-                <form action="{% url 'projectmanager:add_link' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{page.id}}">
-                    <input placeholder="عنوان برای لینک جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
-            </div>
-
-
-
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_project and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{page.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- issues -->
-        <div class="card card-stats">
-            <div class="card-header card-header-danger card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-
-                <p class="card-category">{{page.title}}</p>
-
-
-                <h3 class="card-title">Issues
-
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-
-
-
-                {% for issue in page.issues %}
-                <div>
-                    <small>
-
-                        {{issue.date_report|to_persian_date|safe}}
-                    </small>
-                </div>
-                <div class="mb-3">
-
-                    {{issue.get_colored_icon|safe}}
-                    <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
-                    {{issue.get_issue_type|safe}}
-                </div>
-
-                {% empty %}
-                <p>مشکلی ثبت نشده است.</p>
-                {% endfor %}
-
-                {% if add_issue_form %}
-                <form action="{% url 'projectmanager:add_issue' %}" method="POST">
-                    {% csrf_token %}
-                    <input required type="hidden" name="page_id" value="{{page.id}}">
-                    <input required placeholder="مشکل جدید" type="text" name="title" class="form-control">
-                    <select name="issue_type" class="form-control">
-                        {% for issue_type in issue_types %}
-                        <option value="{{issue_type}}">{{issue_type}}</option>
-                        {% endfor %}
-                    </select>
-                    <button class="btn btn-danger" type="submit">افزودن</button>
-                </form>
-                {% endif %}
-
-
-            </div>
-
-
-            <!-- issues -->
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_page and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{page.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    {% if page.description %}
-    <div class="col-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-
-
-
-                <p class="card-category">{{page.title}}</p>
-
-
-
-                <h3 class="card-title">توضیحات کامل
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-
-
-                {{page.description|safe}}
-
-
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_page and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{page.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if page.related_pages.all %}
-    <div class="col-12 text-center">
-        <h3 class="h3 text-center">صفحات مرتبط</h3>
-    </div>
-
-
-
-    <div class="owl-carousel owl-theme">
-        {% for related_page in page.related_pages.all %}
-        <div class="item pt-1 px-3">
-
-            <div class="card card-profile">
-                {% if related_page.image %}
-                <div class="card-avatar">
-                    <a href="{{related_page.get_absolute_url}}">
-
-                        <img src="{{ MEDIA_URL }}{{related_page.image}}" width="75px" style="border-radius: 75px;"
-                            alt="">
-
-                    </a>
-                </div>
-                {% endif %}
-
-                <div class="card-header card-header-{{related_page.color}} card-header-icon">
-                    {% if not related_page.image %}
-                    <div class="card-icon">
-                        <i class="material-icons">{{related_page.icon}}</i>
-                    </div>
-                    {% endif %}
-
-
-
-                    <a href="{{related_page.get_absolute_url}}">
-                        <h4 class="card-title text-primary text-center">
-                            {{related_page.title}}
-                        </h4>
-                    </a>
-                </div>
-                <div class="card-body related-card-body">
-                    {% if related_page.short_description %}
-                    <div class="related-card-body-p">{{related_page.short_description|safe}}</div>
-                    {% endif %}
-
-
-
-
-
-                </div>
-                <div class="card-footer">
-                    <!-- <div class="stats">
-                        <i class="material-icons">local_offer</i>
-
-                        {{related_page.title}}
-
-
-                    </div> -->
-                </div>
-            </div>
-
-
-
-
-        </div>
-        {% endfor %}
-
-    </div>
-    {% endif %}
-
-
-    {% if page.materialrequest_set.all %}
-    <!-- material requests -->
-    <div class="col-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-
-
-                <p class="card-category">{{project.title}}</p>
-
-
-
-
-                <h3 class="card-title">
-
-                    درخواست متریال
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                <div class="table-responsive">
-                    <table class="table">
-
-                        <thead>
-                            <td>متریال</td>
-                            <td>پرسنل</td>
-                            <td>پیمانکار</td>
-                            <td>وضعیت</td>
-                            <td>تاریخ</td>
-                            <td>تعداد</td>
-                            <td></td>
-                        </thead>
-                        <tbody>
-                            {% for material_request in page.materialrequest_set.all %}
-                            <tr>
-                                <td><a
-                                        href="{{material_request.requested_material.get_absolute_url}}">{{material_request.requested_material.title}}</a>
-                                </td>
-                                <td><a
-                                        href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
-                                </td>
-                                <td><a
-                                        href="{{material_request.contractor.get_absolute_url}}">{{material_request.contractor.title}}</a>
-                                </td>
-                                <td><span
-                                        class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
-                                </td>
-                                <td><small>
-                                        {{material_request.date_added|to_persian_date|safe}}
+                            </div>
+                            <div class="col-lg-6">
+                                {% if issue %}
+                                <h4>مشکل مرتبط با</h4>
+                                {{issue.page.get_link|safe}}
+
+                                {% endif %}
+
+                                {% for issue in page.issues %}
+                                <div>
+                                    <small>
+
+                                        {{issue.date_report|to_persian_date|safe}}
                                     </small>
-                                </td>
-                                <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
-                                <td>
-                                    <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
-                                        <i class="fa fa-user"></i>
-                                    </a>
-                                    <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
+                                </div>
+                                <div class="mb-3">
 
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    {{issue.get_colored_icon|safe}}
+                                    <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
+                                    {{issue.get_issue_type|safe}}
+                                </div>
+
+
+                                {% endfor %}
+
+                                {% if add_issue_form %}
+                                <form class="mb-3" action="{% url 'projectmanager:add_issue' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input required type="hidden" name="page_id" value="{{page.id}}">
+                                    <input required placeholder="مشکل جدید" type="text" name="title"
+                                        class="form-control">
+                                    <select name="issue_type" class="form-control">
+                                        {% for issue_type in issue_types %}
+                                        <option value="{{issue_type}}">{{issue_type}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn btn-danger" type="submit">افزودن</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                <h5>مرتبط با :</h5>
+                                {% for related_page in page.related_pages.all %}
+                                <div>
+                                    {{related_page.get_link|safe}}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+                    </div>
                 </div>
-
-
             </div>
+            <div v-show="show_location">
+                {% if perms.projectmanager.change_managerpage %}
+                <div class="card p-4">
+                    <form action="{% url 'projectmanager:add_location' %}" method="POST">
+                        <a target="_blank" href="https://www.google.com/maps">
+                            <i class="material-icons">place</i>
+                            نقشه آنلاین</a>
+                        {% csrf_token %}
+                        <input type="hidden" name="page_id" value="{{page.id}}">
+                        <input required class="form-control" type="text" placeholder="موقعیت در نقشه گوگل"
+                            name="location" id="">
 
-
-
-            <div class="card-footer">
-                <div class="stats">
-
+                        <button class="btn btn-primary" type="submit">
+                            <i class="material-icons">place</i>
+                            تایید</button> </form>
                 </div>
+                {% endif %}
+{% if page.location %}
+  
+                <div class="card">
+                    {{page.location|safe}}
+                </div>
+{% endif %}
             </div>
         </div>
 
+        <div class="col-lg-4 col-md-6">
+            <div v-if="true">
+                {% include "projectmanager/includes/managerpage-toolbox.html" %}
+
+            </div>
+        </div>
+
+
+
+
     </div>
-    {% endif %}
+
 
 
 </div>
-{% block content %}
 
-{% endblock %}
+{% endblock contents %}
 
-{% endblock %} {% block scripts %}
-<script src="{% static 'vendor/js/owl/owl.carousel.min.js' %}"></script>
+{% block scripts %}
 <script>
-
     let csrfmiddlewaretoken = ''
     $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
@@ -1006,42 +245,61 @@
 
     let add_tag_url = "{% url 'projectmanager:add_tag'%}"
 
-    let tags_app = new Vue({
-        el: "#tags-app",
+
+    var main_app = new Vue({
+        el: "#main-app",
         data: {
+            show_all_page: false,
+            show_childs: true,
+            show_issue: false,
             tags: [{
                 tt: 'sss'
             }],
             new_tag: '',
-
         },
         methods: {
+            hide_all: function () {
+                this.show_all_page = false
+                this.show_childs = false
+                this.show_issue = false
+                this.show_location = false
+            },
+            show_location_panel: function () {
+                this.hide_all()
+                this.show_location = true
+            },
+            show_childs_panel: function () {
+                this.hide_all()
+                this.show_childs = true
+
+            },
+            show_issue_panel: function () {
+                this.hide_all()
+                this.show_issue = true
+            },
+            show_all_page_panel: function () {
+
+                this.hide_all()
+                this.show_all_page = true
+
+
+            },
             add_tag: function () {
                 let url = add_tag_url
                 let posting = $.post(url, {
                     page_id: JSON.parse("{{page.id}}"),
-                    tag_title: tags_app.new_tag,
+                    tag_title: main_app.new_tag,
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 })
                 posting.done(function (data) {
                     // console.log(data.tag)
-                    tags_app.new_tag = ''
+                    main_app.new_tag = ''
                     if (data.result === 'SUCCEED') {
-                        tags_app.tags.push(data.tag)
+                        main_app.tags.push(data.tag)
                     }
                 })
             },
-
         },
     })
-
 </script>
-<script>
-    $("#project-manager-link").addClass("active");
-</script>
-
-{% block script %}
-
-{% endblock  %}
-
-{% endblock %} {% block styles %} {% endblock %}
+{% endblock scripts %}

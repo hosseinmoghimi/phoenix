@@ -74,6 +74,9 @@ class TextDirectionEnum(TextChoices):
     Ltr='ltr',_('ltr')
 
 class IconsEnum(TextChoices):
+    place='place',_('place')
+    construction='construction',_('construction')
+    extension='extension',_('extension')
     engineering='engineering',_('engineering')
     account_circle='account_circle',_('account_circle')
     add_shopping_cart='add_shopping_cart',_('add_shopping_cart')

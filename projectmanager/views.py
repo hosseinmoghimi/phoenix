@@ -83,6 +83,8 @@ class ManagerPageView(View):
             context['add_link_form']=AddLinkForm()
         if user.has_perm('app.add_tag'):
             context['add_tag_form']=AddTagForm()
+        if user.has_perm(APP_NAME+'.change_managerpage'):
+            context['add_location_form']=AddLocationForm()
         return context
 
     def page(self,request,page_id,*args, **kwargs):
@@ -98,7 +100,18 @@ class ManagerPageView(View):
         assignment=AssignmentRepo(user=user).assignment(assignment_id=assignment_id)
         context['page']=assignment        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
-    
+   
+    def add_location(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_location_form=AddLocationForm(request.POST)
+            if add_location_form.is_valid():
+                # print(ssssssssss)
+                page_id=add_location_form.cleaned_data['page_id']
+                location=add_location_form.cleaned_data['location']
+                page=ManagerPageRepo(user=request.user).add_location(page_id=page_id,location=location)
+                if page is not None:
+                    return redirect(page.get_absolute_url())
+     
     def add_material(self,request,*args, **kwargs):
         if request.method=='POST':
             add_material_form=AddMaterialForm(request.POST)

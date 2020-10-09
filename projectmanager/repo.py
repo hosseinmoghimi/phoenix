@@ -101,6 +101,18 @@ class ManagerPageRepo:
             return True
         return False
 
+    def add_location(self,page_id,location):
+        if self.user.has_perm(APP_NAME+'.change_managerpage'):
+            page=self.get(pk=page_id)
+            if page is not None:
+                location=location
+                location=location.replace('width="600"','width="100%"')
+                location=location.replace('height="450"','height="500"')
+                page.location=location
+                page.save()
+                return page
+
+                
                 
     def __init__(self,user):
         self.objects=ManagerPage.objects
