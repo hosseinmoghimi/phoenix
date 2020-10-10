@@ -328,31 +328,33 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table">
-        
+
                                 <thead>
                                     <td>متریال</td>
+                                    <td>تعداد</td>
                                     <td>
                                         درخواست کننده
                                     </td>
                                     <td>وضعیت</td>
                                     <td>تاریخ</td>
-                                    <td>تعداد</td>
                                     <td></td>
                                 </thead>
                                 <tbody>
                                     {% for material_request in page.materialrequest_set.all %}
                                     <tr>
                                         <td>
-                                            
+
                                             {{material_request.requested_material.get_link|safe}}
-                                          
-                                            
+
+
                                         </td>
+                                        <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+
                                         <td><a
                                                 href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
-                                       
-                                           
-                                                {{material_request.contractor.get_link|safe}}
+
+
+                                            {{material_request.contractor.get_link|safe}}
                                         </td>
                                         <td><span
                                                 class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
@@ -361,15 +363,16 @@
                                                 {{material_request.date_added|to_persian_date|safe}}
                                             </small>
                                         </td>
-                                        <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
                                         <td>
-                                            <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
+                                            <a class="btn btn-link btn-info"
+                                                href="{{material_request.get_absolute_url}}">
                                                 <i class="fa fa-user"></i>
                                             </a>
-                                            <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+                                            <a class="btn btn-link btn-warning"
+                                                href="{{material_request.get_edit_url}}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-        
+
                                         </td>
                                     </tr>
                                     {% endfor %}
