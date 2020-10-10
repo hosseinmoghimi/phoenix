@@ -70,6 +70,20 @@ class ManagerPage(models.Model):
     
     color=models.CharField(_('رنگ'),max_length=50,choices=ColorEnum.choices,default=ColorEnum.PRIMARY)
     icon=models.CharField(_('آیکون'),max_length=50,choices=IconsEnum.choices,default=IconsEnum.description)
+    def get_type(self):
+        if self.child_class=='material':
+            return 'متریال'
+        if self.child_class=='materialcategory':
+            return 'دسته بندی متریال'
+        if self.child_class=='project':
+            return 'پروژه'
+        if self.child_class=='workunit':
+            return 'واحد سازمانی'
+        if self.child_class=='issue':
+            return 'مشکل'
+        if self.child_class=='issue':
+            return 'aaaaaaaa'
+
     def get_icon(self):
         return f'<i class="material-icons">{self.icon}</i>'
     def get_colored_icon(self):
@@ -129,7 +143,7 @@ class ManagerPage(models.Model):
     #     super(ManagerPage,self).delete()
 
     def __str__(self):
-        return self.title
+        return str(self.child_class)+' : '+self.title
 
     def cast(self):
         return self.real_type.get_object_for_this_type(pk=self.pk)

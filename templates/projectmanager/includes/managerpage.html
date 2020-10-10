@@ -1,3 +1,4 @@
+{% load to_persian_date %}
 <div class="card card-stats">
     <div class="card-header card-header-{{page.color}} card-header-icon">
         <div class="card-icon">
@@ -24,12 +25,32 @@
         </h3>
     </div>
     <div class="card-body">
-        {% if page.status %}
+        {% if issue %}
         <div class="mb-3">
-            <small> وضعیت : </small> <span
-                class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
+            <small> نوع مشکل : </small>
+
+            {{page.issue.get_issue_type|safe}}
+
         </div>
         {% endif %}
+        {% if issue %}
+        <h4 class="text-secondary">مشکل مرتبط با</h4>
+        <div class=" ml-2 mb-5">
+            {{issue.page.get_link|safe}}
+
+        </div>
+
+        {% endif %}
+
+        
+        {% if page.status %}
+        <div class="mb-3">
+            <small> وضعیت : </small> <span class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
+        </div>
+        {% endif %}
+
+
+
 
 
 
@@ -38,29 +59,137 @@
 
 
         {% if page.short_description %}
-        <div class="text-secondary">
+        <h4 class="text-secondary">
+            شرح کوتاه
+        </h4>
+
+        <div class=" ml-2 mb-5">
             {{page.short_description|safe}}
         </div>
+
         {% endif %}
 
 
 
         {% if page.description %}
-        <div class="text-secondary">
+        <h4 class="text-secondary">
+            شرح کامل
+        </h4>
+
+        <div class="ml-2  mb-5">
             {{page.description|safe}}
         </div>
         {% endif %}
 
 
+        {% if page.childs %}
+        <h4 class="text-secondary">
+            زیر مجموعه ها
+        </h4>
+
+        <div class=" ml-4  mb-5">
+            {% for page in page.childs %}
+
+            {{page.get_link|safe}}
+            {% endfor %}
+        </div>
+        {% endif %}
 
 
 
+        {% if page.childs %}
+        <h4 class="text-secondary">
+            پیوست ها
+        </h4>
+
+        <div class=" ml-4 mb-5">
+            {% for page in page.related_pages.all %}
+
+            {{page.get_link|safe}}
+            {% endfor %}
+        </div>
+        {% endif %}
 
 
 
+        {% if page.issues %}
+        <h4 class="text-secondary">
+            مشکلات پیش آمده
+        </h4>
+
+        <div class=" ml-4 mb-5">
+            {% for issue in page.issues.all %}
+
+            <div class="">
+
+                {{issue.get_colored_icon|safe}}
+                <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
+                {{issue.get_issue_type|safe}}
+            </div>
+            <div class="ml-5 mb-1">
+                <small>
+                    <small class="text-secondary">
+
+                        {{issue.date_report|to_persian_date|safe}}
+                    </small></small>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        {% if page.tags.all %}
+        <h4 class="text-secondary">
+            برچسب ها
+        </h4>
 
 
 
+        <div class=" ml-4 mb-5">
+
+            {% for tag in page.tags.all %}
+            <a href="{{tag.get_manager_tag_url}}" class="btn btn-sm btn-light">
+                <span>{{tag.title}}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        {% if page.documents.all %}
+        <h4 class="text-secondary">
+            فایل های ضمیمه شده
+        </h4>
+        <div class=" ml-4 mb-5">
+            {% for document in page.documents.all %}
+            <div>
+                <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
+                    {{document.get_icon_tag|safe}}
+
+                    {{document.title}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        {% if page.links.all %}
+        <h4 class="text-secondary">
+            لینک ها
+        </h4>
+        <div class=" ml-4 mb-5">
+            {% for link in page.links.all %}
+            <div>
+                <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
+                    {{link.get_icon_tag|safe}}
+
+                    {{link.title}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
 
 

@@ -5,28 +5,45 @@
 <div id="main-app">
     <div>
         {{page.parent.get_breadcrumb_url|safe}}
-        <h2>
+        <div class="row">
+            <div class="col-1">
+                <div class="text-center">
+                    {{page.get_colored_icon|safe}}
+                </div>
 
-            {{page.get_colored_icon|safe}}
+                <div class="text-center">
+                    <small>
 
-            {{page.title}}
-        </h2>
-    </div><hr>
+                        {{page.get_type}}
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-11">
+                <h2>
+                    {{page.title}}
+                </h2>
+            </div>
+
+        </div>
+
+    </div>
+    <hr>
     <p class="mx-2 mb-0">
-       
-        <button @click="show_all_page_panel" :class="show_all_page?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+
+        <button @click="show_full_description_panel" :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">description</i>
             بیشتر
         </button>
-        <button  @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+        <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">extension</i>
             اطلاعات مرتبط
         </button>
-       
+
 
         {% if page.location or perms.projectmanager.change_managerpage%}
 
-        <button   @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+        <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">place</i>
             لوکیشن
         </button>
@@ -47,11 +64,11 @@
         </a>
         {% endif %}
     </p>
- 
+
     <div class="row">
 
         <div class="col-lg-8 col-md-6">
-            <div v-if="show_all_page">
+            <div v-if="show_full_description">
                 {% include "projectmanager/includes/managerpage.html" %}
 
             </div>
@@ -60,13 +77,13 @@
                     <div class="m-4">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="mb-3">
+                                <div class="mb-5">
                                     {% if project %}
-                                    <h4>پروژه های جزئی</h4>
+                                    <h4 class="bg-light px-3 py-2">پروژه های جزئی</h4>
                                     {% endif %}
 
                                     {% if workunit %}
-                                    <h4>واحد های زیر مجموعه</h4>
+                                    <h4 class="bg-light px-3 py-2">واحد های زیر مجموعه</h4>
                                     {% endif %}
                                     {% for child in page.childs %}
                                     <div>
@@ -94,67 +111,85 @@
                                     </form>
                                     {% endif %}
                                 </div>
+                                <div class="mb-5">
+                                    {% if issue %}
+                                    <h4 class="bg-light px-3 py-2">مشکل مرتبط با</h4>
+                                    {{issue.page.get_link|safe}}
+
+                                    {% endif %}
+
+                                    <h4 class="bg-light px-3 py-2">مشکلات پیش آمده<h4>
+
+
+                                            {% for issue in page.issues %}
+
+                                            <div class="">
+
+                                                {{issue.get_colored_icon|safe}}
+                                                <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
+                                                {{issue.get_issue_type|safe}}
+                                            </div>
+                                            <div class="ml-5 mb-3">
+                                                <small>
+                                                    <small class="text-secondary">
+
+                                                        {{issue.date_report|to_persian_date|safe}}
+                                                    </small></small>
+                                            </div>
+
+
+                                            {% endfor %}
+
+                                            {% if add_issue_form %}
+                                            <form class="mb-3" action="{% url 'projectmanager:add_issue' %}"
+                                                method="POST">
+                                                {% csrf_token %}
+                                                <input required type="hidden" name="page_id" value="{{page.id}}">
+                                                <input required placeholder="مشکل جدید" type="text" name="title"
+                                                    class="form-control">
+                                                <select name="issue_type" class="form-control">
+                                                    {% for issue_type in issue_types %}
+                                                    <option value="{{issue_type}}">{{issue_type}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button class="btn btn-danger" type="submit">افزودن</button>
+                                            </form>
+                                            {% endif %}
+
+                                </div>
                             </div>
                             <div class="col-lg-6">
+
                                 <!-- workunit_projects -->
                                 {% if workunit_projects %}
-                                <h4>پروژه های مرتبط</h4>
-                                {% endif %}
-                                {% for project in workunit_projects %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">پروژه های مرتبط</h4>
 
-                                <div>
-                                    {{project.get_link|safe}}
+                                    {% for project in workunit_projects %}
+
+                                    <div>
+                                        {{project.get_link|safe}}
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
-                            </div>
-                            <div class="col-lg-6">
-                                {% if issue %}
-                                <h4>مشکل مرتبط با</h4>
-                                {{issue.page.get_link|safe}}
-
                                 {% endif %}
 
-                                {% for issue in page.issues %}
-                                <div>
-                                    <small>
 
-                                        {{issue.date_report|to_persian_date|safe}}
-                                    </small>
+                                {% if page.related_pages.all %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">صفحات مرتبط</h4>
+                                    {% for related_page in page.related_pages.all %}
+                                    <div>
+                                        {{related_page.get_link|safe}}
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                <div class="mb-3">
-
-                                    {{issue.get_colored_icon|safe}}
-                                    <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
-                                    {{issue.get_issue_type|safe}}
-                                </div>
-
-
-                                {% endfor %}
-
-                                {% if add_issue_form %}
-                                <form class="mb-3" action="{% url 'projectmanager:add_issue' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input required type="hidden" name="page_id" value="{{page.id}}">
-                                    <input required placeholder="مشکل جدید" type="text" name="title"
-                                        class="form-control">
-                                    <select name="issue_type" class="form-control">
-                                        {% for issue_type in issue_types %}
-                                        <option value="{{issue_type}}">{{issue_type}}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <button class="btn btn-danger" type="submit">افزودن</button>
-                                </form>
                                 {% endif %}
-                            </div>
-                            <div class="col-lg-6">
-                                <h5>مرتبط با :</h5>
-                                {% for related_page in page.related_pages.all %}
-                                <div>
-                                    {{related_page.get_link|safe}}
-                                </div>
-                                {% endfor %}
                             </div>
                         </div>
+
+
+
 
 
 
@@ -183,12 +218,12 @@
                             تایید</button> </form>
                 </div>
                 {% endif %}
-{% if page.location %}
-  
+                {% if page.location %}
+
                 <div class="card">
                     {{page.location|safe}}
                 </div>
-{% endif %}
+                {% endif %}
             </div>
         </div>
 
@@ -249,8 +284,8 @@
     var main_app = new Vue({
         el: "#main-app",
         data: {
-            show_all_page: false,
-            show_childs: true,
+            show_full_description: true,
+            show_childs: false,
             show_issue: false,
             tags: [{
                 tt: 'sss'
@@ -259,7 +294,7 @@
         },
         methods: {
             hide_all: function () {
-                this.show_all_page = false
+                this.show_full_description = false
                 this.show_childs = false
                 this.show_issue = false
                 this.show_location = false
@@ -277,10 +312,10 @@
                 this.hide_all()
                 this.show_issue = true
             },
-            show_all_page_panel: function () {
+            show_full_description_panel: function () {
 
                 this.hide_all()
-                this.show_all_page = true
+                this.show_full_description = true
 
 
             },

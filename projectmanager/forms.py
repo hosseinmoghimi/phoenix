@@ -35,7 +35,7 @@ class AddWorkUnitForm(forms.Form):
     title=forms.CharField(max_length=50,required=True)
 
 class AddDocumentForm(forms.Form):
-    parent_id=forms.IntegerField(required=True)
+    manager_page_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=100,required=True)
 
 class AddIssueForm(forms.Form):

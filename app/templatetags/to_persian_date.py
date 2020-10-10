@@ -6,6 +6,6 @@ from app.persian import PersianCalendar
 def to_persian_date(value):
     try:    
         a=PersianCalendar().from_gregorian(value)        
-        return f'<a href="#" title="{value.strftime("%Y/%m/%d %H:%M:%S") }">{str(a)}</a>'
+        return f'<span title="{value.strftime("%Y/%m/%d %H:%M:%S") }">{str(a)}</span>'
     except:
         return None
