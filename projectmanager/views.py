@@ -364,6 +364,6 @@ class ManagerPageView(View):
         tag=TagRepo(user=user).get(tag_id=tag_id)    
         
         
-        
+        context['search_for']=tag.title
         context['pages']=ManagerPageRepo(user=request.user).list_by_tag(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'search.html',context)

@@ -4,8 +4,7 @@
 {% block contents %}
 <div id="main-app">
     <div>
-        {{page.parent.get_breadcrumb_url|safe}}
-        <div class="row">
+       <div class="row">
             <div class="col-1">
                 <div class="text-center">
                     {{page.get_colored_icon|safe}}
@@ -20,6 +19,9 @@
             </div>
 
             <div class="col-11">
+                <div >
+                    {{page.parent.get_breadcrumb_url|safe}}
+                    </div>
                 <h2>
                     {{page.title}}
                 </h2>
