@@ -1,6 +1,7 @@
 {% extends "dashboard/layout.html" %}
 {% load social_share %}
 {% load to_persian_date %}
+{% load to_material_request_status_color %}
 {% block contents %}
 <div id="main-app">
     <div>
@@ -32,12 +33,12 @@
     <hr>
     <p class="mx-2 mb-0">
 
-       
+
         <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">extension</i>
             اطلاعات مرتبط
         </button>
- <button @click="show_full_description_panel"
+        <button @click="show_full_description_panel"
             :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">description</i>
             جزئیات
@@ -47,6 +48,13 @@
             <i class="material-icons">place</i>
             تصاویر
         </button>
+        {% if project %}
+        <button @click="show_materialrequest_panel"
+            :class="show_materialrequest?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">dashboard</i>
+            متریال
+        </button>
+        {% endif %}
         {% if page.location or perms.projectmanager.change_managerpage%}
 
         <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
@@ -295,6 +303,100 @@
             </div>
 
             <div v-if="show_pics">
+                show_pics
+            </div>
+
+            <div v-if="show_materialrequest">
+
+
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">dashboard</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+                        <h3 class="card-title">
+                            متریال
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+        
+                                <thead>
+                                    <td>متریال</td>
+                                    <td>
+                                        درخواست کننده
+                                    </td>
+                                    <td>وضعیت</td>
+                                    <td>تاریخ</td>
+                                    <td>تعداد</td>
+                                    <td></td>
+                                </thead>
+                                <tbody>
+                                    {% for material_request in page.materialrequest_set.all %}
+                                    <tr>
+                                        <td>
+                                            
+                                            {{material_request.requested_material.get_link|safe}}
+                                          
+                                            
+                                        </td>
+                                        <td><a
+                                                href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                       
+                                           
+                                                {{material_request.contractor.get_link|safe}}
+                                        </td>
+                                        <td><span
+                                                class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                        </td>
+                                        <td><small>
+                                                {{material_request.date_added|to_persian_date|safe}}
+                                            </small>
+                                        </td>
+                                        <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+                                        <td>
+                                            <a class="btn btn-link btn-info" href="{{material_request.get_absolute_url}}">
+                                                <i class="fa fa-user"></i>
+                                            </a>
+                                            <a class="btn btn-link btn-warning" href="{{material_request.get_edit_url}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+        
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -359,7 +461,8 @@
             show_full_description: false,
             show_childs: true,
             show_issue: false,
-            show_pics:false,
+            show_pics: false,
+            show_materialrequest: false,
             tags: [{
                 tt: 'sss'
             }],
@@ -372,10 +475,15 @@
                 this.show_issue = false
                 this.show_location = false
                 this.show_pics = false
+                this.show_materialrequest = false
             },
             show_location_panel: function () {
                 this.hide_all()
                 this.show_location = true
+            },
+            show_materialrequest_panel: function () {
+                this.hide_all()
+                this.show_materialrequest = true
             },
             show_childs_panel: function () {
                 this.hide_all()
