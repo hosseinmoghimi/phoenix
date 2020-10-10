@@ -4,7 +4,7 @@
 {% block contents %}
 <div id="main-app">
     <div>
-       <div class="row">
+        <div class="row">
             <div class="col-1">
                 <div class="text-center">
                     {{page.get_colored_icon|safe}}
@@ -18,9 +18,9 @@
             </div>
 
             <div class="col-11">
-                <div >
+                <div>
                     {{page.parent.get_breadcrumb_url|safe}}
-                    </div>
+                </div>
                 <h2>
                     {{page.title}}
                 </h2>
@@ -32,7 +32,8 @@
     <hr>
     <p class="mx-2 mb-0">
 
-        <button @click="show_full_description_panel" :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+        <button @click="show_full_description_panel"
+            :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">description</i>
             بیشتر
         </button>
@@ -86,12 +87,14 @@
                                     {% if workunit %}
                                     <h4 class="bg-light px-3 py-2">واحد های زیر مجموعه</h4>
                                     {% endif %}
-                                    {% for child in page.childs %}
-                                    <div>
+                                    <div class="ml-3">
+                                        {% for child in page.childs %}
+                                        <div>
 
-                                        {{child.get_link|safe}}
+                                            {{child.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    {% endfor %}
                                     {% if add_workunit_form %}
                                     <form action="{% url 'projectmanager:add_workunit' %}" method="POST">
                                         {% csrf_token %}
@@ -119,43 +122,42 @@
 
                                     {% endif %}
 
-                                    <h4 class="bg-light px-3 py-2">مشکلات پیش آمده<h4>
+                                    <h4 class="bg-light px-3 py-2">مشکلات پیش آمده</h4>
+
+                                    <div class="ml-3">
+                                        {% for issue in page.issues %}
+
+                                        <div class="">
+
+                                            {{issue.get_colored_icon|safe}}
+                                            <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
+                                            {{issue.get_issue_type|safe}}
+                                        </div>
+                                        <div class="ml-5 mb-3">
+                                            <small>
+                                                <small class="text-secondary">
+
+                                                    {{issue.date_report|to_persian_date|safe}}
+                                                </small></small>
+                                        </div>
 
 
-                                            {% for issue in page.issues %}
-
-                                            <div class="">
-
-                                                {{issue.get_colored_icon|safe}}
-                                                <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
-                                                {{issue.get_issue_type|safe}}
-                                            </div>
-                                            <div class="ml-5 mb-3">
-                                                <small>
-                                                    <small class="text-secondary">
-
-                                                        {{issue.date_report|to_persian_date|safe}}
-                                                    </small></small>
-                                            </div>
-
-
+                                        {% endfor %}
+                                    </div>
+                                    {% if add_issue_form %}
+                                    <form class="mb-3" action="{% url 'projectmanager:add_issue' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input required type="hidden" name="page_id" value="{{page.id}}">
+                                        <input required placeholder="مشکل جدید" type="text" name="title"
+                                            class="form-control">
+                                        <select name="issue_type" class="form-control">
+                                            {% for issue_type in issue_types %}
+                                            <option value="{{issue_type}}">{{issue_type}}</option>
                                             {% endfor %}
-
-                                            {% if add_issue_form %}
-                                            <form class="mb-3" action="{% url 'projectmanager:add_issue' %}"
-                                                method="POST">
-                                                {% csrf_token %}
-                                                <input required type="hidden" name="page_id" value="{{page.id}}">
-                                                <input required placeholder="مشکل جدید" type="text" name="title"
-                                                    class="form-control">
-                                                <select name="issue_type" class="form-control">
-                                                    {% for issue_type in issue_types %}
-                                                    <option value="{{issue_type}}">{{issue_type}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <button class="btn btn-danger" type="submit">افزودن</button>
-                                            </form>
-                                            {% endif %}
+                                        </select>
+                                        <button class="btn btn-danger" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -164,26 +166,43 @@
                                 <!-- workunit_projects -->
                                 {% if workunit_projects %}
                                 <div class="mb-5">
-                                    <h4 class="bg-light px-3 py-2">پروژه های مرتبط</h4>
+                                    <h4 class="bg-light px-3 py-2">پروژه های مرتبط با این واحد</h4>
+                                    <div class="ml-3">
+                                        {% for project in workunit_projects %}
 
-                                    {% for project in workunit_projects %}
-
-                                    <div>
-                                        {{project.get_link|safe}}
+                                        <div>
+                                            {{project.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    {% endfor %}
                                 </div>
                                 {% endif %}
 
 
+
+
+                                {% if project.work_units.all %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">واحدهای مرتبط با پروژه</h4>
+                                    <div class="ml-3">
+                                        {% for work_unit in project.work_units.all %}
+                                        <div>
+                                            {{work_unit.get_link|safe}}
+                                        </div>
+                                        {% endfor %}</div>
+                                </div>
+                                {% endif %}
+
                                 {% if page.related_pages.all %}
                                 <div class="mb-5">
                                     <h4 class="bg-light px-3 py-2">صفحات مرتبط</h4>
+                                    <div class="ml-3">
                                     {% for related_page in page.related_pages.all %}
                                     <div>
                                         {{related_page.get_link|safe}}
                                     </div>
                                     {% endfor %}
+                                    </div>
                                 </div>
                                 {% endif %}
                             </div>

@@ -42,7 +42,7 @@
 
         {% endif %}
 
-        
+
         {% if page.status %}
         <div class="mb-3">
             <small> وضعیت : </small> <span class="badge badge-{{page.get_status_color}}">{{page.status}}</span>
@@ -190,6 +190,39 @@
             {% endfor %}
         </div>
         {% endif %}
+
+
+
+        {% if workunit_projects %}
+        <h4 class="text-secondary">
+            پروژه های مرتبط
+        </h4>
+        <div class=" ml-4 mb-5">
+
+            {% for project in workunit_projects %}
+
+            <div>
+                {{project.get_link|safe}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        {% if page.related_pages.all %}
+
+        <h4 class="text-secondary">صفحات مرتبط</h4>
+        <div class=" ml-4 mb-5">
+
+            {% for related_page in page.related_pages.all %}
+            <div>
+                {{related_page.get_link|safe}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
 
 
 
