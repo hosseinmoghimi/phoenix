@@ -32,17 +32,21 @@
     <hr>
     <p class="mx-2 mb-0">
 
-        <button @click="show_full_description_panel"
-            :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">description</i>
-            بیشتر
-        </button>
+       
         <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">extension</i>
             اطلاعات مرتبط
         </button>
+ <button @click="show_full_description_panel"
+            :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">description</i>
+            جزئیات
+        </button>
 
-
+        <button @click="show_pics_panel" :class="show_pics?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">place</i>
+            تصاویر
+        </button>
         {% if page.location or perms.projectmanager.change_managerpage%}
 
         <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
@@ -84,6 +88,10 @@
                                     <h4 class="bg-light px-3 py-2">پروژه های جزئی</h4>
                                     {% endif %}
 
+                                    {% if materialcategory %}
+                                    <h4 class="bg-light px-3 py-2">زیر مجموعه ها</h4>
+                                    {% endif %}
+
                                     {% if workunit %}
                                     <h4 class="bg-light px-3 py-2">واحد های زیر مجموعه</h4>
                                     {% endif %}
@@ -95,6 +103,18 @@
                                         </div>
                                         {% endfor %}
                                     </div>
+                                    {% if add_material_category_form %}
+                                    <div>
+                                        <form action="{% url 'projectmanager:add_material_category' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="parent_id" value="{{materialcategory.id}}">
+                                            <input placeholder="نام دسته جدید" type="text" name="title"
+                                                class="form-control" id="">
+                                            <button class="btn btn-success" type="submit">افزودن</button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+
                                     {% if add_workunit_form %}
                                     <form action="{% url 'projectmanager:add_workunit' %}" method="POST">
                                         {% csrf_token %}
@@ -114,6 +134,9 @@
                                         <button class="btn btn-primary" type="submit">افزودن</button>
                                     </form>
                                     {% endif %}
+
+
+
                                 </div>
                                 <div class="mb-5">
                                     {% if issue %}
@@ -162,6 +185,31 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                                {% if materialcategory %}
+
+                                <h4 class="bg-light px-3 py-2">متریال ها</h4>
+                                <div class="ml-3">
+                                    {% for material in materialcategory.materials %}
+
+                                    <div>
+                                        {{material.get_link|safe}}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% endif %}
+
+                                {% if add_material_form %}
+                                <div>
+                                    <form action="{% url 'projectmanager:add_material' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="category_id" value="{{materialcategory.id}}">
+                                        <input placeholder="نام متریال جدید" type="text" name="title"
+                                            class="form-control" id="">
+                                        <button class="btn btn-success" type="submit">افزودن</button>
+                                    </form>
+                                </div>
+                                {% endif %}
 
                                 <!-- workunit_projects -->
                                 {% if workunit_projects %}
@@ -197,11 +245,11 @@
                                 <div class="mb-5">
                                     <h4 class="bg-light px-3 py-2">صفحات مرتبط</h4>
                                     <div class="ml-3">
-                                    {% for related_page in page.related_pages.all %}
-                                    <div>
-                                        {{related_page.get_link|safe}}
-                                    </div>
-                                    {% endfor %}
+                                        {% for related_page in page.related_pages.all %}
+                                        <div>
+                                            {{related_page.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 {% endif %}
@@ -244,6 +292,10 @@
                     {{page.location|safe}}
                 </div>
                 {% endif %}
+            </div>
+
+            <div v-if="show_pics">
+
             </div>
         </div>
 
@@ -304,9 +356,10 @@
     var main_app = new Vue({
         el: "#main-app",
         data: {
-            show_full_description: true,
-            show_childs: false,
+            show_full_description: false,
+            show_childs: true,
             show_issue: false,
+            show_pics:false,
             tags: [{
                 tt: 'sss'
             }],
@@ -318,6 +371,7 @@
                 this.show_childs = false
                 this.show_issue = false
                 this.show_location = false
+                this.show_pics = false
             },
             show_location_panel: function () {
                 this.hide_all()
@@ -327,6 +381,10 @@
                 this.hide_all()
                 this.show_childs = true
 
+            },
+            show_pics_panel: function () {
+                this.hide_all()
+                this.show_pics = true
             },
             show_issue_panel: function () {
                 this.hide_all()

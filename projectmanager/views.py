@@ -219,13 +219,13 @@ class ManagerPageView(View):
         context['employees']=material_warehouse.employees()
         return render(request,TEMPLATE_ROOT+'warehouse.html',context)
     
-    def category(self,request,category_id,*args, **kwargs):
+    def materialcategory(self,request,category_id,*args, **kwargs):
         user=request.user
         context=self.get_page_context(request)
         
-        category=MaterialCategoryRepo(user=user).category(category_id=category_id)
-        context['category']=category   
-        context['page']=category   
+        materialcategory=MaterialCategoryRepo(user=user).category(category_id=category_id)
+        context['materialcategory']=materialcategory   
+        context['page']=materialcategory   
         if user.has_perm(APP_NAME+'.add_material'):
             context['add_material_form']=AddMaterialForm()
         if user.has_perm(APP_NAME+'.add_materialcategory'):

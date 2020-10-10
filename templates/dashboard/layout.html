@@ -82,7 +82,7 @@
     <link href="{% static 'dashboard/demo/demo.css' %}" rel="stylesheet" />
     <link href="{% static 'dashboard/leo/leo.css' %}" rel="stylesheet" />
     <!-- Google Tag Manager -->
-
+    {{app.GOOGLE_SEARCH_CONSOLE_TAG.value|safe}}
     <!-- End Google Tag Manager -->
     <!-- Style Just for persian demo purpose, don't include it in your project -->
     <style>

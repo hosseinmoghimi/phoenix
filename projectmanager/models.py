@@ -414,13 +414,6 @@ class MaterialCategory(ManagerPage):
         verbose_name_plural = _("MaterialCategories - دسته بندی های متریال")
 
 
-    def get_absolute_url(self):
-        return reverse("projectmanager:material_category", kwargs={"category_id": self.pk})
-  
-    def get_edit_url(self):
-        return ADMIN_URL+APP_NAME+'/materialcategory/'+str(self.pk)+'/change/'
-
-
 class Material(ManagerPage):
     
     def save(self):
