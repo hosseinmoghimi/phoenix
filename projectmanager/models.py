@@ -81,8 +81,8 @@ class ManagerPage(models.Model):
             return 'واحد سازمانی'
         if self.child_class=='issue':
             return 'مشکل'
-        if self.child_class=='issue':
-            return 'aaaaaaaa'
+        if self.child_class=='materialwarehouse':
+            return 'انبار متریال'
 
     def get_icon(self):
         return f'<i class="material-icons">{self.icon}</i>'
