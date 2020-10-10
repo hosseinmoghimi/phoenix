@@ -553,7 +553,7 @@ class MaterialInStock(models.Model):
         verbose_name_plural = _("MaterialInStocks- متریال های موجود در انبار")
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.material_object)+str(self.warehouse)
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/materialinstock/{self.pk}/change'    
 
