@@ -7,7 +7,7 @@ from app.repo import ProfileRepo
 from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
-from .enums import AssignmentStatusEnum,MaterialRequestStatusEnum,IssueTypeEnum
+from .enums import AssignmentStatusEnum,MaterialRequestStatusEnum,IssueTypeEnum,MaterialUnitNameEnum
 from .repo import MaterialBrandRepo,MaterialObjectRepo,MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 from app.repo import TagRepo
@@ -161,12 +161,12 @@ class ManagerPageView(View):
 
     def add_material_request(self,request):
         if request.method=='POST':
-            add_material_request=AddMaterialRequestForm(request.POST)
-            if add_material_request.is_valid():
-                project_id=add_material_request.cleaned_data['project_id']
-                material_id=add_material_request.cleaned_data['material_id']
-                quantity=add_material_request.cleaned_data['quantity']
-                unit_name=add_material_request.cleaned_data['unit_name']
+            add_material_request_form=AddMaterialRequestForm(request.POST)
+            if add_material_request_form.is_valid():
+                project_id=add_material_request_form.cleaned_data['project_id']
+                material_id=add_material_request_form.cleaned_data['material_id']
+                quantity=add_material_request_form.cleaned_data['quantity']
+                unit_name=add_material_request_form.cleaned_data['unit_name']
                 material_request=MaterialRequestRepo(user=request.user).add(unit_name=unit_name,quantity=quantity,project_id=project_id,material_id=material_id)
                 if material_request is not None:
                     return redirect(reverse('projectmanager:project',kwargs={'project_id':project_id}))
@@ -334,20 +334,26 @@ class ManagerPageView(View):
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=self.get_page_context(request)
-        page=ProjectRepo(user=user).project(project_id=project_id)
         project=ProjectRepo(user=user).project(project_id=project_id)
         context['page']=project
         context['project_projects']=project.childs()
         context['project']=project
-        assignment_statuses=list(x.value for x in AssignmentStatusEnum)
-        context['assignment_statuses']=assignment_statuses
         if user.has_perm(APP_NAME+'.add_project'):
             context['add_project_form']=AddProjectForm()
         if user.has_perm(APP_NAME+'.add_assignment'):
+            assignment_statuses=list(x.value for x in AssignmentStatusEnum)
+            context['assignment_statuses']=assignment_statuses
             context['add_assignment_form']=AddAssignmentForm()
-        context['contractors']=project.contractors.all()
-        context['add_material_request_form']=AddMaterialRequestForm()
-        context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
+        if user.has_perm(APP_NAME+'.add_materialrequest'):
+            pass
+        my_projects=ProjectRepo(user=user).my_projects()
+        if project in my_projects:
+            materials=MaterialRepo(user=user).list()
+            context['materials']=materials
+            unit_names=list(x.value for x in MaterialUnitNameEnum)
+            context['unit_names']=unit_names
+            context['add_material_request_form']=AddMaterialRequestForm()
+        context['tags_s']=json.dumps(TagSerializer(project.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'page.html',context)
     
     def project_avo(self,request,project_id,*args, **kwargs):

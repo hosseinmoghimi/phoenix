@@ -200,6 +200,28 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
+
+                                {% if project %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">پیمانکار ها</h4>
+                                    <div class="ml-3">
+                                        {% for contractor in project.contractors.all %}
+
+                                        <div>
+                                            {{contractor.get_link|safe}}
+                                        </div>
+                                        {% empty %}
+                                        <div>
+                                            <p class="text-secondary">
+                                                پیمانکاری ثبت نشده است.
+                                            </p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
                                 {% if materialcategory %}
 
                                 <h4 class="bg-light px-3 py-2">متریال ها</h4>
@@ -538,10 +560,9 @@
                                         </td>
                                         <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
 
-                                        <td><a
-                                                href="{{material_request.employee.profile.get_absolute_url}}">{{material_request.employee.profile.name}}</a>
+                                        <td>
 
-
+                                            {{material_request.employee.get_link|safe}}
                                             {{material_request.contractor.get_link|safe}}
                                         </td>
                                         <td><span
@@ -568,9 +589,35 @@
                             </table>
                         </div>
 
-{% if add_material_request_form %}
-  
-{% endif %}
+                        {% if add_material_request_form %}
+
+
+
+                        <form class="mb-3" action="{% url 'projectmanager:add_material_request' %}" method="POST">
+                            {% csrf_token %}
+                            <input required type="hidden" name="project_id" value="{{page.id}}">
+                           
+                            <select name="material_id" class="form-control">
+                                {% for material in materials %}
+                                <option value="{{material.id}}">{{material.title}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <input required type="number" class="form-control" name="quantity" value="1">
+                           
+                            <select name="unit_name" class="form-control">
+                                {% for unit_name in unit_names %}
+                                <option value="{{unit_name}}">{{unit_name}}</option>
+                                {% endfor %}
+                            </select>
+
+
+
+                           
+                            
+                            <button class="btn btn-danger" type="submit">افزودن</button>
+                        </form>
+                        {% endif %}
 
                     </div>
                     <div class="card-footer">

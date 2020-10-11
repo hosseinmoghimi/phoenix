@@ -27,6 +27,13 @@ class LogActionEnum(TextChoices):
     DELETE='DELETE',_('DELETE')
     SAVE='SAVE',_('SAVE')
     INITIAL='INITIAL',_('INITIAL')
+class MaterialUnitNameEnum(TextChoices):
+    ADAD='عدد',_('عدد')
+    KILO='کیلوگرم',_('کیلوگرم')
+    METER='متر',_('متر')
+    TON='تن',_('تن')
+    GERAM='گرم',_('گرم')
+    KARTON='کارتن',_('کارتن')
 class UnitNameEnum(TextChoices):
     ACCOUNTING='حسابداری',_('حسابداری')
     MANAGEMENT='مدیریت',_('مدیریت')

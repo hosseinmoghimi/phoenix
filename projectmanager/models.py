@@ -346,7 +346,12 @@ class Employee(models.Model):
     introducer=models.CharField(_("معرف"),null=True,blank=True, max_length=50)
     def __str__(self):
         return self.profile.name()+' '+self.role+((' '+self.work_unit.title) if self.work_unit else '')
-    
+    def get_link(self):
+        return f"""<a href="{self.get_absolute_url()}">
+                <i class="fa fa-user"></i>
+                {self.profile.name()}
+            </a>"""
+
 
     def my_assignments(self):
         return Assignment.objects.filter(assign_to=self)

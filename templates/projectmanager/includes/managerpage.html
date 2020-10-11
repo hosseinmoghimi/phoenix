@@ -17,12 +17,15 @@
         <p class="card-category">{{page.pretitle}}</p>
 
         {% endif %}
-        <h3 class="card-title">{{page.title}} {% if page.posttitle %}
+        {% if page.title %}
+        <h3 class="card-title">{{page.title}} 
 
         </h3>
         {% endif %}
+        {% if page.posttitle %}
         <p class="card-category">{{page.posttitle}}</p>
 
+        {% endif %}
     </div>
     <div class="card-body">
         {% if issue %}
