@@ -334,7 +334,7 @@
                                 {% for page_img in page.images.all %}
                                 <div class="carousel-item card">
                                     <img src="{{ page_img.image }}" class="w-100" alt="...">
-             
+
                                 </div>
                                 {% endfor %}
                             </div>
@@ -611,9 +611,9 @@
 {% block scripts %}
 <script>
     let csrfmiddlewaretoken = ''
-        $(".carousel-item:first").addClass("active");
+    $(".carousel-item:first").addClass("active");
 
-        $("#carouselExampleIndicators:first").addClass("active");
+    $("#carouselExampleIndicators:first").addClass("active");
 
 
     $(document).ready(function () {
