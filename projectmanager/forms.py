@@ -26,6 +26,11 @@ class AddLinkForm(forms.Form):
 class AddProjectForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=100,required=True)
+class AddAssignmentForm(forms.Form):
+    project_id=forms.IntegerField(required=True)
+    employee_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100, required=True)
+    status=forms.CharField(max_length=100, required=True)
 
 class AddLocationForm(forms.Form):
     page_id=forms.IntegerField(required=True)

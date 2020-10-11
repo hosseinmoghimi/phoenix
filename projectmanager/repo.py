@@ -33,7 +33,20 @@ class AssignmentRepo:
             return self.objects.get(pk=assignment_id)
         except:
             return None
-            
+    
+    def add_assignment(self,title,project_id,employee_id,status):
+        project=ProjectRepo(user=self.user).project(project_id=project_id)
+
+        assignment=Assignment(title=title,assign_to_id=employee_id,status=status)
+        assignment.save()
+        if assignment is not None and project is not None:
+            project.assignments.add(assignment)
+            project.save()
+            return assignment
+
+
+
+
 
 class EmployeeRepo:
     def __init__(self,user):

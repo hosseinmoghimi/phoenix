@@ -7,7 +7,7 @@ from app.repo import ProfileRepo
 from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
-from .enums import MaterialRequestStatusEnum,IssueTypeEnum
+from .enums import AssignmentStatusEnum,MaterialRequestStatusEnum,IssueTypeEnum
 from .repo import MaterialBrandRepo,MaterialObjectRepo,MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 from app.repo import TagRepo
@@ -100,12 +100,23 @@ class ManagerPageView(View):
         assignment=AssignmentRepo(user=user).assignment(assignment_id=assignment_id)
         context['page']=assignment        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
-   
+    
+    def add_assignment(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_assignment_form=AddAssignmentForm(request.POST)
+            if add_assignment_form.is_valid():
+                project_id=add_assignment_form.cleaned_data['project_id']
+                employee_id=add_assignment_form.cleaned_data['employee_id']
+                title=add_assignment_form.cleaned_data['title']
+                status=add_assignment_form.cleaned_data['status']
+                assignment=AssignmentRepo(user=request.user).add_assignment(status=status,project_id=project_id,employee_id=employee_id,title=title)
+                if assignment is not None:
+                    return redirect(reverse('projectmanager:project',kwargs={'project_id':project_id}))
+    
     def add_location(self,request,*args, **kwargs):
         if request.method=='POST':
             add_location_form=AddLocationForm(request.POST)
             if add_location_form.is_valid():
-                # print(ssssssssss)
                 page_id=add_location_form.cleaned_data['page_id']
                 location=add_location_form.cleaned_data['location']
                 page=ManagerPageRepo(user=request.user).add_location(page_id=page_id,location=location)
@@ -116,7 +127,6 @@ class ManagerPageView(View):
         if request.method=='POST':
             add_material_form=AddMaterialForm(request.POST)
             if add_material_form.is_valid():
-                # print(ssssssssss)
                 title=add_material_form.cleaned_data['title']
                 category_id=add_material_form.cleaned_data['category_id']
                 material=MaterialRepo(user=request.user).add(title=title,category_id=category_id)
@@ -329,9 +339,14 @@ class ManagerPageView(View):
         context['page']=project
         context['project_projects']=project.childs()
         context['project']=project
+        assignment_statuses=list(x.value for x in AssignmentStatusEnum)
+        context['assignment_statuses']=assignment_statuses
         if user.has_perm(APP_NAME+'.add_project'):
             context['add_project_form']=AddProjectForm()
-        # context['contractors']=project.contractors.all()
+        if user.has_perm(APP_NAME+'.add_assignment'):
+            context['add_assignment_form']=AddAssignmentForm()
+        context['contractors']=project.contractors.all()
+        
         context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'page.html',context)
     

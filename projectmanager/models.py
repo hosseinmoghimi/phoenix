@@ -233,7 +233,8 @@ class Project(ManagerPage):
 
     status=models.CharField(_('status'),max_length=50,choices=ProjectStatusEnum.choices,default=ProjectStatusEnum.DEFAULT)
     amount=models.IntegerField(_('مبلغ'),default=0)
-    
+    assignments=models.ManyToManyField("Assignment",blank=True, verbose_name=_("وظیفه ها"))
+
     def save(self):
         self.child_class='project'
         super(Project,self).save()
@@ -270,7 +271,10 @@ class Project(ManagerPage):
     def get_avo_url(self):
         return reverse("projectmanager:project_avo", kwargs={"project_id": self.pk})
     
-
+    def employees(self):
+        workunits=self.work_units.all()
+        return Employee.objects.filter(work_unit__in=workunits)
+    
 class WorkUnit(ManagerPage): 
     
     def save(self):

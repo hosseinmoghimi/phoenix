@@ -48,6 +48,12 @@
             <i class="material-icons">place</i>
             تصاویر
         </button>
+
+        <button @click="show_assignments_panel" :class="show_assignments?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">flash_auto</i>
+            وظیفه ها
+        </button>
+
         {% if project %}
         <button @click="show_materialrequest_panel"
             :class="show_materialrequest?' btn  btn-primary  ':' btn  btn-primary btn-link '">
@@ -305,6 +311,123 @@
             <div v-if="show_pics">
                 show_pics
             </div>
+            <div v-if="show_assignments">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">flash_auto</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+                        <h3 class="card-title">
+                        وظیفه ها
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+
+                               
+                                
+                                <tbody>
+                                    {% for assignment in page.assignments.all %}
+                                    <tr>
+                                        <td>
+
+                                            {{assignment.get_link|safe}}
+
+
+                                        </td>
+                                        <td> 
+                                        <i class="fa fa-user text-primary"></i>
+                                            <a href="{{assignment.assign_to.get_absolute_url}}">
+                                                {{assignment.assign_to.profile.name}}
+                                            </a>
+                                        </td>
+
+                                      
+                                        <td><span
+                                                class="badge badge-{{assignment.status| to_material_request_status_color}}">{{assignment.status}}</span>
+                                        </td>
+                                        <td><small>
+                                                {{assignment.date_added|to_persian_date|safe}}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-link btn-info"
+                                                href="{{assignment.get_absolute_url}}">
+                                                <i class="fa fa-user"></i>
+                                            </a>
+                                            <a class="btn btn-link btn-warning"
+                                                href="{{assignment.get_edit_url}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+
+
+
+
+                        </div>
+
+                        {% if add_assignment_form %}
+                        <form class="mb-3" action="{% url 'projectmanager:add_assignment' %}" method="POST">
+                            {% csrf_token %}
+                            <input required type="hidden" name="project_id" value="{{page.id}}">
+                            <input required placeholder="وظیفه جدید" type="text" name="title"
+                                class="form-control">
+                                <select name="status" class="form-control">
+                                    {% for assignment_status in assignment_statuses %}
+                                    <option value="{{assignment_status}}">{{assignment_status}}</option>
+                                    {% endfor %}
+                                </select>
+
+
+                                <select name="employee_id" class="form-control">
+                                    {% for employee in project.employees %}
+                                    <option value="{{employee.id}}">{{employee.profile.name}}&nbsp;&nbsp;
+                                        <small class="text-secondary">
+                                        {{employee.role}} {{employee.work_unit.title}}
+                                    </small>
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            <button class="btn btn-danger" type="submit">افزودن</button>
+                        </form>
+                        {% endif %}
+
+<div></div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <div v-if="show_materialrequest">
 
@@ -466,6 +589,7 @@
             show_issue: false,
             show_pics: false,
             show_materialrequest: false,
+            show_assignments:false,
             tags: [{
                 tt: 'sss'
             }],
@@ -479,6 +603,11 @@
                 this.show_location = false
                 this.show_pics = false
                 this.show_materialrequest = false
+                this.show_assignments=false
+            },
+            show_assignments_panel:function(){
+                this.hide_all()
+                this.show_assignments = true
             },
             show_location_panel: function () {
                 this.hide_all()
