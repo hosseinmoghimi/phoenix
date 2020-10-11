@@ -10,7 +10,7 @@ from .settings import SERVER_ON_HEROKU
 from app.feeder import LatestEntriesFeed,SiteMapFeeder
 
 urlpatterns = [
-    path('', include('projectmanager.urls')),
+    path('', include('app.urls')),
     path('phoenix_app/', include('app.urls')),
     
     path('pusher/', include('leopusher.urls')),
