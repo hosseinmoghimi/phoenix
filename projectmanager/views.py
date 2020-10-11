@@ -347,7 +347,7 @@ class ManagerPageView(View):
         if user.has_perm(APP_NAME+'.add_materialrequest'):
             pass
         my_projects=ProjectRepo(user=user).my_projects()
-        if project in my_projects:
+        if my_projects is not None and project in my_projects:
             materials=MaterialRepo(user=user).list()
             context['materials']=materials
             unit_names=list(x.value for x in MaterialUnitNameEnum)
