@@ -79,6 +79,8 @@ class ManagerPage(models.Model):
             return 'پروژه'
         if self.child_class=='workunit':
             return 'واحد سازمانی'
+        if self.child_class=='assignment':
+            return 'وظیفه'
         if self.child_class=='issue':
             return 'مشکل'
         if self.child_class=='materialwarehouse':

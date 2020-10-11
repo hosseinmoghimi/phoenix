@@ -18,11 +18,11 @@
 
         {% endif %}
         <h3 class="card-title">{{page.title}} {% if page.posttitle %}
-            
-  </h3>
-            {% endif %}
-<p class="card-category">{{page.posttitle}}</p>
-      
+
+        </h3>
+        {% endif %}
+        <p class="card-category">{{page.posttitle}}</p>
+
     </div>
     <div class="card-body">
         {% if issue %}
@@ -137,8 +137,7 @@
         </div>
         {% endif %}
 
-
-        {% if page.tags.all %}
+       
         <h4 class="text-secondary">
             برچسب ها
         </h4>
@@ -152,9 +151,15 @@
                 <span>{{tag.title}}</span>
             </a>
             {% endfor %}
-        </div>
-        {% endif %}
+            <template v-for="tag in tags">
+                <a v-if="tag.title" :href="tag.get_manager_tag_url" class="btn btn-sm btn-light">
+                    <span v-text="tag.title"></span>
+                </a>
+            </template>
 
+        </div>
+        
+       
 
         {% if page.documents.all %}
         <h4 class="text-secondary">
