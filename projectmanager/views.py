@@ -346,7 +346,7 @@ class ManagerPageView(View):
         if user.has_perm(APP_NAME+'.add_assignment'):
             context['add_assignment_form']=AddAssignmentForm()
         context['contractors']=project.contractors.all()
-        
+        context['add_material_request_form']=AddMaterialRequestForm()
         context['tags_s']=json.dumps(TagSerializer(page.tags.all(),many=True).data)
         return render(request,TEMPLATE_ROOT+'page.html',context)
     

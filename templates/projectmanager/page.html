@@ -285,6 +285,13 @@
                 </div>
             </div>
             <div v-show="show_location">
+                {% if page.location %}
+
+                <div class="card">
+                    {{page.location|safe}}
+                </div>
+                {% endif %}
+
                 {% if perms.projectmanager.change_managerpage %}
                 <div class="card p-4">
                     <form action="{% url 'projectmanager:add_location' %}" method="POST">
@@ -301,12 +308,7 @@
                             تایید</button> </form>
                 </div>
                 {% endif %}
-                {% if page.location %}
 
-                <div class="card">
-                    {{page.location|safe}}
-                </div>
-                {% endif %}
             </div>
 
             <div v-if="show_pics">
@@ -566,7 +568,9 @@
                             </table>
                         </div>
 
-
+{% if add_material_request_form %}
+  
+{% endif %}
 
                     </div>
                     <div class="card-footer">
