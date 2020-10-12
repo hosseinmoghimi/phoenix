@@ -15,6 +15,7 @@ from app.repo import ParameterRepo
 from app.models import Profile
 from app.settings import ADMIN_URL,MEDIA_URL,STATIC_URL
 from PIL import Image
+from tinymce import models as tinymce_models
 import re
 import sys
 IMAGE_FOLDER=APP_NAME+'/images/'
@@ -63,7 +64,30 @@ class Category(models.Model):
     priority=models.IntegerField(_("ترتیب"),default=1000)
     def image(self):
         return self.image_origin
-    
+    def get_nav_li(self):
+        template=f"""
+        <li>
+            <a href="{self.get_absolute_url()}" class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+        """
+        if self.childs():
+            template+="""<ul style="left: -100px;position: absolute;">"""
+            for category in self.childs():
+                template+=category.get_nav_li()
+            template+="</ul>"
+        template+="</li>"
+        return template
+    def get_nav_li2(self):
+        template=f"""
+        <li>
+            <a href="{self.get_absolute_url()}"  class="leo-farsi">{self.name}<i class="fas fa-chevron-down"></i></a>
+        """
+        if self.childs():
+            template+="""<ul>"""
+            for category in self.childs():
+                template+=category.get_nav_li2()
+            template+="</ul>"
+        template+="</li>"
+        return template
     # def top_products(self):
     #     category_id=self.pk
     #     # products=Product.objects.filter(category_id=category_id)
@@ -76,7 +100,8 @@ class Category(models.Model):
     #     for child in category_repo.list(parent_id=category_id):
     #         products+=(self.top_products(child.id))
     #     return products
-
+    def childs(self):
+        return Category.objects.filter(parent=self)
     def save(self):
         if not self.image_origin:
             super(Category,self).save()             
@@ -176,8 +201,8 @@ class Brand(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # return reverse("market:brand", kwargs={"brand_id": self.pk})
-        return self.url
+        return reverse("market:brand", kwargs={"brand_id": self.pk})
+        # return self.url
     def get_edit_url(self):
         return ADMIN_URL+APP_NAME+'/brand/'+str(self.pk)+'/change/'
     
@@ -245,6 +270,7 @@ class ProductInStock(models.Model):
 
 class Product(models.Model):
     price=0
+    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"),blank=True)
     for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
     discount=models.IntegerField(_("درصد تخفیف"),null=True,blank=True)
     is_new=models.BooleanField(_("جدید است؟"),default=False)
@@ -259,9 +285,9 @@ class Product(models.Model):
     barcode=models.CharField(_("بارکد"), max_length=1000,null=True,blank=True)
     rate=models.IntegerField(_("امتیاز"),default=0)
     priority=models.IntegerField(_("ترتیب"),default=1000)
-    origin_price=models.IntegerField(_("قیمت بدون تخفیف"),default=0)
-    short_description=models.CharField(_("شرح کوتاه"), max_length=500,blank=True,null=True)
-    description=models.CharField(_("شرح کامل"), max_length=5000,default='',blank=True,null=True)
+    origin_price=models.IntegerField(_("قیمت بدون تخفیف"),null=True,blank=True)
+    short_description=tinymce_models.HTMLField(_("شرح کوتاه"), max_length=500,blank=True,null=True)
+    description=tinymce_models.HTMLField(_("شرح کامل"), max_length=5000,default='',blank=True,null=True)
     adder=models.ForeignKey("app.Profile",on_delete=models.SET_NULL,null=True,blank=True)
     time_added=models.DateTimeField(_("تاریخ ایجاد"), auto_now=False, auto_now_add=True)
     time_updated=models.DateTimeField(_("تاریخ اصلاح"), auto_now=True, auto_now_add=False)
@@ -269,6 +295,11 @@ class Product(models.Model):
     related=models.ManyToManyField("Product", verbose_name=_("related"),blank=True)
     comments=models.ManyToManyField("app.Comment", verbose_name=_("نظرات کاربرات"),blank=True)
     tags=models.ManyToManyField("app.Tag", verbose_name=_("برچسب ها"),blank=True)
+    metadatas=models.ManyToManyField("app.MetaData", verbose_name=_("کلمات کلیدی سئو"),blank=True)
+    def get_price(self):
+        if self.origin_price:
+            return self.origin_price
+        return 0
     def share_mail(self):
         obj={
             'title':self.name+' در فروشگاه '+ParameterRepo().title(),

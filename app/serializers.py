@@ -11,7 +11,7 @@ class BlogSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model=Tag
-        fields=['id','title','get_absolute_url']
+        fields=['id','title','get_absolute_url','get_manager_tag_url']
 
 
 class CommentSerializer(serializers.ModelSerializer):

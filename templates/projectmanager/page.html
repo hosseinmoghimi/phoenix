@@ -1,191 +1,778 @@
-{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
-
-
-
-
-
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-{{page.color}} card-header-icon">
-                <div class="card-icon">
-                    {{page.get_icon|safe}}
+{% extends "dashboard/layout.html" %}
+{% load social_share %}
+{% load to_persian_date %}
+{% load to_material_request_status_color %}
+{% block contents %}
+<div id="main-app">
+    <div>
+        <div class="row">
+            <div class="col-1">
+                <div class="text-center">
+                    {{page.get_colored_icon|safe}}
                 </div>
-                {% if page.pretitle %}
-                <p class="card-category">{{page.pretitle}}</p>
 
-                {% endif %}
-                <h3 class="card-title">{{page.title}} {% if page.posttitle %}
-                    <p class="card-category">{{page.posttitle}}</p>
-
-                    {% endif %}
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                {% if page.short_description %}
-                <div class="text-secondary">
-                    {{page.short_description|safe}}
-                </div>
-                <hr> {% endif %}
-
-
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_page and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{page.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
+                <div class="text-center">
+                    <small>
+                        {{page.get_type}}
+                    </small>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">get_app</i>
+            <div class="col-11">
+                <div>
+                    {{page.parent.get_breadcrumb_url|safe}}
                 </div>
-
-                <p class="card-category">
-
+                <h2>
                     {{page.title}}
-                </p>
-
-
-                <h3 class="card-title">
-                    فایل ها و لینک ها
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                <h5 class="mt-4">
-                    فایل ها
-                </h5>
-                {% for document in page.documents.all %}
-                <div>
-                    <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_icon_tag|safe}}
-
-                        {{document.title}}
-                    </a> {% if perms.app.change_document %}
-                    <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_document_form %}
-                <form action="{% url 'projectmanager:add_document' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{page.id}}">
-                    <input placeholder="عنوان برای فایل جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
-                <h5 class="mt-5">
-                    لینک ها
-                </h5>
-
-                {% for link in page.links.all %}
-                <div>
-                    <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_icon_tag|safe}}
-
-                        {{link.title}}
-                    </a> {% if perms.app.change_link %}
-                    <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_link_form %}
-                <form action="{% url 'projectmanager:add_link' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{page.id}}">
-                    <input placeholder="عنوان برای لینک جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
+                </h2>
             </div>
 
+        </div>
+
+    </div>
+    <hr>
+    <p class="mx-2 mb-0">
 
 
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_project and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
+        <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">extension</i>
+            اطلاعات مرتبط
+        </button>
+        <button @click="show_full_description_panel"
+            :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">description</i>
+            جزئیات
+        </button>
 
-                    <a href="{{page.get_edit_url}}">
+        <button @click="show_pics_panel" :class="show_pics?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">place</i>
+            تصاویر
+        </button>
 
-                        ویرایش </a> {% endif %}
+        <button @click="show_assignments_panel"
+            :class="show_assignments?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">flash_auto</i>
+            وظیفه ها
+        </button>
+
+        {% if project %}
+        <button @click="show_materialrequest_panel"
+            :class="show_materialrequest?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">dashboard</i>
+            متریال
+        </button>
+        {% endif %}
+        {% if page.location or perms.projectmanager.change_managerpage%}
+
+        <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <i class="material-icons">place</i>
+            لوکیشن
+        </button>
+        {% endif %}
+
+        {% post_to_whatsapp page.get_absolute_url "Share via WhatsApp" %}
+
+
+
+
+
+
+
+        {% if perms.projectmanager.change_page %}
+        <a href="{{page.get_edit_url}}" class="btn btn-warning btn-link">
+            <i class="fa fa-edit"></i>
+            ویرایش
+        </a>
+        {% endif %}
+    </p>
+
+    <div class="row">
+
+        <div class="col-lg-8 col-md-6">
+            <div v-if="show_full_description">
+                {% include "projectmanager/includes/managerpage.html" %}
+
+            </div>
+            <div v-if="show_childs">
+                <div class="card">
+                    <div class="m-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-5">
+                                    {% if project %}
+                                    <h4 class="bg-light px-3 py-2">پروژه های جزئی</h4>
+                                    {% endif %}
+
+                                    {% if materialcategory %}
+                                    <h4 class="bg-light px-3 py-2">زیر مجموعه ها</h4>
+                                    {% endif %}
+
+                                    {% if workunit %}
+                                    <h4 class="bg-light px-3 py-2">واحد های زیر مجموعه</h4>
+                                    {% endif %}
+                                    <div class="ml-3">
+                                        {% for child in page.childs %}
+                                        <div>
+
+                                            {{child.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if add_material_category_form %}
+                                    <div>
+                                        <form action="{% url 'projectmanager:add_material_category' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="parent_id" value="{{materialcategory.id}}">
+                                            <input placeholder="نام دسته جدید" type="text" name="title"
+                                                class="form-control" id="">
+                                            <button class="btn btn-success" type="submit">افزودن</button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if add_workunit_form %}
+                                    <form action="{% url 'projectmanager:add_workunit' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+                                        <input required placeholder="واحد سازمانی جدید" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+
+                                    {% if add_project_form %}
+                                    <form action="{% url 'projectmanager:add_project' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+                                        <input required placeholder="پروژه جدید" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+
+
+
+                                </div>
+                                <div class="mb-5">
+                                    {% if issue %}
+                                    <h4 class="bg-light px-3 py-2">مشکل مرتبط با</h4>
+                                    {{issue.page.get_link|safe}}
+
+                                    {% endif %}
+
+                                    <h4 class="bg-light px-3 py-2">مشکلات پیش آمده</h4>
+
+                                    <div class="ml-3">
+                                        {% for issue in page.issues %}
+
+                                        <div class="">
+
+                                            {{issue.get_colored_icon|safe}}
+                                            <a href="{{issue.get_absolute_url}}">{{issue.title}}</a>
+                                            {{issue.get_issue_type|safe}}
+                                        </div>
+                                        <div class="ml-5 mb-3">
+                                            <small>
+                                                <small class="text-secondary">
+
+                                                    {{issue.date_report|to_persian_date|safe}}
+                                                </small></small>
+                                        </div>
+
+
+                                        {% endfor %}
+                                    </div>
+                                    {% if add_issue_form %}
+                                    <form class="mb-3" action="{% url 'projectmanager:add_issue' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input required type="hidden" name="page_id" value="{{page.id}}">
+                                        <input required placeholder="مشکل جدید" type="text" name="title"
+                                            class="form-control">
+                                        <select name="issue_type" class="form-control">
+                                            {% for issue_type in issue_types %}
+                                            <option value="{{issue_type}}">{{issue_type}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button class="btn btn-danger" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+
+                                {% if project %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">پیمانکار ها</h4>
+                                    <div class="ml-3">
+                                        {% for contractor in project.contractors.all %}
+
+                                        <div>
+                                            {{contractor.get_link|safe}}
+                                        </div>
+                                        {% empty %}
+                                        <div>
+                                            <p class="text-secondary">
+                                                پیمانکاری ثبت نشده است.
+                                            </p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+                                {% if materialcategory %}
+
+                                <h4 class="bg-light px-3 py-2">متریال ها</h4>
+                                <div class="ml-3">
+                                    {% for material in materialcategory.materials %}
+
+                                    <div>
+                                        {{material.get_link|safe}}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% endif %}
+
+                                {% if add_material_form %}
+                                <div>
+                                    <form action="{% url 'projectmanager:add_material' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="category_id" value="{{materialcategory.id}}">
+                                        <input placeholder="نام متریال جدید" type="text" name="title"
+                                            class="form-control" id="">
+                                        <button class="btn btn-success" type="submit">افزودن</button>
+                                    </form>
+                                </div>
+                                {% endif %}
+
+                                <!-- workunit_projects -->
+                                {% if workunit_projects %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">پروژه های مرتبط با این واحد</h4>
+                                    <div class="ml-3">
+                                        {% for project in workunit_projects %}
+
+                                        <div>
+                                            {{project.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+
+
+                                {% if project.work_units.all %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">واحدهای مرتبط با پروژه</h4>
+                                    <div class="ml-3">
+                                        {% for work_unit in project.work_units.all %}
+                                        <div>
+                                            {{work_unit.get_link|safe}}
+                                        </div>
+                                        {% endfor %}</div>
+                                </div>
+                                {% endif %}
+
+                                {% if page.related_pages.all %}
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">صفحات مرتبط</h4>
+                                    <div class="ml-3">
+                                        {% for related_page in page.related_pages.all %}
+                                        <div>
+                                            {{related_page.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
                 </div>
+            </div>
+            <div v-show="show_location">
+                {% if page.location %}
+
+                <div class="card">
+                    {{page.location|safe}}
+                </div>
+                {% endif %}
+
+                {% if perms.projectmanager.change_managerpage %}
+                <div class="card p-4">
+                    <form action="{% url 'projectmanager:add_location' %}" method="POST">
+                        <a target="_blank" href="https://www.google.com/maps">
+                            <i class="material-icons">place</i>
+                            نقشه آنلاین</a>
+                        {% csrf_token %}
+                        <input type="hidden" name="page_id" value="{{page.id}}">
+                        <input required class="form-control" type="text" placeholder="موقعیت در نقشه گوگل"
+                            name="location" id="">
+
+                        <button class="btn btn-primary" type="submit">
+                            <i class="material-icons">place</i>
+                            تایید</button> </form>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div v-if="show_pics">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">flash_auto</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+                        <h3 class="card-title">
+                            تصاویر
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                            <div class="carousel-inner">
+                                {% for page_img in page.images.all %}
+                                <div class="carousel-item card">
+                                    <img src="{{ page_img.image }}" class="w-100" alt="...">
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="show_assignments">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">flash_auto</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+                        <h3 class="card-title">
+                            وظیفه ها
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+
+
+
+                                <tbody>
+                                    {% for assignment in page.assignments.all %}
+                                    <tr>
+                                        <td>
+
+                                            {{assignment.get_link|safe}}
+
+
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-user text-primary"></i>
+                                            <a href="{{assignment.assign_to.get_absolute_url}}">
+                                                {{assignment.assign_to.profile.name}}
+                                            </a>
+                                        </td>
+
+
+                                        <td><span
+                                                class="badge badge-{{assignment.status| to_material_request_status_color}}">{{assignment.status}}</span>
+                                        </td>
+                                        <td><small>
+                                                {{assignment.date_added|to_persian_date|safe}}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-link btn-info" href="{{assignment.get_absolute_url}}">
+                                                <i class="fa fa-user"></i>
+                                            </a>
+                                            <a class="btn btn-link btn-warning" href="{{assignment.get_edit_url}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+
+
+
+
+                        </div>
+
+                        {% if add_assignment_form %}
+                        <form class="mb-3" action="{% url 'projectmanager:add_assignment' %}" method="POST">
+                            {% csrf_token %}
+                            <input required type="hidden" name="project_id" value="{{page.id}}">
+                            <input required placeholder="وظیفه جدید" type="text" name="title" class="form-control">
+                            <select name="status" class="form-control">
+                                {% for assignment_status in assignment_statuses %}
+                                <option value="{{assignment_status}}">{{assignment_status}}</option>
+                                {% endfor %}
+                            </select>
+
+
+                            <select name="employee_id" class="form-control">
+                                {% for employee in project.employees %}
+                                <option value="{{employee.id}}">{{employee.profile.name}}&nbsp;&nbsp;
+                                    <small class="text-secondary">
+                                        {{employee.role}} {{employee.work_unit.title}}
+                                    </small>
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-danger" type="submit">افزودن</button>
+                        </form>
+                        {% endif %}
+
+                        <div></div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div v-if="show_materialrequest">
+
+
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">dashboard</i>
+                        </div>
+
+
+
+                        <p class="card-category">{{page.title}}</p>
+
+                        <h3 class="card-title">
+                            متریال
+
+
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+
+                                <thead>
+                                    <td>متریال</td>
+                                    <td>تعداد</td>
+                                    <td>
+                                        درخواست کننده
+                                    </td>
+                                    <td>وضعیت</td>
+                                    <td>تاریخ</td>
+                                    <td></td>
+                                </thead>
+                                <tbody>
+                                    {% for material_request in page.materialrequest_set.all %}
+                                    <tr>
+                                        <td>
+
+                                            {{material_request.requested_material.get_link|safe}}
+
+
+                                        </td>
+                                        <td>{{material_request.quantity}} {{material_request.unit_name}}</td>
+
+                                        <td>
+
+                                            {{material_request.employee.get_link|safe}}
+                                            {{material_request.contractor.get_link|safe}}
+                                        </td>
+                                        <td><span
+                                                class="badge badge-{{material_request.status| to_material_request_status_color}}">{{material_request.status}}</span>
+                                        </td>
+                                        <td><small>
+                                                {{material_request.date_added|to_persian_date|safe}}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-link btn-info"
+                                                href="{{material_request.get_absolute_url}}">
+                                                <i class="fa fa-user"></i>
+                                            </a>
+                                            <a class="btn btn-link btn-warning"
+                                                href="{{material_request.get_edit_url}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if add_material_request_form %}
+
+
+
+                        <form class="mb-3" action="{% url 'projectmanager:add_material_request' %}" method="POST">
+                            {% csrf_token %}
+                            <input required type="hidden" name="project_id" value="{{page.id}}">
+                           
+                            <select name="material_id" class="form-control">
+                                {% for material in materials %}
+                                <option value="{{material.id}}">{{material.title}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <input required type="number" class="form-control" name="quantity" value="1">
+                           
+                            <select name="unit_name" class="form-control">
+                                {% for unit_name in unit_names %}
+                                <option value="{{unit_name}}">{{unit_name}}</option>
+                                {% endfor %}
+                            </select>
+
+
+
+                           
+                            
+                            <button class="btn btn-danger" type="submit">افزودن</button>
+                        </form>
+                        {% endif %}
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            {% if perms.projectmanager.change_page and page.get_edit_url%}
+                            <i class="material-icons text-danger">link</i>
+
+                            <a href="{{page.get_edit_url}}">
+
+                                ویرایش </a> {% endif %}
+
+                            <i class="ml-4 material-icons text-danger">link</i>
+
+                            <a href="{{page.get_avo_url}}">
+
+                                جزئیات </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div v-if="true">
+                {% include "projectmanager/includes/managerpage-toolbox.html" %}
+
             </div>
         </div>
 
 
 
+
     </div>
 
-    {% if page.description %}
-    <div class="col-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
 
-
-
-                <p class="card-category">{{page.title}}</p>
-
-
-
-                <h3 class="card-title">توضیحات کامل
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-
-
-                {{page.description|safe}}
-
-
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_page and page.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{page.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 
 </div>
 
+{% endblock contents %}
 
-{% endblock %} {% block scripts %}
+{% block scripts %}
 <script>
-    $(document).ready(function() {
+    let csrfmiddlewaretoken = ''
+    $(".carousel-item:first").addClass("active");
+
+    $("#carouselExampleIndicators:first").addClass("active");
+
+
+    $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
-        //     initDashboardPageCharts();
+        csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+
+
+
+        $('.owl-carousel').owlCarousel({
+            rtl: true,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 2
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        })
+
+
+
 
     });
+
+    let add_tag_url = "{% url 'projectmanager:add_tag'%}"
+
+
+    var main_app = new Vue({
+        el: "#main-app",
+        data: {
+            show_full_description: false,
+            show_childs: true,
+            show_issue: false,
+            show_pics: false,
+            show_materialrequest: false,
+            show_assignments: false,
+            tags: [{
+                tt: 'sss'
+            }],
+            new_tag: '',
+        },
+        methods: {
+            hide_all: function () {
+                this.show_full_description = false
+                this.show_childs = false
+                this.show_issue = false
+                this.show_location = false
+                this.show_pics = false
+                this.show_materialrequest = false
+                this.show_assignments = false
+            },
+            show_assignments_panel: function () {
+                this.hide_all()
+                this.show_assignments = true
+            },
+            show_location_panel: function () {
+                this.hide_all()
+                this.show_location = true
+            },
+            show_materialrequest_panel: function () {
+                this.hide_all()
+                this.show_materialrequest = true
+            },
+            show_childs_panel: function () {
+                this.hide_all()
+                this.show_childs = true
+
+            },
+            show_pics_panel: function () {
+                this.hide_all()
+                this.show_pics = true
+            },
+            show_issue_panel: function () {
+                this.hide_all()
+                this.show_issue = true
+            },
+            show_full_description_panel: function () {
+
+                this.hide_all()
+                this.show_full_description = true
+
+
+            },
+            add_tag: function () {
+                let url = add_tag_url
+                let posting = $.post(url, {
+                    page_id: JSON.parse("{{page.id}}"),
+                    tag_title: main_app.new_tag,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                })
+                posting.done(function (data) {
+                    // console.log(data.tag)
+                    main_app.new_tag = ''
+                    if (data.result === 'SUCCEED') {
+                        main_app.tags.push(data.tag)
+                    }
+                })
+            },
+        },
+    })
 </script>
-<script>
-    $("#project-manager-link").addClass("active");
-</script>
-{% endblock %} {% block styles %} {% endblock %}
+{% endblock scripts %}

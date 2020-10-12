@@ -4,7 +4,7 @@ from app.enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
-from app.repo import TechnologyRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, ProfileTransactionRepo, LinkRepo, ProfileTransactionRepo, ProfileRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
+from app.repo import ResumeCategoryRepo,TechnologyRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, ProfileTransactionRepo, LinkRepo, ProfileTransactionRepo, ProfileRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
 from app.serializers import NotificationSerializer,BlogSerializer,CommentSerializer,TagSerializer
 from django.shortcuts import render,redirect,reverse
 from django.views import View
@@ -339,10 +339,11 @@ class BasicView(View):
                 context['add_faq_form']=AddFaqForm()
             context['faqs']=FAQRepo(user=request.user).list()
             return render(request,TEMPLATE_ROOT_DASHBOARD+'faq.html',context)
-    def our_team(self,request):        
+    def our_team(self,request,our_team_id):        
         context=getContext(request=request)
-        context['our_teams']=OurTeamRepo(user=request.user).list()
-        return render(request,TEMPLATE_ROOT_DASHBOARD+'our_team.html',context)
+        context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
+        context['our_team']=OurTeamRepo(user=request.user).our_team(our_team_id=our_team_id)
+        return render(request,TEMPLATE_ROOT+'our_team.html',context)
     def resume(self,request,our_team_id):        
         context=getContext(request=request)
         context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
@@ -442,7 +443,6 @@ class ProfileView(View):
             actived=change_profile_form.cleaned_data['actived']
             profile=ProfileRepo(user=request.user).change_profile(user=request.user,actived=actived) 
         return redirect(reverse('app:home'))
-        
 
     def profile(self,request,profile_id=0):
         user=request.user
@@ -450,11 +450,19 @@ class ProfileView(View):
         if not user.is_authenticated:
             return redirect(reverse("authentication:login"))
         active_profile=ProfileRepo(user=user).me
-    
-        selected_profile=ProfileRepo(user=user).get(profile_id=profile_id)
+        # input(active_profile)
+        if profile_id==0:
+            selected_profile=ProfileRepo(user=user).me
+        else:
+            selected_profile=ProfileRepo(user=user).get(profile_id=profile_id)
+            # input(selected_profile)
         if selected_profile is None:                
             raise Http404
         context['my_permissions']=ProfileRepo(user=request.user).my_permissions()
+        
+        
+        
+        
         context['selected_profile']=selected_profile
         if (selected_profile is not None and selected_profile.user==request.user) or request.user.has_perm(f'{APP_NAME}.change_profile'):
             context['regions']=RegionRepo(user=user).list().exclude(pk=selected_profile.region_id)

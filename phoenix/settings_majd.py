@@ -9,7 +9,7 @@ DEBUG =False
 
 ALLOWED_HOSTS = ['www.nsk-majd.com','nsk-majd.com']
 
-MYSQL=False
+MYSQL=True
 
 
 DATABASES = {
@@ -46,4 +46,6 @@ STATICFILES_DIRS=['/home2/nskmajdc/phoenix/static/']
 PUSHER_IS_ENABLE=False
 REMOTE_MEDIA=False
 COMING_SOON=False
+
 DOWNLOAD_ROOT=os.path.join(BASE_DIR,'download')
+SITE_DOMAIN='http://nsk-majd.com/'

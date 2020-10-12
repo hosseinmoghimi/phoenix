@@ -1,4 +1,8 @@
 {% load static %}
+
+
+
+
 <!-- Main Navigation -->
 
 <nav class="main_nav">
@@ -13,65 +17,74 @@
                     <div class="cat_menu_container">
                         <div class="cat_menu_title d-flex flex-row align-items-center justify-content-start">
                             <div class="cat_burger"><span></span><span></span><span></span></div>
-                            <div class="cat_menu_text leo-farsi">دسته بندی محصولات</div>
+                            <div class="cat_menu_text leo-farsi">دسته بندی</div>
                         </div>
 
                         <ul class="cat_menu">
-                            {% for category in master_categories %}
-                            <li class=" text-right my-2"><a href="{{category.get_absolute_url}} " class="text-right">
-                                    <span class="text-right leo-farsi">
-
-                                        {{category.name}}
-                                    </span>
-                                </a></li>
-
+                            {% for category in parent_categories %}
+                            {{category.get_nav_li2|safe}}
                             {% endfor %}
-
-
                         </ul>
                     </div>
 
                     <!-- Main Nav Menu -->
 
-                    <ul class="ml-auto standard_dropdown main_nav_dropdown leo-rtl">
-                        <li class=" mx-3"><a href="{% url 'market:home' %}" class="leo-farsi">فروشگاه<i
-                                    class="fas fa-chevron-down"></i></a></li>
-                        <li class=" mx-3"><a href="{% url 'app:home' %}" class="leo-farsi">{{app.title.value}}</a>
-                        </li>
-                        {% if active_customer %}
+                    <div class="main_nav_menu ml-auto">
+                        <ul class="standard_dropdown main_nav_dropdown leo-rtl">
 
-                        <li class=" mx-3"><a href="{{active_customer.get_cart_url}}" class="leo-farsi">سبد خرید
-                                من</a>
-                        </li>
+                            <li>
+                                <a href="{% url 'market:home' %}" class="leo-farsi">خانه<i
+                                        class="fas fa-chevron-down"></i></a>
 
-                        <li class=" mx-3"><a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات
-                                من</a>
-                        </li>
+                            </li>
 
-                        {% endif %}
+                            <li class="hassubs">
+                                <a href="#" class="leo-farsi">دسته بندی <i class="fas fa-chevron-down"></i></a>
+                                <ul>
+                                    {% for category in parent_categories %}
+                                    {{category.get_nav_li|safe}}
+                                    {% endfor %}
+                                </ul>
+                            </li>
 
-                    </ul>
+                            {% if active_customer %}
+                            <li class=" mx-3"><a href="{{active_customer.get_cart_url}}" class="leo-farsi">سبد خرید
+                                    من</a>
+                            </li>
+                            <li class=" mx-3"><a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات من</a>
+                            </li>
 
-                </div>
+                            {% endif %}
 
-                <!-- Menu Trigger -->
 
-                <div class="menu_trigger_container ml-auto">
-                    <div class="menu_trigger d-flex flex-row align-items-center justify-content-end">
-                        <div class="menu_burger">
-                            <div class="menu_trigger_text leo-farsi">منو</div>
-                            <div class="cat_burger menu_burger_inner">
-                                <span></span><span></span><span></span></div>
+
+
+
+                        </ul>
+                    </div>
+
+                    <!-- Menu Trigger -->
+
+                    <div class="menu_trigger_container ml-auto">
+                        <div class="menu_trigger d-flex flex-row align-items-center justify-content-end">
+                            <div class="menu_burger">
+                                <div class="menu_trigger_text">
+                                <span class="leo-farsi">
+                                    
+                                    منو
+                                    
+                                </span>    
+                                </div>
+                                <div class="cat_burger menu_burger_inner"><span></span><span></span><span></span></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
-    </div>
 </nav>
-
 
 <!-- Menu -->
 
@@ -84,62 +97,48 @@
 
                     <div class="page_menu_search">
                         <form action="#">
-                            <input type="search" required="required" class="page_menu_search_input"
-                                placeholder="Search for products...">
+                            <input type="search" required="required" class="px-3 text-right leo-rtl leo-farsi page_menu_search_input"
+                                placeholder="جستجو در محصولات ...">
                         </form>
                     </div>
-                    <ul class="page_menu_nav">
+                    <ul class="page_menu_nav leo-rtl">
 
-                        <li class="page_menu_item"><a href="{% url 'app:home' %}" class="text-right">
-                                <span class="leo-farsi">
-                                    {{app.title.value}}
-                                </span>
-                            </a></li>
 
-                        <li class="page_menu_item has-children leo-rtl ">
-                            <a href="#" class="text-right"> <span class="leo-farsi">
-                                    فروشگاه ما
-                                </span><i class="fa fa-angle-down"></i></a>
+
+                        <li class="page_menu_item has-children">
+                            <a href="#" class="leo-farsi">دسته بندی محصولات<i class="fa fa-angle-down px-2"></i></a>
                             <ul class="page_menu_selection">
-                                <li><a href="#" class="text-right"> <span class="leo-farsi">
-                                            درباره ما
-                                        </span><i class="fa fa-angle-down"></i></a></li>
-                                <li><a href="#" class="text-right"> <span class="leo-farsi">
-                                            درباره ما
-                                        </span><i class="fa fa-angle-down"></i></a></li>
-                                <li><a href="#" class="text-right"> <span class="leo-farsi">
-                                            درباره ما
-                                        </span><i class="fa fa-angle-down"></i></a></li>
-                                <li><a href="#" class="text-right"> <span class="leo-farsi">
-                                            درباره ما
-                                        </span><i class="fa fa-angle-down"></i></a></li>
+                                {% for category in parent_categories %}
+                                {{category.get_nav_li|safe}}
+                                {% endfor %}
                             </ul>
                         </li>
+{% if active_customer %}
+<li class="page_menu_item">
+    <a href="{{active_customer.get_cart_url}}" class="leo-farsi">سبد خرید من<i class="fa fa-angle-down px-2"></i></a>
+  
+</li>
 
-                        <li class="page_menu_item"><a href="{% url 'app:about' %}" class="text-right">
-                                <span class="leo-farsi">
-                                    درباره ما
-                                </span>
-
-                                <i class="fa fa-angle-down"></i></a></li>
+<li class="page_menu_item">
+    <a href="{{active_customer.get_orders_url}}" class="leo-farsi">سفارشات من<i class="fa fa-angle-down px-2"></i></a>
+  
+</li>
 
 
-                        <li class="page_menu_item"><a href="{% url 'app:contact' %}" class="text-right">
-
-                                <span class="leo-farsi">
-                                    ارتباط با ما
-                                </span>
-                                <i class="fa fa-angle-down"></i></a></li>
+{% endif %}
+                    
+                     
                     </ul>
 
                     <div class="menu_contact">
                         <div class="menu_contact_item">
-                            <div class="menu_contact_icon"><img src="{% static 'one-tech/images/phone_white.png' %}"
-                                    alt=""></div>{{app.mobile.value}}
+                            <div class="menu_contact_icon"><img src="images/phone_white.png" alt=""></div>
+                            {{app.tel.value}}
+                            
                         </div>
                         <div class="menu_contact_item">
-                            <div class="menu_contact_icon"><img src="{% static 'one-tech/images/mail_white.png' %}"
-                                    alt=""></div><a href="mailto:{{app.email.value}}">{{app.email.value}}</a>
+                            <div class="menu_contact_icon"><img src="images/mail_white.png" alt=""></div><a
+                                href="mailto:{{app.email.value}}">{{app.email.value}}</a>
                         </div>
                     </div>
                 </div>

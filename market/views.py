@@ -72,7 +72,9 @@ def getContext(request):
     my_channels_s=[]
     context['my_channels_s']=json.dumps(my_channels_s)
     
-    #context['search_form']=SearchForm()
+    context['search_form']=SearchForm()
+    parent_categories=CategoryRepo(user=user).list_master()
+    context['parent_categories']=parent_categories
     return context
 
 
@@ -285,8 +287,21 @@ class ShopView(View):
                 product=ProductRepo(user=request.user).add(name=name,unit_name=unit_name,category_id=category_id)
                 return redirect(reverse('market:list',kwargs={'parent_id':category_id}))
     def brand(self,request,brand_id,*args, **kwargs):
-        return JsonResponse({'brand_id':brand_id})
+        user=request.user
+        
+        context=getContext(request=request)
+        
+        product_repo=ProductRepo(user=user)
+        products=product_repo.list_by_brand(brand_id=brand_id)
 
+        context['products']=products
+        brands=BrandRepo(user=user).list()
+        context['brands']=brands
+        brand=BrandRepo(user=user).brand(brand_id=brand_id)
+        
+        context['parent']=brand
+        return render(request=request,template_name='one-tech/shop.html',context=context)
+    
 
 class DownloadView(View):
     def get(self,request,*args,**kwargs):
@@ -435,6 +450,7 @@ class ProductView(View):
         context['unit_names_s']=json.dumps(unit_names_s)
         product=ProductRepo(user=request.user).get(product_id)
         context['product']=product
+        context['metadatas']=product.metadatas.all()
         product_relateds=ProductRepo(user=user).related(product_id=product_id)
         context['product_relateds']=product_relateds
         context['product_s']=json.dumps(ProductSerializer(product).data)

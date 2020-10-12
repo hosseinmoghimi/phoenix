@@ -1,11 +1,53 @@
 
-from .models import Issue,MaterialRequest,Contractor,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
-from app.repo import ProfileRepo,SignatureRepo
+from .models import MaterialBrand,MaterialObject,Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from app.repo import ProfileRepo,SignatureRepo,TagRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
 from app.models import Link,Document,Tag
 from .apps import APP_NAME
 import datetime
+
+class ContractorRepo:
+    def __init__(self,user=None):
+        self.objects=Contractor.objects   
+        self.user=user
+        self.profile=ProfileRepo(user=user).me
+        self.me=None
+        try:
+            if self.profile is not None:
+                self.me=self.objects.get(profile=self.profile)
+        except:
+            pass
+       
+
+
+    def search(self,search_for):
+        return self.objects.filter(title__contains=search_for)
+
+class AssignmentRepo:
+    def __init__(self,user):
+        self.user=user
+        self.objects=Assignment.objects
+    def assignment(self,assignment_id):
+        try:
+            return self.objects.get(pk=assignment_id)
+        except:
+            return None
+    
+    def add_assignment(self,title,project_id,employee_id,status):
+        project=ProjectRepo(user=self.user).project(project_id=project_id)
+
+        assignment=Assignment(title=title,icon='flash_auto',color='warning',assign_to_id=employee_id,status=status)
+        assignment.save()
+        if assignment is not None and project is not None:
+            project.assignments.add(assignment)
+            project.save()
+            return assignment
+
+
+
+
+
 class EmployeeRepo:
     def __init__(self,user):
         self.objects=Employee.objects
@@ -24,6 +66,9 @@ class EmployeeRepo:
                 self.me=None
     
 
+    def search(self,search_for):
+        profiles = ProfileRepo(user=self.user).search(search_for=search_for)
+        return profiles
 
 class ManagerPageRepo:
     def add_tag(self,tag_title,page_id):
@@ -69,6 +114,18 @@ class ManagerPageRepo:
             return True
         return False
 
+    def add_location(self,page_id,location):
+        if self.user.has_perm(APP_NAME+'.change_managerpage'):
+            page=self.get(pk=page_id)
+            if page is not None:
+                location=location
+                location=location.replace('width="600"','width="100%"')
+                location=location.replace('height="450"','height="500"')
+                page.location=location
+                page.save()
+                return page
+
+                
                 
     def __init__(self,user):
         self.objects=ManagerPage.objects
@@ -131,7 +188,10 @@ class ManagerPageRepo:
                 # print('down_object')
                 # print(down_object)
 
-
+    def list_by_tag(self,tag_id):
+        tag=TagRepo(user=self.user).tag(tag_id=tag_id)
+        if tag is not None:
+            return tag.managerpage_set.all()
 
 class MaterialRequestRepo:
     def __init__(self,user):
@@ -168,19 +228,6 @@ class MaterialRequestRepo:
                 return material_request
 
                       
-
-class ContractorRepo:
-    def __init__(self,user):
-        self.objects=Contractor.objects   
-        self.user=user
-        self.profile=ProfileRepo(user=user).me
-        self.me=None
-        try:
-            if self.profile is not None:
-                self.me=self.objects.get(profile=self.profile)
-        except:
-            pass
-       
 
 class ProjectRepo:
     def __init__(self,user=None):
@@ -239,7 +286,12 @@ class ProjectRepo:
             up_object.priority=up_object.priority+1
             up_object.save()
 
-
+    def add(self,title,parent_id):
+        parent=self.project(project_id=parent_id)
+        project=Project(color='primary',parent=parent,icon='construction',title=title)
+        project.save()
+        if project is not None:
+            return project
              
               
 
@@ -247,9 +299,9 @@ class IssueRepo:
     def __init__(self,user=None):
         self.objects=Issue.objects
         self.user=user
-    def add(self,issue_type,title,issue_for_id):
+    def add(self,issue_type,title,page_id):
         date_report=datetime.datetime.now()
-        issue=Issue(date_report=date_report,issue_for_id=issue_for_id,title=title,issue_type=issue_type)
+        issue=Issue(date_report=date_report,color='danger',page_id=page_id,icon='report_problem',title=title,issue_type=issue_type)
         issue.save()
         if issue is not None:
             return issue
@@ -282,9 +334,35 @@ class MaterialRepo:
         except:
             return None
     
-    
+    def add(self,title,category_id):
+        if self.user.has_perm(APP_NAME+'.add_material'):
+            category=MaterialCategoryRepo(user=self.user).material_category(material_category_id=category_id)
+            if category is None:
+                return None
+            material=Material(title=title,category=category)
+            material.save()
+            return material
               
 
+class MaterialWareHouseRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialWareHouse.objects
+        self.user=user
+    def list(self):
+        return self.objects.order_by('-priority')
+    
+    def materialwarehouse(self,materialwarehouse_id):
+        try:
+            return self.objects.get(pk=materialwarehouse_id)
+        except:
+            return None
+    def get(self,pk):
+        try:
+            return self.objects.get(pk=pk)
+        except:
+            return None
+    
+    
 class MaterialCategoryRepo:
     def __init__(self,user=None):
         self.objects=MaterialCategory.objects
@@ -294,6 +372,11 @@ class MaterialCategoryRepo:
     def list_root(self):
         return self.objects.filter(parent=None).order_by('-priority')
     
+    def material_category(self,material_category_id):
+        try:
+            return self.objects.get(pk=material_category_id)
+        except:
+            return None
     def category(self,category_id):
         try:
             return self.objects.get(pk=category_id)
@@ -305,10 +388,14 @@ class MaterialCategoryRepo:
         except:
             return None
     
-    
-
-
-
+    def add(self,title,parent_id):
+        if self.user.has_perm(APP_NAME+'.add_material'):
+            parent=MaterialCategoryRepo(user=self.user).material_category(material_category_id=parent_id)
+            if parent is None:
+                return None
+            material_category=MaterialCategory(title=title,parent=parent)
+            material_category.save()
+            return material_category
 
 class WorkUnitRepo:
     def __init__(self,user=None):
@@ -325,6 +412,41 @@ class WorkUnitRepo:
             return None
     def get(self,work_unit_id):
             return self.project(work_unit_id=work_unit_id)
+    def add(self,title,parent_id):
+        parent=self.work_unit(work_unit_id=parent_id)
+        work_unit=WorkUnit(color='primary',parent=parent,icon='apartment',title=title)
+        work_unit.save()
+        if work_unit is not None:
+            return work_unit
+class MaterialObjectRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialObject.objects
+        self.user=user
+    def list(self):
+        return self.objects.all()
+    def get(self,materialobject_id):
+            try:
+                return self.objects.get(pk=materialobject_id)
+            except:
+                return None
+    def materialobject(self,materialobject_id):
+            return self.get(materialobject_id=materialobject_id)
+    def search(self,search_for):
+        return self.objects.filter(serial_no__contains=search_for)
+
+class MaterialBrandRepo:
+    def __init__(self,user=None):
+        self.objects=MaterialBrand.objects
+        self.user=user
+    def list(self):
+        return self.objects.all()
+    def get(self,materialbrand_id):
+            try:
+                return self.objects.get(pk=materialbrand_id)
+            except:
+                return None
+    def materialbrand(self,materialbrand_id):
+            return self.get(materialbrand_id=materialbrand_id)
 
 
 class ProjectCategoryRepo:

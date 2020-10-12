@@ -17,16 +17,26 @@ from datetime import datetime
 from PIL import Image
 import sys
 import os
+from tinymce import models as tinymce_models
 IMAGE_FOLDER=APP_NAME+'/images/'
 
-
+class Color(models.Model):
+    name=models.CharField(_('نام رنگ'),max_length=50)
+    color=models.CharField(_('کد رنگ'),max_length=50)
+    class Meta:
+        verbose_name = _("Color")
+        verbose_name_plural = _("رنگ ها")
+        
+    def __str__(self):
+        return self.name    
 
 class Jumbotron(models.Model):
-    pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     title=models.CharField(_("عنوان"), max_length=500,blank=True,null=True)
+    pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
-    short_description=models.TextField(_("شرح کوتاه"),blank=True,null=True)
-    description=models.TextField(_("شرح کامل"),blank=True,null=True)
+    short_description=tinymce_models.HTMLField(_("شرح کوتاه"),max_length=1000,blank=True,null=True)
+    # description=models.TextField(_("شرح کامل"),blank=True,null=True)
+    description=tinymce_models.HTMLField(_("شرح کامل"),max_length=2000,null=True,blank=True)
     action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
     action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
     video_text=models.CharField(_("متن ویدیو"), max_length=100,blank=True,null=True)
@@ -37,7 +47,7 @@ class Jumbotron(models.Model):
         verbose_name_plural = _("جامبوترون ها")
         
     def __str__(self):
-        return self.title
+        return str(self.pk)
 
     def get_absolute_url(self):
         return self.action_url
@@ -69,7 +79,6 @@ class CountDownItem(models.Model):
         return f'{ADMIN_URL}{APP_NAME}/coundownitem/{self.pk}/change/'
 
 
-
 class Banner(Jumbotron):
     image_banner=models.ImageField(_("تصویر بنر  345*970 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
@@ -88,7 +97,6 @@ class Banner(Jumbotron):
         return self.action_url
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/banner/{self.pk}/change/'
-
 
 
 class Page(Jumbotron):
@@ -115,6 +123,10 @@ class Page(Jumbotron):
     meta_datas=models.ManyToManyField("MetaData", verbose_name=_("کلمات کلیدی"),blank=True)
     count_down_items=models.ManyToManyField("CountDownItem", verbose_name=_("شمارنده ها"),blank=True)
     
+    app_name=models.CharField(_('app_name'),default=APP_NAME,max_length=50)
+    child_class=models.CharField(_('child_class'),default="page",max_length=50)
+
+
     class Meta:
         verbose_name = _("Page")
         verbose_name_plural = _("صفحات")
@@ -148,9 +160,9 @@ class Page(Jumbotron):
         return '-'
 
     def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/page/{self.pk}/change/'
+        return f'{ADMIN_URL}{self.app_name}/{self.child_class}/{self.pk}/change/'
     def get_absolute_url(self):
-        return reverse("app:page", kwargs={"page_id": self.pk})
+        return reverse(f"{self.app_name}:{self.child_class}", kwargs={f"{self.child_class}_id": self.pk})
 
 
 class PartialPage(models.Model):
@@ -164,7 +176,9 @@ class PartialPage(models.Model):
     date_added=models.DateTimeField(_("تاریخ"), auto_now=False, auto_now_add=True)
     links=models.ManyToManyField("Link", verbose_name=_("لینک ها"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("سند ها و دانلود ها"),blank=True)
-  
+
+    album=models.ForeignKey("GalleryAlbum", verbose_name=_("آلبوم تصاویر"), null=True,blank=True, on_delete=models.CASCADE)
+
     class Meta:
         verbose_name = _("PartialPage")
         verbose_name_plural = _("صفحات جزئی")
@@ -182,7 +196,7 @@ class PartialPage(models.Model):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/partialpage/{self.pk}/change/'
-   
+
 
 class Signature(models.Model):
     profile=models.ForeignKey("Profile", verbose_name=_("profile"), on_delete=models.PROTECT)
@@ -226,9 +240,10 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('app:tag',kwargs={'tag_id':self.pk})
+    def get_manager_tag_url(self):
+        return reverse('projectmanager:tag',kwargs={'tag_id':self.pk})
     def get_edit_url(self):
         return f'{ADMIN_URL}app/tag/{self.pk}/change/'
-
 
 
 class Icon(models.Model):
@@ -276,7 +291,6 @@ class Icon(models.Model):
     #     return reverse("OurService_detail", kwargs={"pk": self.pk})
 
 
-
 class Link(Icon):
     for_home=models.BooleanField(_("نمایش در پایین صفحه سایت"),default=False)
     for_nav=models.BooleanField(_("نمایش در منوی بالای سایت"),default=False)
@@ -310,25 +324,31 @@ class Link(Icon):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/link/{self.pk}/change/'
-   
+
+
+class SiteMap(Link):
+    active=models.BooleanField(_('نقشه سایت فعال'),default=False)
+    parent=models.ForeignKey("SiteMap",verbose_name='نود والد',null=True,blank=True,on_delete=models.SET_NULL)
 
 
 class HomeSlider(Jumbotron):
     image_banner=models.ImageField(_("تصویر اسلایدر  1333*2000 "), upload_to=IMAGE_FOLDER+'Banner/', height_field=None, width_field=None, max_length=None)
     archive=models.BooleanField(_("بایگانی شود؟"),default=False)
     priority=models.IntegerField(_("ترتیب"),default=100)
+    text_color=models.CharField(_("رنگ متن"),default="#fff",max_length=20)
     
     
     tag_number=models.IntegerField(_("عدد برچسب"),default=100)
     tag_text=models.CharField(_("متن برچسب"), max_length=100,blank=True,null=True)
     
+
     class Meta:
         verbose_name = _("HomeSlider")
         verbose_name_plural = _("اسلایدر های صفحه اصلی")
     def image(self):
         return MEDIA_URL+str(self.image_banner)
     def __str__(self):
-        return str(self.priority)+'  '+str(self.title)
+        return str(self.priority)
 
     def get_absolute_url(self):
         return reverse("HomeSlider_detail", kwargs={"pk": self.pk})
@@ -402,7 +422,13 @@ class Profile(models.Model):
             
         super(Profile,self).save()
         
-
+    def get_link(self):
+        return f"""
+        <a href="{self.get_absolute_url()}">
+        <i class="fa fa-user"></i>
+        {self.name()}
+        </a>
+        """
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("پروفایل ها")
@@ -569,7 +595,11 @@ class FAQ(models.Model):
 
 class Blog(Page):
 
-    
+    def save(self):
+        self.child_class='blog'
+        self.app_name=APP_NAME
+        super(Blog,self).save()
+
     class Meta:
         verbose_name = _("Blog")
         verbose_name_plural = _("مقالات")
@@ -583,8 +613,12 @@ class Blog(Page):
         return reverse("app:blog", kwargs={"blog_id": self.pk})
 
 
-
 class Technology(Page):
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name=APP_NAME
+        super(Technology,self).save()
 
     
     class Meta:
@@ -592,14 +626,15 @@ class Technology(Page):
         verbose_name_plural = _("تکنولوژی")
    
     def __str__(self):
-        return self.title
+        if self.title:
+            return self.title
+        return str(self.priority)
         
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/technology/{self.pk}/change/'
     def get_absolute_url(self):
         return reverse("app:technology", kwargs={"technology_id": self.pk})
-
 
 
 class Comment(models.Model):
@@ -682,6 +717,11 @@ class OurWorkCategory(models.Model):
 
 
 class OurWork(Page):
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name=APP_NAME
+        super(OurWork,self).save()
     category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
     
     location=models.CharField(_('موقعیت در نقشه گوگل 400*400'),max_length=500,null=True,blank=True)    
@@ -721,6 +761,7 @@ class Testimonial(models.Model):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/testimonial/{self.pk}/change/'
 
+
 class OurService(Page):
     icon_fa=models.CharField(_("آیکون فونت آسوم"),max_length=50,null=True,blank=True)
     icon_material=models.CharField(_("آیکون متریال"),choices=IconsEnum.choices,null=True,blank=True, max_length=100)
@@ -728,6 +769,13 @@ class OurService(Page):
     color=models.CharField(_("رنگ"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
     width=models.IntegerField(_("عرض"),default=128)
     height=models.IntegerField(_("ارتفاع"),default=128)
+    
+
+    def save(self):
+        self.child_class='blog'
+        self.app_name=APP_NAME
+        super(OurService,self).save()
+    
     def get_icon_tag(self):
         if self.thumbnail_origin is not None and self.thumbnail_origin:
             return f'<img src="{MEDIA_URL}{str(self.thumbnail_origin)}" alt="{self.title}" height="{self.height}" width="{self.width}">'
@@ -737,9 +785,13 @@ class OurService(Page):
             return f'<span class="text-{self.color} {self.icon_fa}"></span>'
         if self.icon_svg is not None and len(self.icon_svg)>0:
             return f'<span class="text-{self.color}">{self.icon_svg}</span>'
+        return None
     def get_tag(self):
         icon=self.get_icon_tag()
-        return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
+        if icon and icon is not None:
+            return f'<a title="{self.title}" href="{self.get_absolute_url()}">{icon}</a>'
+        return None
+        
       
     
     class Meta:
@@ -757,8 +809,6 @@ class OurService(Page):
         return self.title
     def get_absolute_url(self):
         return reverse("app:page", kwargs={"page_id": self.pk})
-
-
 
 
 class SocialLink(models.Model):
@@ -810,6 +860,8 @@ class OurTeam(models.Model):
     image_origin=models.ImageField(_("تصویر"), upload_to=IMAGE_FOLDER+'OurTeam/', height_field=None, width_field=None, max_length=None)
     social_links=models.ManyToManyField("SocialLink", verbose_name=_("social_links"),blank=True)
     resume_categories=models.ManyToManyField("ResumeCategory", verbose_name=_("ResumeCategories"),blank=True)
+    header_image_origin=models.ImageField(_("تصویر سربرگ"),null=True,blank=True, upload_to=IMAGE_FOLDER+'OurTeam/Header/', height_field=None, width_field=None, max_length=None)
+    
     def __str__(self):
         return self.name
     def get_resume_url(self):
@@ -819,10 +871,16 @@ class OurTeam(models.Model):
             return MEDIA_URL+str(self.image_origin)
         else:
             return STATIC_URL+'dashboard/img/default_avatar.png'
+    def header_image(self):
+        if self.image_origin:
+            return MEDIA_URL+str(self.header_image_origin)
+        else:
+            return ''
     
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/ourteam/{self.pk}/change/'
-    
+    def get_absolute_url(self):
+        return reverse('app:our_team',kwargs={'our_team_id':self.pk})
 
     def __unicode__(self):
         return self.name
@@ -841,8 +899,14 @@ class GalleryAlbum(Jumbotron):
     thumbnail_origin=models.ImageField(_("Thumbnail Image"), upload_to=IMAGE_FOLDER+'Gallery/Album/Thumbnail/',null=True,blank=True, height_field=None, width_field=None, max_length=None)
     
     photos=models.ManyToManyField("GalleryPhoto", verbose_name=_("Photos"),blank=True)
-    
-    
+    def get_tag(self):
+        s= """<div class="row leo-rtl mb-3">"""
+        for pic in self.photos.all():
+            s+=f"""<div class="col-lg-3">
+            <a target="_blank" href="{pic.image()}"><img src="{pic.image()}" width="100%"></a>
+            </div>"""
+        s+="</div>"
+        return s
     def image(self):
         return MEDIA_URL+str(self.image_origin)
     def thumbnail(self):
@@ -856,7 +920,7 @@ class GalleryAlbum(Jumbotron):
         return self.title
     
     def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/ourservice/{self.pk}/change/'
+        return f'{ADMIN_URL}{APP_NAME}/galleryalbum/{self.pk}/change/'
    
    
     def __unicode__(self):
@@ -888,7 +952,6 @@ class GalleryPhoto(Jumbotron):
         return reverse("app:home")
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/galleryphoto/{self.pk}/change/'
-    
 
 
 class ProfileTransaction(models.Model):
@@ -984,7 +1047,7 @@ class Document(Icon):
 
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/document/{self.pk}/change/'
-   
+
 
 class ResumeCategory(models.Model):
     our_team=models.ForeignKey("OurTeam", verbose_name=_("our_team"), on_delete=models.CASCADE)
@@ -1002,14 +1065,17 @@ class ResumeCategory(models.Model):
     def get_absolute_url(self):
         return reverse("ResumeCategory_detail", kwargs={"pk": self.pk})
 
+
 class Resume(models.Model):
     priority=models.IntegerField(_("priority"))
     title=models.CharField(_("title"), max_length=50)
-    subtitle=models.CharField(_("subtitle"), max_length=50)
-    description=models.CharField(_("description"), max_length=500)
+    subtitle=models.CharField(_("subtitle"),null=True,blank=True, max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
     date=models.DateTimeField(_("date"), auto_now=False, auto_now_add=False)
+    duration=models.CharField(_("مدت زمان"),max_length=50,null=True,blank=True)
     links=models.ManyToManyField("Link", verbose_name=_("links"),blank=True)
     documents=models.ManyToManyField("Document", verbose_name=_("documents"),blank=True)
+    album=models.ForeignKey("GalleryAlbum",null=True,blank=True, verbose_name=_("آلبوم"), on_delete=models.CASCADE)
     
 
     class Meta:
@@ -1023,4 +1089,5 @@ class Resume(models.Model):
         return reverse("Resume_detail", kwargs={"pk": self.pk})
 
 
-
+    def get_edit_url(self):
+        return f'{ADMIN_URL}{APP_NAME}/resume/{self.pk}/change/'

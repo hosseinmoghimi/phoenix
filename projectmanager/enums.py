@@ -8,6 +8,13 @@ class ProjectStatusEnum(TextChoices):
     DELIVERED='تحویل شده',_('تحویل شده')
     ANALYZING='درحال آنالیز',_('درحال آنالیز')
 
+class AssignmentStatusEnum(TextChoices):
+    DEFAULT='DEFAULT',_('DEFAULT')
+    IN_PROGRESS='در جریان',_('در جریان')
+    DONE='انجام شده',_('انجام شده')
+    STOPEED='متوقف شده',_('متوقف شده')
+    DENIED='رد شده',_('رد شده')
+    
 class IssueTypeEnum(TextChoices):
     DEFAULT='DEFAULT',_('DEFAULT')
     FORCE='FORCE',_('FORCE')
@@ -20,6 +27,13 @@ class LogActionEnum(TextChoices):
     DELETE='DELETE',_('DELETE')
     SAVE='SAVE',_('SAVE')
     INITIAL='INITIAL',_('INITIAL')
+class MaterialUnitNameEnum(TextChoices):
+    ADAD='عدد',_('عدد')
+    KILO='کیلوگرم',_('کیلوگرم')
+    METER='متر',_('متر')
+    TON='تن',_('تن')
+    GERAM='گرم',_('گرم')
+    KARTON='کارتن',_('کارتن')
 class UnitNameEnum(TextChoices):
     ACCOUNTING='حسابداری',_('حسابداری')
     MANAGEMENT='مدیریت',_('مدیریت')
@@ -53,6 +67,7 @@ class MaterialRequestStatusEnum(TextChoices):
     IN_PROGRESS='در حال بررسی',_('در حال بررسی')
     DENIED='رد شده',_('رد شده')
     CANCELED='لغو شده',_('لغو شده')
+    DELIVERED='تحویل شده',_('تحویل شده')
 
 class AgentRoleEnum(TextChoices):
     DEFAULT='پیش فرض',_('پیش فرض')

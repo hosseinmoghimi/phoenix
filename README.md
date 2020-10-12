@@ -1,4 +1,5 @@
 # Phoenix
+Project Manager App
 اپ مدیر آنلاین
 
 
@@ -10,7 +11,7 @@ activate it in linux:
 ```bash
 source ./venv/bin/avtivate
 ```
-activate it in windows:
+or activate it in windows:
 ```bash
 ./venv/Scripts/avtivate.bat
 ```
@@ -23,7 +24,7 @@ put your site root address,'/' , '/phoenix/' eg:
 ```python
 echo "SITE_URL='/'" >> phoenix/server_settings.py
 ```
-or
+or for special subdomain (for example '/phoenix/'):
 
 ```python
 echo "SITE_URL='/phoenix/'" >> phoenix/server_settings.py

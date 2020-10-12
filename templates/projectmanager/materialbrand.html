@@ -1,0 +1,58 @@
+{% extends "projectmanager/page.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">settings</i>
+        </div>
+
+        <p class="card-category">{{page.title}}</p>
+
+
+        <h3 class="card-title">متریال های این برند
+
+
+
+        </h3>
+      </div>
+
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <td>
+              متریال
+            </td>
+
+            <td>
+              مدل
+            </td>
+
+
+            <td>
+              توضیحات کوتاه
+            </td>
+
+          </thead>
+          <tbody>
+
+            {% for material in materialbrand.material_set.all %}
+            <tr>
+              <td>
+                <a href=" {{material.get_absolute_url}}">{{material.title}}</a>
+
+              </td>
+              <td>{{material.model}}</td>
+              <td>{{material.short_description}}</td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

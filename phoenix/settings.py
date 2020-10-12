@@ -8,10 +8,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SERVER_ON_PARS=False
 SERVER_ON_HEROKU=False
 SERVER_ON_LOCAL=False
+SERVER_ON_AZURE=False
 
 
 
 SERVER_ON_PARS=True
+# SERVER_ON_AZURE=True
 # SERVER_ON_HEROKU=True
 # SERVER_ON_LOCAL=True
 
@@ -30,7 +32,16 @@ if '--no-color' in sys.argv or SERVER_ON_LOCAL:
     SERVER_ON_LOCAL=True  
     SERVER_ON_HEROKU=False
     SERVER_ON_PARS=False
+    SERVER_ON_AZURE=False
     from . import settings_local as server_settings
+elif SERVER_ON_AZURE:
+    SERVER_ON_AZURE=True  
+    SERVER_ON_HEROKU=False
+    SERVER_ON_PARS=False
+    SERVER_ON_LOCAL=False
+    from . import settings_azure as server_settings
+    SECRET_KEY = server_settings.SECRET_KEY
+    
 elif SERVER_ON_PARS:
     SERVER_ON_LOCAL=False  
     SERVER_ON_HEROKU=False
@@ -74,6 +85,7 @@ if not SERVER_ON_HEROKU:
 # Application definition
 
 INSTALLED_APPS = [
+    'tutorial',
     'leopusher',
     'projectmanager',
     'transport',
@@ -83,10 +95,12 @@ INSTALLED_APPS = [
     'automation',
     'engapp',
     'market',
-    'authentication',    
+    'authentication',
     'django_cleanup',
+    'django_social_share',
     'rest_framework',
     'djecrety',
+    'tinymce',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,11 +141,13 @@ if SERVER_ON_HEROKU and False:
 
 ROOT_URLCONF = 'phoenix.urls'
 
+
+
 TEMPLATES = [
     
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -201,6 +217,7 @@ STATIC_ROOT = server_settings.STATIC_ROOT
 STATIC_URL = server_settings.STATIC_URL
 STATICFILES_DIRS=server_settings.STATICFILES_DIRS
 TIME_ZONE = server_settings.TIME_ZONE
+SITE_DOMAIN = server_settings.SITE_DOMAIN
 if SERVER_ON_HEROKU:    
     import django_heroku
     django_heroku.settings(locals())

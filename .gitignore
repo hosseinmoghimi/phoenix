@@ -4,6 +4,8 @@ staticfiles/
 *.sqlite3
 venv/
 secret/
+passenger_wsgi.py
+secret_khafonli_my_sql.cnf
 .vscode/
 media/
 secret_key.py

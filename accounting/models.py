@@ -3,6 +3,7 @@ from django.utils.translation import gettext as _
 from .apps import APP_NAME
 from django.shortcuts import reverse
 from app.settings import ADMIN_URL
+
 class FinancialDocumentCategory(models.Model):
     title=models.CharField(_("دسته بندی سند های مالی"), max_length=50)
 

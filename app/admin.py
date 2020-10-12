@@ -1,9 +1,14 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Technology)
+class TechnologyAdmin(admin.ModelAdmin):
+    list_display = ('title','priority')
+
+admin.site.register(Technology,TechnologyAdmin)
 admin.site.register(CountDownItem)
+admin.site.register(SiteMap)
 admin.site.register(Page)
+admin.site.register(Color)
 admin.site.register(PartialPage)
 admin.site.register(Jumbotron)
 

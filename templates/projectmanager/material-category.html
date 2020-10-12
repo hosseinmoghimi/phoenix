@@ -1,11 +1,18 @@
-{% extends "dashboard/layout.html" %} {% load static %} {% load to_price %} {% block contents %}
+{% extends "projectmanager/page.html" %} 
+{% load static %} 
+{% load to_price %} 
+
+                  
+{% block content %}
+
+                {% endblock %}
+
+
+{% block first %}
 
 
 
-
-
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="col-12">
         <div class="card card-stats">
             <div class="card-header card-header-{{category.color}} card-header-icon">
                 <div class="card-icon">
@@ -18,35 +25,35 @@
                 </p>
                 {% endif %}
 
-                <p class="card-category"></p>
+                <p class="card-category">{{category.title}}</p>
 
 
-                <h3 class="card-title">{{category.title}}
-
-
+                <h3 class="card-title">زیر مجموعه
                 </h3>
             </div>
             <div class="card-body">
 
-                {% if category.short_description %}
-                <div class="text-secondary">
-                    {{category.short_description|safe}}
-                </div>
-                <hr> {% endif %} {% if category.materialcategory_set.all %}
-                <h5>زیر مجموعه ها</h5>
+           
 
-                {% for material_category in category.materialcategory_set.all %}
+                {% for material_category in category.childs %}
                 <a href="{{material_category.get_absolute_url}}">
                     <h5>
                         <i class="material-icons">category
                         </i> {{material_category.title}}
                     </h5>
                 </a>
-                {% endfor %} {% endif %} {% if category.short_description %}
-                <p>
-                    {{category.short_description |safe}}
-                </p>
-                {% endif %}
+                {% endfor %}
+               
+              {% if add_material_category_form %}
+                <div>
+                    <form action="{% url 'projectmanager:add_material_category' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="parent_id" value="{{category.id}}">
+                        <input placeholder="نام دسته جدید" type="text" name="title" class="form-control" id="">
+                        <button class="btn btn-success" type="submit">افزودن</button>
+                    </form>
+                </div>
+              {% endif %}
             </div>
             <div class="card-footer">
                 <div class="stats">
@@ -65,8 +72,8 @@
             </div>
         </div>
     </div>
-    {% if category.materials %}
-    <div class="col-lg-6 col-md-6 col-sm-12">
+   
+    <div class="col-12">
         <div class="card card-stats">
             <div class="card-header card-header-info card-header-icon">
                 <div class="card-icon">
@@ -85,8 +92,8 @@
             </div>
             <div class="card-body">
 
-
-
+{% if category.materials %}
+  
 
                 {% for material in category.materials %}
                 <a href="{{material.get_absolute_url}}">
@@ -97,7 +104,18 @@
                 </a>
                 {% endfor %}
 
+                {% endif %}
 
+                {% if add_material_form %}
+                <div>
+                    <form action="{% url 'projectmanager:add_material' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="category_id" value="{{category.id}}">
+                        <input placeholder="نام متریال جدید" type="text" name="title" class="form-control" id="">
+                        <button class="btn btn-success" type="submit">افزودن</button>
+                    </form>
+                </div>
+              {% endif %}
 
             </div>
             <div class="card-footer">
@@ -112,155 +130,10 @@
             </div>
         </div>
     </div>
-    {% endif %}
+    
 
-    <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">get_app</i>
-                </div>
-
-                <p class="card-category">
-
-                    {{material_category.title}}
-                </p>
-
-
-                <h3 class="card-title">
-                    فایل ها و لینک ها
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-                <h5 class="mt-4">
-                    فایل ها
-                </h5>
-                {% for document in material_category.documents.all %}
-                <div>
-                    <a class="ml-3 mb-3 " href="{{document.get_download_url}}">
-                        {{document.get_icon_tag|safe}}
-
-                        {{document.title}}
-                    </a> {% if perms.app.change_document %}
-                    <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_document_form %}
-                <form action="{% url 'projectmanager:add_document' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{material_category.id}}">
-                    <input placeholder="عنوان برای فایل جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
-                <h5 class="mt-5">
-                    لینک ها
-                </h5>
-
-                {% for link in material_category.links.all %}
-                <div>
-                    <a target="_blank" class="ml-3 mb-3" href="{{link.url}}">
-                        {{link.get_icon_tag|safe}}
-
-                        {{link.title}}
-                    </a> {% if perms.app.change_link %}
-                    <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                {% endfor %} {% if add_link_form %}
-                <form action="{% url 'projectmanager:add_link' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="manager_page_id" value="{{material_category.id}}">
-                    <input placeholder="عنوان برای لینک جدید" type="text" name="title" class="form-control" required>
-                    <button type="submit" class="btn btn-primary">تایید</button>
-                </form>
-                {% endif %}
+    
 
 
 
-            </div>
-
-
-
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_project and material_category.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{material_category.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-
-
-
-    {% if category.description %}
-    <div class="col-12">
-        <div class="card card-stats">
-            <div class="card-header card-header-info card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">settings</i>
-                </div>
-
-
-
-                <p class="card-category">{{category.title}}</p>
-
-
-
-                <h3 class="card-title">توضیحات کامل
-
-
-                </h3>
-            </div>
-            <div class="card-body">
-
-
-
-                {{category.description|safe}}
-
-
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    {% if perms.projectmanager.change_materialcategory and category.get_edit_url%}
-                    <i class="material-icons text-danger">link</i>
-
-                    <a href="{{category.get_edit_url}}">
-
-                        ویرایش </a> {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-
-</div>
-
-
-{% endblock %} {% block scripts %}
-<script>
-    $(document).ready(function() {
-        // Javascript method's body can be found in assets/js/demos.js
-        //  initDashboardPageCharts();
-
-    });
-</script>
-<script>
-    $("#project-manager-link").addClass("active");
-</script>
-{% endblock %} {% block styles %} {% endblock %}
+{% endblock %}

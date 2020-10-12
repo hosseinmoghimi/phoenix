@@ -435,7 +435,12 @@ class OurTeamRepo:
     
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
-
+    def our_team(self,our_team_id):
+        try:
+            return self.objects.get(pk=our_team_id)
+        except:
+            return None
+    
 
 class LinkRepo:
     def __init__(self,user=None):
@@ -479,7 +484,9 @@ class DocumentRepo:
 
 
 class ProfileRepo:    
-    
+    def search(self,search_for):
+        return self.objects.filter(Q(first_name__contains=search_for) | Q(last_name__contains=search_for))
+
     def __init__(self,user=None):
         if user is not None and user and user.is_authenticated:
 
@@ -598,9 +605,12 @@ class ProfileRepo:
                                
     def get(self,profile_id):
         user=self.user
-        profile=self.objects.get(pk=profile_id)
-        return profile
-        
+        try:
+
+            profile=self.objects.get(pk=profile_id)
+            return profile
+        except:
+            return None
         
         current_profile=self.get_by_user(user)
         if current_profile is None:

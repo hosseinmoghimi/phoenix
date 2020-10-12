@@ -11,6 +11,28 @@
 {% endif %}
 
 <p class="mt-5">{{partial_page.description | safe }}</p>
+{% if partial_page.album %}
+{% if partial_page.album.title %}
+<h3 class="text-right leo-rtl">{{partial_page.album.title}}
+    {% if perms.app.change_galleryalbum %}
+<a class="btn btn-info leo-farsi" href="{{partial_page.album.get_edit_url}}">
+    <span>ویرایش آلبوم</span>
+    </a>
+{% endif %}
+
+</h3>
+
+{% endif %}
+<div class="row">
+    {% for galley_photo  in partial_page.album.photos.all %}
+    <div class="col-lg-4 col-md-6">
+      <a target="_blank" href="{{galley_photo.image}}">
+        <img style="width:100%" width="100%" src="{{galley_photo.image}}" alt="">
+ </a>   </div>
+    {% endfor %}
+</div>
+
+{% endif %}
 
 {% if partial_page.links.all %}
 

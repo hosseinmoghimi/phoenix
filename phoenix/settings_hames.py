@@ -2,6 +2,8 @@
 from pathlib import Path
 import os
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+# source /home2/imenyarc/virtualenv/phoenix/3.7/bin/activate && cd /home2/imenyarc/phoenix && git pull && python manage.py migrate && python manage.py collectstatic --no-input
+
 
 
 DEBUG =False
@@ -17,7 +19,6 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'OPTIONS': {
                 'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_hames_my_sql.cnf'),
-
             },
         }
     }
@@ -40,3 +41,4 @@ PUSHER_IS_ENABLE=False
 REMOTE_MEDIA=False
 COMING_SOON=False
 DOWNLOAD_ROOT=os.path.join(BASE_DIR,'download')
+SITE_DOMAIN='http://hamescctv.com/'

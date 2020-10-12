@@ -3,6 +3,25 @@
 <html lang="en">
 
 <head>
+
+
+	<!-- MetaData -->
+
+    <meta name="description"
+        content="{% for meta_data in app.meta_data_items.all %}{{meta_data.content}} , {% endfor %}" />
+
+
+
+    <meta name="description"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+
+
+    <meta name="robots"
+        content="Author:Hossein Moghimi ,{% for meta_data in app.meta_data_items %}{{meta_data.content}} , {% endfor %}" />
+
+
+
+		
 	<title> {{app.pretitle.value}} " {{app.title.value}} "</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,6 +61,12 @@
 			border-top-left-radius: 5px;
 			border-bottom-left-radius: 5px;
 		}
+		.page_menu_item {
+			text-align: right;
+		}
+		a{
+			text-align: right;
+		}
 	</style>
 	{% block header %}
 
@@ -57,8 +82,10 @@
 
 		{% endblock  %}
 
-	
-		{% include "one-tech/includes/brands.html" %}
+	{% if brands %}
+	  
+	{% include "one-tech/includes/brands.html" %}
+	{% endif %}
 		{% include "one-tech/includes/newsletter.html" %}
 		{% include "one-tech/includes/footer.html" %}
 	</div>

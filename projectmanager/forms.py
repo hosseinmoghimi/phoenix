@@ -7,6 +7,13 @@ class AddMaterialRequestForm(forms.Form):
     quantity=forms.IntegerField(required=True)
     unit_name=forms.CharField(max_length=50, required=True)
     project_id=forms.IntegerField(required=True)
+    
+class AddMaterialForm(forms.Form):
+    title=forms.CharField(max_length=50,required=True)
+    category_id=forms.IntegerField(required=True)
+class AddMaterialCategoryForm(forms.Form):
+    title=forms.CharField(max_length=50,required=True)
+    parent_id=forms.IntegerField(required=True)
 
 class SearchForm(forms.Form):
     action=f'{SITE_URL}{APP_NAME}/search/'
@@ -17,13 +24,29 @@ class AddLinkForm(forms.Form):
     manager_page_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=50,required=True)
 
-class AddDocumentForm(forms.Form):
-    manager_page_id=forms.IntegerField(required=True)
+class AddProjectForm(forms.Form):
+    parent_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100,required=True)
+class AddAssignmentForm(forms.Form):
+    project_id=forms.IntegerField(required=True)
+    employee_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100, required=True)
+    status=forms.CharField(max_length=100, required=True)
+
+class AddLocationForm(forms.Form):
+    page_id=forms.IntegerField(required=True)
+    location=forms.CharField(max_length=500,required=True)
+class AddWorkUnitForm(forms.Form):
+    parent_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=50,required=True)
 
+class AddDocumentForm(forms.Form):
+    manager_page_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100,required=True)
+
 class AddIssueForm(forms.Form):
-    issue_for_id=forms.IntegerField(required=True)
-    title=forms.CharField(max_length=50,required=True)
+    page_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100,required=True)
     issue_type=forms.CharField(max_length=50,required=True)
     
 

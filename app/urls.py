@@ -6,6 +6,7 @@ app_name="app"
 urlpatterns = [
     path('',views.BasicView().home,name='home'),
     path('api/',include('app.api')),
+    path('my_profile/',views.ProfileView().profile,name='my_profile'),
     path('profile/<int:profile_id>/',views.ProfileView().profile,name='profile'),
     path('transactions/<int:profile_id>/',views.TransactionView().transactions,name='transactions'),    
     path('about/',views.BasicView().about,name='about'),
@@ -19,7 +20,7 @@ urlpatterns = [
     path('blog/<int:blog_id>/',views.PageView().blog,name='blog'),
     path('our_works/',views.PageView().our_works,name='our_works'),
     path('our_work/<int:our_work_id>/',views.PageView().our_work,name='our_work'),
-    path('our_team/',views.BasicView().our_team,name='our_team'),
+    path('our_team/<int:our_team_id>/',views.BasicView().our_team,name='our_team'),
     path('resume/<int:our_team_id>/',views.BasicView().resume,name='resume'),
     path('change_profile_image/',views.ProfileView().change_profile_image,name='change_profile_image'),
     path('edit_profile/',views.ProfileView().edit_profile,name='edit_profile'),
