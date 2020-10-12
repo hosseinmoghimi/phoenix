@@ -479,7 +479,7 @@ class MetaData(models.Model):
     for_home=models.BooleanField(_("نمایش در صفحه اصلی"),default=False)
     key=models.CharField(_("key name"), max_length=50,default='name')
     value=models.CharField(_("key value"), max_length=50,default='description')
-    content=models.CharField(_("content"), max_length=2000)
+    content=models.TextField(_("content"))
     class Meta:
         verbose_name = _("MetaData")
         verbose_name_plural = _("متا دیتا - کلمات کلیدی سئو")
@@ -866,7 +866,6 @@ class GalleryAlbum(Jumbotron):
 
 
 class GalleryPhoto(Jumbotron):
-    
     image_origin=models.ImageField(_("Big Image 345*970 "), upload_to=IMAGE_FOLDER+'Gallery/Photo/', height_field=None, width_field=None, max_length=None)
     for_home=models.BooleanField(_("Show on homepage"),default=False)
     archive=models.BooleanField(_("Archive?"),default=False)
