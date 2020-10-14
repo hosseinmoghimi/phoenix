@@ -34,8 +34,7 @@
     <div class="row">
 
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <button @click="show_childs_panel"
-             :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
                 <i class="material-icons">extension</i>
                 اطلاعات مرتبط
             </button>
@@ -70,17 +69,18 @@
                 <i class="material-icons">dashboard</i>
                 متریال
             </button>
-            
+
         </div>
         {% endif %}
         {% if page.location or perms.projectmanager.change_managerpage%}
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
 
-            <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+            <button @click="show_location_panel"
+                :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
                 <i class="material-icons">place</i>
                 لوکیشن
             </button>
-            
+
         </div>
         {% endif %}
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -94,7 +94,7 @@
                 <i class="fa fa-edit"></i>
                 ویرایش
             </a>
-            
+
         </div>
         {% endif %}
 
@@ -103,16 +103,16 @@
 
 
 
-      
-       
-
-      
 
 
 
 
 
-       
+
+
+
+
+
     </div>
 
     <div class="row">
@@ -276,6 +276,29 @@
                                     {% endif %}
 
                                 </div>
+                                {% if page.employees %}
+
+                                <div class="mb-5">
+                                    <h4 class="bg-light px-3 py-2">پرسنل مشترک</h4>
+                                    <div class="ml-3">
+                                        {% for employee in page.employees %}
+
+                                        <div>
+                                            {{employee.get_link|safe}}
+                                            <span class="badge badge-secondary">
+                                                {{employee.role}} {{employee.work_unit.title}}
+                                            </span>
+                                        </div>
+                                        {% empty %}
+                                        <div>
+                                            <p class="text-secondary">
+                                                پرسنلی ثبت نشده است.
+                                            </p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                             <div class="col-lg-6">
 
@@ -369,6 +392,7 @@
                                 </div>
                                 {% endif %}
                             </div>
+
                         </div>
 
 
@@ -786,7 +810,7 @@
             show_childs: true,
             show_issue: false,
             show_pics: false,
-            show_location:false,
+            show_location: false,
             show_materialrequest: false,
             show_assignments: false,
             tags: [{
