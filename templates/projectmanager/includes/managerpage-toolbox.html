@@ -52,7 +52,7 @@
 
                 {{document.title}}
             </a> {% if perms.app.change_document %}
-            <a class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
+            <a target="_blank" class="btn btn-info  btn-link" title="ویرایش" href="{{document.get_edit_url}}">
                 <i class="fa fa-edit"></i>
             </a>
             {% endif %}
@@ -75,8 +75,9 @@
                 {{link.get_icon_tag|safe}}
 
                 {{link.title}}
-            </a> {% if perms.app.change_link %}
-            <a class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
+            </a>
+            {% if perms.app.change_link %}
+            <a target="_blank" class="btn btn-info btn-link" title="ویرایش" href="{{link.get_edit_url}}">
                 <i class="fa fa-edit"></i>
             </a>
             {% endif %}

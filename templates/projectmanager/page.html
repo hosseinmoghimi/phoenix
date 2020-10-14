@@ -31,62 +31,89 @@
 
     </div>
     <hr>
-    <p class="mx-2 mb-0">
+    <div class="row">
 
-
-        <button @click="show_childs_panel" :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">extension</i>
-            اطلاعات مرتبط
-        </button>
-        <button @click="show_full_description_panel"
-            :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">description</i>
-            جزئیات
-        </button>
-
-        <button @click="show_pics_panel" :class="show_pics?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">place</i>
-            تصاویر
-        </button>
+        <div class="col-lg-2">
+            <button @click="show_childs_panel"
+             :class="show_childs?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">extension</i>
+                اطلاعات مرتبط
+            </button>
+        </div>
+        <div class="col-lg-2">
+            <button @click="show_full_description_panel"
+                :class="show_full_description?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">description</i>
+                جزئیات
+            </button>
+        </div>
+        <div class="col-lg-2">
+            <button @click="show_pics_panel" :class="show_pics?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">place</i>
+                تصاویر
+            </button>
+        </div>
         {% if project %}
 
-        <button @click="show_assignments_panel"
-            :class="show_assignments?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">flash_auto</i>
-            وظیفه ها
-        </button>
+
+        <div class="col-lg-2"> <button @click="show_assignments_panel"
+                :class="show_assignments?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">flash_auto</i>
+                وظیفه ها
+            </button>
+        </div>
         {% endif %}
-
         {% if project %}
-        <button @click="show_materialrequest_panel"
-            :class="show_materialrequest?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">dashboard</i>
-            متریال
-        </button>
+        <div class="col-lg-2">
+            <button @click="show_materialrequest_panel"
+                :class="show_materialrequest?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">dashboard</i>
+                متریال
+            </button>
+            
+        </div>
         {% endif %}
         {% if page.location or perms.projectmanager.change_managerpage%}
+        <div class="col-lg-2">
 
-        <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
-            <i class="material-icons">place</i>
-            لوکیشن
-        </button>
+            <button @click="show_location_panel" :class="show_location?' btn  btn-primary  ':' btn  btn-primary btn-link '">
+                <i class="material-icons">place</i>
+                لوکیشن
+            </button>
+            
+        </div>
         {% endif %}
-
-        {% post_to_whatsapp page.get_absolute_url "Share via WhatsApp" %}
-
-
+        <div class="col-lg-2">
+            {% post_to_whatsapp page.get_absolute_url "Share via WhatsApp" %}
 
 
-
-
-
+        </div>
         {% if perms.projectmanager.change_page %}
-        <a href="{{page.get_edit_url}}" class="btn btn-warning btn-link">
-            <i class="fa fa-edit"></i>
-            ویرایش
-        </a>
+        <div class="col-lg-2">
+            <a href="{{page.get_edit_url}}" class="btn btn-warning btn-link">
+                <i class="fa fa-edit"></i>
+                ویرایش
+            </a>
+            
+        </div>
         {% endif %}
-    </p>
+
+
+
+
+
+
+      
+       
+
+      
+
+
+
+
+
+       
+    </div>
 
     <div class="row">
 
@@ -759,6 +786,7 @@
             show_childs: true,
             show_issue: false,
             show_pics: false,
+            show_location:false,
             show_materialrequest: false,
             show_assignments: false,
             tags: [{
