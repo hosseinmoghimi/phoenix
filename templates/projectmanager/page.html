@@ -238,6 +238,7 @@
 
                                     {% endif %}
 
+                                    {% if add_issue_form or page.issues%}
                                     <h4 class="bg-light px-3 py-2">مشکلات پیش آمده</h4>
 
                                     <div class="ml-3">
@@ -260,7 +261,6 @@
 
                                         {% endfor %}
                                     </div>
-                                    {% if add_issue_form %}
                                     <form class="mb-3" action="{% url 'projectmanager:add_issue' %}" method="POST">
                                         {% csrf_token %}
                                         <input required type="hidden" name="page_id" value="{{page.id}}">
