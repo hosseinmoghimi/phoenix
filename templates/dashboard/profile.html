@@ -7,10 +7,10 @@
 
 
 
-<div class="row">
+<div class="row " id="profile-app" v-cloak>
+  {% if selected_profile %}
   <div class="col-md-4">
-    {% if selected_profile %}
-    <div class="card card-profile" id="profile-app" v-cloak>
+    <div class="card card-profile" >
       <div class="card-avatar">
         <a href="javascript:;">
           <img class="img" src="{{selected_profile.image}}" />
@@ -65,24 +65,25 @@
 
     </div>
 
-    {% endif %}
-
-
-
-
-
   </div>
+  {% endif %}
+
 
   {% if selected_profile.emp.all %}
   <div class="col-md-4">
 
 
-    <div class="card" id="34">
+    <div class="card  card-stats" id="34">
 
-
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <i class="fa fa-user"></i>
+        </div>
+        <h3 class="card-title">نقش های شما</h3>
+      </div>
       <div class="card-body">
 
-        <h4>نقش های شما</h4>
+       
 
         <table class="table">
           <tbody>
@@ -107,23 +108,23 @@
 
                 {% for assignment in employee.assignment_set.all %}
                 <div class="text-left">
-                 <div style="width:fit-content" class="mr-auto ">
-                  <a class="text-danger" href="{{assignment.get_absolute_url}}">{{assignment.title}}</a>
-                  <span class="badge badge-success">
-                    {{assignment.status}}
-                  </span>
-                  {% if perms.projectmanager.change_assignment %}
-                  <a href="{{assignment.get_edit_url}}">
-                    <i class="material-icons">settings</i>
-                  </a>
-                  {% endif %}
-                 </div>
+                  <div style="width:fit-content" class="mr-auto ">
+                    <a class="text-danger" href="{{assignment.get_absolute_url}}">{{assignment.title}}</a>
+                    <span class="badge badge-success">
+                      {{assignment.status}}
+                    </span>
+                    {% if perms.projectmanager.change_assignment %}
+                    <a href="{{assignment.get_edit_url}}">
+                      <i class="material-icons">settings</i>
+                    </a>
+                    {% endif %}
+                  </div>
                 </div>
 
                 {% endfor %}
               </td>
             </tr>
-            {% endif %} 
+            {% endif %}
             {% endfor %}
           </tbody>
         </table>
@@ -139,12 +140,104 @@
   </div>
   {% endif %}
 
-  
 
-  <div class="col-md-8">
 
-    {% if edit_profile_form %}
 
+
+
+
+
+  {% if selected_profile %}
+
+  <div class="col-md-8" v-if="!show_edit">
+
+
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">پروفایل کاربری</h4>
+
+      </div>
+      <div class="card-body">
+        <small class="mr-3 text-secondary">
+          موبایل</small>
+        {{selected_profile.mobile}}
+
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <small class="mr-3 text-secondary">
+
+                آدرس
+
+              </small>
+              {{selected_profile.address}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+
+            <small class="mr-3 text-secondary">
+              شهر
+            </small>
+            {{selected_profile.region}}
+
+
+
+          </div>
+          <div class="col-md-4">
+
+
+
+
+            <small class="mr-3 text-secondary">
+
+              ایمیل
+
+            </small>
+            {{selected_profile.user.email}}
+
+
+
+          </div>
+          <div class="col-md-4">
+            <small class="mr-3 text-secondary">
+              کد پستی
+            </small>
+            {{selected_profile.postal_code}}
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+
+            <small class="mr-3 text-secondary">
+              درباره
+
+            </small>
+
+
+            {{selected_profile.bio}}
+
+
+
+
+          </div>
+        </div>
+        <button @click="show_edit=true" class="btn btn-warning">
+          <i class="fa fa-user"></i>
+          ویرایش
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  {% endif %}
+  {% if edit_profile_form %}
+  <div class="col-md-8" v-if="show_edit">
     <div class="card">
       <div class="card-header card-header-primary">
         <h4 class="card-title">ویرایش پروفایل کاربری</h4>
@@ -238,57 +331,17 @@
           </div>
 
           <button type="submit" class="btn btn-primary pull-right">تایید و اصلاح پروفایل</button>
+
+          <button type="reset"  class="btn btn-secondary pull-right">انصراف</button>
+
           <div class="clearfix"></div>
         </form>
 
       </div>
     </div>
-    {% endif %}
-
-
-
-
-
-    {% if edit_profile_form %}
-    <div class="card d-none">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title ">سطوح دسترسی</h4>
-        <p class="card-category"> در سامانه</p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th>
-                name
-              </th>
-              <th>
-                code name
-              </th>
-            </thead>
-            <tbody>
-              {% for permission in my_permissions %}
-
-
-              <tr>
-                <td>
-                  {{permission.name}}
-                </td>
-
-
-                <td class="text-primary">
-                  {{permission.codename}}
-                </td>
-              </tr> {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    {% endif %}
-
   </div>
+  {% endif %}
+</div>
 
 </div>
 
@@ -310,6 +363,7 @@
     el: "#profile-app",
     data: {
       has_image_for_upload: false,
+      show_edit:false,
 
     }
   })

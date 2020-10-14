@@ -4,32 +4,31 @@
 {% load to_material_request_status_color %}
 {% block contents %}
 <div id="main-app">
-    <div>
-        <div class="row">
-            <div class="col-1">
-                <div class="text-center">
-                    {{page.get_colored_icon|safe}}
-                </div>
 
-                <div class="text-center">
-                    <small>
-                        {{page.get_type}}
-                    </small>
-                </div>
+    <div class="row">
+        <div class="col-1">
+            <div class="text-center">
+                {{page.get_colored_icon|safe}}
             </div>
 
-            <div class="col-11">
-                <div>
-                    {{page.parent.get_breadcrumb_url|safe}}
-                </div>
-                <h2>
-                    {{page.title}}
-                </h2>
+            <div class="text-center">
+                <small>
+                    {{page.get_type}}
+                </small>
             </div>
+        </div>
 
+        <div class="col-11">
+            <div>
+                {{page.parent.get_breadcrumb_url|safe}}
+            </div>
+            <h2>
+                {{page.title}}
+            </h2>
         </div>
 
     </div>
+
     <hr>
     <div class="row">
 
@@ -83,6 +82,12 @@
 
         </div>
         {% endif %}
+
+
+
+    </div>
+
+    <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             {% post_to_whatsapp page.get_absolute_url "Share via WhatsApp" %}
 
@@ -97,6 +102,17 @@
 
         </div>
         {% endif %}
+
+        {% if perms.projectmanager.change_page %}
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <button @click="show_toolbox=!show_toolbox" class="btn btn-warning btn-link">
+                <i class="fa fa-tag"></i>
+                جعبه ابزار
+            </button>
+
+        </div>
+        {% endif %}
+
 
 
 
@@ -117,7 +133,7 @@
 
     <div class="row">
 
-        <div class="col-lg-8 col-md-6">
+        <div class="col-lg-9 col-md-8">
             <div v-if="show_full_description">
                 {% include "projectmanager/includes/managerpage.html" %}
 
@@ -283,7 +299,7 @@
                                     <div class="ml-3">
                                         {% for employee in page.employees %}
 
-                                        <div>
+                                        <div class="mb-3 mt-3">
                                             {{employee.get_link|safe}}
                                             <span class="badge badge-secondary">
                                                 {{employee.role}} {{employee.work_unit.title}}
@@ -743,7 +759,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-3 col-md-4">
             <div v-if="true">
                 {% include "projectmanager/includes/managerpage-toolbox.html" %}
 
@@ -813,6 +829,7 @@
             show_location: false,
             show_materialrequest: false,
             show_assignments: false,
+            show_toolbox: false,
             tags: [{
                 tt: 'sss'
             }],
