@@ -1,5 +1,5 @@
 
-from .models import MaterialBrand,MaterialObject,Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
+from .models import ArchiveCategory,ArchiveDocument,MaterialBrand,MaterialObject,Contractor,MaterialWareHouse,Assignment,Issue,MaterialRequest,ManagerPage,ProjectCategory,Project,WorkUnit,Employee,Material,MaterialObject,MaterialWareHouse,MaterialCategory
 from app.repo import ProfileRepo,SignatureRepo,TagRepo
 from django.contrib.auth.models import Group
 from django.db.models import Q
@@ -7,6 +7,48 @@ from app.models import Link,Document,Tag
 from .apps import APP_NAME
 import datetime
 
+class ArchiveCategoryRepo():
+    def __init__(self,user):
+        self.objects=ArchiveCategory.objects
+        self.user=user
+    def list_root(self):
+        return self.objects.filter(parent=None)
+    def list(self):
+        return self.objects.all()
+    def archivecategory(self,archivecategory_id):
+        try:
+            return self.objects.get(pk=archivecategory_id)
+        except :
+            return None
+    
+    def add(self,title,parent_id):
+        parent=self.archivecategory(archivecategory_id=parent_id)
+        archivecategory=ArchiveCategory(color='primary',parent=parent,icon='description',title=title)
+        archivecategory.save()
+        if archivecategory is not None:
+            return archivecategory
+
+class ArchiveDocumentRepo():
+    def __init__(self,user):
+        self.objects=ArchiveDocument.objects
+        self.user=user
+    def list(self):
+        return self.objects.all()
+    def archivedocument(self,archivedocument_id):
+        try:
+            return self.objects.get(pk=archivedocument_id)
+        except :
+            return None
+    
+    def add(self,title,parent_id,category_id):
+        parent=self.archivedocument(archivedocument_id=parent_id)
+        category=ArchiveCategoryRepo(self.user).archivecategory(category_id)
+        archivedocument=ArchiveDocument(category=category,color='primary',parent=parent,icon='description',title=title)
+        archivedocument.save()
+        if archivedocument is not None:
+            return archivedocument
+             
+        
 class ContractorRepo:
     def __init__(self,user=None):
         self.objects=Contractor.objects   

@@ -8,7 +8,7 @@ from app.constants import SUCCEED,FAILED
 from django.http import Http404,JsonResponse
 from app.views import getContext as AppContext
 from .enums import AssignmentStatusEnum,MaterialRequestStatusEnum,IssueTypeEnum,MaterialUnitNameEnum
-from .repo import MaterialBrandRepo,MaterialObjectRepo,MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
+from .repo import ArchiveCategoryRepo,ArchiveDocumentRepo,MaterialBrandRepo,MaterialObjectRepo,MaterialWareHouseRepo,ContractorRepo,AssignmentRepo,IssueRepo,ProjectRepo,MaterialCategoryRepo,ProjectCategoryRepo,WorkUnitRepo,ManagerPageRepo,MaterialRepo,MaterialRequestRepo
 from .apps import APP_NAME
 from app.repo import TagRepo
 import json
@@ -35,7 +35,8 @@ class BasicView(View):
         user=request.user
         context=getContext(request)
         context['priority_form']=PriorityForm()
-        
+        archivecategories=ArchiveCategoryRepo(user=user).list_root()
+        context['archivecategories']=archivecategories
         context['material_warehouses']=MaterialWareHouseRepo(user=user).list()
         context['project_categories']=ProjectCategoryRepo(user=user).list()
         context['material_categories']=MaterialCategoryRepo(user=user).list_root()
@@ -320,6 +321,34 @@ class ManagerPageView(View):
                     return redirect(project.parent.get_absolute_url())
         return Http404   
 
+    def add_archivedocument(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_archivedocument_form=AddArchiveDocumentForm(request.POST)
+            if add_archivedocument_form.is_valid():
+                # print(aaaaa)
+                title=add_archivedocument_form.cleaned_data['title']
+                parent_id=add_archivedocument_form.cleaned_data['parent_id']
+                category_id=add_archivedocument_form.cleaned_data['category_id']
+                archivedocument=ArchiveDocumentRepo(user=request.user).add(title=title,category_id=category_id,parent_id=parent_id)
+                if archivedocument is not None:
+                    if category_id is not None:
+                        return redirect(archivedocument.category.get_absolute_url())
+                    if parent_id is not None:
+                        return redirect(archivedocument.parent.get_absolute_url())
+                 
+        return Http404   
+    def add_archivecategory(self,request,*args, **kwargs):
+        if request.method=='POST':
+            add_archivecategory_form=AddArchiveCategoryForm(request.POST)
+            if add_archivecategory_form.is_valid():
+                # print(aaaaa)
+                title=add_archivecategory_form.cleaned_data['title']
+                parent_id=add_archivecategory_form.cleaned_data['parent_id']
+                archivecategory=ArchiveCategoryRepo(user=request.user).add(title=title,parent_id=parent_id)
+                if archivecategory is not None:
+                    return redirect(archivecategory.parent.get_absolute_url())
+        return Http404   
+
     def add_workunit(self,request,*args, **kwargs):
         if request.method=='POST':
             add_workunit_form=AddWorkUnitForm(request.POST)
@@ -388,3 +417,21 @@ class ManagerPageView(View):
         context['search_for']=tag.title
         context['pages']=ManagerPageRepo(user=request.user).list_by_tag(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'search.html',context)
+
+    def archivecategory(self,request,archivecategory_id,*args, **kwargs):
+        context=self.get_page_context(request)
+        archivecategory=ArchiveCategoryRepo(user=request.user).archivecategory(archivecategory_id=archivecategory_id)
+        context['archivecategory']=archivecategory
+        context['page']=archivecategory
+        context['add_archivecategory_form']=AddArchiveCategoryForm()
+        context['add_archivedocument_form']=AddArchiveDocumentForm()
+        return render(request,TEMPLATE_ROOT+'archive-category.html',context)
+
+    def archivedocument(self,request,archivedocument_id,*args, **kwargs):
+        context=self.get_page_context(request)
+        archivedocument=ArchiveDocumentRepo(user=request.user).archivedocument(archivedocument_id=archivedocument_id)
+        context['add_archivedocument_form']=AddArchiveDocumentForm()
+        context['archivedocument']=archivedocument
+        context['page']=archivedocument
+        return render(request,TEMPLATE_ROOT+'archive-document.html',context)
+        

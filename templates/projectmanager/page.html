@@ -48,12 +48,14 @@
             <i class="material-icons">place</i>
             تصاویر
         </button>
+        {% if project %}
 
         <button @click="show_assignments_panel"
             :class="show_assignments?' btn  btn-primary  ':' btn  btn-primary btn-link '">
             <i class="material-icons">flash_auto</i>
             وظیفه ها
         </button>
+        {% endif %}
 
         {% if project %}
         <button @click="show_materialrequest_panel"
@@ -103,6 +105,14 @@
                                     <h4 class="bg-light px-3 py-2">پروژه های جزئی</h4>
                                     {% endif %}
 
+                                    {% if archivedocument %}
+                                    <h4 class="bg-light px-3 py-2">سند های جزئی</h4>
+                                    {% endif %}
+                                    {% if archivecategory %}
+                                    <h4 class="bg-light px-3 py-2">دسته بندی های زیرمجموعه</h4>
+                                    {% endif %}
+
+
                                     {% if materialcategory %}
                                     <h4 class="bg-light px-3 py-2">زیر مجموعه ها</h4>
                                     {% endif %}
@@ -117,6 +127,7 @@
                                             {{child.get_link|safe}}
                                         </div>
                                         {% endfor %}
+
                                     </div>
                                     {% if add_material_category_form %}
                                     <div>
@@ -149,6 +160,46 @@
                                         <button class="btn btn-primary" type="submit">افزودن</button>
                                     </form>
                                     {% endif %}
+                                    {% if add_archivecategory_form %}
+                                    <form action="{% url 'projectmanager:add_archivecategory' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+                                        <input required placeholder="دسته بندی جدید برای اسناد" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+                                    {% if page.archivedocuments %}
+                                    <h4 class="bg-light px-3 py-2">اسناد آرشیوی</h4>
+
+                                    <div class="ml-3">
+
+                                        {% for archivedocument in page.archivedocuments %}
+                                        <div>
+
+                                            {{archivedocument.get_link|safe}}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    {% if add_archivedocument_form %}
+                                    <form action="{% url 'projectmanager:add_archivedocument' %}" method="POST">
+                                        {% csrf_token %}
+                                        {% if archivedocument %}
+                                        <input type="hidden" name="parent_id" value="{{page.id}}">
+
+                                        {% endif %}
+                                        {% if archivecategory %}
+                                        <input type="hidden" name="category_id" value="{{archivecategory.id}}">
+
+                                        {% endif %}
+                                        <input required placeholder="سند جدید" type="text" name="title"
+                                            class="form-control">
+                                        <button class="btn btn-primary" type="submit">افزودن</button>
+                                    </form>
+                                    {% endif %}
+
+
 
 
 
@@ -596,7 +647,7 @@
                         <form class="mb-3" action="{% url 'projectmanager:add_material_request' %}" method="POST">
                             {% csrf_token %}
                             <input required type="hidden" name="project_id" value="{{page.id}}">
-                           
+
                             <select name="material_id" class="form-control">
                                 {% for material in materials %}
                                 <option value="{{material.id}}">{{material.title}}</option>
@@ -604,7 +655,7 @@
                             </select>
 
                             <input required type="number" class="form-control" name="quantity" value="1">
-                           
+
                             <select name="unit_name" class="form-control">
                                 {% for unit_name in unit_names %}
                                 <option value="{{unit_name}}">{{unit_name}}</option>
@@ -613,8 +664,8 @@
 
 
 
-                           
-                            
+
+
                             <button class="btn btn-danger" type="submit">افزودن</button>
                         </form>
                         {% endif %}

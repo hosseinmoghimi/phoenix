@@ -1,7 +1,7 @@
 
 
 from django.contrib import admin
-from .models import Contractor,MaterialInStock,Assignment,Image,Issue,MaterialRequest,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
+from .models import ArchiveDocument,ArchiveCategory,Contractor,MaterialInStock,Assignment,Image,Issue,MaterialRequest,PageLog,ProjectCategory,Project,WorkUnit,Employee,MaterialBrand,MaterialCategory,Material,MaterialWareHouse,MaterialObject,MaterialPackage,MaterialLog
 from app.repo import ProfileRepo
 from .enums import LogActionEnum
 class MaterialRequestAdmin(admin.ModelAdmin):
@@ -33,6 +33,8 @@ class AssignmentAdmin(admin.ModelAdmin):
     list_display=('assign_to','title','date_added')
 admin.site.register(MaterialRequest,MaterialRequestAdmin)
 admin.site.register(Assignment,AssignmentAdmin)
+admin.site.register(ArchiveDocument)
+admin.site.register(ArchiveCategory)
 admin.site.register(Issue)
 admin.site.register(MaterialInStock)
 admin.site.register(Image)

@@ -7,6 +7,8 @@ urlpatterns = [
     path('',login_required(views.BasicView().home),name='home'),
     path('resume/',views.BasicView().resume,name='resume'),
     path('add_assignment/',views.ManagerPageView().add_assignment,name='add_assignment'),
+    path('add_archivedocument/',views.ManagerPageView().add_archivedocument,name='add_archivedocument'),
+    path('add_archivecategory/',views.ManagerPageView().add_archivecategory,name='add_archivecategory'),
     path('add_location/',views.ManagerPageView().add_location,name='add_location'),
     path('add_issue/',views.ManagerPageView().add_issue,name='add_issue'),
     path('add_project/',views.ManagerPageView().add_project,name='add_project'),
@@ -40,4 +42,6 @@ urlpatterns = [
     path('add_material_request/',views.ManagerPageView().add_material_request,name='add_material_request'),
     path('sign_material_request/',views.ManagerPageView().sign,name='sign_material_request'),
     path('chart/',views.BasicView().chart,name='chart'), 
-]
+    path('archivecategory/<int:archivecategory_id>/',views.ManagerPageView().archivecategory,name='archivecategory'),
+    path('archivedocument/<int:archivedocument_id>/',views.ManagerPageView().archivedocument,name='archivedocument'),
+ ]

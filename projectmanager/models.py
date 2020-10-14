@@ -36,13 +36,13 @@ class PageLog(models.Model):
 
 
 class ManagerPage(models.Model):
-    parent=models.ForeignKey("ManagerPage",related_name='parent_page',null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
-   
-    location=models.CharField(_('موقعیت در نقشه گوگل'),max_length=500,null=True,blank=True)    
     
+    parent=models.ForeignKey("ManagerPage",related_name='parent_page',null=True,blank=True, verbose_name=_("parent"), on_delete=models.SET_NULL)
     title=models.CharField(_("عنوان"), max_length=100)
     pretitle=models.CharField(_("پیش عنوان"),null=True,blank=True, max_length=100)
     posttitle=models.CharField(_("پس عنوان"),null=True,blank=True, max_length=100)
+   
+    location=models.CharField(_('موقعیت در نقشه گوگل'),max_length=500,null=True,blank=True)    
 
 
     short_description=tinymce_models.HTMLField(_("شرح کوتاه"),blank=True,null=True)
@@ -83,6 +83,10 @@ class ManagerPage(models.Model):
             return 'وظیفه'
         if self.child_class=='issue':
             return 'مشکل'
+        if self.child_class=='archivecategory':
+            return 'دسته آرشیو'
+        if self.child_class=='archivedocument':
+            return 'سند آرشیو'
         if self.child_class=='materialwarehouse':
             return 'انبار متریال'
 
@@ -167,6 +171,37 @@ class ManagerPage(models.Model):
     def get_edit_url(self):
         return f'{ADMIN_URL}{self.app_name}/{self.child_class}/{self.pk}/change/'
 
+class ArchiveDocument(ManagerPage):
+    category=models.ForeignKey("ArchiveCategory",null=True,blank=True,verbose_name='دسته بندی',on_delete=models.CASCADE)
+    def save(self):
+        self.child_class='archivedocument'
+        self.app_name=APP_NAME
+        super(ArchiveDocument,self).save()
+    class Meta:
+        verbose_name = _("ArchiveDocument")
+        verbose_name_plural = _("ArchiveDocuments - اسناد آرشیوی")
+
+    def __str__(self):
+        return f'{self.pk} - {self.title}'
+
+class ArchiveCategory(ManagerPage):
+    def save(self):
+        self.child_class='archivecategory'
+        self.app_name=APP_NAME
+        super(ArchiveCategory,self).save()
+    class Meta:
+        verbose_name = _("ArchiveCategory")
+        verbose_name_plural = _("ArchiveCategorys - دسته بندی های اسناد آرشیوی")
+    def archivedocuments(self):
+        return ArchiveDocument.objects.filter(category=self)
+    def __str__(self):
+        return f'{self.pk} - {self.title}'
+
+    # def get_absolute_url(self):
+    #     return reverse('projectmanager:archivecategory',kwargs={'archivecategory_id':self.pk})
+
+    # def get_edit_url(self):
+    #     return f'{ADMIN_URL}{APP_NAME}/archivecategory/{self.pk}/change'
 
 class Assignment(ManagerPage):
     assign_to=models.ForeignKey("Employee",verbose_name="کاربر مربوط",on_delete=models.PROTECT)
