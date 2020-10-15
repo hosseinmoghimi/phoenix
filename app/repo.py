@@ -193,6 +193,8 @@ class TagRepo:
 
     def tag(self,tag_id):
         return self.get(tag_id)
+
+
 class ParameterRepo:
     
     def __init__(self,user=None):
@@ -220,6 +222,7 @@ class ParameterRepo:
             parameter=self.objects.get(name=name)
         return parameter
 
+
 class TechnologyRepo:
     def __init__(self,user=None):
         self.user=user
@@ -241,7 +244,6 @@ class TechnologyRepo:
             return self.objects.get(pk=technology_id)
         except:
             return None
-
 
 
 class BlogRepo:
@@ -467,7 +469,6 @@ class LinkRepo:
         return self.objects.filter(for_home=True).order_by('priority')
     def get_nav_items(self):
         return self.objects.filter(for_nav=True).order_by('priority')
-
 
 
 class DocumentRepo:
@@ -732,3 +733,4 @@ class SignatureRepo:
             signature=Signature(profile=self.profile,status=status,description=description)
             signature.save()
             return signature
+
