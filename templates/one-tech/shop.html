@@ -1,4 +1,5 @@
 {% extends "one-tech/layout.html" %}
+{% load to_price %}
 {% load static %}
 {% load to_price_pure %}
 {% block header %}
@@ -142,12 +143,21 @@
 								<div class="product_content">
 									<div class="product_price">&nbsp;</div>
 									<div class="product_name">
-										<div><a href="{{product.get_absolute_url}}" class="leo-farsi text-center"
-												tabindex="0">{{product.name}}
-											{% if product.model_name %}
-											<br>
-											<span class="text-secondary">{{product.model_name}}</span>
-											{% endif %}
+										<div>
+											<a href="{{product.get_absolute_url}}" class="leo-farsi text-center"
+												tabindex="0">
+												
+												{{product.name}}
+												{% if product.model_name %}
+												<br>
+												<span class="text-secondary">{{product.model_name}}</span>
+												{% endif %}
+
+												{% if product.origin_price %}
+												<br>
+												<span class="">
+													{{product.origin_price|to_price}}</span>
+												{% endif %}
 										</a>
 
 										</div>
