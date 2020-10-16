@@ -71,9 +71,10 @@ class BasicView(View):
                 return render(request,TEMPLATE_ROOT+'search.html',context)
 
 class ManagerPageView(View):
-    def get_page_context(self,request,*args, **kwargs):
+    def get_page_context(self,request,page=None,*args, **kwargs):
         user=request.user
         context=getContext(request)
+        
         if user and user.is_authenticated and user.has_perm(APP_NAME+'.add_issue'):
             context['add_issue_form']=AddIssueForm()
             context['issue_types']=list(x.value for x in IssueTypeEnum)
@@ -86,19 +87,21 @@ class ManagerPageView(View):
             context['add_tag_form']=AddTagForm()
         if user.has_perm(APP_NAME+'.change_managerpage'):
             context['add_location_form']=AddLocationForm()
+        if page is not None:
+            context['title']=page.title
         return context
 
     def page(self,request,page_id,*args, **kwargs):
         user=request.user
-        context=self.get_page_context(request)
         page=ManagerPageRepo(user=user).page(page_id=page_id)
+        context=self.get_page_context(request,page)
         context['page']=page        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
     
     def assignment(self,request,assignment_id,*args, **kwargs):
         user=request.user
-        context=self.get_page_context(request)
         assignment=AssignmentRepo(user=user).assignment(assignment_id=assignment_id)
+        context=self.get_page_context(request,assignment)
         context['page']=assignment        
         return render(request,TEMPLATE_ROOT+'page.html',context) 
     
@@ -176,13 +179,13 @@ class ManagerPageView(View):
 
     def material_request(self,request,material_request_id,*args, **kwargs):
         user=request.user
-        context=self.get_page_context(request)
       
+        material_request=MaterialRequestRepo(user=user).material_request(material_request_id=material_request_id)
+        context=self.get_page_context(request,material_request)
+        context['material_request']=material_request
         if user and user.is_authenticated:
             context['sign_material_request_form']=SignMaterialRequestForm()
             context['status_options']=list(x.value for x in MaterialRequestStatusEnum)
-        material_request=MaterialRequestRepo(user=user).material_request(material_request_id=material_request_id)
-        context['material_request']=material_request
         return render(request,TEMPLATE_ROOT+'material-request.html',context)
     
     def material(self,request,material_id,*args, **kwargs):
@@ -193,6 +196,7 @@ class ManagerPageView(View):
         context['projects']=ProjectRepo(user=user).my_projects()
         context['add_metrial_request_form']=AddMaterialRequestForm()
         context['unit_names']=['عدد','کیلو','دستگاه']
+        context['title']=material.title
         return render(request,TEMPLATE_ROOT+'material.html',context)
     
     def materialbrand(self,request,materialbrand_id,*args, **kwargs):
@@ -200,6 +204,7 @@ class ManagerPageView(View):
         context=self.get_page_context(request)
         materialbrand=MaterialBrandRepo(user=user).materialbrand(materialbrand_id=materialbrand_id)
         
+        context['title']=materialbrand.title
         context['page']=materialbrand
         context['materialbrand']=materialbrand
         return render(request,TEMPLATE_ROOT+'materialbrand.html',context)
@@ -209,6 +214,7 @@ class ManagerPageView(View):
         context=self.get_page_context(request)
         materialobject=MaterialObjectRepo(user=user).materialobject(materialobject_id=materialobject_id)
         
+        context['title']=materialobject.title
         
         context['materialobject']=materialobject
         context['material']=materialobject.material
@@ -220,6 +226,7 @@ class ManagerPageView(View):
         material_warehouse=MaterialWareHouseRepo(user=user).materialwarehouse(materialwarehouse_id=materialwarehouse_id)
         
          
+        context['title']=material_warehouse.title
         materials=[]
         context['page']=material_warehouse
         context['warehouse']=material_warehouse
@@ -235,6 +242,7 @@ class ManagerPageView(View):
         context=self.get_page_context(request)
         
         materialcategory=MaterialCategoryRepo(user=user).category(category_id=category_id)
+        context['title']=materialcategory.title
         context['materialcategory']=materialcategory   
         context['page']=materialcategory   
         if user.has_perm(APP_NAME+'.add_material'):
@@ -280,22 +288,6 @@ class ManagerPageView(View):
                     page=ManagerPageRepo(user=request.user).get(pk=manager_page_id)
                     return redirect(page.get_absolute_url())
         return Http404      
-
-    def work_unit(self,request,work_unit_id,*args, **kwargs):
-        user=request.user
-        context=self.get_page_context(request)
-        work_unit=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
-        page=work_unit
-        context['page']=page
-        context['workunit']=work_unit
-        context['workunit_workunits']=work_unit.childs()
-        context['workunit_projects']=work_unit.project_set.all()
-        if user.has_perm(APP_NAME+'.add_workunit'):
-            context['add_workunit_form']=AddWorkUnitForm()
-        
-        context['employees']=work_unit.employees()
-        context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
-        return render(request,TEMPLATE_ROOT+'work-unit.html',context)
 
     def add_issue(self,request,*args, **kwargs):
         if request.method=='POST':
@@ -360,10 +352,28 @@ class ManagerPageView(View):
                     return redirect(workunit.parent.get_absolute_url())
         return Http404      
 
+    def work_unit(self,request,work_unit_id,*args, **kwargs):
+        user=request.user
+        context=self.get_page_context(request)
+        work_unit=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
+        page=work_unit
+        context['page']=page
+        context['title']=page.title
+        context['workunit']=work_unit
+        context['workunit_workunits']=work_unit.childs()
+        context['workunit_projects']=work_unit.project_set.all()
+        if user.has_perm(APP_NAME+'.add_workunit'):
+            context['add_workunit_form']=AddWorkUnitForm()
+        
+        context['employees']=work_unit.employees()
+        context['work_unit']=WorkUnitRepo(user=user).work_unit(work_unit_id=work_unit_id)
+        return render(request,TEMPLATE_ROOT+'work-unit.html',context)
+
     def project(self,request,project_id,*args, **kwargs):
         user=request.user
         context=self.get_page_context(request)
         project=ProjectRepo(user=user).project(project_id=project_id)
+        context['title']=project.title
         context['page']=project
         context['project_projects']=project.childs()
         context['project']=project
@@ -389,6 +399,7 @@ class ManagerPageView(View):
         user=request.user
         context=self.get_page_context(request)
         page=ProjectRepo(user=user).project(project_id=project_id)
+        context['title']=page.title
         project=ProjectRepo(user=user).project(project_id=project_id)
         context['page']=project
         context['project_projects']=project.childs()
@@ -402,6 +413,8 @@ class ManagerPageView(View):
         context=self.get_page_context(request)
         
         issue=IssueRepo(user=user).issue(issue_id=issue_id)
+        context['title']=issue.title
+        
         context['page']=issue
         context['issue']=issue
         return render(request,TEMPLATE_ROOT+'issue.html',context)
@@ -413,7 +426,6 @@ class ManagerPageView(View):
         
         tag=TagRepo(user=user).get(tag_id=tag_id)    
         
-        
         context['search_for']=tag.title
         context['pages']=ManagerPageRepo(user=request.user).list_by_tag(tag_id=tag_id)
         return render(request,TEMPLATE_ROOT+'search.html',context)
@@ -421,6 +433,8 @@ class ManagerPageView(View):
     def archivecategory(self,request,archivecategory_id,*args, **kwargs):
         context=self.get_page_context(request)
         archivecategory=ArchiveCategoryRepo(user=request.user).archivecategory(archivecategory_id=archivecategory_id)
+        
+        context['title']=archivecategory.title
         context['archivecategory']=archivecategory
         context['page']=archivecategory
         context['add_archivecategory_form']=AddArchiveCategoryForm()
@@ -430,6 +444,8 @@ class ManagerPageView(View):
     def archivedocument(self,request,archivedocument_id,*args, **kwargs):
         context=self.get_page_context(request)
         archivedocument=ArchiveDocumentRepo(user=request.user).archivedocument(archivedocument_id=archivedocument_id)
+        
+        context['title']=archivedocument.title
         context['add_archivedocument_form']=AddArchiveDocumentForm()
         context['archivedocument']=archivedocument
         context['page']=archivedocument
