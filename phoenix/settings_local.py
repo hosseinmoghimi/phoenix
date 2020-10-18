@@ -8,23 +8,23 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.100.198','192.168.1.21','192.168.1.7','127.0.0.1','localhost']
 
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'OPTIONS': {
-#                 'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_local_my_sql.cnf'),
-
-#             },
-#         }
-#     }
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db_local_2.sqlite3'),
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'read_default_file': os.path.join(os.path.join(BASE_DIR, 'phoenix'),'secret_local_my_sql.cnf'),
+
+            },
+        }
     }
-}
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db_local_2.sqlite3'),
+#     }
+# }
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
