@@ -718,7 +718,7 @@ class OurWorkCategory(models.Model):
 class OurWork(Page):
 
     def save(self):
-        self.child_class='blog'
+        self.child_class='ourwork'
         self.app_name=APP_NAME
         super(OurWork,self).save()
     category=models.ForeignKey("OurWorkCategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
