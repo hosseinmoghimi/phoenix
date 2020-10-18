@@ -281,9 +281,9 @@ class OurWorkRepo:
     def list(self):
         return self.objects.filter(archive=False).order_by('priority')
           
-    def our_work(self,our_work_id):
+    def ourwork(self,ourwork_id):
         try:
-            return self.objects.get(pk=our_work_id)
+            return self.objects.get(pk=ourwork_id)
         except:
             return None
     
@@ -384,7 +384,12 @@ class OurServiceRepo:
     def __init__(self,user=None):
         self.objects=OurService.objects.filter(archive=False).order_by('priority')
     def list(self):
-        return self.objects
+        return self.objects.all()
+    def ourservice(self,ourservice_id):
+        try:
+            return self.objects.get(pk=ourservice_id)
+        except:
+            return None
 
     
     def list_for_home(self):
@@ -415,8 +420,8 @@ class ResumeCategoryRepo:
     def __init__(self,user=None):
         self.user=user
         self.objects=ResumeCategory.objects
-    def list(self,our_team_id):
-        return self.objects.filter(our_team_id=our_team_id)
+    def list(self,ourteam_id):
+        return self.objects.filter(ourteam_id=ourteam_id)
 
 
 class GalleryPhotoRepo:    
@@ -442,9 +447,9 @@ class OurTeamRepo:
     
     def list_for_home(self):
         return self.objects.filter(for_home=True).order_by('priority')
-    def our_team(self,our_team_id):
+    def ourteam(self,ourteam_id):
         try:
-            return self.objects.get(pk=our_team_id)
+            return self.objects.get(pk=ourteam_id)
         except:
             return None
     

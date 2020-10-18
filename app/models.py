@@ -606,16 +606,12 @@ class Blog(Page):
     def __str__(self):
         return self.title
 
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/blog/{self.pk}/change/'
-    def get_absolute_url(self):
-        return reverse("app:blog", kwargs={"blog_id": self.pk})
-
+   
 
 class Technology(Page):
 
     def save(self):
-        self.child_class='blog'
+        self.child_class='technology'
         self.app_name=APP_NAME
         super(Technology,self).save()
 
@@ -629,12 +625,6 @@ class Technology(Page):
             return self.title
         return str(self.priority)
         
-
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/technology/{self.pk}/change/'
-    def get_absolute_url(self):
-        return reverse("app:technology", kwargs={"technology_id": self.pk})
-
 
 class Comment(models.Model):
     profile=models.ForeignKey("Profile",null=True,blank=True, verbose_name=_("توسط"), on_delete=models.CASCADE)
@@ -732,11 +722,6 @@ class OurWork(Page):
     def __str__(self):
         return self.title
 
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/ourwork/{self.pk}/change/'
-    def get_absolute_url(self):
-        return reverse("app:our_work", kwargs={"our_work_id": self.pk})
-
 
 class Testimonial(models.Model):
     for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
@@ -771,7 +756,7 @@ class OurService(Page):
     
 
     def save(self):
-        self.child_class='blog'
+        self.child_class='ourservice'
         self.app_name=APP_NAME
         super(OurService,self).save()
     
@@ -800,14 +785,9 @@ class OurService(Page):
     def __str__(self):
         return self.title
     
-    def get_edit_url(self):
-        return f'{ADMIN_URL}{APP_NAME}/ourservice/{self.pk}/change/'
-
 
     def __unicode__(self):
         return self.title
-    def get_absolute_url(self):
-        return reverse("app:page", kwargs={"page_id": self.pk})
 
 
 class SocialLink(models.Model):
@@ -864,7 +844,7 @@ class OurTeam(models.Model):
     def __str__(self):
         return self.name
     def get_resume_url(self):
-        return reverse('app:resume',kwargs={'our_team_id':self.pk})
+        return reverse('app:resume',kwargs={'ourteam_id':self.pk})
     def image(self):
         if self.image_origin:
             return MEDIA_URL+str(self.image_origin)
@@ -879,7 +859,7 @@ class OurTeam(models.Model):
     def get_edit_url(self):
         return f'{ADMIN_URL}{APP_NAME}/ourteam/{self.pk}/change/'
     def get_absolute_url(self):
-        return reverse('app:our_team',kwargs={'our_team_id':self.pk})
+        return reverse('app:ourteam',kwargs={'ourteam_id':self.pk})
 
     def __unicode__(self):
         return self.name

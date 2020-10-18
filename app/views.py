@@ -211,7 +211,7 @@ class PageView(View):
                     return JsonResponse({'result':SUCCEED,'blog':BlogSerializer(blog).data}) 
             return JsonResponse({'result':FAILED})
     
-    def our_works(self,request,category_id=None,*args, **kwargs):
+    def ourworks(self,request,category_id=None,*args, **kwargs):
         user=request.user
         context=getContext(request=request)
         if user.has_perm(APP_NAME+'.add_blog'):
@@ -234,17 +234,37 @@ class PageView(View):
             context['our_works']=OurWorkRepo(user=request.user).list().filter(category_id=category_id)
         
         return render(request,TEMPLATE_ROOT+'our_works.html',context)
-    def our_work(self,request,our_work_id,*args, **kwargs):
+    def ourwork(self,request,ourwork_id,*args, **kwargs):
         context=getContext(request=request)
-        page=OurWorkRepo(user=request.user).our_work(our_work_id=our_work_id)
+        page=OurWorkRepo(user=request.user).ourwork(ourwork_id=ourwork_id)
         
         context['page']=page
-        page_id=our_work_id
+        page_id=ourwork_id
         if page is None:
             raise Http404
         tags=TagRepo(user=request.user).list_top()
         context['tags']=tags
         context['location']={'value':page.location}
+        context['add_like_form']=AddLikeForm()
+        context['get_edit_url']=page.get_edit_url()
+        context['add_comment_form']=AddCommentForm()
+        context['delete_comment_form']=DeleteCommentForm()
+        comments_s=json.dumps(CommentSerializer(page.comments,many=True).data)
+        context['comments_s']=comments_s
+        context['my_like']=LikeRepo(user=request.user,object_type='Page').my_like(object_id=page_id)
+        return render(request,TEMPLATE_ROOT+'page.html',context)
+    
+    def ourservice(self,request,ourservice_id,*args, **kwargs):
+        context=getContext(request=request)
+        page=OurServiceRepo(user=request.user).ourservice(ourservice_id=ourservice_id)
+        
+        context['page']=page
+        page_id=ourservice_id
+        if page is None:
+            raise Http404
+        tags=TagRepo(user=request.user).list_top()
+        context['tags']=tags
+        # context['location']={'value':page.location}
         context['add_like_form']=AddLikeForm()
         context['get_edit_url']=page.get_edit_url()
         context['add_comment_form']=AddCommentForm()
@@ -339,11 +359,11 @@ class BasicView(View):
                 context['add_faq_form']=AddFaqForm()
             context['faqs']=FAQRepo(user=request.user).list()
             return render(request,TEMPLATE_ROOT_DASHBOARD+'faq.html',context)
-    def our_team(self,request,our_team_id):        
+    def ourteam(self,request,ourteam_id):        
         context=getContext(request=request)
-        context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
-        context['our_team']=OurTeamRepo(user=request.user).our_team(our_team_id=our_team_id)
-        return render(request,TEMPLATE_ROOT+'our_team.html',context)
+        context['resume_categories']=ResumeCategoryRepo(user=request.user).list(ourteam_id=ourteam_id)
+        context['ourteam']=OurTeamRepo(user=request.user).ourteam(ourteam_id=ourteam_id)
+        return render(request,TEMPLATE_ROOT+'our-team.html',context)
     def resume(self,request,our_team_id):        
         context=getContext(request=request)
         context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
