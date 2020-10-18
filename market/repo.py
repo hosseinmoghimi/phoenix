@@ -12,7 +12,7 @@ from app.constants import *
 from app.enums import *
 from app.models import Profile,Comment
 from app.persian import PersianCalendar
-from app.repo import ProfileRepo
+from app.repo import ProfileRepo,RegionRepo
 # from leopusher.mypusher import MyPusherChannel
 from app.settings import DEBUG
 from app.repo import NotificationRepo,ProfileTransactionRepo
@@ -102,7 +102,7 @@ class ProductUnitRepo:
 class OrderRepo:
     def __init__(self,user):
         self.objects=Order.objects.order_by('-id')
-        self.user=user        
+        self.user=user    
         self.profile=ProfileRepo(user=user).me
     
     def do_pack(self, order_id, description, count_of_packs=1):

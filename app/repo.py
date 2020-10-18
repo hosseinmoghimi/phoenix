@@ -90,6 +90,11 @@ class RegionRepo():
         self.user=user
     def list(self):
         return self.objects.all()
+    def get(self,region_id):
+        try:
+            return self.objects.get(pk=region_id)
+        except:
+            return None
 
 
 class TestimonialRepo:

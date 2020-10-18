@@ -35,7 +35,6 @@ class Jumbotron(models.Model):
     pretitle=models.CharField(_("پیش عنوان"), max_length=500,blank=True,null=True)
     posttitle=models.CharField(_("پس عنوان"), max_length=500,blank=True,null=True)
     short_description=tinymce_models.HTMLField(_("شرح کوتاه"),max_length=1000,blank=True,null=True)
-    # description=models.TextField(_("شرح کامل"),blank=True,null=True)
     description=tinymce_models.HTMLField(_("شرح کامل"),max_length=2000,null=True,blank=True)
     action_text=models.CharField(_("متن دکمه"), max_length=100,blank=True,null=True)
     action_url=models.CharField(_("لینک دکمه"), max_length=2000,blank=True,null=True)
