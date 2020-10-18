@@ -366,7 +366,7 @@ class BasicView(View):
         return render(request,TEMPLATE_ROOT+'our-team.html',context)
     def resume(self,request,our_team_id):        
         context=getContext(request=request)
-        context['resume_categories']=ResumeCategoryRepo(user=request.user).list(our_team_id=our_team_id)
+        context['resume_categories']=ResumeCategoryRepo(user=request.user).list(ourteam_id=ourteam_id)
         return render(request,TEMPLATE_ROOT_DASHBOARD+'resume.html',context)
     def search(self,request):
         if request.method=='POST':

@@ -421,7 +421,7 @@ class ResumeCategoryRepo:
         self.user=user
         self.objects=ResumeCategory.objects
     def list(self,ourteam_id):
-        return self.objects.filter(ourteam_id=ourteam_id)
+        return self.objects.filter(our_team_id=ourteam_id)
 
 
 class GalleryPhotoRepo:    
