@@ -25,8 +25,8 @@ SERVER_MAJD=False
 SERVER_HAMES=False
 
 # SERVER_KHAFONLI=True
-SERVER_MAJD=True
-# SERVER_HAMES=True
+# SERVER_MAJD=True
+SERVER_HAMES=True
 
 if '--no-color' in sys.argv or SERVER_ON_LOCAL:
     SERVER_ON_LOCAL=True  
