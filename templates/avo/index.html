@@ -13,7 +13,7 @@
 
 
 		{% include "avo/partials/homeslider.html" %}
-	
+
 
 	</div>
 </section>
@@ -347,37 +347,36 @@
 	<div class="container">
 		<div class="row justify-content-center mb-5">
 			<div class="col-md-8 text-center heading-section ftco-animate">
-				<h2 class="mb-3">آنچه درباره ما گفته شده است.</h2>
-				{% if perms.app.add_testimonial %}
+				<h2 class="mb-3">معرفی برخی از محصولات ما</h2>
 
-				<p class="text-center">
-					<a href="{{ADMIN_URL}}app/testimonial/add/">
-						<span style="font-size: 3em;" class="fa fa-plus-circle text-info"></span></a>
-				</p>
-				{% endif %}
 			</div>
 		</div>
 		<div class="row ftco-animate mb-4">
 			<div class="col-md-12">
 				<div class="carousel-testimony owl-carousel">
-					{% for testimonial in testimonials %}
+					{% for product in products %}
 					<div class="item">
 						<div class="testimony-wrap py-4">
 							<div class="text">
-								<span class="fa fa-quote-left"></span>
-								<p class="mb-4">{{testimonial.title}}</p>
+								<!-- <span class="fa fa-quote-left"></span> -->
+								<p class="mb-4 text-primary">{{product.name}}</p>
+								{% if product.model_name %}
+								<p class="mb-4">{{product.model_name}}</p>
+
+								{% endif %}
 								<div class="d-flex align-items-center">
-									<div class="user-img" style="background-image: url({{testimonial.profile.image}})">
+									<div class="user-img" style="background-image: url({{product.get_thumbnail}})">
+
 									</div>
+
 									<div class="pl-3">
 										<p class="name">{{testimonial.profile.name}}</p>
 										<span class="position leo-farsi">{{testimonial.profile.bio}}</span>
-										{% if perms.app.change_testimonial %}
 										<p>
-											<a class="btn btn-info" href="{{testimonial.get_edit_url}}">ویرایش نقل
-												قول</a>
+											<a class="btn btn-info" href="{{product.get_absolute_url}}">توضیحات کامل
+											</a>
 										</p>
-										{% endif %}
+
 									</div>
 								</div>
 							</div>
