@@ -653,7 +653,7 @@ class IndexView(View):
         return ShopView().list(request=request,parent_id=0)
     
 
-class WareHouse(View):
+class WareHouseViews(View):
     def ware_house(self,request,ware_house_id,*args,**kwargs):
         user=request.user
         context=getContext(request=request)

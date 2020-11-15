@@ -270,18 +270,20 @@ class ProductInStock(models.Model):
 
 class Product(models.Model):
     price=0
-    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"),blank=True)
-    for_home=models.BooleanField(_("نمایش در صفحه خانه"),default=False)
+    
+    list_for_app=models.BooleanField(_("نمایش در صفحه اصلی سایت"),default=False)
+    name=models.CharField(_("نام محصول"), max_length=100)
+    model_name=models.CharField(_("مدل"),max_length=50,null=True,blank=True)
     discount=models.IntegerField(_("درصد تخفیف"),null=True,blank=True)
     is_new=models.BooleanField(_("جدید است؟"),default=False)
+    for_home=models.BooleanField(_("نمایش در صفحه فروشگاه"),default=False)
     brand=models.ForeignKey("Brand",related_name='brand',null=True,blank=True,on_delete=models.PROTECT)
     category=models.ForeignKey("Category",related_name='products',on_delete=models.PROTECT)
     thumbnail=models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'Product/thumbnail/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image=models.ImageField(_("تصویر 1"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image2=models.ImageField(_("تصویر 2"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
     image3=models.ImageField(_("تصویر 3"), upload_to=IMAGE_FOLDER+'Product/', height_field=None, width_field=None, max_length=None,blank=True,null=True)
-    name=models.CharField(_("نام محصول"), max_length=100)
-    model_name=models.CharField(_("مدل"),max_length=50,null=True,blank=True)
+    colors=models.ManyToManyField("app.Color", verbose_name=_("رنگ ها"),blank=True)
     barcode=models.CharField(_("بارکد"), max_length=1000,null=True,blank=True)
     rate=models.IntegerField(_("امتیاز"),default=0)
     priority=models.IntegerField(_("ترتیب"),default=1000)

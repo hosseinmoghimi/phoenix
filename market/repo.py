@@ -714,7 +714,11 @@ class ProductRepo:
         shops=ShopRepo(user=self.user).get_by_supplier(supplier_id=supplier_id)
         products=self.objects.filter(pk__in=shops.values('product_id'))
         return products
-   
+    
+    def list_for_app(self):
+        return self.objects.filter(list_for_app=True)
+
+
     def my_list(self):
         
         my_list=CustomerRepo(user=self.user).me.favorites.all()

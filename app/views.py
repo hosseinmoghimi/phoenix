@@ -2,6 +2,7 @@ from app import settings
 from app.apps import APP_NAME
 from app.enums import IconsEnum, ParametersEnum,MainPicEnum
 from app.forms import *
+from market.repo import ProductRepo
 from authentication.forms import *
 from app.constants import CURRENCY,SUCCEED,FAILED
 from app.repo import ResumeCategoryRepo,TechnologyRepo,LikeRepo,PageRepo,TagRepo,BannerRepo,TestimonialRepo,OurWorkRepo,MainPicRepo,ContactMessageRepo,SocialLinkRepo,BlogRepo,FAQRepo,OurServiceRepo,ResumeCategoryRepo,OurTeamRepo,HomeSliderRepo,DocumentRepo, ParameterRepo, ProfileTransactionRepo, LinkRepo, ProfileTransactionRepo, ProfileRepo, MetaDataRepo, OurTeamRepo, RegionRepo, NotificationRepo
@@ -388,7 +389,8 @@ class BasicView(View):
         context['our_services']=OurServiceRepo(user=user).list_for_home()
         context['about_us_title']=parameter_repo.get(ParametersEnum.ABOUT_US_TITLE)
         context['about_us_short']=parameter_repo.get(ParametersEnum.ABOUT_US_SHORT)
-        
+        products=ProductRepo(user=user).list_for_app()
+        context['products']=products
         context['our_work_categories']=OurWorkRepo(user=request.user).get_categories()
         context['blogs']=BlogRepo(user=request.user).list_for_home()
         context['our_works']=OurWorkRepo(user=request.user).list_for_home()
