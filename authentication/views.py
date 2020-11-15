@@ -43,15 +43,16 @@ class AuthView(View):
     def logout(self,request):
         ProfileRepo().logout(request)
         return redirect(reverse('authentication:login'))
-    def auth(self,request,back_url=None,next1=None):
-        back_url=request.GET.get('next1', '')
-        if back_url is None or not back_url:
-            back_url=reverse('app:my_profile')
+    def auth(self,request,*args, **kwargs):
+        
         if request.method=='POST':
             login_form=LoginForm(request.POST)
             if login_form.is_valid():
                 username=login_form.cleaned_data['username']
                 password=login_form.cleaned_data['password']                
+                back_url=login_form.cleaned_data['back_url']
+                if back_url is None or not back_url:
+                    back_url=reverse('app:my_profile')                
                 request1=ProfileRepo().login(request=request,username=username,password=password)
                 if request1 is not None and request1.user is not None and request1.user.is_authenticated :
                     return redirect(back_url)
@@ -60,19 +61,22 @@ class AuthView(View):
                     context['message']='نام کاربری و کلمه عبور صحیح نمی باشد'
                     context['login_form']=LoginForm()
                     context['register_form']=RegisterForm()
+                    context['back_url']=back_url
                     context['reset_password_form']=ResetPasswordForm()
                     return render(request,TEMPLATE_ROOT+'login.html',context)
         else:      
             return redirect(reverse('authentication:login'))
                 
-    def login(self,request,back_url='/'):
+    def login(self,request,*args, **kwargs):
             context={
                 'app':{
                     'logo':MainPicRepo().get(name=MainPicEnum.LOGO),
                 }
             }
-            
-            context['back_url']=back_url
+            if 'next' in request.GET:
+                context['back_url']=request.GET['next']
+            else:
+                context['back_url']=reverse('app:home')
             context['login_form']=LoginForm()
             context['register_form']=RegisterForm()
             context['reset_password_form']=ResetPasswordForm()

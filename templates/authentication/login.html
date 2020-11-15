@@ -66,6 +66,7 @@
 					<form action="{% url 'authentication:auth' %}" method="POST">
 						{% csrf_token %}
 
+						<input type="hidden" name="back_url" value="{{back_url}}">
 						{% if message %}
 						<div class="alert alert-danger" role="alert">
 							{{message}}
